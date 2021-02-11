@@ -14,6 +14,7 @@ Vue.use(IconsPlugin)
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Storage from 'vue-web-storage';
+import vuetify from './plugins/vuetify';
 
 axios.defaults.baseURL='https://badhan-backend-new.herokuapp.com';
 Vue.use(VueAxios, axios);
@@ -24,5 +25,6 @@ export const eventBus = new Vue();
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

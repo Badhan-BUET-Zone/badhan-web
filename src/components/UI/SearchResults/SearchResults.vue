@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-    import {eventBus} from "../../../../main";
+    import {eventBus} from "@/main";
     import PersonCard from "./PersonCard";
     import _ from 'underscore';
     export default {
@@ -57,7 +57,6 @@
         },
         created(){
             eventBus.$on('searchComplete',(data)=>{
-
                 this.numOfDonor =  data.data.length;
 
                 data.data.forEach((human,index)=>{
@@ -92,7 +91,6 @@
                 this.personGroups = sortedBatches;
 
                 this.searchResultShown=true;
-
             });
             eventBus.$on('clearSearch',()=>{
                 this.searchResultShown=false;
