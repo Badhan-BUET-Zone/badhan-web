@@ -14,10 +14,6 @@
                     <button type="button" class="btn btn-success" @click="signInClicked()">
                         Sign In
                     </button>
-                    <br>
-                    <br>
-                    <a href="https://badhanweb.github.io/badhanliteapp/app/build/outputs/apk/debug/app-debug.apk">Download
-                        the android app</a>
 
                 </div>
             </div>
