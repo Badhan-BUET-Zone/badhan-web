@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import {eventBus} from "../../../../zmain";
+    import {eventBus} from "../../../../main";
     import {departments,bloodGroups} from "../../../../constants";
     import Datepicker from 'vuejs-datepicker';
 

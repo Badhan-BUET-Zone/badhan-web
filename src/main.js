@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import {store} from "./store/store";
 
 //Bootstrap
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -12,12 +12,10 @@ Vue.use(IconsPlugin)
 
 //previous badhan project
 import axios from 'axios';
-import VueAxios from 'vue-axios';
-import Storage from 'vue-web-storage';
 import vuetify from './plugins/vuetify';
 
-axios.defaults.baseURL='https://badhan-backend-new.herokuapp.com';
-Vue.use(VueAxios, axios);
+axios.defaults.baseURL='https://badhan-backend.herokuapp.com';
+
 Vue.config.productionTip = false;
 export const eventBus = new Vue();
 

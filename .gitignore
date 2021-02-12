@@ -28,4 +28,4 @@ firebase.json
 package-lock.json
 android
 signature.jks
-
+capacitor.config.json
