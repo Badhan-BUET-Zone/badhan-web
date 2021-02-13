@@ -95,7 +95,7 @@ export default {
         }
     },
     methods: {
-        changeHallAdminClicked() {
+        async changeHallAdminClicked() {
             console.log('Change hall admin clicked: ');
             this.errorChangeAdmin = "";
             this.successChangeAdmin = "";
@@ -111,25 +111,32 @@ export default {
                 userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.newAdminPhone)
             };
-            console.log('sendData: ', sendData);
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
+
+            console.log('REQUEST TO /admin/hall/change: ', sendData);
 
             this.$store.commit('setLoadingTrue');
-            this.axios.post('/changeadmin', sendData).then(function (response) {
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    console.log('hall admin change successful');
-                    this.successChangeAdmin = "Successfully changed hall admin";
-                    this.loadingComplete = true;
-                    this.showAdmins();
-                } else {
+
+            try {
+                let response = await axios.post('/admin/hall/change', sendData, {headers: headers});
+                console.log("RESPONSE FROM /admin/hall/change: ", response);
+                if (response.status !== 200) {
                     this.errorChangeAdmin = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                console.log('hall admin change successful');
+                this.successChangeAdmin = "Successfully changed hall admin";
+                this.loadingComplete = true;
+                await this.showAdmins();
+
+            } catch (error) {
                 this.errorChangeAdmin = error.response.data.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.$store.commit('setLoadingFalse');
-            });
+            }
         },
         archiveBatchClicked() {
             console.log('archive button clicked: ');
