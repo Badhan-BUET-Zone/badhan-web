@@ -529,12 +529,12 @@ export default {
                 this.settingsSpinner = false;
             });
         },
-        savePasswordClicked() {
+        async savePasswordClicked() {
             console.log('save password clicked');
             this.errorSettings = "";
             this.successSettings = "";
 
-            if (this.newPassword != this.confirmPassword) {
+            if (this.newPassword !== this.confirmPassword) {
                 console.log("Passwords didn't match");
                 this.errorSettings = "Passwords didn't match";
                 return;
@@ -545,28 +545,31 @@ export default {
                 return;
             }
             let sendData = {
-                token: this.$store.getters.getToken,
-                userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.phone),
                 newPassword: this.newPassword
             };
-            console.log('sendData: ', sendData);
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
+            console.log("REQUEST TO /donor/password/change: ", sendData);
             this.settingsSpinner = true;
-            axios.post('/changepassword', sendData).then(function (response) {
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    console.log('password change successful');
-                    this.successSettings = "Successfully changed password";
-                    this.enableEditing = false;
-                } else {
+            try {
+                let response = await axios.post('/donor/password/change', sendData, {headers: headers});
+                console.log('RESPONSE FROM /donor/password/change: ', response);
+
+                if (response.status !== 200) {
                     this.errorSettings = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                this.successSettings = "Successfully changed password";
+                this.enableEditing = false;
+
+            } catch (error) {
                 this.errorSettings = error.response.data.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.settingsSpinner = false;
-            });
+            }
         },
         async saveDetailsClicked() {
             console.log('save defaults clicked');
