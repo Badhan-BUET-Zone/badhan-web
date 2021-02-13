@@ -1,24 +1,20 @@
 <template>
-  <div  class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div  class="modal-dialog modal-lg">
-      <div class="modal-content"  >
+  <b-modal id="detailsModal" size="xl" hide-footer>
+      <div>
         <div v-if="$store.getters.getLoadingFlag" class="spinner-border text-dark" role="status" style="align-self: center">
           <span class="sr-only">Loading...</span>
         </div>
-        <div class="alert alert-danger animated jello" role="alert" v-if="errorDetailsLoading.length!==0">
+        <div class="alert alert-danger" role="alert" v-if="errorDetailsLoading.length!==0">
           {{errorDetailsLoading}}
         </div>
         <!--            Modal Header-->
-        <div v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0" class="modal-header animated fadeIn">
-          <h5 class="modal-title" id="exampleModalLabel">
+        <div v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
+          <h5>
             <span>
               {{name}}
             </span>
             <br>
-            (
-            <span v-if="designation==2">
-              Hall admin
-            </span>
+            (<span v-if="designation==2">Hall admin</span>
             <span v-else-if="designation==3">
               Super admin
             </span>
@@ -37,9 +33,6 @@
               Available
             </span>
           </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="hideDetails()" >
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
 
         <!--            Modal Body-->
@@ -56,11 +49,11 @@
             </div>
             <br>
 
-            <div id="accordion">
+            <div>
               <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button class="btn btn-link">
                       Person Details
                     </button>
                   </h5>
@@ -256,8 +249,8 @@
           <button class="btn btn-primary" style="width: 100%" data-dismiss="modal" aria-label="Close" @click="hideDetails()">Done</button>
         </div>
       </div>
-    </div>
-  </div>
+
+  </b-modal>
 </template>
 
 <script>
