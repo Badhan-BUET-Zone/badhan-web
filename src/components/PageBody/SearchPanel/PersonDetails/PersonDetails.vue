@@ -53,13 +53,13 @@
               <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button class="btn btn-link">
+                    <button class="btn btn-link" v-b-toggle="'persondetails'">
                       Person Details
                     </button>
                   </h5>
                 </div>
 
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <b-collapse id="persondetails">
                   <div class="card-body">
 
                     <div class="form-group row">
@@ -128,17 +128,17 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </b-collapse>
               </div>
               <div class="card" v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
                 <div class="card-header" id="headingTwo">
                   <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <button class="btn btn-link" v-b-toggle="'settings'">
                       Settings
                     </button>
                   </h5>
                 </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <b-collapse id="settings">
                   <div class="card-body">
                     <div v-if="designation!=0 || $store.getters.getPhone== oldPhone">
                       <div class="form-group row">
@@ -192,7 +192,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </b-collapse>
               </div>
 
             </div>
