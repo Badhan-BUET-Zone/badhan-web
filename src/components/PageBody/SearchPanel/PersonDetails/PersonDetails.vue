@@ -286,9 +286,9 @@
                     </div>
                     <br>
                 </div>
-                <button class="btn btn-primary" style="width: 100%" data-dismiss="modal" aria-label="Close"
-                        @click="hideDetails()">Done
-                </button>
+<!--                <b-button style="width: 100%" v-b-toggle="'detailsModal'"-->
+<!--                        @click="hideDetails()">Done-->
+<!--                </b-button>-->
             </div>
         </div>
 
@@ -364,39 +364,38 @@ export default {
             this.errorDetailsLoading = "";
 
         },
-        saveCommentClicked() {
-            console.log('Save comment clicked');
-            console.log('comment: ', this.comment);
+        async saveCommentClicked() {
 
             this.errorComment = "";
             this.successComment = "";
 
             let sendData = {
-                token: this.$store.getters.getToken,
-                userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.phone),
                 comment: this.comment,
             };
-            console.log('sendData: ', sendData);
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
+            console.log('REQUEST TO /donor/comment: ', sendData);
             this.commentSpinner = true;
+            try {
+                let response = await axios.post('/donor/comment', sendData, {headers: headers});
+                console.log('RESPONSE FROM /donor/comment: ', response);
 
-            axios.post('/comment', sendData).then(function (response) {
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    console.log('successful comment change');
-                    this.successComment = "Successfully changed comment";
-                    this.enableEditing = false;
-                } else {
+                if (response.status !== 200) {
                     this.error = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                this.successComment = "Successfully changed comment";
+                this.enableEditing = false;
+            } catch (error) {
                 this.errorComment = error.response.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.commentSpinner = false;
-            });
+            }
         },
-        deleteDonation(date) {
+        async deleteDonation(date) {
             console.log('date to be deleted: ', date);
 
             this.errorHistory = "";
@@ -405,44 +404,46 @@ export default {
 
             this.dateToBeDeleted = date;
             let sendData = {
-                token: this.$store.getters.getToken,
-                userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.phone),
                 date: date
             };
-            console.log('sendData: ', sendData);
+            let headers = {
+                'x-auth': this.$store.getters.getToken,
+            }
+            console.log('REQUEST TO /donation/delete: ', sendData);
             this.historySpinner = true;
 
-            axios.post('/deletedonation', sendData).then(function (response) {
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    for (let i = 0; i < this.history.length; i++) {
-                        if (this.history[i] == this.dateToBeDeleted) {
-                            this.history.splice(i, 1);
-                            break;
-                        }
-                    }
-                    let lastDonationNew = 0;
-                    if (this.history.length !== 0) {
-                        lastDonationNew = this.history.reduce(function (a, b) {
-                            return Math.max(a, b);
-                        });
-                    }
-
-                    let date = new Date(lastDonationNew);
-                    this.availableIn = 120 - Math.round((Math.round((new Date()).getTime()) - date.getTime()) / (1000 * 3600 * 24));
-                    this.lastDonation = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-                    console.log('donation deletion successful');
-                    this.successHistory = "Successfully deleted donation";
-                } else {
+            try {
+                let response = await axios.post('/donation/delete', sendData, {headers: headers});
+                console.log('RESPONSE FROM /donation/delete: ', response);
+                if (response.status !== 200) {
                     this.errorHistory = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                for (let i = 0; i < this.history.length; i++) {
+                    if (this.history[i] == this.dateToBeDeleted) {
+                        this.history.splice(i, 1);
+                        break;
+                    }
+                }
+                let lastDonationNew = 0;
+                if (this.history.length !== 0) {
+                    lastDonationNew = this.history.reduce(function (a, b) {
+                        return Math.max(a, b);
+                    });
+                }
+
+                let date = new Date(lastDonationNew);
+                this.availableIn = 120 - Math.round((Math.round((new Date()).getTime()) - date.getTime()) / (1000 * 3600 * 24));
+                this.lastDonation = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                this.successHistory = "Successfully deleted donation";
+
+            } catch (error) {
                 this.errorHistory = error.response.data.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.historySpinner = false;
-            });
+            }
 
         },
 
@@ -631,40 +632,44 @@ export default {
                 this.detailsSpinner = false;
             }
         },
-        loadHistory() {
+        async loadHistory() {
             this.errorHistory = "";
             this.successHistory = "";
 
             if (this.showHistory) {
                 this.showHistory = false;
-            } else {
-                this.historySpinner = true;
-
-                let sendData = {
-                    token: this.$store.getters.getToken,
-                    userPhone: this.$store.getters.getPhone,
-                    donorPhone: parseInt('88' + this.phone)
-                };
-                console.log('send data: ', sendData);
-
-                axios.post('/seehistory', sendData).then(function (response) {
-                    console.log('status: ', response.status);
-                    if (response.status == 200) {
-                        //this.$store.commit('setToken',response.data.token);
-                        console.log('received dates: ', response.data);
-                        this.history = response.data;
-                        this.showHistory = true;
-                        this.successHistory = "Successfully loaded history";
-                    } else {
-                        this.errorHistory = "Status code not 200";
-                    }
-                }).catch(function (error) {
-                    this.errorHistory = error.response.data.message;
-                    console.log(error.response);
-                }).finally(function () {
-                    this.historySpinner = false
-                });
+                return;
             }
+
+            this.historySpinner = true;
+
+            let sendData = {
+                donorPhone: parseInt('88' + this.phone)
+            };
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
+            console.log('REQUEST TO /donor/donations: ', sendData);
+
+            try {
+                let response = await axios.post('/donor/donations', sendData, {headers: headers});
+                console.log('RESPONSE FROM /donor/donations: ', response);
+
+                if (response.status !== 200) {
+                    this.errorHistory = "Status code not 200";
+                    return;
+                }
+                this.history = response.data.donations;
+                this.showHistory = true;
+                this.successHistory = "Successfully loaded history";
+
+            } catch (error) {
+                this.errorHistory = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.historySpinner = false
+            }
+
         }
     },
 
