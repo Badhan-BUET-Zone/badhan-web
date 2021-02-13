@@ -10,6 +10,16 @@
                     <label>Password: </label>
                     <input class="form-control" type="password" v-model="password" placeholder="Password">
                     <br>
+                    <b-form-checkbox
+                        id="checkbox-1"
+                        v-model="rememberFlag"
+                        name="checkbox-1"
+                        :value="true"
+                        :unchecked-value="false"
+                    >
+                        Remember me
+                    </b-form-checkbox>
+                    <br>
                     <button type="button" class="btn btn-warning" @click="clearClicked()">Clear</button>
                     <button type="button" class="btn btn-success" @click="signInClicked()">
                         Sign In
@@ -38,11 +48,18 @@ export default {
             password: "",
             error: "",
             isLargeWindow: true,
+            rememberFlag: localStorage.getItem('rememberFlag')=='true',
+        }
+    },
+    watch:{
+        'rememberFlag'(to,from){
+            localStorage.setItem('rememberFlag',to);
+
         }
     },
     methods: {
         async signInClicked() {
-            console.log('Sign in clicked');
+
 
             this.error = "";
 
@@ -79,7 +96,6 @@ export default {
                 }
 
                 this.$store.commit('setToken', response.data.token);
-                localStorage.setItem('x-auth',response.data.token);
 
                 let headers = {
                     'x-auth': this.$store.getters.getToken
@@ -105,8 +121,14 @@ export default {
                 this.$store.commit('setComment',profileInfo.data.donor.comment);
                 this.$store.commit('setDesignation',profileInfo.data.donor.designation);
 
-                localStorage.setItem('phone', this.phone.toString());
-                localStorage.setItem('x-auth', this.$store.getters.getToken);
+                if(this.rememberFlag===true){
+                    localStorage.setItem('phone',this.phone);
+                    localStorage.setItem('password',this.password);
+                }else{
+                    console.log("REMOVED CREDENTIALS")
+                    localStorage.removeItem('phone');
+                    localStorage.removeItem('password');
+                }
 
             } catch (error) {
                 console.log(error);
@@ -118,18 +140,19 @@ export default {
         },
 
         clearClicked() {
-            console.log('Clear clicked');
             this.phone = "";
             this.password = "";
             this.$store.commit('setToken', "123");
             this.error = "";
-            console.log(this.$store.getters.getToken);
         },
 
     },
-    mounted() {
+    async mounted() {
         this.phone = localStorage.getItem('phone');
         this.password = localStorage.getItem('password');
+        if (this.phone !== null) {
+            await this.signInClicked();
+        }
     },
 
 }

@@ -101,6 +101,9 @@ export default {
         signOutClicked() {
             this.$store.commit('showSignIn');
             this.$store.commit('signOut');
+            localStorage.removeItem('phone');
+            localStorage.removeItem('password');
+            localStorage.removeItem('rememberFlag');
         },
     },
     created() {
