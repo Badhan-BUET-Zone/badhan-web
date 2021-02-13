@@ -286,9 +286,9 @@
                     </div>
                     <br>
                 </div>
-<!--                <b-button style="width: 100%" v-b-toggle="'detailsModal'"-->
-<!--                        @click="hideDetails()">Done-->
-<!--                </b-button>-->
+                <!--                <b-button style="width: 100%" v-b-toggle="'detailsModal'"-->
+                <!--                        @click="hideDetails()">Done-->
+                <!--                </b-button>-->
             </div>
         </div>
 
@@ -296,8 +296,8 @@
 </template>
 
 <script>
-import {eventBus} from "../../../../main";
-import {halls, bloodGroups} from "../../../../constants";
+import {eventBus} from "@/main";
+import {halls, bloodGroups} from "@/constants";
 import axios from "axios";
 
 export default {
@@ -465,70 +465,74 @@ export default {
                 this.savePasswordClicked();
             }
         },
-        promote() {
+        async promote() {
             console.log('promote clicked');
             this.errorSettings = "";
             this.successSettings = "";
 
             let sendData = {
-                token: this.$store.getters.getToken,
-                userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.phone),
                 promoteFlag: true,
                 newPassword: this.newPassword
             };
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
             console.log('sendData: ', sendData);
 
             this.settingsSpinner = true;
+            console.log("REQUEST TO /admin/promote: ", sendData);
+            try {
+                let response = await axios.post('/admin/promote', sendData, {headers: headers});
 
-            axios.post('/promote', sendData).then(function (response) {
+                console.log("RESPONSE FROM /admin/promote: ", response);
 
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    console.log('promotion successful');
-                    this.successSettings = "Successfully promoted to volunteer";
-                    this.enableEditing = false;
-                } else {
+                if (response.status !== 200) {
                     this.errorSettings = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                this.successSettings = "Successfully promoted to volunteer";
+                this.enableEditing = false;
+
+            } catch (error) {
                 this.errorSettings = error.response.data.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.settingsSpinner = false;
-            });
+            }
         },
-        demote() {
+        async demote() {
             console.log('demote clicked');
             this.errorSettings = "";
             this.successSettings = "";
 
             let sendData = {
-                token: this.$store.getters.getToken,
-                userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.phone),
                 promoteFlag: false,
                 newPassword: ''
             };
-            console.log('sendData: ', sendData);
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            }
+            console.log('REQUEST TO /admin/promote: ', sendData);
 
             this.settingsSpinner = true;
-            this.axios.post('/promote', sendData).then(function (response) {
-                //8801823472762 test1234
-                console.log('status: ', response.status);
-                if (response.status == 200) {
-                    console.log('demotion successful');
-                    this.successSettings = "Successfully demoted to donor";
-                    this.enableEditing = false;
-                } else {
+            try {
+                let response = await axios.post('/admin/promote', sendData, {headers: headers});
+                console.log("RESPONSE FROM /admin/promote: ", response);
+                if (response.status !== 200) {
                     this.errorSettings = "Status code not 200";
+                    return;
                 }
-            }).catch(function (error) {
+                console.log('demotion successful');
+                this.successSettings = "Successfully demoted to donor";
+                this.enableEditing = false;
+            } catch (error) {
                 this.errorSettings = error.response.data.message;
                 console.log(error.response);
-            }).finally(function () {
+            } finally {
                 this.settingsSpinner = false;
-            });
+            }
         },
         async savePasswordClicked() {
             console.log('save password clicked');
@@ -571,7 +575,8 @@ export default {
             } finally {
                 this.settingsSpinner = false;
             }
-        },
+        }
+        ,
         async saveDetailsClicked() {
             console.log('save defaults clicked');
             this.errorDetails = "";
@@ -631,7 +636,8 @@ export default {
             } finally {
                 this.detailsSpinner = false;
             }
-        },
+        }
+        ,
         async loadHistory() {
             this.errorHistory = "";
             this.successHistory = "";
