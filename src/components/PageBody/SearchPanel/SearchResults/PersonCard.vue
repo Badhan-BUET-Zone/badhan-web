@@ -1,9 +1,7 @@
 <template>
     <!--  Person card-->
     <div class="mb-3 shadow p-1 bg-light rounded">
-        <b-button variant="outline-light" style="width: 100%" v-b-toggle="'collapse'+phone">
-
-
+        <v-btn variant="outline-light" style="width: 100%; height: 80px" v-b-toggle="'collapse'+phone">
             <div class="row">
                 <div v-if="availableIn>0" class="alert alert-danger col-3"
                      style="text-align: center; vertical-align: middle;" role="alert">
@@ -25,7 +23,7 @@
                     {{ bloodGroup|numToBloodGroup }}
                 </div>
             </div>
-        </b-button>
+        </v-btn>
 
         <!--    Person card extension-->
         <b-collapse :id="'collapse'+phone">
@@ -83,7 +81,10 @@ export default {
     methods: {
         async loadPersonDetails() {
             console.log(this.$props.name, ' details button clicked');
+            await this.$router.push('/home/details');
+
             this.$store.commit('setLoadingTrue');
+
 
             let sendData = {
                 donorPhone: this.$props.phone,

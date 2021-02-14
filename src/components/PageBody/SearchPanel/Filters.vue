@@ -79,15 +79,15 @@
                 <br>
 
                 <!--        A button to reset the form fields-->
-                <button type="button" class="btn btn-warning" @click="clearFields">
+                <v-btn color="warning" @click="clearFields">
                     Reset
-                </button>
+                </v-btn>
 
                 <!--        The button for executing search-->
-                <button type="button" class="btn btn-success" :disabled="$store.getters.getLoadingFlag"
-                        @click="searchClick()">
+                <v-btn color="primary" :disabled="searchLoaderFlag" :loading="searchLoaderFlag"
+                       @click="searchClick()" class="ml-2">
                     Search
-                </button>
+                </v-btn>
                 <br><br>
 
                 <!--        a division to show errors in the GUI-->
@@ -126,7 +126,9 @@ export default {
 
             //imported constants
             halls,
-            bloodGroups
+            bloodGroups,
+
+            searchLoaderFlag: false,
         }
     },
     methods: {
@@ -162,8 +164,7 @@ export default {
             //clear previous search results
             this.clearSearch();
 
-            this.$store.commit('setLoadingTrue');
-
+            this.searchLoaderFlag = true;
             let sendData = {
                 userPhone: this.$store.getters.getPhone,
                 name: inputName,
@@ -197,7 +198,7 @@ export default {
                 this.error = this.response.data.message;
                 console.log(error.response);
             } finally {
-                this.$store.commit('setLoadingFalse');
+                this.searchLoaderFlag = false;
                 console.log('search complete');
             }
         },

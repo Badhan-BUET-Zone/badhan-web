@@ -1,41 +1,46 @@
 <template>
     <div>
-    <div class="row">
-        <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4 animated slideInLeft" style="height: fit-content">
-            <div class="h4 p-2">Sign in to Badhan</div>
-            <div>
-                <div class="form-group">
-                    <label>Phone: </label>
-                    <input class="form-control" type="text" v-model="phone" placeholder="11 Digit Phone number">
-                    <br>
-                    <label>Password: </label>
-                    <input class="form-control" type="password" v-model="password" placeholder="Password">
-                    <br>
-                    <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="rememberFlag"
-                        name="checkbox-1"
-                        :value="true"
-                        :unchecked-value="false"
-                    >
-                        Remember me
-                    </b-form-checkbox>
-                    <br>
-                    <button type="button" class="btn btn-warning" @click="clearClicked()">Clear</button>
-                    <button type="button" class="btn btn-success" @click="signInClicked()">
-                        Sign In
-                    </button>
+        <div class="row">
+            <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4" style="height: fit-content">
+                <div class="h4 p-2">Sign in to Badhan</div>
+                <div>
+                    <div class="form-group">
+                        <label>Phone: </label>
+                        <input class="form-control" type="text" v-model="phone" placeholder="11 Digit Phone number">
+                        <br>
+                        <label>Password: </label>
+                        <input class="form-control" type="password" v-model="password" placeholder="Password">
 
+                        <!--                    <b-form-checkbox-->
+                        <!--                        id="checkbox-1"-->
+                        <!--                        v-model="rememberFlag"-->
+                        <!--                        name="checkbox-1"-->
+                        <!--                        :value="true"-->
+                        <!--                        :unchecked-value="false"-->
+                        <!--                    >-->
+                        <!--                        Remember me-->
+                        <!--                    </b-form-checkbox>-->
+                        <v-checkbox
+                            v-model="rememberFlag"
+                            label="Remember me"
+                        ></v-checkbox>
+
+                        <v-btn color="warning" @click="clearClicked()">Clear</v-btn>
+                        <v-btn color="primary" class="ml-2" @click="signInClicked()" :disabled="signInLoaderFlag"
+                               :loading="signInLoaderFlag">
+                            Sign In
+                        </v-btn>
+
+                    </div>
+                </div>
+                <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
+                    {{ error }}
                 </div>
             </div>
-            <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
-                {{ error }}
+            <div class="col-lg-8">
+
             </div>
         </div>
-        <div class="col-lg-8">
-
-        </div>
-    </div>
     </div>
 </template>
 
@@ -50,12 +55,14 @@ export default {
             password: "",
             error: "",
             isLargeWindow: true,
-            rememberFlag: localStorage.getItem('rememberFlag')=='true',
+            rememberFlag: localStorage.getItem('rememberFlag') == 'true',
+
+            signInLoaderFlag: false,
         }
     },
-    watch:{
-        'rememberFlag'(to,from){
-            localStorage.setItem('rememberFlag',to);
+    watch: {
+        'rememberFlag'(to, from) {
+            localStorage.setItem('rememberFlag', to);
 
         }
     },
@@ -78,10 +85,7 @@ export default {
             }
 
 
-
-
-            this.$store.commit('setLoadingTrue');
-
+            this.signInLoaderFlag = true;
             try {
                 let sendData = {
                     phone: parseInt('88' + this.phone),
@@ -106,29 +110,29 @@ export default {
                     donorPhone: parseInt('88' + this.phone)
                 };
 
-                console.log("REQUEST POST TO /donor/details: ",sendData);
-                let profileInfo = await axios.post('/donor/details',sendData,{headers: headers});
+                console.log("REQUEST POST TO /donor/details: ", sendData);
+                let profileInfo = await axios.post('/donor/details', sendData, {headers: headers});
 
-                console.log("RESPONSE FROM /donor/details: ",profileInfo);
+                console.log("RESPONSE FROM /donor/details: ", profileInfo);
 
                 // this.$store.commit('showSearchPanel');
 
                 await this.$router.push('/home');
 
                 this.$store.commit('setPhone', parseInt('88' + this.phone));
-                this.$store.commit('setName',profileInfo.data.donor.name);
-                this.$store.commit('setStudentId',profileInfo.data.donor.studentId);
-                this.$store.commit('setLastDonation',profileInfo.data.donor.lastDonation);
-                this.$store.commit('setBloodGroup',profileInfo.data.donor.bloodGroup);
-                this.$store.commit('setHall',profileInfo.data.donor.hall);
-                this.$store.commit('setAddress',profileInfo.data.donor.address);
-                this.$store.commit('setComment',profileInfo.data.donor.comment);
-                this.$store.commit('setDesignation',profileInfo.data.donor.designation);
+                this.$store.commit('setName', profileInfo.data.donor.name);
+                this.$store.commit('setStudentId', profileInfo.data.donor.studentId);
+                this.$store.commit('setLastDonation', profileInfo.data.donor.lastDonation);
+                this.$store.commit('setBloodGroup', profileInfo.data.donor.bloodGroup);
+                this.$store.commit('setHall', profileInfo.data.donor.hall);
+                this.$store.commit('setAddress', profileInfo.data.donor.address);
+                this.$store.commit('setComment', profileInfo.data.donor.comment);
+                this.$store.commit('setDesignation', profileInfo.data.donor.designation);
 
-                if(this.rememberFlag===true){
-                    localStorage.setItem('phone',this.phone);
-                    localStorage.setItem('password',this.password);
-                }else{
+                if (this.rememberFlag === true) {
+                    localStorage.setItem('phone', this.phone);
+                    localStorage.setItem('password', this.password);
+                } else {
                     console.log("REMOVED CREDENTIALS")
                     localStorage.removeItem('phone');
                     localStorage.removeItem('password');
@@ -138,7 +142,7 @@ export default {
                 console.log(error);
                 this.error = error.response.data.message;
             } finally {
-                this.$store.commit('setLoadingFalse');
+                this.signInLoaderFlag = false;
             }
 
         },

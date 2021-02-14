@@ -3,7 +3,8 @@
     <div class="row">
         <filters></filters>
         <search-results></search-results>
-        <person-details></person-details>
+        <router-view></router-view>
+<!--        <person-details></person-details>-->
     </div>
     </div>
 </template>

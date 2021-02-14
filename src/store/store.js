@@ -120,7 +120,7 @@ export const store = new Vuex.Store({
       state.pageBody="search-panel";
     },
     signOut(state) {
-      state.token="";
+      state.token=null;
       state.designation="";
     }
 

@@ -3,7 +3,7 @@
         <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4 animated slideInLeft" style="height: fit-content">
             <div class="h4 p-2">Sign in to Badhan</div>
             <div>
-                <div class="form-group">
+<!--                <div class="form-group">-->
                     <label>Phone: </label>
                     <input class="form-control" type="text" v-model="phone" placeholder="11 Digit Phone number">
                     <br>
@@ -20,12 +20,12 @@
                         Remember me
                     </b-form-checkbox>
                     <br>
-                    <button type="button" class="btn btn-warning" @click="clearClicked()">Clear</button>
-                    <button type="button" class="btn btn-success" @click="signInClicked()">
+                    <v-btn color="warning" @click="clearClicked()">Clear</v-btn>
+                    <v-btn color="primary" @click="signInClicked()">
                         Sign In
-                    </button>
+                    </v-btn>
 
-                </div>
+<!--                </div>-->
             </div>
             <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
                 {{ error }}

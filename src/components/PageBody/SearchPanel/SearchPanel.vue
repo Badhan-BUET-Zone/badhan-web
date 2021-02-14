@@ -2,7 +2,8 @@
   <div class="row">
     <filters></filters>
     <search-results></search-results>
-    <person-details></person-details>
+<!--    <person-details></person-details>-->
+      <router-view></router-view>
   </div>
 </template>
 
