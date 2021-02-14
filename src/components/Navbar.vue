@@ -3,7 +3,7 @@
         <!--        Badhon Icon/ Logo-->
         <img src="https://badhanweb.github.io/badhan/images/badhanlogo.png"
              style="width: 40px; height: 40px; background: transparent">
-        <a class="navbar-brand" href="#" @click="homeClicked()">Badhan <span class="sr-only">(current)</span></a>
+        <b-button variant="outline-dark" class="navbar-brand" @click="homeClicked()">Badhan <span class="sr-only">(current)</span></b-button>
 
         <div style="height: 100%; width: 50px">
             <div v-if="$store.getters.getLoadingFlag" class="spinner-border text-light" role="status">
@@ -20,12 +20,12 @@
             <!--        Hall Admin Panel button-->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item" v-if="$store.getters.getDesignation >=2">
-                    <a class="nav-link" href="#" @click="hallAdminPanelClicked()">Hall Admin Panel</a>
+                    <b-button variant="outline-dark" class="nav-link" @click="hallAdminPanelClicked()">Hall Admin Panel</b-button>
                 </li>
 
                 <!--        Super Admin Panel button-->
                 <li class="nav-item" v-if="$store.getters.getDesignation === 3">
-                    <a class="nav-link" href="#" @click="superAdminPanelClicked()">Super Admin Panel</a>
+                    <b-button variant="outline-dark" class="nav-link" @click="superAdminPanelClicked()">Super Admin Panel</b-button>
                 </li>
 
             </ul>
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import {eventBus} from "../main";
-import {dummyMe} from "../dummydata";
+import {eventBus} from "@/main";
+import {dummyMe} from "@/dummydata";
 import axios from "axios";
 
 export default {
@@ -59,16 +59,21 @@ export default {
         homeClicked() {
             if (this.$store.getters.getToken.length === 0)
                 return;
-            this.$store.commit('showSearchPanel');
+
+            //this.$store.commit('showSearchPanel');
+            this.$router.push('/home');
         },
         hallAdminPanelClicked() {
-            this.$store.commit('showHallAdminPanel');
+            // this.$store.commit('showHallAdminPanel');
+            this.$router.push('/halladmin')
         },
         superAdminPanelClicked() {
-            this.$store.commit('showSuperAdminPanel');
+            // this.$store.commit('showSuperAdminPanel');
+            this.$router.push('/superadmin')
         },
         async myProfileclicked() {
-            this.$store.commit('showSearchPanel');
+            // this.$store.commit('showSearchPanel');
+            await this.$router.push('/home');
             let sendData = {
                 donorPhone: parseInt(this.$store.getters.getPhone)
             };
@@ -99,11 +104,12 @@ export default {
             }
         },
         signOutClicked() {
-            this.$store.commit('showSignIn');
+            // this.$store.commit('showSignIn');
             this.$store.commit('signOut');
             localStorage.removeItem('phone');
             localStorage.removeItem('password');
             localStorage.removeItem('rememberFlag');
+            this.$router.push('/')
         },
     },
     created() {
