@@ -118,9 +118,31 @@
                 <input type="text" class="form-control" v-model="comment">
             </div>
 
+<!--            <div class="input-group mb-3">-->
+<!--                <label class="col-sm-4 col-form-label">Add a donation date</label>-->
+<!--                <datepicker v-model="newDonationDate" placeholder="Select Date"></datepicker>-->
+<!--            </div>-->
+
             <div class="input-group mb-3">
                 <label class="col-sm-4 col-form-label">Add a donation date</label>
-                <datepicker v-model="newDonationDate" placeholder="Select Date"></datepicker>
+                <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="newDonationDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="newDonationDate" label="Picker in menu" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker v-model="newDonationDate" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                        <v-btn text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
+                    </v-date-picker>
+                </v-menu>
             </div>
             <br>
             <button class="btn btn-success" @click="createDonor">Save Donor</button>
@@ -176,6 +198,10 @@ export default {
             halls,
             departments,
 
+            //vuetify date picker
+            date: "",
+            menu: false,
+
         }
     },
     components: {
@@ -211,6 +237,7 @@ export default {
             this.comment = "";
         },
         async createDonor() {
+
             console.log('create Donor clicked');
 
             this.errorAddDonor = "";
@@ -266,6 +293,8 @@ export default {
             }
             if (this.newDonationDate === "") {
                 this.newDonationDate = new Date(0);
+            }else{
+                this.newDonationDate = new Date(this.newDonationDate);
             }
 
             let newStudentId = this.batch;

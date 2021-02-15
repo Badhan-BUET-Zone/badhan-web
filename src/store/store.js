@@ -19,8 +19,6 @@ export const store = new Vuex.Store({
     comment: null,
     designation:null,
 
-
-    pageBody:"sign-in"
   },
 
 
@@ -40,9 +38,6 @@ export const store = new Vuex.Store({
     },
     getHall: state=>{
       return state.hall
-    },
-    getPageBody: state=>{
-      return state.pageBody;
     },
     getName: state=>{
       return state.name;
@@ -107,18 +102,6 @@ export const store = new Vuex.Store({
       state.hall = hall;
     },
 
-    showHallAdminPanel(state){
-      state.pageBody="hall-admin-panel";
-    },
-    showSuperAdminPanel(state){
-      state.pageBody="super-admin-panel";
-    },
-    showSignIn(state){
-      state.pageBody="sign-in";
-    },
-    showSearchPanel(state){
-      state.pageBody="search-panel";
-    },
     signOut(state) {
       state.token=null;
       state.designation="";

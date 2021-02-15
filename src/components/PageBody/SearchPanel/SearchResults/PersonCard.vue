@@ -1,24 +1,24 @@
 <template>
     <!--  Person card-->
     <div class="mb-3 shadow p-1 bg-light rounded">
-        <v-btn variant="outline-light" style="width: 100%; height: 80px" v-b-toggle="'collapse'+phone">
+        <v-btn variant="outline-light" style="width: 100%; height: 80px" @click="showExtensionFlag=!showExtensionFlag">
             <div class="row">
-                <div v-if="availableIn>0" class="alert alert-danger col-3"
+                <div v-if="availableIn>0" class="alert alert-danger col-2"
                      style="text-align: center; vertical-align: middle;" role="alert">
-                    <span style="font-size: small">{{ availableIn }} day</span>
+                    <span style="font-size: small">{{ availableIn }} <br>day</span>
                 </div>
-                <div v-else="" class="alert alert-success col-3" style="text-align: center; vertical-align: middle;"
+                <div v-else="" class="alert alert-success col-2" style="text-align: center; vertical-align: middle;"
                      role="alert">
                     <span style="font-size: small">Av.</span>
                 </div>
-                <div class="col-6" style="font-size: small">
+                <div class="col-8" style="font-size: small">
                     <b>{{ name }}</b>
                     <br>
                     <b>Dept: </b><span>{{ studentID | idToDept }}</span>
                     <br>
                     <b>Phone: </b><span v-if="phone">{{ phone.toString().substr(2) }}</span>
                 </div>
-                <div class="alert alert-info col-3"
+                <div class="alert alert-info col-2"
                      style="text-align: center; vertical-align: middle; font-size: small;">
                     {{ bloodGroup|numToBloodGroup }}
                 </div>
@@ -26,19 +26,37 @@
         </v-btn>
 
         <!--    Person card extension-->
-        <b-collapse :id="'collapse'+phone">
+        <div v-if="showExtensionFlag">
             <div class="card card-body" style="background-color: lightgrey">
                 <div>
-                    <b-button v-b-modal="'detailsModal'" variant="primary" @click="loadPersonDetails()"> See profile</b-button>
-                    <b-button variant="primary">Direct call</b-button>
+                    <v-btn rounded color="light-blue" v-b-modal="'detailsModal'" @click="loadPersonDetails()"
+                           :disabled="seeDetailsLoaderFlag" :loading="seeDetailsLoaderFlag"> See profile
+                    </v-btn>
+                    <v-btn rounded color="light-blue" class="ml-2" @click="callFromDialer">Direct call</v-btn>
                 </div>
                 <br>
-                <label>Add a donation date</label>
-                <datepicker v-model="newDonationDate" placeholder="Select Date"></datepicker>
+                <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="newDonationDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="newDonationDate" label="Add a donation date" prepend-icon="mdi-calendar"
+                                      readonly v-bind="attrs" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker v-model="newDonationDate" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                        <v-btn text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
+                    </v-date-picker>
+                </v-menu>
                 <br>
-                <button class="btn btn-danger" @click="donate()"
-                        :disabled="$store.getters.getLoadingFlag || newDonationDate.length===0">Done
-                </button>
+                <v-btn color="red" rounded @click="donate()" :loading="donateLoaderFlag" :disabled="donateLoaderFlag || newDonationDate.length===0">Done
+                </v-btn>
             </div>
             <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
                 {{ error }}
@@ -46,7 +64,7 @@
             <div class="alert alert-success animated jello" role="alert" v-if="success.length!==0">
                 {{ success }}
             </div>
-        </b-collapse>
+        </div>
 
     </div>
 </template>
@@ -76,15 +94,25 @@ export default {
             newDonationDate: '',
             error: "",
             success: '',
+
+            //vuetify date picker
+            menu: false,
+
+            showExtensionFlag: false,
+            seeDetailsLoaderFlag: false,
+            donateLoaderFlag: false,
+
         }
     },
     methods: {
+        callFromDialer() {
+            document.location.href = "tel:+" + this.phone;
+        },
         async loadPersonDetails() {
             console.log(this.$props.name, ' details button clicked');
             await this.$router.push('/home/details');
 
-            this.$store.commit('setLoadingTrue');
-
+            this.seeDetailsLoaderFlag = true;
 
             let sendData = {
                 donorPhone: this.$props.phone,
@@ -105,56 +133,54 @@ export default {
                 }
 
                 eventBus.$emit('dataloaded', response.data.donor);
-            }catch(error) {
-            this.error = error.response.data.message;
-            eventBus.$emit('errorFound', {
-                message: this.error
-            });
-            console.log(error.response);
-        }finally{
-            this.$store.commit('setLoadingFalse');
-        }
-    },
-    async donate() {
-        console.log('Phone number ', this.phone, ' donated on ', this.newDonationDate.getTime());
-        this.error = "";
-        this.success = "";
-        let sendData = {
-            donorPhone: this.$props.phone,
-            date: this.newDonationDate.getTime()
-        };
-        let headers = {
-            'x-auth': this.$store.getters.getToken
-        };
-
-
-        this.$store.commit('setLoadingTrue');
-
-        console.log('REQUESTING TO /donation/insert : ', sendData);
-
-
-        try {
-            let response = await axios.post('/donation/insert', sendData, {headers: headers});
-            console.log("RESPONSE FROM /donation/insert: ", response)
-            if (response.status !== 200) {
-                this.error = "Status code not 200";
+            } catch (error) {
+                this.error = error.response.data.message;
+                eventBus.$emit('errorFound', {
+                    message: this.error
+                });
+                console.log(error.response);
+            } finally {
+                this.seeDetailsLoaderFlag = false;
             }
+        },
+        async donate() {
+            this.error = "";
+            this.success = "";
+            let sendData = {
+                donorPhone: this.$props.phone,
+                date: new Date(this.newDonationDate).getTime()
+            };
+            let headers = {
+                'x-auth': this.$store.getters.getToken
+            };
 
-            let newAvailableIn = 120 - Math.round((Math.round((new Date()).getTime()) - this.newDonationDate.getTime()) / (1000 * 3600 * 24));
-            if (newAvailableIn > this.$props.availableIn) {
-                this.$props.availableIn = newAvailableIn;
+
+            this.donateLoaderFlag = true;
+            console.log('REQUESTING TO /donation/insert : ', sendData);
+
+
+            try {
+                let response = await axios.post('/donation/insert', sendData, {headers: headers});
+                console.log("RESPONSE FROM /donation/insert: ", response)
+                if (response.status !== 200) {
+                    this.error = "Status code not 200";
+                }
+
+                let newAvailableIn = 120 - Math.round((Math.round((new Date()).getTime()) - new Date(this.newDonationDate).getTime()) / (1000 * 3600 * 24));
+                if (newAvailableIn > this.$props.availableIn) {
+                    this.$props.availableIn = newAvailableIn;
+                }
+                this.newDonationDate = "";
+                this.success = "Successfully added donation";
+
+            } catch (error) {
+                this.error = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.donateLoaderFlag = false;
             }
-            this.newDonationDate = "";
-            this.success = "Successfully added donation";
-
-        } catch (error) {
-            this.error = error.response.data.message;
-            console.log(error.response);
-        } finally {
-            this.$store.commit('setLoadingFalse');
-        }
-    },
-}
+        },
+    }
 }
 </script>
 

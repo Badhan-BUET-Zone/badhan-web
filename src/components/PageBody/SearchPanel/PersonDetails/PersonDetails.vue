@@ -3,9 +3,12 @@
     <v-dialog
         v-model="dialog"
         hide-overlay
+        fullscreen
     >
-        <v-card height="90vh">
-                <!--            Modal Header-->
+        <v-card>
+                <v-card-actions>
+                    <v-btn rounded @click="dialog=false">< Back</v-btn>
+                </v-card-actions>
                 <v-card-title v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
                     <span>{{ name }}</span>
                         <br>
@@ -40,13 +43,13 @@
                             <div class="card">
                                 <div class="card-header" id="headingOne">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" v-b-toggle="'persondetails'">
+                                        <button class="btn btn-link" @click="personDetailCollapseFlag=!personDetailCollapseFlag">
                                             Person Details
                                         </button>
                                     </h5>
                                 </div>
 
-                                <b-collapse id="persondetails">
+                                <div v-if="personDetailCollapseFlag">
                                     <div class="card-body">
 
                                         <div class="form-group row">
@@ -136,20 +139,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                </b-collapse>
+                                </div>
                             </div>
                             <div class="card"
                                  v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
                                 <div class="card-header" id="headingTwo">
                                     <h5 class="mb-0">
-                                        <button class="btn btn-link" v-b-toggle="'settings'">
+                                        <button class="btn btn-link" @click="settingsCollapseFlag=!settingsCollapseFlag">
                                             Settings
                                         </button>
                                     </h5>
                                 </div>
-                                <b-collapse id="settings">
+                                <div v-if="settingsCollapseFlag">
                                     <div class="card-body">
-                                        <div v-if="designation!=0 || $store.getters.getPhone== oldPhone">
+                                        <div v-if="designation!==0 || $store.getters.getPhone== oldPhone">
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label">New Password: </label>
                                                 <div class="col-sm-8">
@@ -221,7 +224,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </b-collapse>
+                                </div>
                             </div>
 
                         </div>
@@ -348,7 +351,11 @@ export default {
 
 
             //vuetify modal
-            dialog: false
+            dialog: false,
+
+            //person detail collapse and settings collapse
+            personDetailCollapseFlag: false,
+            settingsCollapseFlag: false
         }
     },
     watch:{

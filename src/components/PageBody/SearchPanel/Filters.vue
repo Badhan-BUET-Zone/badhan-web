@@ -79,12 +79,12 @@
                 <br>
 
                 <!--        A button to reset the form fields-->
-                <v-btn color="warning" @click="clearFields">
+                <v-btn rounded color="warning" @click="clearFields">
                     Reset
                 </v-btn>
 
                 <!--        The button for executing search-->
-                <v-btn color="primary" :disabled="searchLoaderFlag" :loading="searchLoaderFlag"
+                <v-btn rounded color="primary" :disabled="searchLoaderFlag" :loading="searchLoaderFlag"
                        @click="searchClick()" class="ml-2">
                     Search
                 </v-btn>
