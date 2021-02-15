@@ -1,40 +1,19 @@
 <template>
     <div>
     <div class="row">
-        <div class="jumbotron col-lg-6 col-md-12 col-sm-12 animated fadeIn" style="height: fit-content">
-            <div>
-                <p>Archive: (CAUTION)</p>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Enter batch number to be archived: </label>
-                    <div class="col-sm-8">
-                        <input type="text" v-model="archiveBatch" class="form-control">
-                    </div>
-                    <label class="col-sm-4 col-form-label">Enter your password: </label>
-                    <div class="col-sm-8">
-                        <input type="password" v-model="password" class="form-control">
-                    </div>
-                    <br>
-                    <div class="col-sm-8">
-                        <button class="btn btn-danger" @click="archiveClicked()">Archive batch</button>
-                    </div>
-                </div>
-                <div class="alert alert-danger animated jello" role="alert" v-if="errorArchive.length!==0">
-                    {{ errorArchive }}
-                </div>
-            </div>
-        </div>
+
         <div class="card col-lg-6 col-md-12 col-sm-12 p-4 animated fadeIn">
             <h4>Create New Donor</h4>
             <div id="accordion">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h5 class="mb-0">
-                            <b-button v-b-toggle="'detailsCollapse'" variant="light">
+                            <b-button @click="personDetailsCollapseFlag=!personDetailsCollapseFlag" variant="light">
                                 Person Details
                             </b-button>
                         </h5>
                     </div>
-                    <b-collapse id="detailsCollapse">
+                    <div v-if="personDetailsCollapseFlag">
                         <div class="card-body">
                             <div class="form-group row required">
                                 <label class="col-sm-4 col-form-label control-label">Name</label>
@@ -109,7 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                    </b-collapse>
+                    </div>
                 </div>
             </div>
             <br>
@@ -152,6 +131,28 @@
             </div>
             <div class="alert alert-success animated jello" role="alert" v-if="successAddDonor.length!==0">
                 {{ successAddDonor }}
+            </div>
+        </div>
+        <div class="jumbotron col-lg-6 col-md-12 col-sm-12 animated fadeIn" style="height: fit-content">
+            <div>
+                <p>Archive: (CAUTION)</p>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Enter batch number to be archived: </label>
+                    <div class="col-sm-8">
+                        <input type="text" v-model="archiveBatch" class="form-control">
+                    </div>
+                    <label class="col-sm-4 col-form-label">Enter your password: </label>
+                    <div class="col-sm-8">
+                        <input type="password" v-model="password" class="form-control">
+                    </div>
+                    <br>
+                    <div class="col-sm-8">
+                        <button class="btn btn-danger" @click="archiveClicked()">Archive batch</button>
+                    </div>
+                </div>
+                <div class="alert alert-danger animated jello" role="alert" v-if="errorArchive.length!==0">
+                    {{ errorArchive }}
+                </div>
             </div>
         </div>
     </div>
@@ -199,8 +200,10 @@ export default {
             departments,
 
             //vuetify date picker
-            date: "",
             menu: false,
+
+            //add donor collapse
+            personDetailsCollapseFlag: true
 
         }
     },

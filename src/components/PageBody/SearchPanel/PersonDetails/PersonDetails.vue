@@ -6,291 +6,273 @@
         fullscreen
     >
         <v-card>
-                <v-card-actions>
-                    <v-btn rounded @click="dialog=false">< Back</v-btn>
-                </v-card-actions>
-                <v-card-title v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
-                    <span>{{ name }}</span>
-                        <br>
-                        (<span v-if="designation===2">Hall admin</span>
-                        <span v-else-if="designation===3">Super admin</span>
-                        <span v-else-if="designation===1">Volunteer</span>
-                        <span v-else-if="designation===0">Donor</span>
-                        )
-                </v-card-title>
-                 <v-card-subtitle class="mt-2">
-                        <span v-if="availableIn>0" class="alert alert-danger">{{ this.availableIn }} Days remaining</span>
-                    <span v-else="" class="alert alert-success">Available</span>
-                 </v-card-subtitle>
+            <v-card-actions>
+                <v-btn rounded @click="dialog=false">< Back</v-btn>
+            </v-card-actions>
+            <v-card-title v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
+                <span>{{ name }}</span>
+                (<span v-if="designation===2">Hall admin</span>
+                <span v-else-if="designation===3">Super admin</span>
+                <span v-else-if="designation===1">Volunteer</span>
+                <span v-else-if="designation===0">Donor</span>)
+            </v-card-title>
+            <v-card-subtitle class="mt-2">
+                <span v-if="availableIn>0" class="alert alert-danger">{{ this.availableIn }} Days remaining</span>
+                <span v-else="" class="alert alert-success">Available</span>
+            </v-card-subtitle>
 
 
-                <!--            Modal Body-->
-                <div class="modal-body row animated fadeIn" v-if="!$store.getters.getLoadingFlag">
+            <!--            Modal Body-->
+            <div class="modal-body row animated fadeIn" v-if="!$store.getters.getLoadingFlag">
 
 
-                    <!--                Modal First column-->
-                    <div class="card col-lg-8 col-md-12 col-sm-12 ">
-                        <br>
-                        <div class="custom-control custom-switch"
-                             v-if="$store.getters.getDesignation===3 || $store.getters.getPhone == oldPhone || ($store.getters.getHall===hall && $store.getters.getDesignation> designation) ||hall===7">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1"
-                                   v-model="enableEditing">
-                            <label class="custom-control-label" for="customSwitch1">Toggle to edit details</label>
-                        </div>
-                        <br>
+                <!--                Modal First column-->
+                <div class="card col-lg-8 col-md-12 col-sm-12 ">
+                    <br>
+                    <div class="custom-control custom-switch"
+                         v-if="$store.getters.getDesignation===3 || $store.getters.getPhone == oldPhone || ($store.getters.getHall===hall && $store.getters.getDesignation> designation) ||hall===7">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                               v-model="enableEditing">
+                        <label class="custom-control-label" for="customSwitch1">Toggle to edit details</label>
+                    </div>
+                    <br>
 
-                        <div>
-                            <div class="card">
-                                <div class="card-header" id="headingOne">
-                                    <h5 class="mb-0">
-                                        <button class="btn btn-link" @click="personDetailCollapseFlag=!personDetailCollapseFlag">
-                                            Person Details
-                                        </button>
-                                    </h5>
-                                </div>
+                    <div>
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link"
+                                            @click="personDetailCollapseFlag=!personDetailCollapseFlag">
+                                        Person Details
+                                    </button>
+                                </h5>
+                            </div>
 
-                                <div v-if="personDetailCollapseFlag">
-                                    <div class="card-body">
+                            <div v-if="personDetailCollapseFlag">
+                                <div class="card-body">
 
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Name</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" :disabled="!enableEditing"
-                                                       v-model="name">
-                                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" :disabled="!enableEditing"
+                                                   v-model="name">
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Phone</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" :disabled="!enableEditing"
-                                                       v-model="phone">
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Phone</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" :disabled="!enableEditing"
+                                                   v-model="phone">
                                         </div>
+                                    </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Blood Group: </label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" v-model="bloodGroup"
-                                                        :disabled="!enableEditing">
-                                                    <option v-for="(blood, index) in bloodGroups" :value="index">
-                                                        {{ blood }}
-                                                    </option>
-                                                </select>
-                                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Blood Group: </label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" v-model="bloodGroup"
+                                                    :disabled="!enableEditing">
+                                                <option v-for="(blood, index) in bloodGroups" :value="index">
+                                                    {{ blood }}
+                                                </option>
+                                            </select>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Student ID: </label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" :disabled="!enableEditing"
-                                                       v-model="studentID">
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Student ID: </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" :disabled="!enableEditing"
+                                                   v-model="studentID">
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Hall: </label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" v-model="hall"
-                                                        :disabled="!enableEditing || designation===2 || designation===1">
-                                                    <option v-for="(oneHall, index) in halls" :value="index"
-                                                            v-if="$store.getters.getDesignation===3 || index===7 || $store.getters.getHall=== index">
-                                                        {{ oneHall }}
-                                                    </option>
-                                                </select>
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Hall: </label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" v-model="hall"
+                                                    :disabled="!enableEditing || designation===2 || designation===1">
+                                                <option v-for="(oneHall, index) in halls" :value="index"
+                                                        v-if="$store.getters.getDesignation===3 || index===7 || $store.getters.getHall=== index">
+                                                    {{ oneHall }}
+                                                </option>
+                                            </select>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Room: </label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" :disabled="!enableEditing"
-                                                       v-model="room">
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Room: </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" :disabled="!enableEditing"
+                                                   v-model="room">
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Address: </label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" :disabled="!enableEditing"
-                                                       v-model="address">
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Address: </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" :disabled="!enableEditing"
+                                                   v-model="address">
                                         </div>
+                                    </div>
 
-                                        <div
-                                            v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
-                                            <button type="button" class="btn btn-warning" data-dismiss="modal"
-                                                    aria-label="Close" @click="hideDetails()">Cancel
-                                            </button>
-                                            <button type="button" class="btn btn-success"
-                                                    :disabled="detailsSpinner || !enableEditing"
-                                                    @click="saveDetailsClicked()">Save
-                                            </button>
-                                        </div>
-                                        <br>
-                                        <div class="alert alert-danger animated jello" role="alert"
-                                             v-if="errorDetails.length!==0">
-                                            {{ errorDetails }}
-                                        </div>
-                                        <div class="alert alert-success animated jello" role="alert"
-                                             v-if="successDetails.length!==0">
-                                            {{ successDetails }}
-                                        </div>
-
-                                        <div style="width: 10px; height: 20px">
-                                            <div class="spinner-border text-primary" v-if="detailsSpinner"
-                                                 role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
+                                    <div
+                                        v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
+                                        <v-btn color="warning" rounded @click="dialog=false">Cancel
+                                        </v-btn>
+                                        <v-btn color="primary" rounded class="white--text ml-2"
+                                               :disabled="detailsSpinner || !enableEditing"
+                                               :loading="detailsSpinner"
+                                               @click="saveDetailsClicked()">Save
+                                        </v-btn>
+                                    </div>
+                                    <br>
+                                    <div class="alert alert-danger animated jello" role="alert"
+                                         v-if="errorDetails.length!==0">
+                                        {{ errorDetails }}
+                                    </div>
+                                    <div class="alert alert-success animated jello" role="alert"
+                                         v-if="successDetails.length!==0">
+                                        {{ successDetails }}
                                     </div>
                                 </div>
                             </div>
-                            <div class="card"
-                                 v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
-                                <div class="card-header" id="headingTwo">
-                                    <h5 class="mb-0">
-                                        <button class="btn btn-link" @click="settingsCollapseFlag=!settingsCollapseFlag">
-                                            Settings
+                        </div>
+                        <div class="card"
+                             v-if="$store.getters.getDesignation>designation || $store.getters.getPhone== oldPhone">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" @click="settingsCollapseFlag=!settingsCollapseFlag">
+                                        Settings
+                                    </button>
+                                </h5>
+                            </div>
+                            <div v-if="settingsCollapseFlag">
+                                <div class="card-body">
+                                    <div v-if="designation!==0 || $store.getters.getPhone== oldPhone">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">New Password: </label>
+                                            <div class="col-sm-8">
+                                                <input type="password" class="form-control"
+                                                       :disabled="!enableEditing"
+                                                       v-model="newPassword">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Confirm Password: </label>
+                                            <div class="col-sm-8">
+                                                <input type="password" class="form-control"
+                                                       :disabled="!enableEditing"
+                                                       v-model="confirmPassword">
+                                            </div>
+                                        </div>
+                                        <button v-if="designation==1" class="btn btn-outline-danger"
+                                                :disabled="!enableEditing" style="width: 100%" @click="demote()">
+                                            Demote
+                                            this member to donor
                                         </button>
-                                    </h5>
-                                </div>
-                                <div v-if="settingsCollapseFlag">
-                                    <div class="card-body">
-                                        <div v-if="designation!==0 || $store.getters.getPhone== oldPhone">
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">New Password: </label>
-                                                <div class="col-sm-8">
-                                                    <input type="password" class="form-control"
-                                                           :disabled="!enableEditing"
-                                                           v-model="newPassword">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Confirm Password: </label>
-                                                <div class="col-sm-8">
-                                                    <input type="password" class="form-control"
-                                                           :disabled="!enableEditing"
-                                                           v-model="confirmPassword">
-                                                </div>
-                                            </div>
-                                            <button v-if="designation==1" class="btn btn-outline-danger"
-                                                    :disabled="!enableEditing" style="width: 100%" @click="demote()">
-                                                Demote
-                                                this member to donor
-                                            </button>
-                                            <br><br>
+                                        <br><br>
 
+                                    </div>
+
+                                    <div v-if="$store.getters.getDesignation>1 && designation==0 && this.hall!==7">
+                                        <label>Promote this member to volunteer</label>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">New Password: </label>
+                                            <div class="col-sm-8">
+                                                <input type="password" class="form-control"
+                                                       :disabled="!enableEditing"
+                                                       v-model="newPassword">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Confirm Password: </label>
+                                            <div class="col-sm-8">
+                                                <input type="password" class="form-control"
+                                                       :disabled="!enableEditing"
+                                                       v-model="confirmPassword">
+                                            </div>
                                         </div>
 
-                                        <div v-if="$store.getters.getDesignation>1 && designation==0 && this.hall!==7">
-                                            <label>Promote this member to volunteer</label>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">New Password: </label>
-                                                <div class="col-sm-8">
-                                                    <input type="password" class="form-control"
-                                                           :disabled="!enableEditing"
-                                                           v-model="newPassword">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4 col-form-label">Confirm Password: </label>
-                                                <div class="col-sm-8">
-                                                    <input type="password" class="form-control"
-                                                           :disabled="!enableEditing"
-                                                           v-model="confirmPassword">
-                                                </div>
-                                            </div>
+                                    </div>
 
-                                        </div>
-
-                                        <div v-if="$store.getters.phone=== oldPhone||$store.getters.getDesignation>1">
-                                            <button type="button" class="btn btn-warning" data-dismiss="modal"
-                                                    aria-label="Close" @click="hideDetails()">Cancel
-                                            </button>
-                                            <button type="button" class="btn btn-success"
-                                                    :disabled="settingsSpinner || !enableEditing"
-                                                    @click="saveSettingsClicked()">Save
-                                            </button>
-                                        </div>
-                                        <br>
-                                        <div class="alert alert-danger animated jello" role="alert"
-                                             v-if="errorSettings.length!==0">
-                                            {{ errorSettings }}
-                                        </div>
-                                        <div class="alert alert-success animated jello" role="alert"
-                                             v-if="successSettings.length!==0">
-                                            {{ successSettings }}
-                                        </div>
-                                        <div style="width: 10px; height: 20px">
-                                            <div class="spinner-border text-primary" v-if="settingsSpinner"
-                                                 role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
+                                    <div v-if="$store.getters.phone=== oldPhone||$store.getters.getDesignation>1">
+                                        <v-btn color="warning" @click="hideDetails()" rounded>Cancel
+                                        </v-btn>
+                                        <v-btn color="primary" class="white--text ml-2" rounded
+                                               :disabled="settingsSpinner || !enableEditing"
+                                               :loading="settingsSpinner"
+                                               @click="saveSettingsClicked()">Save
+                                        </v-btn>
+                                    </div>
+                                    <br>
+                                    <div class="alert alert-danger animated jello" role="alert"
+                                         v-if="errorSettings.length!==0">
+                                        {{ errorSettings }}
+                                    </div>
+                                    <div class="alert alert-success animated jello" role="alert"
+                                         v-if="successSettings.length!==0">
+                                        {{ successSettings }}
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        <br>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" :disabled="!enableEditing" v-model="comment">
+
+                    </div>
+                    <br>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" :disabled="!enableEditing" v-model="comment">
+                        <div class="input-group-append">
+                            <v-btn color="primary"
+                                    :disabled="commentSpinner || !enableEditing"
+                                   :loading="commentSpinner"
+                                    @click="saveCommentClicked()">
+                                Save Comment
+                            </v-btn>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-danger animated jello" role="alert" v-if="errorComment.length!==0">
+                        {{ errorComment }}
+                    </div>
+                    <div class="alert alert-success animated jello" role="alert" v-if="successComment.length!==0">
+                        {{ successComment }}
+                    </div>
+
+                </div>
+
+                <!--                Modal Second Column-->
+                <div class="card col-lg-4 col-md-12 col-md-12" style="height: fit-content">
+                    <p>Last Donation: </p>
+                    <template v-if="lastDonation!==0">
+                    <p class="text-dark">{{ lastDonation }}</p>
+                    <v-btn :loading="historySpinner" :disabled="historySpinner" color="primary" rounded
+                           class="mb-2"
+                           @click="loadHistory()">Load
+                        history
+                    </v-btn>
+                    <br>
+                    <div v-if="showHistory">
+                        <div class="input-group mb-3" v-for="(date) in history">
+                            <input type="text" readonly class="form-control" :value="datePrint(date)">
                             <div class="input-group-append">
-                                <button class="btn btn-success" type="button"
-                                        :disabled="commentSpinner || !enableEditing"
-                                        @click="saveCommentClicked()">
-                                    Save Comment
+                                <button class="btn btn-success" type="button" @click="deleteDonation(date)">Delete
                                 </button>
                             </div>
-
-                        </div>
-
-                        <div class="alert alert-danger animated jello" role="alert" v-if="errorComment.length!==0">
-                            {{ errorComment }}
-                        </div>
-                        <div class="alert alert-success animated jello" role="alert" v-if="successComment.length!==0">
-                            {{ successComment }}
-                        </div>
-                        <div style="width: 50px; height: 50px">
-                            <div class="spinner-border text-primary" v-if="commentSpinner" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--                Modal Second Column-->
-                    <div class="card col-lg-4 col-md-12 col-md-12" style="height: fit-content">
-                        <label>Last Donation: </label>
-                        <p class="text-dark">{{ lastDonation }}</p>
-                        <button :disabled="historySpinner" class="btn btn-outline-primary" @click="loadHistory()">Load
-                            history
-                        </button>
-                        <br>
-                        <div v-if="showHistory" class="animated fadeIn">
-                            <div class="input-group mb-3" v-for="(date) in history">
-                                <input type="text" readonly class="form-control" :value="datePrint(date)">
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" type="button" @click="deleteDonation(date)">Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                        <div class="alert alert-danger animated jello" role="alert" v-if="errorHistory.length!==0">
-                            {{ errorHistory }}
-                        </div>
-                        <div class="alert alert-success animated jello" role="alert" v-if="successHistory.length!==0">
-                            {{ successHistory }}
-                        </div>
-                        <div class="spinner-border text-primary" v-if="historySpinner" role="status">
-                            <span class="sr-only">Loading...</span>
                         </div>
                         <br>
                     </div>
-                    <!--                <b-button style="width: 100%" v-b-toggle="'detailsModal'"-->
-                    <!--                        @click="hideDetails()">Done-->
-                    <!--                </b-button>-->
+                    <div class="alert alert-danger animated jello" role="alert" v-if="errorHistory.length!==0">
+                        {{ errorHistory }}
+                    </div>
+                    <div class="alert alert-success animated jello" role="alert" v-if="successHistory.length!==0">
+                        {{ successHistory }}
+                    </div>
+                </template>
+                    <template v-else>No donation found</template>
+
                 </div>
+
+            </div>
 
         </v-card>
     </v-dialog>
-    <!--    </b-modal>-->
 </template>
 
 <script>
@@ -358,9 +340,9 @@ export default {
             settingsCollapseFlag: false
         }
     },
-    watch:{
-        'dialog'(to,from){
-            if(to===false){
+    watch: {
+        'dialog'(to, from) {
+            if (to === false) {
                 this.$router.push('/home');
             }
         }

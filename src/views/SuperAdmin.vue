@@ -1,74 +1,77 @@
 <template>
     <div>
-    <div class="row">
-        <div class="jumbotron col-lg-6 col-md-12 col-sm-12 card animated fadeInDown" style="height: fit-content">
-            <div>
-                <p>Archive: (CAUTION)</p>
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card animated fadeIn">
+                <h3>Hall Admins</h3>
+                <v-progress-circular
+                    v-if="!loadingComplete"
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
+
+                <div class="alert alert-danger animated jello" role="alert" v-if="errorAdminsLoaded.length!==0">
+                    {{ errorAdminsLoaded }}
+                </div>
+
+                <table class="table table-hover animated fadeIn" v-if="loadingComplete">
+                    <thead>
+                    <tr>
+                        <th scope="col">Hall Name</th>
+                        <th scope="col">Hall Admin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(hallAdmin) in hallAdmins">
+                        <th scope="row">{{ halls[hallAdmin.hall] }}</th>
+                        <td>{{ hallAdmin.name }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <b>Change Hall Admin: </b>
+
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Enter batch number to be archived: </label>
+                    <label class="col-sm-4 col-form-label">Enter phone number of volunteer: </label>
                     <div class="col-sm-8">
-                        <input type="text" v-model="batch" class="form-control">
-                    </div>
-                    <label class="col-sm-4 col-form-label">Enter your password: </label>
-                    <div class="col-sm-8">
-                        <input type="password" v-model="password" class="form-control">
+                        <input type="text" class="form-control" v-model="newAdminPhone"
+                               placeholder="Enter phone number of volunteer to be promoted">
                     </div>
                     <div class="col-sm-8">
-                        <button class="btn btn-danger" @click="archiveBatchClicked()">Archive batch</button>
+                        <v-btn color="primary" rounded :disabled="changeHallAdminLoaderFlag" :loading="changeHallAdminLoaderFlag" @click="changeHallAdminClicked()">Change Hall Admin</v-btn>
                     </div>
                 </div>
-                <div class="alert alert-danger animated jello" role="alert" v-if="errorArchive.length!==0">
-                    {{ errorArchive }}
+
+                <div class="alert alert-danger animated jello" role="alert" v-if="errorChangeAdmin.length!==0">
+                    {{ errorChangeAdmin }}
+                </div>
+                <div class="alert alert-success animated jello" role="alert" v-if="successChangeAdmin.length!==0">
+                    {{ successChangeAdmin }}
                 </div>
             </div>
+            <div class="jumbotron col-lg-6 col-md-12 col-sm-12 card animated fadeInDown" style="height: fit-content">
+                <div>
+                    <p>Archive: (CAUTION)</p>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Enter batch number to be archived: </label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="batch" class="form-control">
+                        </div>
+                        <label class="col-sm-4 col-form-label">Enter your password: </label>
+                        <div class="col-sm-8">
+                            <input type="password" v-model="password" class="form-control">
+                        </div>
+                        <div class="col-sm-8">
+                            <v-btn rounded color="red" class="white--text" @click="archiveBatchClicked()">Archive batch</v-btn>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger animated jello" role="alert" v-if="errorArchive.length!==0">
+                        {{ errorArchive }}
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-
-        <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card animated fadeIn">
-            <button class="btn btn-primary" @click="showAdmins">
-                <span v-if="!loadingComplete">Load Admins</span>
-                <span v-else="">Hide Admins</span>
-            </button>
-            <div class="alert alert-danger animated jello" role="alert" v-if="errorAdminsLoaded.length!==0">
-                {{ errorAdminsLoaded }}
-            </div>
-
-            <table class="table table-hover animated fadeIn" v-if="loadingComplete">
-                <thead>
-                <tr>
-                    <th scope="col">Hall Name</th>
-                    <th scope="col">Hall Admin</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(hallAdmin) in hallAdmins">
-                    <th scope="row">{{ halls[hallAdmin.hall] }}</th>
-                    <td>{{ hallAdmin.name }}</td>
-                </tr>
-                </tbody>
-            </table>
-            <hr>
-            <b>Change Hall Admin: </b>
-
-            <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Enter phone number of volunteer: </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" v-model="newAdminPhone"
-                           placeholder="Enter phone number of volunteer to be promoted">
-                </div>
-                <div class="col-sm-8">
-                    <button class="btn btn-success" @click="changeHallAdminClicked()">Change Hall Admin</button>
-                </div>
-            </div>
-
-            <div class="alert alert-danger animated jello" role="alert" v-if="errorChangeAdmin.length!==0">
-                {{ errorChangeAdmin }}
-            </div>
-            <div class="alert alert-success animated jello" role="alert" v-if="successChangeAdmin.length!==0">
-                {{ successChangeAdmin }}
-            </div>
-        </div>
-
-    </div>
     </div>
 </template>
 
@@ -94,6 +97,8 @@ export default {
             errorAdminsLoaded: "",
 
             successChangeAdmin: "",
+
+            changeHallAdminLoaderFlag: false,
         }
     },
     methods: {
@@ -119,8 +124,7 @@ export default {
 
             console.log('REQUEST TO /admin/hall/change: ', sendData);
 
-            this.$store.commit('setLoadingTrue');
-
+            this.changeHallAdminLoaderFlag = true;
             try {
                 let response = await axios.post('/admin/hall/change', sendData, {headers: headers});
                 console.log("RESPONSE FROM /admin/hall/change: ", response);
@@ -137,7 +141,7 @@ export default {
                 this.errorChangeAdmin = error.response.data.message;
                 console.log(error.response);
             } finally {
-                this.$store.commit('setLoadingFalse');
+                this.changeHallAdminLoaderFlag = false;
             }
         },
         archiveBatchClicked() {
@@ -158,14 +162,12 @@ export default {
                 this.loadingComplete = false;
                 return;
             }
-            this.$store.commit('setLoadingTrue');
             let sendData = {};
             let headers = {
                 'x-auth': this.$store.getters.getToken
             }
             console.log('REQUEST TO /admin/hall/show: ', sendData);
 
-            this.$store.commit('setLoadingTrue');
             try {
                 let response = await axios.post('/admin/hall/show', sendData, {headers: headers});
                 console.log('RESPONSE FROM /admin/hall/show: ', response);
@@ -182,12 +184,16 @@ export default {
                 this.errorAdminsLoaded = error.response.data.message;
                 console.log(error.response);
             } finally {
-                this.$store.commit('setLoadingFalse');
             }
         }
+
+
     },
     created() {
 
+    },
+    mounted() {
+        this.showAdmins();
     }
 }
 </script>
