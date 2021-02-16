@@ -41,12 +41,17 @@
 
             </div>
         </div>
+
+        <SignInDialog :dialog="signInLoaderFlag">
+
+        </SignInDialog>
+
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-
+import SignInDialog from "@/components/SignInDialog";
 export default {
     name: "SignIn",
     data: function () {
@@ -91,7 +96,7 @@ export default {
                     phone: parseInt('88' + this.phone),
                     password: this.password
                 };
-                console.log("REQUEST POST TO /users/signin: ", sendData);
+                console.log("REQUEST POST TO /users/signin: HIDDEN");
                 let response = await axios.post('/users/signin', sendData);
 
                 console.log("RESPONSE FROM /users/signin: ", response);
@@ -162,6 +167,10 @@ export default {
             await this.signInClicked();
         }
     },
+
+    components:{
+        SignInDialog
+    }
 
 }
 </script>

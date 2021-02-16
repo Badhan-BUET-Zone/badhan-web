@@ -6,6 +6,7 @@ import Home from "@/views/Home";
 import SignIn from "@/views/SignIn";
 import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/PersonDetails";
 
+import {store} from "@/store/store";
 
 Vue.use(VueRouter)
 
@@ -43,5 +44,11 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  if(to.name!=='SignIn'&& store.getters.getToken===null){
+    next({name:'SignIn'})
+  }else{
+    next();
+  }
+})
 export default router
