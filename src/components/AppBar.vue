@@ -6,8 +6,7 @@
             app
             clipped-left
         >
-            <v-app-bar-nav-icon v-if="$store.getters.getToken!==null"
-                                @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
 
                 <img

@@ -1,14 +1,18 @@
 <template>
     <div>
-        <div class="row d-flex justify-content-center">
-            <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4" style="height: fit-content">
-                <div class="h4 p-2">Sign in</div>
+        <div class="row d-flex justify-content-center" align="center">
+            <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4" style="height: fit-content; top: 10vh">
+
+                <img src="../assets/images/badhanlogo.png" style="width: 150px; height: 150px">
+
+                <div class="h4 p-2">Sign into Badhan Sync</div>
+
                 <div>
                     <div class="form-group">
-                        <label>Phone: </label>
+                        <label>Phone </label>
                         <input class="form-control" type="text" v-model="phone" placeholder="11 Digit Phone number">
                         <br>
-                        <label>Password: </label>
+                        <label>Password </label>
                         <input class="form-control" type="password" v-model="password" placeholder="Password">
 
                         <!--                    <b-form-checkbox-->
