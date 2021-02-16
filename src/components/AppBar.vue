@@ -9,7 +9,7 @@
             <v-app-bar-nav-icon v-if="$store.getters.getToken!==null"
                                 @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-            <v-toolbar-title>Badhan</v-toolbar-title>
+            <v-toolbar-title>Badhan Sync</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-progress-circular
