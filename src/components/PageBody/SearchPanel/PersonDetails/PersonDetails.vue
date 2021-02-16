@@ -5,7 +5,8 @@
         hide-overlay
         fullscreen
     >
-        <v-card>
+        <v-card style="z-index: 90; position: fixed; left: 0px; top:0px; height: 100vh; width: 100vw" class="pa-5">
+<!--            <v-card>-->
             <v-card-actions>
                 <v-btn rounded @click="dialog=false">< Back</v-btn>
             </v-card-actions>
