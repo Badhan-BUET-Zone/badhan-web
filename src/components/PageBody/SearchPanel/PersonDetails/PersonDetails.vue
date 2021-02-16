@@ -1,11 +1,11 @@
 <template>
     <!--    <b-modal id="detailsModal" size="xl" hide-footer>-->
-    <v-dialog
-        v-model="dialog"
-        hide-overlay
-        fullscreen
-    >
-        <v-card style="z-index: 90; position: fixed; left: 0px; top:0px; height: 100vh; width: 100vw; overflow-y: scroll" class="pa-5">
+<!--    <v-dialog-->
+<!--        v-model="dialog"-->
+<!--        hide-overlay-->
+<!--        fullscreen-->
+<!--    >-->
+        <v-card v-if="dialog" style="z-index: 90; position: fixed; left: 0px; top:0px; height: 100vh; width: 100vw; overflow-y: scroll" class="pa-5">
 <!--            <v-card>-->
             <v-card-actions>
                 <v-btn rounded @click="dialog=false">< Back</v-btn>
@@ -273,7 +273,7 @@
             </div>
 
         </v-card>
-    </v-dialog>
+<!--    </v-dialog>-->
 </template>
 
 <script>
