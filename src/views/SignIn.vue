@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4" style="height: fit-content">
-                <div class="h4 p-2">Sign in to Badhan</div>
+                <div class="h4 p-2">Sign in</div>
                 <div>
                     <div class="form-group">
                         <label>Phone: </label>
@@ -36,9 +36,6 @@
                 <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
                     {{ error }}
                 </div>
-            </div>
-            <div class="col-lg-8">
-
             </div>
         </div>
 
