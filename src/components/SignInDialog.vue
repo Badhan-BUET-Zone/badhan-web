@@ -12,8 +12,9 @@
                 color="red"
                 indeterminate
                 class="ma-auto"
+                style="align-content: center"
             >
-                <h1>Signing into <br>Badhan</h1>
+                <h3>Signing into <br>Badhan Sync</h3>
             </v-progress-circular>
         </v-card>
     </v-dialog>
