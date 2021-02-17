@@ -1,20 +1,18 @@
 <template>
-    <!--    <b-modal id="detailsModal" size="xl" hide-footer>-->
-<!--    <v-dialog-->
-<!--        v-model="dialog"-->
-<!--        hide-overlay-->
-<!--        fullscreen-->
-<!--    >-->
+
         <v-card v-if="dialog" style="z-index: 90; position: fixed; left: 0px; top:0px; height: 100vh; width: 100vw; overflow-y: scroll" class="pa-5">
-<!--            <v-card>-->
-            <v-card-actions>
-                <v-btn rounded @click="dialog=false">< Back</v-btn>
-            </v-card-actions>
+            <v-app-bar color="red" dark>
+                <v-btn icon @click="dialog=false">
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+                <v-toolbar-title> Person Details </v-toolbar-title>
+
+            </v-app-bar>
+
             <v-card-title v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
                 <span>{{ name }}</span>
-
-
             </v-card-title>
+
             <v-card-subtitle>
                 (<span v-if="designation===2">Hall admin</span>
                 <span v-else-if="designation===3">Super admin</span>
@@ -272,13 +270,9 @@
                     </div>
                 </template>
                     <template v-else>No donation found</template>
-
                 </div>
-
             </div>
-
         </v-card>
-<!--    </v-dialog>-->
 </template>
 
 <script>
