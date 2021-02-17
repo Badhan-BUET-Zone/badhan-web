@@ -12,15 +12,20 @@
             </v-card-actions>
             <v-card-title v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length===0">
                 <span>{{ name }}</span>
+
+
+            </v-card-title>
+            <v-card-subtitle>
                 (<span v-if="designation===2">Hall admin</span>
                 <span v-else-if="designation===3">Super admin</span>
                 <span v-else-if="designation===1">Volunteer</span>
                 <span v-else-if="designation===0">Donor</span>)
-            </v-card-title>
-            <v-card-subtitle class="mt-2">
+            </v-card-subtitle>
+
+            <div class="mb-5">
                 <span v-if="availableIn>0" class="alert alert-danger">{{ this.availableIn }} Days remaining</span>
                 <span v-else="" class="alert alert-success">Available</span>
-            </v-card-subtitle>
+            </div>
 
 
             <!--            Modal Body-->
