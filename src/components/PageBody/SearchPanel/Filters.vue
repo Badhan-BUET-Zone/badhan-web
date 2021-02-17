@@ -101,8 +101,8 @@
 </template>
 
 <script>
-import {eventBus} from "../../../main";
-import {bloodGroups, halls} from "../../../constants";
+import {eventBus} from "@/main";
+import {bloodGroups, halls} from "@/constants";
 import axios from 'axios';
 
 export default {
@@ -243,8 +243,14 @@ export default {
         eventBus.$on('hideFilter', () => {
             this.filterShown = false;
         });
+    },
+
+    mounted() {
+
+    },
+    computed:{
+
     }
-    ,
 
 }
 </script>

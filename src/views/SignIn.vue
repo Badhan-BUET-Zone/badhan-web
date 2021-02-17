@@ -123,7 +123,7 @@ export default {
 
                 // this.$store.commit('showSearchPanel');
 
-                await this.$router.push('/home');
+
 
                 this.$store.commit('setPhone', parseInt('88' + this.phone));
                 this.$store.commit('setName', profileInfo.data.donor.name);
@@ -134,6 +134,8 @@ export default {
                 this.$store.commit('setAddress', profileInfo.data.donor.address);
                 this.$store.commit('setComment', profileInfo.data.donor.comment);
                 this.$store.commit('setDesignation', profileInfo.data.donor.designation);
+
+                await this.$router.push('/home');
 
                 if (this.rememberFlag === true) {
                     localStorage.setItem('phone', this.phone);

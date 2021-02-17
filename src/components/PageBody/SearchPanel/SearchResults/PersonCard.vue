@@ -1,28 +1,51 @@
 <template>
     <!--  Person card-->
-    <div class="mb-3 shadow p-1 bg-light rounded">
-        <v-btn variant="outline-light" style="width: 100%; height: 80px" @click="showExtensionFlag=!showExtensionFlag">
-            <div class="row">
-                <div v-if="availableIn>0" class="alert alert-danger col-2"
-                     style="text-align: center; vertical-align: middle;" role="alert">
-                    <span style="font-size: small">{{ availableIn }} <br>day</span>
-                </div>
-                <div v-else="" class="alert alert-success col-2" style="text-align: center; vertical-align: middle;"
-                     role="alert">
-                    <span style="font-size: small">Av.</span>
-                </div>
-                <div class="col-8" style="font-size: small">
-                    <b>{{ name }}</b>
-                    <br>
-                    <b>Dept: </b><span>{{ studentID | idToDept }}</span>
-                    <br>
-                    <b>Phone: </b><span v-if="phone">{{ phone.toString().substr(2) }}</span>
-                </div>
-                <div class="alert alert-info col-2"
-                     style="text-align: center; vertical-align: middle; font-size: small;">
-                    {{ bloodGroup|numToBloodGroup }}
-                </div>
-            </div>
+    <div class="mb-2" style="width: 100%;">
+        <v-btn style="width: 100%; height: 100%" class="pa-2" @click="showExtensionFlag=!showExtensionFlag">
+                <v-row no-gutters>
+                    <v-col
+                        cols="2"
+                        md="2"
+                        sm="2"
+                        xl="2"
+                    >
+                        <div v-if="availableIn>0" class="alert alert-danger"
+                             style="text-align: center; vertical-align: middle; height: 100%" role="alert">
+                            <span style="font-size: small">{{ availableIn }} <br>day</span>
+                        </div>
+                        <div v-else class="alert alert-success" style="text-align: center; vertical-align: middle; height: 100%"
+                             role="alert">
+                            <span style="font-size: small">Av.</span>
+                        </div>
+                    </v-col>
+                    <v-col
+                        cols="8"
+                        md="8"
+                        sm="8"
+                        xl="8"
+                        class="d-flex align-content-center"
+                        style="width: 200px"
+                    >
+                        <div style="font-size: small; width: 100%;" class="text-wrap pa-4">
+                            <b style="width: 100%;">{{ name }}</b>
+                            <br>
+                            <b>Dept: </b><span>{{ studentID | idToDept }}</span>
+                            <br>
+                            <b>Phone: </b><span v-if="phone">{{ phone.toString().substr(2) }}</span>
+                        </div>
+                    </v-col>
+                    <v-col
+                        cols="2"
+                        md="2"
+                        sm="2"
+                        xl="2"
+                    >
+                        <div class="alert alert-info"
+                             style="text-align: center; vertical-align: middle; font-size: small; height: 100%">
+                            {{ bloodGroup|numToBloodGroup }}
+                        </div>
+                    </v-col>
+                </v-row>
         </v-btn>
 
         <!--    Person card extension-->
