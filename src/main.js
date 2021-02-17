@@ -10,6 +10,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+import Mixins from '@/mixins/index'
+Vue.mixin(Mixins);
+
 //previous badhan project
 import axios from 'axios';
 import vuetify from './plugins/vuetify';
