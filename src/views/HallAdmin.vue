@@ -182,6 +182,48 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card col-lg-6 col-md-12 col-sm-12 p-4">
+                <div>
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <b-button variant="light" @click="seeVolunteersFlag=!seeVolunteersFlag">
+                                    Show Volunteers
+                                </b-button>
+                            </h5>
+                        </div>
+                        <div v-if="seeVolunteersFlag">
+                            <div class="card-body">
+                                <v-simple-table>
+                                    <template v-slot:default>
+                                        <thead>
+                                        <tr>
+                                            <th class="text-left">
+                                                Name
+                                            </th>
+                                            <th class="text-left">
+                                                Calories
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr
+                                            v-for="item in desserts"
+                                            :key="item.name"
+                                        >
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.calories }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </template>
+                                </v-simple-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -196,6 +238,51 @@ export default {
     name: "HallAdminPanel",
     data: function () {
         return {
+            desserts: [
+                {
+                    name: 'Frozen Yogurt',
+                    calories: 159,
+                },
+                {
+                    name: 'Ice cream sandwich',
+                    calories: 237,
+                },
+                {
+                    name: 'Eclair',
+                    calories: 262,
+                },
+                {
+                    name: 'Cupcake',
+                    calories: 305,
+                },
+                {
+                    name: 'Gingerbread',
+                    calories: 356,
+                },
+                {
+                    name: 'Jelly bean',
+                    calories: 375,
+                },
+                {
+                    name: 'Lollipop',
+                    calories: 392,
+                },
+                {
+                    name: 'Honeycomb',
+                    calories: 408,
+                },
+                {
+                    name: 'Donut',
+                    calories: 452,
+                },
+                {
+                    name: 'KitKat',
+                    calories: 518,
+                },
+            ],
+
+
+
             //new donor
             phone: '',
             bloodGroup: -1,
@@ -232,6 +319,7 @@ export default {
             //add donor collapse
             personDetailsCollapseFlag: !this.$isMobile(),
             archiveCollapseFlag: !this.$isMobile(),
+            seeVolunteersFlag: !this.$isMobile(),
 
             newDonorLoaderFlag: false
 
@@ -370,6 +458,28 @@ export default {
                 console.log(error.response);
             } finally {
                 this.newDonorLoaderFlag = false;
+            }
+        },
+
+        async getVolunteers(){
+            let headers = {
+                'x-auth':this.$store.getters.getToken,
+            }
+            let sendData = {
+
+            }
+
+            console.log('REQUEST TO /admin/volunteers: ',sendData);
+
+            try{
+                let response = await axios.post('/admin/volunteers',sendData,{headers: headers});
+
+
+
+            }catch(e){
+
+            }finally{
+
             }
         }
     },

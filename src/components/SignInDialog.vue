@@ -14,7 +14,7 @@
                 class="ma-auto"
                 style="align-content: center"
             >
-                <h3>Signing into <br>Badhan Sync</h3>
+                <h4>Signing into <br>Badhan Sync</h4>
             </v-progress-circular>
         </v-card>
     </v-dialog>

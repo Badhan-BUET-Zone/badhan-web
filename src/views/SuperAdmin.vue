@@ -114,7 +114,6 @@ export default {
             }
 
             let sendData = {
-                token: this.$store.getters.getToken,
                 userPhone: this.$store.getters.getPhone,
                 donorPhone: parseInt('88' + this.newAdminPhone)
             };
