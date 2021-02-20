@@ -8,9 +8,13 @@ const state={
     address: null,
     comment: null,
     designation:null,
+    roomNumber: null,
 };
 
 const getters={
+  getRoomNumber: state=>{
+    return state.roomNumber;
+  },
     getDesignation: state=>{
         return state.designation
       },
@@ -37,10 +41,24 @@ const getters={
       },
       getComment: state=>{
         return state.comment;
+      },
+      getMyProfile: state=>{
+        return {
+          name: state.name,
+          studentId: state.studentId,
+          lastDonation: state.lastDonation,
+          bloodGroup: state.bloodGroup,
+          hall: state.hall,
+          phone: state.phone,
+          address: state.address,
+          comment: state.comment,
+          designation: state.designation,
+          roomNumber: state.roomNumber
+        }
       }
 };
 const mutations={
-    setName(state,name){
+      setName(state,name){
         state.name = name;
       },
       setStudentId(state,studentId){
@@ -67,6 +85,23 @@ const mutations={
       setHall(state,hall){
         state.hall = hall;
       },
+      setRoomNumber(state,roomNumber){
+        state.roomNumber = roomNumber;
+      },
+
+      setMyProfile(state,payload){
+        state.name= payload.name;
+        state.studentId= payload.studentId;
+        state.lastDonation= payload.lastDonation;
+        state.bloodGroup= payload.bloodGroup;
+        state.hall= payload.hall;
+        state.phone= payload.phone;
+        state.address= payload.address;
+        state.comment= payload.comment;
+        state.designation= payload.designation;
+        state.roomNumber = payload.roomNumber;
+      }
+    
 };
 const actions={
 

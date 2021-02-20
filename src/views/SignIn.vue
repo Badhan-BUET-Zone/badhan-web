@@ -30,20 +30,20 @@
                         ></v-checkbox>
 
                         <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
-                        <v-btn color="primary" rounded class="ml-2" @click="signInClicked()" :disabled="signInLoaderFlag"
-                               :loading="signInLoaderFlag">
+                        <v-btn color="primary" rounded class="ml-2" @click="signInClicked()" :disabled="$store.getters.getSignInLoaderFlag"
+                               :loading="$store.getters.getSignInLoaderFlag">
                             Sign In
                         </v-btn>
 
                     </div>
                 </div>
-                <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
-                    {{ error }}
+                <div class="alert alert-danger animated jello" role="alert" v-if="$store.getters.getError.length!==0">
+                    {{ $store.getters.getError }}
                 </div>
             </div>
         </div>
 
-        <SignInDialog :dialog="signInLoaderFlag">
+        <SignInDialog :dialog="$store.getters.getSignInLoaderFlag">
 
         </SignInDialog>
 
@@ -59,11 +59,8 @@ export default {
         return {
             phone: "",
             password: "",
-            error: "",
-            isLargeWindow: true,
             rememberFlag: localStorage.getItem('rememberFlag') == 'true',
 
-            signInLoaderFlag: false,
         }
     },
     watch: {
@@ -74,92 +71,33 @@ export default {
     },
     methods: {
         async signInClicked() {
-
-
-            this.error = "";
+            this.$store.commit('clearSignInError');
 
             if (this.phone === null || isNaN(this.phone)) {
-                this.error = "Invalid Phone Number";
-                this.$store.commit('setLoadingFalse');
+                this.$store.commit('setSignInError',"Invalid Phone Number");
                 return;
             }
 
             if (this.phone.toString().length !== 11) {
-                this.error = "Phone number must be of 11 digits";
-                this.$store.commit('setLoadingFalse');
+                this.$store.commit('setSignInError',"Phone number must be of 11 digits");
                 return;
             }
 
+            let isSignInOk = await this.$store.dispatch('login',{
+                phone: this.phone,
+                password: this.password,
+                rememberFlag: this.rememberFlag
+            });
 
-            this.signInLoaderFlag = true;
-            try {
-                let sendData = {
-                    phone: parseInt('88' + this.phone),
-                    password: this.password
-                };
-                console.log("REQUEST POST TO /users/signin: HIDDEN");
-                let response = await axios.post('/users/signin', sendData);
-
-                console.log("RESPONSE FROM /users/signin: ", response);
-
-                if (response.status !== 201) {
-                    this.error = "Status code not 201";
-                    return;
-                }
-
-                this.$store.commit('setToken', response.data.token);
-
-                let headers = {
-                    'x-auth': this.$store.getters.getToken
-                };
-                sendData = {
-                    donorPhone: parseInt('88' + this.phone)
-                };
-
-                console.log("REQUEST POST TO /donor/details: ", sendData);
-                let profileInfo = await axios.post('/donor/details', sendData, {headers: headers});
-
-                console.log("RESPONSE FROM /donor/details: ", profileInfo);
-
-                // this.$store.commit('showSearchPanel');
-
-
-
-                this.$store.commit('setPhone', parseInt('88' + this.phone));
-                this.$store.commit('setName', profileInfo.data.donor.name);
-                this.$store.commit('setStudentId', profileInfo.data.donor.studentId);
-                this.$store.commit('setLastDonation', profileInfo.data.donor.lastDonation);
-                this.$store.commit('setBloodGroup', profileInfo.data.donor.bloodGroup);
-                this.$store.commit('setHall', profileInfo.data.donor.hall);
-                this.$store.commit('setAddress', profileInfo.data.donor.address);
-                this.$store.commit('setComment', profileInfo.data.donor.comment);
-                this.$store.commit('setDesignation', profileInfo.data.donor.designation);
-
+            if(isSignInOk){
                 await this.$router.push('/home');
-
-                if (this.rememberFlag === true) {
-                    localStorage.setItem('phone', this.phone);
-                    localStorage.setItem('password', this.password);
-                } else {
-                    console.log("REMOVED CREDENTIALS")
-                    localStorage.removeItem('phone');
-                    localStorage.removeItem('password');
-                }
-
-            } catch (error) {
-                console.log(error);
-                this.error = error.response.data.message;
-            } finally {
-                this.signInLoaderFlag = false;
             }
-
         },
 
         clearClicked() {
             this.phone = "";
             this.password = "";
-            this.$store.commit('setToken', "123");
-            this.error = "";
+            this.$store.commit('clearSignInError');
         },
 
     },
