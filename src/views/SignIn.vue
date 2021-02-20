@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import SignInDialog from "@/components/SignInDialog";
 export default {
     name: "SignIn",

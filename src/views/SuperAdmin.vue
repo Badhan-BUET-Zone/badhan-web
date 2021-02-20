@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card animated fadeIn">
+            <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card">
                 <h3>Hall Admins</h3>
                 <v-progress-circular
                     v-if="!loadingComplete"
@@ -9,7 +9,7 @@
                     color="primary"
                 ></v-progress-circular>
 
-                <div class="alert alert-danger animated jello" role="alert" v-if="errorAdminsLoaded.length!==0">
+                <div class="alert alert-danger" role="alert" v-if="errorAdminsLoaded.length!==0">
                     {{ errorAdminsLoaded }}
                 </div>
 
@@ -21,7 +21,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(hallAdmin) in hallAdmins">
+                    <tr v-for="(hallAdmin,index) in hallAdmins" :key="index">
                         <th scope="row">{{ halls[hallAdmin.hall] }}</th>
                         <td>{{ hallAdmin.name }}</td>
                     </tr>

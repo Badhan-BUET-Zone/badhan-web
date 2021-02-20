@@ -14,7 +14,7 @@
         </div>
 
         <!--    A button to show the filters-->
-        <button v-else="" class="h4 p-2 btn btn-outline-dark animated fadeInDown" style="width: 100%"
+        <button v-else class="h4 p-2 btn btn-outline-dark animated fadeInDown" style="width: 100%"
                 @click="showFilter()">
             Show filters
         </button>
@@ -34,7 +34,7 @@
                     Blood Group:
                 </label>
                 <select v-model="bloodGroup" class="form-control">
-                    <option v-for="(blood,index) in bloodGroups">
+                    <option v-for="(blood,index) in bloodGroups" :key="index">
                         {{ blood }}
                     </option>
                 </select>
@@ -52,7 +52,7 @@
                     Hall:
                 </label>
                 <select v-model="hall" class="form-control">
-                    <option v-for="(oneHall,index) in halls"
+                    <option v-for="(oneHall,index) in halls" :key="index"
                             v-if="$store.getters.getDesignation===3 || $store.getters.getHall=== halls.indexOf(oneHall) || halls.indexOf(oneHall)===7">
                         {{ oneHall }}
                     </option>

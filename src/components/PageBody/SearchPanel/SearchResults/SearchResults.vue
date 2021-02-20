@@ -85,9 +85,6 @@
                 });
                 sortedBatches.sort(this.compareObject);
 
-                console.log('after grouping, converting to array and sorting batches: ',sortedBatches);
-
-
                 this.personGroups = sortedBatches;
 
                 this.searchResultShown=true;
