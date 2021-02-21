@@ -171,7 +171,7 @@ export default {
                 bloodGroup: bloodGroups.indexOf(this.bloodGroup),
                 batch: inputBatch.toString(),
                 hall: halls.indexOf(this.hall),
-                availability: this.availability
+                isAvailable: this.availability
             };
             let headers = {
                 'x-auth': this.$store.getters.getToken
