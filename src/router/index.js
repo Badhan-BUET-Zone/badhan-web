@@ -5,7 +5,8 @@ import SuperAdmin from "@/views/SuperAdmin";
 import Home from "@/views/Home";
 import SignIn from "@/views/SignIn";
 import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/PersonDetails";
-
+import Settings from "@/views/Settings";
+import Credits from "@/views/Credits";
 import {store} from "@/store/store";
 
 Vue.use(VueRouter)
@@ -37,6 +38,16 @@ const routes = [
     name: 'SignIn',
     path: '/',
     component: SignIn
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    component: Settings
+  },
+  {
+    name: 'Credits',
+    path: '/credits',
+    component: Credits
   }
 
 ]

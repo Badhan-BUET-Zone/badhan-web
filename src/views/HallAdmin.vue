@@ -3,8 +3,8 @@
 
         <div class="row">
 
-            <div class="card col-lg-6 col-md-12 col-sm-12 p-4 animated fadeIn">
-                <div id="accordion">
+            <div class="card col-lg-6 col-md-12 col-sm-12 p-4">
+                <div>
                     <div class="card">
 
                         <div class="card-header" id="headingOne">

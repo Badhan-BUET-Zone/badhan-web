@@ -3,13 +3,8 @@
         <p>Page under maintenance</p>
     </div>
 </template>
-
 <script>
 export default {
-name: "Credits"
+    
 }
 </script>
-
-<style scoped>
-
-</style>

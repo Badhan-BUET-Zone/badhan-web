@@ -117,10 +117,8 @@ export default {
 
             //GUI flags
             filterShown: true,
-            isLargeWindow: true,
 
-            //error message
-            error: "",
+      
 
             //imported constants
             halls,
@@ -130,21 +128,18 @@ export default {
     },
     methods: {
         async searchClick() {
-            this.error = "";
             //front end input validation
-
+            this.$store.commit('clearSearchError');
             //batch number input validation
             let inputBatch = 0;
             inputBatch = parseInt(this.batch);
             if (this.batch.length === 0) {
                 inputBatch = "";
             } else if (isNaN(inputBatch)) {
-                this.error = "Please input a valid batch number";
-                console.log('Invalid batch input, ', this.batch.length);
+                this.$store.commit('setSearchError',"Please input a valid batch number");
                 return;
             } else if (this.batch.length !== 2) {
-                this.error = "Please input a 2 digit batch number";
-                console.log('Invalid batch input');
+                this.$store.commit('setSearchError',"Please input a 2 digit batch number");
                 return;
             }
             // if(this.$store.getters.getDesignation !==3){
@@ -165,9 +160,7 @@ export default {
                 availability: this.availability
             });
         },
-        clearSearch() {
-            
-        },
+        
         clearFields() {
             this.batch = '';
             //this.hall=halls[this.$store.getters.getHall];
@@ -177,7 +170,6 @@ export default {
             this.bloodGroup = -1;
             this.name = "";
             this.error = "";
-            this.clearSearch();
         },
         showFilter() {
             this.$store.commit('showFilter');
@@ -201,7 +193,6 @@ export default {
     }
     ,
     created() {
-        this.isLargeWindow = window.innerWidth > 992;
     },
 
     mounted() {

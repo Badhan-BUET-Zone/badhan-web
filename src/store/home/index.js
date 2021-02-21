@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { bloodGroups, halls } from "@/constants";
-import mixin from "@/mixins";
 
 let compareObject = (a, b) => {
     if (a.batch < b.batch) {

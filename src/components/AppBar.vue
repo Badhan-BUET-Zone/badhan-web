@@ -99,6 +99,24 @@
                         </v-list-item-content>
                     </v-list-item>
 
+                     <v-list-item link to="/settings" style="text-decoration: none">
+                        <v-list-item-icon>
+                            <v-icon>mdi-cog</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Settings</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link to="/credits" style="text-decoration: none">
+                        <v-list-item-icon>
+                            <v-icon>mdi-hand-heart</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Credits</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
                     <v-list-item @click="signOutClicked" style="text-decoration: none">
                         <v-list-item-icon>
 
