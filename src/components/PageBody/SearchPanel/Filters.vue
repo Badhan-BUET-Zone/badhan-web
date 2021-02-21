@@ -68,7 +68,7 @@
 
         <!--        Input field for hall-->
 
-        <v-select  v-model="hall" :disabled="$store.getters.getDesignation!==3" :items="halls" label="Select Hall" outlined></v-select>
+        <v-select  v-model="hall" :items="availableHalls" label="Select Hall" outlined></v-select>
 
         <v-text-field
             outlined
@@ -231,7 +231,15 @@ export default {
   created() {},
 
   mounted() {},
-  computed: {},
+  computed: {
+    availableHalls(){
+      if(this.$store.getters.getDesignation===3){
+        return halls;
+      }else{
+        return [halls[this.$store.getters.getHall],halls[7]];
+      }
+    }
+  },
 };
 </script>
 
