@@ -28,6 +28,7 @@
                     Name of Donor:
                 </label>
                 <input class="form-control" v-model="name" type="text" placeholder="Name">
+                <br>
 
                 <!--        Input field for blood group-->
                 <label>
