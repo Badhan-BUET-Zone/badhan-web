@@ -1,17 +1,14 @@
 import axios from 'axios';
-import router from '@/router/';
+
 const state={
-    hello: "my name is mahathir",
     token:null,
     signInLoaderFlag: false,
     error: "",
-
+    
 };
 
 const getters={
-    getHello: state=>{
-        return state.hello;
-      },
+
       getToken: state=>{
         return state.token
       },
