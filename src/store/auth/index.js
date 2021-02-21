@@ -1,52 +1,98 @@
 import axios from 'axios';
 
-const state={
-    token:null,
+const state = {
+    token: null,
     signInLoaderFlag: false,
     error: "",
-    
+
 };
 
-const getters={
+const getters = {
 
-      getToken: state=>{
+    getToken: state => {
         return state.token
-      },
-      getError: state=>{
-          return state.error
-      },
-      getSignInLoaderFlag: state=>{
-          return state.signInLoaderFlag
-      }
+    },
+    getError: state => {
+        return state.error
+    },
+    getSignInLoaderFlag: state => {
+        return state.signInLoaderFlag
+    },
+    isLoggedIn: state => {
+        return state.token !== null;
+    }
 };
-const mutations={
-    setToken(state,token){
+const mutations = {
+    autoLogin({ getters, commit }) {
+
+    },
+
+    loadTokenFromLocalStorage(state) {
+        state.token = localStorage.getItem('x-auth');
+    },
+
+    saveTokenToLocalStorage(state) {
+        localStorage.setItem('x-auth', state.token);
+    },
+
+    removeTokenFromLocalStorage(state) {
+        localStorage.removeItem('x-auth');
+    },
+
+
+    setToken(state, token) {
         state.token = token;
-      },
-      
-  
-      signOut(state) {
-        state.token=null;
-        state.designation="";
-      },
 
-      signInLoaderFlagOn(state){
+    },
+
+    removeToken(state) {
+        state.token = null;
+    },
+
+    signInLoaderFlagOn(state) {
         state.signInLoaderFlag = true;
-      },
+    },
 
-      signInLoaderFlagOff(state){
+    signInLoaderFlagOff(state) {
         state.signInLoaderFlag = false;
-      },
+    },
 
-      setSignInError(state,payload){
+    setSignInError(state, payload) {
         state.error = payload;
-      },
-      clearSignInError(state){
-          state.error = "";
-      }
+    },
+    clearSignInError(state) {
+        state.error = "";
+    },
+
 };
-const actions={
-    async login({getters,commit},payload){
+const actions = {
+    async logout({ getters, commit }) {
+        try {
+            commit('setLoadingTrue');
+            console.log("REQUEST TO /users/signout: BLANK");
+            let response = await axios.post('/users/signout', {}, { headers: { 'x-auth': getters.getToken } });
+            console.log("RESPONSE FROM /users/signout: ", response);
+            commit('removeToken');
+            commit('removeTokenFromLocalStorage');
+            commit('removeProfileFromLocalStorage');
+        } catch (e) {
+            console.log(e);
+        } finally {
+            commit('setLoadingFalse');
+        }
+
+    },
+    autoLogin({ getters, commit }) {
+        commit('loadTokenFromLocalStorage');
+
+        if (getters.getToken === null) {
+            return false;
+        } else {
+            commit('loadMyProfileFromLocalStorage');
+            return true;
+        }
+    },
+    async login({ getters, commit }, payload) {
 
         commit('signInLoaderFlagOn');
         try {
@@ -60,7 +106,7 @@ const actions={
             console.log("RESPONSE FROM /users/signin: ", response);
 
             if (response.status !== 201) {
-                commit('setSignInError',"Status code not 201")
+                commit('setSignInError', "Status code not 201")
                 return;
             }
 
@@ -74,28 +120,27 @@ const actions={
             };
 
             console.log("REQUEST POST TO /donor/details: ", sendData);
-            let profileInfo = await axios.post('/donor/details', sendData, {headers: headers});
+            let profileInfo = await axios.post('/donor/details', sendData, { headers: headers });
 
             console.log("RESPONSE FROM /donor/details: ", profileInfo);
 
-            commit('setMyProfile',profileInfo.data.donor);
+            commit('setMyProfile', profileInfo.data.donor);
 
-            
 
-            if (payload.rememberFlag === true) {
-                localStorage.setItem('phone', payload.phone);
-                localStorage.setItem('password', payload.password);
+
+            if (payload.rememberFlag) {
+                commit('saveTokenToLocalStorage');
+                commit('saveMyProfileToLocalStorage');
             } else {
-                console.log("REMOVED CREDENTIALS")
-                localStorage.removeItem('phone');
-                localStorage.removeItem('password');
+                commit('removeTokenFromLocalStorage');
+                commit('removeProfileFromLocalStorage');
             }
 
             return true;
 
         } catch (error) {
             console.log(error);
-            commit('setSignInError',error.response.data.message);
+            commit('setSignInError', error.response.data.message);
 
             return false;
         } finally {
@@ -105,7 +150,7 @@ const actions={
 };
 
 
-export default{
+export default {
     state,
     actions,
     getters,

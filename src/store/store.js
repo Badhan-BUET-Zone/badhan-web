@@ -40,3 +40,4 @@ export const store = new Vuex.Store({
     superadmin
   }
 });
+store.dispatch('autoLogin');

@@ -9,7 +9,7 @@
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
 
-                <img src="../assets/images/badhanlogo.png" alt="John" style="height: 40px; width: 40px" class="mr-4">
+                <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 40px; width: 40px" class="mr-4">
 
             <v-toolbar-title>Badhan Sync</v-toolbar-title>
 
@@ -186,13 +186,10 @@ export default {
                 this.$store.commit('setLoadingFalse');
             }
         },
-        signOutClicked() {
-            // this.$store.commit('showSignIn');
-            this.$store.commit('signOut');
-            localStorage.removeItem('phone');
-            localStorage.removeItem('password');
-            localStorage.removeItem('rememberFlag');
-            this.$router.push('/')
+        async signOutClicked() {
+            
+            await this.$store.dispatch('logout');
+            this.$router.push('/');
         },
     },
     watch: {

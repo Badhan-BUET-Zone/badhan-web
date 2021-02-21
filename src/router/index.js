@@ -7,7 +7,7 @@ import SignIn from "@/views/SignIn";
 import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/PersonDetails";
 import Settings from "@/views/Settings";
 import Credits from "@/views/Credits";
-import {store} from "@/store/store";
+import { store } from "@/store/store";
 
 Vue.use(VueRouter)
 
@@ -26,10 +26,10 @@ const routes = [
     name: 'Home',
     path: '/home',
     component: Home,
-    children:[
+    children: [
       {
         name: 'Details',
-        path:'details',
+        path: 'details',
         component: PersonDetails
       }
     ]
@@ -56,12 +56,19 @@ const router = new VueRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  if(to.name!=='SignIn'&& store.getters.getToken===null){
-    next({name:'SignIn'})
-  }else if(to.name==='SignIn' && store.getters.getToken!==null){
-    next({name:from.name});
+  if (store.getters.isLoggedIn && to.name === 'SignIn') {
+    next('/home')
+  }else{
+    next()
+  }
+
+  if(!store.getters.isLoggedIn && to.name!='SignIn'){
+    next('/');
+  }else if(store.getters.isLoggedIn && to.name=='SignIn'){
+    next('/home');
   }else{
     next();
   }
+
 })
 export default router

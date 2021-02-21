@@ -32,50 +32,43 @@
     <div v-if="$store.getters.isFilterShown">
       <div class="form-group">
         <!--        Input field for name-->
-        
-        <v-text-field
-            v-model="name"
-            outlined
-            label="Name of Donor"
-            clearable
-          ></v-text-field>
 
-        <!--        Input field for blood group-->
-        <!-- <label> Blood Group: </label> -->
-        <v-select v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined></v-select>
-<!-- 
-        <select v-model="bloodGroup" class="form-control">
-          <option v-for="(blood, index) in bloodGroups" :key="index">
-            {{ blood }}
-          </option>
-        </select> -->
+        <v-text-field
+          v-model="name"
+          outlined
+          label="Name of Donor"
+          clearable
+        ></v-text-field>
+
+        <v-select
+          v-model="bloodGroup"
+          :items="bloodGroups"
+          label="Blood Group"
+          outlined
+        ></v-select>
 
         <!--        Input field for batch-->
-        <!-- <label> Batch: </label>
-        <input
-          class="form-control"
-          v-model="batch"
-          type="text"
-          placeholder="Batch number (2 digits)"
-        /> -->
         <v-text-field
-            v-model="batch"
-            outlined
-            label="Batch"
-            clearable
-            
-          ></v-text-field>
+          v-model="batch"
+          outlined
+          label="Batch"
+          clearable
+        ></v-text-field>
 
         <!--        Input field for hall-->
-
-        <v-select  v-model="hall" :items="availableHalls" label="Select Hall" outlined></v-select>
+        <v-select
+          v-model="hall"
+          :items="availableHalls"
+          label="Select Hall"
+          outlined
+        ></v-select>
 
         <v-text-field
-            outlined
-            label="Address (Under maintenance)"
-            clearable
-            disabled
-          ></v-text-field>
+          outlined
+          label="Address (Under maintenance)"
+          clearable
+          disabled
+        ></v-text-field>
 
         <!--        A check box to search by availability-->
         <div class="custom-control custom-checkbox">
@@ -92,7 +85,7 @@
         </div>
 
         <!--        A check box to enable searching in archive-->
-        <div class="custom-control custom-checkbox">
+        <!-- <div class="custom-control custom-checkbox">
           <input
             v-model="archiveSearch"
             type="checkbox"
@@ -102,7 +95,7 @@
           <label class="custom-control-label" for="customCheck2">
             Archive Search
           </label>
-        </div>
+        </div> -->
         <br />
 
         <!--        A button to reset the form fields-->
@@ -230,15 +223,18 @@ export default {
   },
   created() {},
 
-  mounted() {},
+  mounted() {
+  },
   computed: {
-    availableHalls(){
-      if(this.$store.getters.getDesignation===3){
-        return halls;
-      }else{
-        return [halls[this.$store.getters.getHall],halls[7]];
+    availableHalls() {
+      if (this.$store.getters.getDesignation !== null) {
+        if (this.$store.getters.getDesignation === 3) {
+          return halls;
+        } else {
+          return [halls[this.$store.getters.getHall], halls[7]];
+        }
       }
-    }
+    },
   },
 };
 </script>

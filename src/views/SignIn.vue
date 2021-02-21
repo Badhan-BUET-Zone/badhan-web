@@ -101,11 +101,7 @@ export default {
 
     },
     async mounted() {
-        this.phone = localStorage.getItem('phone');
-        this.password = localStorage.getItem('password');
-        if (this.phone !== null) {
-            await this.signInClicked();
-        }
+
     },
 
     components:{
