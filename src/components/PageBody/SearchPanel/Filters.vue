@@ -63,11 +63,19 @@
             outlined
             label="Batch"
             clearable
+            
           ></v-text-field>
 
         <!--        Input field for hall-->
 
-        <v-select v-model="hall" :disabled="$store.getters.getDesignation!==3" :items="halls" label="Select Hall" outlined></v-select>
+        <v-select  v-model="hall" :disabled="$store.getters.getDesignation!==3" :items="halls" label="Select Hall" outlined></v-select>
+
+        <v-text-field
+            outlined
+            label="Address (Under maintenance)"
+            clearable
+            disabled
+          ></v-text-field>
 
         <!--        A check box to search by availability-->
         <div class="custom-control custom-checkbox">
