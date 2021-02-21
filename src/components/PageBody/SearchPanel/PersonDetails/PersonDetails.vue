@@ -695,7 +695,7 @@ export default {
             this.studentID = data.studentId;
             this.bloodGroup = data.bloodGroup;
             this.hall = parseInt(data.hall);
-            this.room = data.room;
+            this.room = data.roomNumber;
             this.address = data.address;
             this.comment = data.comment;
             this.designation = data.designation;
