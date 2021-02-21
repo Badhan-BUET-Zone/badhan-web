@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 animated slideInDown" style="height: fit-content">
-        <div v-if="filterShown">
+    <div class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12" style="height: fit-content">
+        <div v-if="$store.getters.isFilterShown">
 
             <!--      Filter title-->
             <h1 class="h4 p-2">
@@ -8,20 +8,20 @@
             </h1>
 
             <!--      A button to hide the filters-->
-            <button v-if="filterShown" class="h4 p-2 btn btn-outline-dark" style="width: 100%" @click="hideFilter()">
+            <button v-if="$store.getters.isFilterShown" class="h4 p-2 btn btn-outline-dark" style="width: 100%" @click="hideFilter()">
                 Hide filters
             </button>
         </div>
 
         <!--    A button to show the filters-->
-        <button v-else class="h4 p-2 btn btn-outline-dark animated fadeInDown" style="width: 100%"
+        <button v-else class="h4 p-2 btn btn-outline-dark" style="width: 100%"
                 @click="showFilter()">
             Show filters
         </button>
 
         <!--    Main Filters-->
-        <div v-if="filterShown">
-            <div class="form-group animated fadeIn">
+        <div v-if="$store.getters.isFilterShown">
+            <div class="form-group">
 
                 <!--        Input field for name-->
                 <label>
@@ -84,15 +84,15 @@
                 </v-btn>
 
                 <!--        The button for executing search-->
-                <v-btn rounded color="primary" :disabled="searchLoaderFlag" :loading="searchLoaderFlag"
+                <v-btn rounded color="primary" :disabled="$store.getters.isSearchLoading" :loading="$store.getters.isSearchLoading"
                        @click="searchClick()" class="ml-2">
                     Search
                 </v-btn>
                 <br><br>
 
                 <!--        a division to show errors in the GUI-->
-                <div class="alert alert-danger animated jello" role="alert" v-if="error.length!==0">
-                    {{ error }}
+                <div class="alert alert-danger" role="alert" v-if="$store.getters.getSearchError.length!==0">
+                    {{ $store.getters.getSearchError }}
                 </div>
 
             </div>
@@ -133,7 +133,6 @@ export default {
     },
     methods: {
         async searchClick() {
-            console.log('Search button clicked: ');
             this.error = "";
             //front end input validation
 
@@ -161,50 +160,15 @@ export default {
                 inputName = "";
             }
 
-            //clear previous search results
-            this.clearSearch();
-
-            this.searchLoaderFlag = true;
-            let sendData = {
-                userPhone: this.$store.getters.getPhone,
-                name: inputName,
-                bloodGroup: bloodGroups.indexOf(this.bloodGroup),
-                batch: inputBatch.toString(),
-                hall: halls.indexOf(this.hall),
-                isAvailable: this.availability
-            };
-            let headers = {
-                'x-auth': this.$store.getters.getToken
-            };
-            console.log('REQUEST POST TO /donor/search: ', sendData);
-            try {
-                let response = await axios.post('/donor/search', sendData, {headers: headers});
-                console.log("RESPONSE FROM /donor/search: ", response);
-
-                if (response.status !== 200) {
-                    this.error = "Status code not 200";
-                    return;
-                }
-
-                eventBus.$emit('searchComplete', {
-                    data: response.data.filteredDonors
-                });
-
-
-                if (!this.isLargeWindow) {
-                    this.filterShown = false;
-                }
-            } catch (error) {
-                this.error = this.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.searchLoaderFlag = false;
-                console.log('search complete');
-            }
+            this.$store.dispatch('search',{
+                inputName: inputName,
+                bloodGroup: this.bloodGroup,
+                inputBatch: inputBatch,
+                hall: this.hall,
+                availability: this.availability
+            });
         },
         clearSearch() {
-            console.log('Clear button clicked');
-            eventBus.$emit('clearSearch', {});
         },
         clearFields() {
             this.batch = '';
@@ -218,11 +182,12 @@ export default {
             this.clearSearch();
         },
         showFilter() {
-            this.filterShown = true;
+            this.$store.commit('showFilter');
         },
         hideFilter() {
-            this.filterShown = false;
+            this.$store.commit('hideFilter');
         },
+        
         processName(name) {
             let newName = name.toLowerCase();
             let nameWithoutWs = "";
@@ -239,10 +204,6 @@ export default {
     ,
     created() {
         this.isLargeWindow = window.innerWidth > 992;
-
-        eventBus.$on('hideFilter', () => {
-            this.filterShown = false;
-        });
     },
 
     mounted() {
