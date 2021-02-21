@@ -101,9 +101,7 @@
 </template>
 
 <script>
-import {eventBus} from "@/main";
 import {bloodGroups, halls} from "@/constants";
-import axios from 'axios';
 
 export default {
     name: "Filters",
@@ -128,7 +126,6 @@ export default {
             halls,
             bloodGroups,
 
-            searchLoaderFlag: false,
         }
     },
     methods: {
@@ -169,6 +166,7 @@ export default {
             });
         },
         clearSearch() {
+            
         },
         clearFields() {
             this.batch = '';

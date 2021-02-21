@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { bloodGroups, halls } from "@/constants";
+import mixin from "@/mixins";
 
 let compareObject = (a, b) => {
     if (a.batch < b.batch) {
@@ -38,6 +39,12 @@ const getters = {
     },
     getSearchError: state =>{
         return state.searchError;
+    },
+    getPersonGroups: state =>{
+        return state.personGroups;
+    },
+    getNumberOfDonors: state=>{
+        return state.numOfDonor;
     }
 };
 const mutations = {
@@ -69,7 +76,7 @@ const mutations = {
         state.searchResultShown = false;
     },
     setPersonGroups(state, payload) {
-        this.numOfDonor = payload.length;
+        state.numOfDonor = payload.length;
 
         payload.forEach((human, index) => {
             human.availableIn = 120 - Math.round((Math.round((new Date()).getTime()) - human.lastDonation) / (1000 * 3600 * 24));
@@ -132,17 +139,10 @@ const actions = {
                 return;
             }
 
-            // eventBus.$emit('searchComplete', {
-            //     data: response.data.filteredDonors
-            // });
-
             commit('setPersonGroups', response.data.filteredDonors);
 
             commit('hideFilter');
-
-            // if (!this.isLargeWindow) {
-            //     this.filterShown = false;
-            // }
+            
         } catch (error) {
             commit('setSearchError', response.data.message);
 
