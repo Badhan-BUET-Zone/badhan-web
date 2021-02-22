@@ -4,16 +4,16 @@
             <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card">
                 <h3>Hall Admins</h3>
                 <v-progress-circular
-                    v-if="!loadingComplete"
+                    v-if="$store.getters.getHallAdminsLoaderFlag"
                     indeterminate
                     color="primary"
                 ></v-progress-circular>
 
-                <div class="alert alert-danger" role="alert" v-if="errorAdminsLoaded.length!==0">
-                    {{ errorAdminsLoaded }}
+                <div class="alert alert-danger" role="alert" v-if="$store.getters.getHallAdminsFetchError!==null">
+                    {{ $store.getters.getHallAdminsFetchError }}
                 </div>
 
-                <table class="table table-hover animated fadeIn" v-if="loadingComplete">
+                <table class="table table-hover" v-if="$store.getters.getHallAdmins!==null">
                     <thead>
                     <tr>
                         <th scope="col">Hall Name</th>
@@ -21,7 +21,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(hallAdmin,index) in hallAdmins" :key="index">
+                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index">
                         <th scope="row">{{ halls[hallAdmin.hall] }}</th>
                         <td>{{ hallAdmin.name }}</td>
                     </tr>
@@ -61,10 +61,10 @@
                             <input type="password" v-model="password" class="form-control">
                         </div>
                         <div class="col-sm-8">
-                            <v-btn rounded color="red" class="white--text" @click="archiveBatchClicked()">Archive batch</v-btn>
+                            <v-btn rounded color="red" class="white--text" @click="archiveBatchClicked()" disabled>Archive batch (not implemented)</v-btn>
                         </div>
                     </div>
-                    <div class="alert alert-danger animated jello" role="alert" v-if="errorArchive.length!==0">
+                    <div class="alert alert-danger" role="alert" v-if="errorArchive.length!==0">
                         {{ errorArchive }}
                     </div>
                 </div>
@@ -156,43 +156,13 @@ export default {
             }, 2000);
             //SIMULATION STOP
         },
-        async showAdmins() {
-            if (this.loadingComplete === true) {
-                this.loadingComplete = false;
-                return;
-            }
-            let sendData = {};
-            let headers = {
-                'x-auth': this.$store.getters.getToken
-            }
-            console.log('REQUEST TO /admin/hall/show: ', sendData);
-
-            try {
-                let response = await axios.post('/admin/hall/show', sendData, {headers: headers});
-                console.log('RESPONSE FROM /admin/hall/show: ', response);
-
-                if (response.status !== 200) {
-                    this.errorAdminsLoaded = "Status code not 200";
-                    return;
-                }
-
-                this.hallAdmins = response.data.filteredAdmins;
-                this.loadingComplete = true;
-
-            } catch (error) {
-                this.errorAdminsLoaded = error.response.data.message;
-                console.log(error.response);
-            } finally {
-            }
-        }
-
 
     },
     created() {
 
     },
     mounted() {
-        this.showAdmins();
+        this.$store.dispatch('fetchHallAdmins');
     }
 }
 </script>

@@ -72,13 +72,14 @@ const actions = {
             console.log("REQUEST TO /users/signout: BLANK");
             let response = await axios.post('/users/signout', {}, { headers: { 'x-auth': getters.getToken } });
             console.log("RESPONSE FROM /users/signout: ", response);
-            commit('removeToken');
-            commit('removeTokenFromLocalStorage');
-            commit('removeProfileFromLocalStorage');
+            
         } catch (e) {
             console.log(e);
         } finally {
             commit('setLoadingFalse');
+		commit('removeToken');
+            commit('removeTokenFromLocalStorage');
+            commit('removeProfileFromLocalStorage');
         }
 
     },
