@@ -20,17 +20,6 @@
                 v-if="$store.getters.getLoadingFlag"
             ></v-progress-circular>
 
-            <!--            <v-btn icon>-->
-            <!--                <v-icon>mdi-magnify</v-icon>-->
-            <!--            </v-btn>-->
-
-            <!--            <v-btn icon>-->
-            <!--                <v-icon>mdi-filter</v-icon>-->
-            <!--            </v-btn>-->
-
-            <!--            <v-btn icon>-->
-            <!--                <v-icon>mdi-dots-vertical</v-icon>-->
-            <!--            </v-btn>-->
         </v-app-bar>
 
         <v-navigation-drawer
@@ -169,19 +158,17 @@ export default {
 
             try {
                 let response = await axios.post('/donor/details', sendData, {headers: headers});
-                console.log('status: ', response.status);
+                console.log("RESPONSE FROM /donor/details: ",response);
                 if (response.status !== 200) {
                     this.error = "Status code not 200";
                     return;
                 }
-                console.log(response.data);
 
                 eventBus.$emit('dataloaded', response.data.donor);
 
 
             } catch (error) {
                 eventBus.$emit('errorFound', error.response);
-                console.log('Error occured on receiving data on navbar myprofile link clicking')
             } finally {
                 this.$store.commit('setLoadingFalse');
             }

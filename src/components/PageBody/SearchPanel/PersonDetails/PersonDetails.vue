@@ -359,24 +359,34 @@
         <br />
         <div>
           <div class="card">
-          <label class="col-sm-12 col-form-label">Comment: </label>
+            <!-- <label class="col-sm-12 col-form-label">Comment: </label> -->
 
-          <div class="col-sm-12">
-            <input
-              type="text"
-              class="form-control"
-              :disabled="!enableEditing"
-              v-model="comment"
-            />
-          </div>
-          <v-btn
-            color="primary"
-            :disabled="commentSpinner || !enableEditing"
-            :loading="commentSpinner"
-            @click="saveCommentClicked()"
-          >
-            Save Comment
-          </v-btn>
+            <div class="col-sm-12">
+              <!-- <input
+                type="text"
+                class="form-control"
+                :disabled="!enableEditing"
+                v-model="comment"
+              /> -->
+              <v-textarea
+                name="comment"
+                outlined
+                v-model="comment"
+                label="Comment"
+                auto-grow
+                dense
+                :disabled="!enableEditing"
+                :rows="1"
+              ></v-textarea>
+            </div>
+            <v-btn
+              color="primary"
+              :disabled="commentSpinner || !enableEditing"
+              :loading="commentSpinner"
+              @click="saveCommentClicked()"
+            >
+              Save Comment
+            </v-btn>
           </div>
         </div>
 
@@ -575,8 +585,6 @@ export default {
       }
     },
     async deleteDonation(date) {
-      console.log("date to be deleted: ", date);
-
       this.errorHistory = "";
       this.successHistory = "";
 
@@ -636,8 +644,6 @@ export default {
     },
 
     saveSettingsClicked() {
-      console.log("save settings clicked");
-
       if (this.newPassword !== this.confirmPassword) {
         this.errorSettings = "Passwords didn't match";
         return;
@@ -653,7 +659,6 @@ export default {
       }
     },
     async promote() {
-      console.log("promote clicked");
       this.errorSettings = "";
       this.successSettings = "";
 
@@ -665,7 +670,6 @@ export default {
       let headers = {
         "x-auth": this.$store.getters.getToken,
       };
-      console.log("sendData: ", sendData);
 
       this.settingsSpinner = true;
       console.log("REQUEST TO /admin/promote: ", sendData);
@@ -690,7 +694,6 @@ export default {
       }
     },
     async demote() {
-      console.log("demote clicked");
       this.errorSettings = "";
       this.successSettings = "";
 
@@ -725,17 +728,14 @@ export default {
       }
     },
     async savePasswordClicked() {
-      console.log("save password clicked");
       this.errorSettings = "";
       this.successSettings = "";
 
       if (this.newPassword !== this.confirmPassword) {
-        console.log("Passwords didn't match");
         this.errorSettings = "Passwords didn't match";
         return;
       }
       if (this.newPassword.length === 0) {
-        console.log("Passwords can't be of length zero");
         this.errorSettings = "Passwords can't be of length zero";
         return;
       }
@@ -768,25 +768,21 @@ export default {
       }
     },
     async saveDetailsClicked() {
-      console.log("save defaults clicked");
       this.errorDetails = "";
       this.successDetails = "";
 
       if (this.name.length === 0) {
         this.errorDetails = "Please input the name of donor";
-        console.log("Please input the name of donor");
         return;
       }
 
       if (isNaN(this.phone) || this.phone.toString().length !== 11) {
         this.errorDetails = "Please enter a 11 digit phone number";
-        console.log("Please enter a 11 digit phone number");
         return;
       }
 
       if (isNaN(this.studentID) || this.studentID.toString().length !== 7) {
         this.errorDetails = "Please enter a valid student ID";
-        console.log("Please enter a valid student ID");
         return;
       }
 
@@ -817,7 +813,6 @@ export default {
           return;
         }
 
-        console.log("saved donor details successfully");
         this.successDetails = "Successfully saved details.";
         this.$store.commit("setPhone", parseInt("88" + this.phone));
         this.enableEditing = false;
@@ -870,7 +865,6 @@ export default {
   },
 
   mounted() {
-    console.log("MOUNTED PERSONDETAILS");
     eventBus.$on("dataloaded", (data) => {
       this.dialog = true;
 
@@ -911,7 +905,6 @@ export default {
     });
     eventBus.$on("errorFound", (data) => {
       this.dialog = true;
-      console.log("Error received from network");
       this.errorDetailsLoading = data.message;
       console.log(data.message);
     });

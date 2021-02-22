@@ -13,7 +13,7 @@
                     {{ $store.getters.getHallAdminsFetchError }}
                 </div>
 
-                <table class="table table-hover" v-if="$store.getters.getHallAdmins!==null">
+                <table class="table table-hover" v-if="$store.getters.getHallAdmins!==null && !$store.getters.getHallAdminsLoaderFlag">
                     <thead>
                     <tr>
                         <th scope="col">Hall Name</th>
@@ -37,15 +37,15 @@
                                placeholder="Enter phone number of volunteer to be promoted">
                     </div>
                     <div class="col-sm-8">
-                        <v-btn color="primary" rounded :disabled="changeHallAdminLoaderFlag" :loading="changeHallAdminLoaderFlag" @click="changeHallAdminClicked()">Change Hall Admin</v-btn>
+                        <v-btn color="primary" rounded :disabled="$store.getters.getChangeAdminLoaderFlag" :loading="$store.getters.getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">Change Hall Admin</v-btn>
                     </div>
                 </div>
 
-                <div class="alert alert-danger animated jello" role="alert" v-if="errorChangeAdmin.length!==0">
-                    {{ errorChangeAdmin }}
+                <div class="alert alert-danger animated jello" role="alert" v-if="$store.getters.getChangeAdminError!==null">
+                    {{ $store.getters.getChangeAdminError }}
                 </div>
-                <div class="alert alert-success animated jello" role="alert" v-if="successChangeAdmin.length!==0">
-                    {{ successChangeAdmin }}
+                <div class="alert alert-success animated jello" role="alert" v-if="$store.getters.getChangeAdminSuccess!==null">
+                    {{ $store.getters.getChangeAdminSuccess }}
                 </div>
             </div>
             <div class="jumbotron col-lg-6 col-md-12 col-sm-12 card animated fadeInDown" style="height: fit-content">
@@ -64,9 +64,9 @@
                             <v-btn rounded color="red" class="white--text" @click="archiveBatchClicked()" disabled>Archive batch (not implemented)</v-btn>
                         </div>
                     </div>
-                    <div class="alert alert-danger" role="alert" v-if="errorArchive.length!==0">
+                    <!-- <div class="alert alert-danger" role="alert" v-if="errorArchive.length!==0">
                         {{ errorArchive }}
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -77,8 +77,6 @@
 
 <script>
 import {halls} from '@/constants';
-import {eventBus} from "@/main";
-import axios from "axios";
 
 export default {
     name: "SuperAdminPanel",
@@ -102,59 +100,12 @@ export default {
         }
     },
     methods: {
-        async changeHallAdminClicked() {
-            console.log('Change hall admin clicked: ');
-            this.errorChangeAdmin = "";
-            this.successChangeAdmin = "";
-
-            if (isNaN(this.newAdminPhone) || this.newAdminPhone.toString().length !== 11) {
-                this.errorChangeAdmin = "Please enter a valid phone number";
-                console.log('Please enter a valid number');
-                return;
-            }
-
-            let sendData = {
-                userPhone: this.$store.getters.getPhone,
-                donorPhone: parseInt('88' + this.newAdminPhone)
-            };
-            let headers = {
-                'x-auth': this.$store.getters.getToken
-            }
-
-            console.log('REQUEST TO /admin/hall/change: ', sendData);
-
-            this.changeHallAdminLoaderFlag = true;
-            try {
-                let response = await axios.post('/admin/hall/change', sendData, {headers: headers});
-                console.log("RESPONSE FROM /admin/hall/change: ", response);
-                if (response.status !== 200) {
-                    this.errorChangeAdmin = "Status code not 200";
-                    return;
-                }
-                console.log('hall admin change successful');
-                this.successChangeAdmin = "Successfully changed hall admin";
-                this.loadingComplete = true;
-                await this.showAdmins();
-
-            } catch (error) {
-                this.errorChangeAdmin = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.changeHallAdminLoaderFlag = false;
-            }
+        changeHallAdminClicked() {
+            //01878514798
+            this.$store.dispatch('changeHallAdmin',{newAdminPhone:this.newAdminPhone});
         },
         archiveBatchClicked() {
-            console.log('archive button clicked: ');
-            console.log('batch: ', this.batch);
-            console.log('password: ', this.password);
-            eventBus.$emit('spinnerOn', {});
 
-            //SIMULATION START
-            setTimeout(() => {
-                console.log("Archive complete");
-                eventBus.$emit('spinnerOff', {});
-            }, 2000);
-            //SIMULATION STOP
         },
 
     },
