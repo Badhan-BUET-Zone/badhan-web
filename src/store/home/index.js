@@ -123,7 +123,8 @@ const actions = {
             bloodGroup: bloodGroups.indexOf(payload.bloodGroup),
             batch: payload.inputBatch.toString(),
             hall: halls.indexOf(payload.hall),
-            isAvailable: payload.availability
+            isAvailable: payload.availability,
+            address: payload.inputAddress
         };
         let headers = {
             'x-auth': getters.getToken

@@ -65,9 +65,9 @@
 
         <v-text-field
           outlined
-          label="Address (Under maintenance)"
+          label="Address"
           clearable
-          disabled
+          v-model="address"
         ></v-text-field>
 
         <!--        A check box to search by availability-->
@@ -138,6 +138,7 @@ export default {
       name: "",
       bloodGroup: -1,
       batch: "",
+      address: "",
       hall: halls[this.$store.getters.getHall],
       availability: true,
       archiveSearch: false,
@@ -182,12 +183,18 @@ export default {
         inputName = "";
       }
 
+      let inputAddress = this.processName(this.address);
+      if(inputAddress.length===0){
+        inputAddress="";
+      }
+
       this.$store.dispatch("search", {
         inputName: inputName,
         bloodGroup: this.bloodGroup,
         inputBatch: inputBatch,
         hall: this.hall,
         availability: this.availability,
+        inputAddress: inputAddress
       });
     },
 

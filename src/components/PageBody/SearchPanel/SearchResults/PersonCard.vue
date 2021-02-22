@@ -132,7 +132,6 @@ export default {
             document.location.href = "tel:+" + this.phone;
         },
         async loadPersonDetails() {
-            console.log(this.$props.name, ' details button clicked');
             await this.$router.push('/home/details');
 
             this.seeDetailsLoaderFlag = true;
