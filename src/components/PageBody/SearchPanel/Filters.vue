@@ -238,7 +238,7 @@ export default {
         if (this.$store.getters.getDesignation === 3) {
           return halls;
         } else {
-          return [halls[this.$store.getters.getHall], halls[7]];
+          return [halls[this.$store.getters.getHall], halls[7],halls[8]];
         }
       }
     },

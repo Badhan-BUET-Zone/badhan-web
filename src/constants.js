@@ -5,7 +5,7 @@ export const departments = [
     'IPE','NULL','ME','MME',
     'NAME','NULL','NULL','URP',
     'WRE','NULL','BME'];
-export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardi', 'Titumir','Attached'];
+export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardi', 'Titumir','Attached','COVID'];
 export const designations=['Donor', 'Volunteer', 'Hall Admin', 'Super Admin'];
 export const bloodGroups=['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
