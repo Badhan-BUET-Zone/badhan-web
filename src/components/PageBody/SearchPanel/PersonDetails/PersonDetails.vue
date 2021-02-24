@@ -293,7 +293,7 @@
                       </div>
                     </div>
                     <button
-                      v-if="designation == 1"
+                      v-if="designation == 1 && $store.getters.getPhone !== oldPhone"
                       class="btn btn-outline-danger"
                       :disabled="!enableEditing"
                       style="width: 100%"
@@ -308,7 +308,8 @@
                     v-if="
                       $store.getters.getDesignation > 1 &&
                       designation == 0 &&
-                      this.hall !== 7
+                      hall !== 7 && 
+                      hall!==8
                     "
                   >
                     <label>Promote this member to volunteer</label>
