@@ -16,6 +16,7 @@ Vue.mixin(Mixins);
 //previous badhan project
 import axios from 'axios';
 import vuetify from './plugins/vuetify';
+import './registerServiceWorker'
 
 axios.defaults.baseURL='https://badhan-backend.herokuapp.com';
 
