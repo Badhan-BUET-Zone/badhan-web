@@ -1,6 +1,6 @@
 {
     "name": "Badhan App",
-    "short_name": "Badhan",
+    "short_name": "badhan",
     "icons": [
       {
         "src": "./img/icons/android-chrome-192x192.png",
