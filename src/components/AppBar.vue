@@ -144,8 +144,9 @@ export default {
         async myProfileclicked() {
             // this.$store.commit('showSearchPanel');
 
-                await this.$router.push('/home/details');
-
+            await this.$router.push({path:'/home/details', query: { phone: this.$store.getters.getPhone }});
+            
+/*
             let sendData = {
                 donorPhone: parseInt(this.$store.getters.getPhone)
             };
@@ -172,6 +173,7 @@ export default {
             } finally {
                 this.$store.commit('setLoadingFalse');
             }
+            */
         },
         async signOutClicked() {
             

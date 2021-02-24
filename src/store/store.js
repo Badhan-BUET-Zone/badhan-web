@@ -7,6 +7,7 @@ import myprofile from '@/store/myprofile';
 import halladmin from '@/store/halladmin';
 import home from '@/store/home';
 import superadmin from '@/store/superadmin';
+import details from '@/store/home/details';
 
 export const store = new Vuex.Store({
 
@@ -37,7 +38,8 @@ export const store = new Vuex.Store({
     myprofile,
     halladmin,
     home,
-    superadmin
+    superadmin,
+    details,
   }
 });
 store.dispatch('autoLogin');

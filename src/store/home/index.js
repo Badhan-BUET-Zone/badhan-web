@@ -11,42 +11,49 @@ let compareObject = (a, b) => {
 }
 
 const state = {
+    //SEARCH DONORS
     searchLoaderFlag: false,
     searchError: "",
     filterShownFlag: true,
     searchResultShown: false,
     personGroups: {},
-    numOfDonor: 0
+    numOfDonor: 0,
+
 
 };
 
 const getters = {
+    //SEARCH RESULTS
     getSearchResults: state => {
         return state.personGroups;
     },
     getNumberOfSearchResult: state => {
         return state.numOfDonor;
     },
-    isFilterShown: state =>{
+    isFilterShown: state => {
         return state.filterShownFlag;
     },
-    isSearchResultShown: state =>{
+    isSearchResultShown: state => {
         return state.searchResultShown;
     },
-    isSearchLoading:state =>{
+    isSearchLoading: state => {
         return state.searchLoaderFlag;
     },
-    getSearchError: state =>{
+    getSearchError: state => {
         return state.searchError;
     },
-    getPersonGroups: state =>{
+    getPersonGroups: state => {
         return state.personGroups;
     },
-    getNumberOfDonors: state=>{
+    getNumberOfDonors: state => {
         return state.numOfDonor;
-    }
+    },
+
+
 };
 const mutations = {
+
+    //SEARCH RESULTS
     searchLoaderFlagOn(state) {
         state.searchLoaderFlag = true;
     },
@@ -65,7 +72,7 @@ const mutations = {
     hideFilter(state) {
         state.filterShownFlag = false;
     },
-    toggleFilter(state){
+    toggleFilter(state) {
         state.filterShownFlag = !state.filterShownFlag;
     },
     showSearchResults(state) {
@@ -109,6 +116,8 @@ const mutations = {
         state.searchResultShown = true;
     },
 
+
+
 };
 const actions = {
     async search({ getters, commit }, payload) {
@@ -142,7 +151,7 @@ const actions = {
             commit('setPersonGroups', response.data.filteredDonors);
 
             commit('hideFilter');
-            
+
         } catch (error) {
             commit('setSearchError', response.data.message);
 
@@ -150,7 +159,9 @@ const actions = {
         } finally {
             commit('searchLoaderFlagOff');
         }
-    }
+    },
+
+
 };
 
 
@@ -158,5 +169,5 @@ export default {
     state,
     actions,
     getters,
-    mutations
+    mutations,
 }

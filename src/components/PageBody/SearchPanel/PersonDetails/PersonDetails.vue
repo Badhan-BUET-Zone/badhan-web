@@ -1,468 +1,491 @@
 <template>
-  <v-card
-    v-if="dialog"
-    style="
-      z-index: 90;
-      position: fixed;
-      left: 0px;
-      top: 0px;
-      height: 100vh;
-      width: 100vw;
-      overflow-y: scroll;
-    "
-    class="pa-5"
-  >
-    <v-app-bar color="red" dark>
-      <v-btn icon @click="dialog = false">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <v-toolbar-title> Person Details </v-toolbar-title>
-    </v-app-bar>
-
-    <v-card-title
-      v-if="!$store.getters.getLoadingFlag && errorDetailsLoading.length === 0"
+  <div>
+    <v-card
+      v-if="$store.getters['details/getDonorLoaderFlag']"
+      style="
+        z-index: 90;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 20vh;
+        width: 100vw;
+        overflow-y: scroll;
+      "
+      class="pa-5 d-flex justify-center"
     >
-      <span>{{ name }}</span>
-    </v-card-title>
+      <v-progress-circular indeterminate color="red"></v-progress-circular>
+    </v-card>
+    <v-card
+      v-else
+      style="
+        z-index: 90;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 100vh;
+        width: 100vw;
+        overflow-y: scroll;
+      "
+      class="pa-5"
+    >
+      <v-app-bar color="red" dark>
+        <v-btn icon @click="$router.push('/home')">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        <v-toolbar-title> Person Details </v-toolbar-title>
+      </v-app-bar>
 
-    <v-card-subtitle>
-      (<span v-if="designation === 2">Hall admin</span>
-      <span v-else-if="designation === 3">Super admin</span>
-      <span v-else-if="designation === 1">Volunteer</span>
-      <span v-else-if="designation === 0">Donor</span>)
-    </v-card-subtitle>
-
-    <div class="mb-5">
-      <span v-if="availableIn > 0" class="alert alert-danger"
-        >{{ this.availableIn }} Days remaining</span
+      <v-card-title
+        v-if="
+          !$store.getters.getLoadingFlag && errorDetailsLoading.length === 0
+        "
       >
-      <span v-else="" class="alert alert-success">Available</span>
-    </div>
+        <span>{{ name }}</span>
+      </v-card-title>
 
-    <!--            Modal Body-->
-    <div
-      class="modal-body row animated fadeIn"
-      v-if="!$store.getters.getLoadingFlag"
-    >
-      <!--                Modal First column-->
-      <div class="card col-lg-8 col-md-12 col-sm-12">
-        <br />
-        <div
-          class="custom-control custom-switch"
-          v-if="
-            $store.getters.getDesignation === 3 ||
-            $store.getters.getPhone == oldPhone ||
-            ($store.getters.getHall === hall &&
-              $store.getters.getDesignation > designation) ||
-            hall === 7 ||
-            hall === 8
-          "
+      <v-card-subtitle>
+        (<span v-if="designation === 2">Hall admin</span>
+        <span v-else-if="designation === 3">Super admin</span>
+        <span v-else-if="designation === 1">Volunteer</span>
+        <span v-else-if="designation === 0">Donor</span>)
+      </v-card-subtitle>
+
+      <div class="mb-5">
+        <span v-if="availableIn > 0" class="alert alert-danger"
+          >{{ this.availableIn }} Days remaining</span
         >
-          <input
-            type="checkbox"
-            class="custom-control-input"
-            id="customSwitch1"
-            v-model="enableEditing"
-          />
-          <label class="custom-control-label" for="customSwitch1"
-            >Toggle to edit details</label
-          >
-        </div>
-        <br />
+        <span v-else="" class="alert alert-success">Available</span>
+      </div>
 
-        <div>
-          <div class="card">
-            <div class="card-header" id="headingOne">
-              <h5 class="mb-0">
-                <button
-                  class="btn btn-link"
-                  @click="personDetailCollapseFlag = !personDetailCollapseFlag"
-                >
-                  Person Details
-                </button>
-              </h5>
-            </div>
-
-            <div v-if="personDetailCollapseFlag">
-              <div class="card-body">
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Name</label>
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      :disabled="!enableEditing"
-                      v-model="name"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Phone</label>
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      :disabled="!enableEditing"
-                      v-model="phone"
-                    />
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Blood Group: </label>
-                  <div class="col-sm-8">
-                    <select
-                      class="form-control"
-                      v-model="bloodGroup"
-                      :disabled="!enableEditing"
-                    >
-                      <option
-                        v-for="(blood, index) in bloodGroups"
-                        :value="index"
-                      >
-                        {{ blood }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Student ID: </label>
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      :disabled="!enableEditing"
-                      v-model="studentID"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Hall: </label>
-                  <div class="col-sm-8">
-                    <select
-                      class="form-control"
-                      v-model="hall"
-                      :disabled="
-                        !enableEditing || designation === 2 || designation === 1
-                      "
-                    >
-                      <option
-                        v-for="(oneHall, index) in halls"
-                        :value="index"
-                        v-if="
-                          $store.getters.getDesignation === 3 ||
-                          index === 7 ||
-                          $store.getters.getHall === index
-                        "
-                      >
-                        {{ oneHall }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Room: </label>
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      :disabled="!enableEditing"
-                      v-model="room"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Address: </label>
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control"
-                      :disabled="!enableEditing"
-                      v-model="address"
-                    />
-                  </div>
-                </div>
-
-                <div
-                  v-if="
-                    $store.getters.getDesignation > designation ||
-                    $store.getters.getPhone == oldPhone
-                  "
-                >
-                  <v-btn color="warning" rounded @click="dialog = false"
-                    >Cancel
-                  </v-btn>
-                  <v-btn
-                    color="primary"
-                    rounded
-                    class="white--text ml-2"
-                    :disabled="detailsSpinner || !enableEditing"
-                    :loading="detailsSpinner"
-                    @click="saveDetailsClicked()"
-                    >Save
-                  </v-btn>
-                </div>
-                <br />
-                <div
-                  class="alert alert-danger animated jello"
-                  role="alert"
-                  v-if="errorDetails.length !== 0"
-                >
-                  {{ errorDetails }}
-                </div>
-                <div
-                  class="alert alert-success animated jello"
-                  role="alert"
-                  v-if="successDetails.length !== 0"
-                >
-                  {{ successDetails }}
-                </div>
-              </div>
-            </div>
-          </div>
+      <!--            Modal Body-->
+      <div
+        class="modal-body row animated fadeIn"
+        v-if="!$store.getters.getLoadingFlag"
+      >
+        <!--                Modal First column-->
+        <div class="card col-lg-8 col-md-12 col-sm-12">
+          <br />
           <div
-            class="card"
+            class="custom-control custom-switch"
             v-if="
-              $store.getters.getDesignation > designation ||
-              $store.getters.getPhone == oldPhone
+              $store.getters.getDesignation === 3 ||
+              $store.getters.getPhone == oldPhone ||
+              ($store.getters.getHall === hall &&
+                $store.getters.getDesignation > designation) ||
+              hall === 7 ||
+              hall === 8
             "
           >
-            <div class="card-header" id="headingTwo">
-              <h5 class="mb-0">
-                <button
-                  class="btn btn-link"
-                  @click="settingsCollapseFlag = !settingsCollapseFlag"
-                >
-                  Settings
-                </button>
-              </h5>
-            </div>
-            <div v-if="settingsCollapseFlag">
-              <div class="card-body">
-                <div
-                  v-if="
-                    designation !== 0 || $store.getters.getPhone == oldPhone
-                  "
-                >
-                  <div class="form-group row">
-                    <label class="col-sm-4 col-form-label"
-                      >New Password:
-                    </label>
-                    <div class="col-sm-8">
-                      <input
-                        type="password"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="newPassword"
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-4 col-form-label"
-                      >Confirm Password:
-                    </label>
-                    <div class="col-sm-8">
-                      <input
-                        type="password"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="confirmPassword"
-                      />
-                    </div>
-                  </div>
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="customSwitch1"
+              v-model="enableEditing"
+            />
+            <label class="custom-control-label" for="customSwitch1"
+              >Toggle to edit details</label
+            >
+          </div>
+          <br />
+
+          <div>
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
                   <button
-                    v-if="designation == 1"
-                    class="btn btn-outline-danger"
-                    :disabled="!enableEditing"
-                    style="width: 100%"
-                    @click="demote()"
+                    class="btn btn-link"
+                    @click="
+                      personDetailCollapseFlag = !personDetailCollapseFlag
+                    "
                   >
-                    Demote this member to donor
+                    Person Details
                   </button>
-                  <br /><br />
-                </div>
+                </h5>
+              </div>
 
-                <div
-                  v-if="
-                    $store.getters.getDesignation > 1 &&
-                    designation == 0 &&
-                    this.hall !== 7
-                  "
-                >
-                  <label>Promote this member to volunteer</label>
+              <div v-if="personDetailCollapseFlag">
+                <div class="card-body">
                   <div class="form-group row">
-                    <label class="col-sm-4 col-form-label"
-                      >New Password:
-                    </label>
+                    <label class="col-sm-4 col-form-label">Name</label>
                     <div class="col-sm-8">
                       <input
-                        type="password"
+                        type="text"
                         class="form-control"
                         :disabled="!enableEditing"
-                        v-model="newPassword"
+                        v-model="name"
                       />
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-sm-4 col-form-label"
-                      >Confirm Password:
-                    </label>
+                    <label class="col-sm-4 col-form-label">Phone</label>
                     <div class="col-sm-8">
                       <input
-                        type="password"
+                        type="text"
                         class="form-control"
                         :disabled="!enableEditing"
-                        v-model="confirmPassword"
+                        v-model="phone"
                       />
                     </div>
                   </div>
-                </div>
 
-                <div
-                  v-if="
-                    $store.getters.phone === oldPhone ||
-                    $store.getters.getDesignation > 1
-                  "
-                >
-                  <v-btn color="warning" @click="hideDetails()" rounded
-                    >Cancel
-                  </v-btn>
-                  <v-btn
-                    color="primary"
-                    class="white--text ml-2"
-                    rounded
-                    :disabled="settingsSpinner || !enableEditing"
-                    :loading="settingsSpinner"
-                    @click="saveSettingsClicked()"
-                    >Save
-                  </v-btn>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Blood Group: </label>
+                    <div class="col-sm-8">
+                      <select
+                        class="form-control"
+                        v-model="bloodGroup"
+                        :disabled="!enableEditing"
+                      >
+                        <option
+                          v-for="(blood, index) in bloodGroups"
+                          :value="index"
+                        >
+                          {{ blood }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Student ID: </label>
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        :disabled="!enableEditing"
+                        v-model="studentID"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Hall: </label>
+                    <div class="col-sm-8">
+                      <select
+                        class="form-control"
+                        v-model="hall"
+                        :disabled="
+                          !enableEditing ||
+                          designation === 2 ||
+                          designation === 1
+                        "
+                      >
+                        <option
+                          v-for="(oneHall, index) in halls"
+                          :value="index"
+                          v-if="
+                            $store.getters.getDesignation === 3 ||
+                            index === 7 ||
+                            $store.getters.getHall === index
+                          "
+                        >
+                          {{ oneHall }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Room: </label>
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        :disabled="!enableEditing"
+                        v-model="room"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Address: </label>
+                    <div class="col-sm-8">
+                      <input
+                        type="text"
+                        class="form-control"
+                        :disabled="!enableEditing"
+                        v-model="address"
+                      />
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="
+                      $store.getters.getDesignation > designation ||
+                      $store.getters.getPhone == oldPhone
+                    "
+                  >
+                    <v-btn color="warning" rounded @click="dialog = false"
+                      >Cancel
+                    </v-btn>
+                    <v-btn
+                      color="primary"
+                      rounded
+                      class="white--text ml-2"
+                      :disabled="detailsSpinner || !enableEditing"
+                      :loading="detailsSpinner"
+                      @click="saveDetailsClicked()"
+                      >Save
+                    </v-btn>
+                  </div>
+                  <br />
+                  <div
+                    class="alert alert-danger animated jello"
+                    role="alert"
+                    v-if="errorDetails.length !== 0"
+                  >
+                    {{ errorDetails }}
+                  </div>
+                  <div
+                    class="alert alert-success animated jello"
+                    role="alert"
+                    v-if="successDetails.length !== 0"
+                  >
+                    {{ successDetails }}
+                  </div>
                 </div>
-                <br />
-                <div
-                  class="alert alert-danger animated jello"
-                  role="alert"
-                  v-if="errorSettings.length !== 0"
-                >
-                  {{ errorSettings }}
-                </div>
-                <div
-                  class="alert alert-success animated jello"
-                  role="alert"
-                  v-if="successSettings.length !== 0"
-                >
-                  {{ successSettings }}
+              </div>
+            </div>
+            <div
+              class="card"
+              v-if="
+                $store.getters.getDesignation > designation ||
+                $store.getters.getPhone == oldPhone
+              "
+            >
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button
+                    class="btn btn-link"
+                    @click="settingsCollapseFlag = !settingsCollapseFlag"
+                  >
+                    Settings
+                  </button>
+                </h5>
+              </div>
+              <div v-if="settingsCollapseFlag">
+                <div class="card-body">
+                  <div
+                    v-if="
+                      designation !== 0 || $store.getters.getPhone == oldPhone
+                    "
+                  >
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label"
+                        >New Password:
+                      </label>
+                      <div class="col-sm-8">
+                        <input
+                          type="password"
+                          class="form-control"
+                          :disabled="!enableEditing"
+                          v-model="newPassword"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label"
+                        >Confirm Password:
+                      </label>
+                      <div class="col-sm-8">
+                        <input
+                          type="password"
+                          class="form-control"
+                          :disabled="!enableEditing"
+                          v-model="confirmPassword"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      v-if="designation == 1"
+                      class="btn btn-outline-danger"
+                      :disabled="!enableEditing"
+                      style="width: 100%"
+                      @click="demote()"
+                    >
+                      Demote this member to donor
+                    </button>
+                    <br /><br />
+                  </div>
+
+                  <div
+                    v-if="
+                      $store.getters.getDesignation > 1 &&
+                      designation == 0 &&
+                      this.hall !== 7
+                    "
+                  >
+                    <label>Promote this member to volunteer</label>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label"
+                        >New Password:
+                      </label>
+                      <div class="col-sm-8">
+                        <input
+                          type="password"
+                          class="form-control"
+                          :disabled="!enableEditing"
+                          v-model="newPassword"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label"
+                        >Confirm Password:
+                      </label>
+                      <div class="col-sm-8">
+                        <input
+                          type="password"
+                          class="form-control"
+                          :disabled="!enableEditing"
+                          v-model="confirmPassword"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="
+                      $store.getters.phone === oldPhone ||
+                      $store.getters.getDesignation > 1
+                    "
+                  >
+                    <v-btn color="warning" @click="hideDetails()" rounded
+                      >Cancel
+                    </v-btn>
+                    <v-btn
+                      color="primary"
+                      class="white--text ml-2"
+                      rounded
+                      :disabled="settingsSpinner || !enableEditing"
+                      :loading="settingsSpinner"
+                      @click="saveSettingsClicked()"
+                      >Save
+                    </v-btn>
+                  </div>
+                  <br />
+                  <div
+                    class="alert alert-danger animated jello"
+                    role="alert"
+                    v-if="errorSettings.length !== 0"
+                  >
+                    {{ errorSettings }}
+                  </div>
+                  <div
+                    class="alert alert-success animated jello"
+                    role="alert"
+                    v-if="successSettings.length !== 0"
+                  >
+                    {{ successSettings }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <br />
-        <div>
-          <div class="card">
-            <!-- <label class="col-sm-12 col-form-label">Comment: </label> -->
+          <br />
+          <div>
+            <div class="card">
+              <!-- <label class="col-sm-12 col-form-label">Comment: </label> -->
 
-            <div class="col-sm-12">
-              <!-- <input
+              <div class="col-sm-12">
+                <!-- <input
                 type="text"
                 class="form-control"
                 :disabled="!enableEditing"
                 v-model="comment"
               /> -->
-              <v-textarea
-                name="comment"
-                outlined
-                v-model="comment"
-                label="Comment"
-                auto-grow
-                dense
-                :disabled="!enableEditing"
-                :rows="1"
-              ></v-textarea>
-            </div>
-            <v-btn
-              color="primary"
-              :disabled="commentSpinner || !enableEditing"
-              :loading="commentSpinner"
-              @click="saveCommentClicked()"
-            >
-              Save Comment
-            </v-btn>
-          </div>
-        </div>
-
-        <div
-          class="alert alert-danger animated jello"
-          role="alert"
-          v-if="errorComment.length !== 0"
-        >
-          {{ errorComment }}
-        </div>
-        <div
-          class="alert alert-success animated jello"
-          role="alert"
-          v-if="successComment.length !== 0"
-        >
-          {{ successComment }}
-        </div>
-      </div>
-
-      <!--                Modal Second Column-->
-      <div
-        class="card col-lg-4 col-md-12 col-md-12"
-        style="height: fit-content"
-      >
-        <p>Last Donation:</p>
-        <template v-if="lastDonation !== 0">
-          <p class="text-dark">{{ lastDonation }}</p>
-          <v-btn
-            :loading="historySpinner"
-            :disabled="historySpinner"
-            color="primary"
-            rounded
-            class="mb-2"
-            @click="loadHistory()"
-            >Load history
-          </v-btn>
-          <br />
-          <div v-if="showHistory">
-            <div class="input-group mb-3" v-for="date in history">
-              <input
-                type="text"
-                readonly
-                class="form-control"
-                :value="datePrint(date)"
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-success"
-                  type="button"
-                  @click="deleteDonation(date)"
-                >
-                  Delete
-                </button>
+                <v-textarea
+                  name="comment"
+                  outlined
+                  v-model="comment"
+                  label="Comment"
+                  auto-grow
+                  dense
+                  :disabled="!enableEditing"
+                  :rows="1"
+                ></v-textarea>
               </div>
+              <v-btn
+                color="primary"
+                :disabled="commentSpinner || !enableEditing"
+                :loading="commentSpinner"
+                @click="saveCommentClicked()"
+              >
+                Save Comment
+              </v-btn>
             </div>
-            <br />
           </div>
+
           <div
             class="alert alert-danger animated jello"
             role="alert"
-            v-if="errorHistory.length !== 0"
+            v-if="errorComment.length !== 0"
           >
-            {{ errorHistory }}
+            {{ errorComment }}
           </div>
           <div
             class="alert alert-success animated jello"
             role="alert"
-            v-if="successHistory.length !== 0"
+            v-if="successComment.length !== 0"
           >
-            {{ successHistory }}
+            {{ successComment }}
           </div>
-        </template>
-        <template v-else>No donation found</template>
+        </div>
+
+        <!--                Modal Second Column-->
+        <div
+          class="card col-lg-4 col-md-12 col-md-12"
+          style="height: fit-content"
+        >
+          <p>Last Donation:</p>
+          <template v-if="lastDonation !== 0">
+            <p class="text-dark">{{ lastDonation }}</p>
+            <v-btn
+              :loading="historySpinner"
+              :disabled="historySpinner"
+              color="primary"
+              rounded
+              class="mb-2"
+              @click="loadHistory()"
+              >Load history
+            </v-btn>
+            <br />
+            <div v-if="showHistory">
+              <div class="input-group mb-3" v-for="date in history">
+                <input
+                  type="text"
+                  readonly
+                  class="form-control"
+                  :value="datePrint(date)"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-success"
+                    type="button"
+                    @click="deleteDonation(date)"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <br />
+            </div>
+            <div
+              class="alert alert-danger animated jello"
+              role="alert"
+              v-if="errorHistory.length !== 0"
+            >
+              {{ errorHistory }}
+            </div>
+            <div
+              class="alert alert-success animated jello"
+              role="alert"
+              v-if="successHistory.length !== 0"
+            >
+              {{ successHistory }}
+            </div>
+          </template>
+          <template v-else>No donation found</template>
+        </div>
       </div>
-    </div>
-  </v-card>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -534,6 +557,43 @@ export default {
       if (to === false) {
         this.$router.push("/home");
       }
+    },
+    donorLoaderFlag(to, from) {
+      if (to === false) {
+        let profile = this.$store.getters["details/getProfile"];
+        this.name = profile.name;
+        this.phone = profile.phone.toString().substr(2);
+        this.oldPhone = profile.phone;
+        this.studentID = profile.studentId;
+        this.bloodGroup = profile.bloodGroup;
+        this.hall = parseInt(profile.hall);
+        this.room = profile.roomNumber;
+        this.address = profile.address;
+        this.comment = profile.comment;
+        this.designation = profile.designation;
+
+        let date = new Date(profile.lastDonation);
+        this.lastDonation =
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear();
+        if (profile.lastDonation === 0) {
+          this.lastDonation = "No donations found";
+        }
+        this.availableIn =
+          120 -
+          Math.round(
+            (Math.round(new Date().getTime()) - date.getTime()) /
+              (1000 * 3600 * 24)
+          );
+      }
+    },
+  },
+  computed: {
+    donorLoaderFlag() {
+      return this.$store.getters["details/getDonorLoaderFlag"];
     },
   },
   methods: {
@@ -864,50 +924,52 @@ export default {
     },
   },
 
-  mounted() {
-    eventBus.$on("dataloaded", (data) => {
-      this.dialog = true;
+  async mounted() {
+    // console.log("data got from route query",this.$route.query.phone);
+    this.$store.dispatch("details/getDetails", this.$route.query.phone);
+    // eventBus.$on("dataloaded", (data) => {
+    //   this.dialog = true;
 
-      this.successHistory = "";
-      this.successSettings = "";
-      this.successComment = "";
-      this.successDetails = "";
-      this.errorHistory = "";
-      this.errorDetails = "";
-      this.errorComment = "";
-      this.errorSettings = "";
-      this.enableEditing = false;
+    //   this.successHistory = "";
+    //   this.successSettings = "";
+    //   this.successComment = "";
+    //   this.successDetails = "";
+    //   this.errorHistory = "";
+    //   this.errorDetails = "";
+    //   this.errorComment = "";
+    //   this.errorSettings = "";
+    //   this.enableEditing = false;
 
-      this.name = data.name;
-      this.phone = data.phone.toString().substr(2);
-      this.oldPhone = data.phone;
-      this.studentID = data.studentId;
-      this.bloodGroup = data.bloodGroup;
-      this.hall = parseInt(data.hall);
-      this.room = data.roomNumber;
-      this.address = data.address;
-      this.comment = data.comment;
-      this.designation = data.designation;
+    //   this.name = data.name;
+    //   this.phone = data.phone.toString().substr(2);
+    //   this.oldPhone = data.phone;
+    //   this.studentID = data.studentId;
+    //   this.bloodGroup = data.bloodGroup;
+    //   this.hall = parseInt(data.hall);
+    //   this.room = data.roomNumber;
+    //   this.address = data.address;
+    //   this.comment = data.comment;
+    //   this.designation = data.designation;
 
-      let date = new Date(data.lastDonation);
-      this.lastDonation =
-        date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-      if (data.lastDonation === 0) {
-        this.lastDonation = "No donations found";
-      }
-      this.availableIn =
-        120 -
-        Math.round(
-          (Math.round(new Date().getTime()) - date.getTime()) /
-            (1000 * 3600 * 24)
-        );
-      this.showDetails = true;
-    });
-    eventBus.$on("errorFound", (data) => {
-      this.dialog = true;
-      this.errorDetailsLoading = data.message;
-      console.log(data.message);
-    });
+    //   let date = new Date(data.lastDonation);
+    //   this.lastDonation =
+    //     date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    //   if (data.lastDonation === 0) {
+    //     this.lastDonation = "No donations found";
+    //   }
+    //   this.availableIn =
+    //     120 -
+    //     Math.round(
+    //       (Math.round(new Date().getTime()) - date.getTime()) /
+    //         (1000 * 3600 * 24)
+    //     );
+    //   this.showDetails = true;
+    // });
+    // eventBus.$on("errorFound", (data) => {
+    //   this.dialog = true;
+    //   this.errorDetailsLoading = data.message;
+    //   console.log(data.message);
+    // });
   },
 };
 </script>
