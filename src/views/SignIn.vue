@@ -62,13 +62,23 @@
           {{ $store.getters.getError }}
         </div>
 
-        <v-btn
+        <!-- <v-btn
           v-if="!isMobile"
           text
           style="text-decoration: none"
           href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
         >
           Download App
+          <v-icon right>mdi-google-play</v-icon>
+        </v-btn> -->
+
+        <v-btn
+          v-if="!isMobile"
+          text
+          style="text-decoration: none"
+          disabled
+        >
+          App under review
           <v-icon right>mdi-google-play</v-icon>
         </v-btn>
       </div>
