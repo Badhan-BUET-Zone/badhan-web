@@ -54,12 +54,12 @@
         <span v-if="availableIn > 0" class="alert alert-danger"
           >{{ this.availableIn }} Days remaining</span
         >
-        <span v-else="" class="alert alert-success">Available</span>
+        <span v-else class="alert alert-success">Available</span>
       </div>
 
       <!--            Modal Body-->
       <div
-        class="modal-body row animated fadeIn"
+        class="modal-body row"
         v-if="!$store.getters.getLoadingFlag"
       >
         <!--                Modal First column-->
@@ -76,15 +76,19 @@
               hall === 8
             "
           >
-            <input
+            <!-- <input
               type="checkbox"
               class="custom-control-input"
               id="customSwitch1"
               v-model="enableEditing"
             />
-            <label class="custom-control-label" for="customSwitch1"
-              >Toggle to edit details</label
-            >
+            <h3 class="custom-control-label" for="customSwitch1"
+              >Toggle to edit details</h3> -->
+            <v-switch
+              v-model="enableEditing"
+              inset
+              :label="'Toggle to edit details'"
+            ></v-switch>
           </div>
           <br />
 
@@ -105,7 +109,7 @@
 
               <div v-if="personDetailCollapseFlag">
                 <div class="card-body">
-                  <div class="form-group row">
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Name</label>
                     <div class="col-sm-8">
                       <input
@@ -115,8 +119,15 @@
                         v-model="name"
                       />
                     </div>
-                  </div>
-                  <div class="form-group row">
+                  </div> -->
+                  <v-text-field
+                    type="'text'"
+                    outlined
+                    label="Name"
+                    v-model="name"
+                    :disabled="!enableEditing"
+                  ></v-text-field>
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Phone</label>
                     <div class="col-sm-8">
                       <input
@@ -126,9 +137,16 @@
                         v-model="phone"
                       />
                     </div>
-                  </div>
+                  </div> -->
+                  <v-text-field
+                    type="'text'"
+                    outlined
+                    label="Phone"
+                    v-model="phone"
+                    :disabled="!enableEditing"
+                  ></v-text-field>
 
-                  <div class="form-group row">
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Blood Group: </label>
                     <div class="col-sm-8">
                       <select
@@ -144,8 +162,16 @@
                         </option>
                       </select>
                     </div>
-                  </div>
-                  <div class="form-group row">
+                  </div> -->
+                  <v-select
+                    v-model="bloodGroup"
+                    :items="bloodGroups"
+                    label="Blood Group"
+                    outlined
+                    :disabled="!enableEditing"
+                  ></v-select>
+
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Student ID: </label>
                     <div class="col-sm-8">
                       <input
@@ -155,11 +181,20 @@
                         v-model="studentID"
                       />
                     </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Hall: </label>
-                    <div class="col-sm-8">
-                      <select
+                  </div> -->
+
+                  <v-text-field
+                    type="'text'"
+                    outlined
+                    label="Student ID: "
+                    v-model="studentID"
+                    :disabled="!enableEditing"
+                  ></v-text-field>
+
+                  <!-- <div class="row"> -->
+                  <!-- <label class="col-sm-4 col-form-label">Hall: </label> -->
+                  <!-- <div class="col-sm-8"> -->
+                  <!-- <select
                         class="form-control"
                         v-model="hall"
                         :disabled="
@@ -179,10 +214,20 @@
                         >
                           {{ oneHall }}
                         </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row">
+                      </select> -->
+                  <!-- </div> -->
+                  <!-- </div> -->
+                  <v-select
+                    v-model="hall"
+                    :items="availableHalls"
+                    label="Hall"
+                    outlined
+                    :disabled="
+                      !enableEditing || designation === 2 || designation === 1
+                    "
+                  ></v-select>
+
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Room: </label>
                     <div class="col-sm-8">
                       <input
@@ -192,8 +237,17 @@
                         v-model="room"
                       />
                     </div>
-                  </div>
-                  <div class="form-group row">
+                  </div> -->
+
+                  <v-text-field
+                    type="'text'"
+                    outlined
+                    label="Room"
+                    v-model="room"
+                    :disabled="!enableEditing"
+                  ></v-text-field>
+
+                  <!-- <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Address: </label>
                     <div class="col-sm-8">
                       <input
@@ -203,7 +257,15 @@
                         v-model="address"
                       />
                     </div>
-                  </div>
+                  </div> -->
+
+                  <v-text-field
+                    type="'text'"
+                    outlined
+                    label="Address"
+                    v-model="address"
+                    :disabled="!enableEditing"
+                  ></v-text-field>
 
                   <div
                     v-if="
@@ -266,34 +328,62 @@
                       designation !== 0 || $store.getters.getPhone == oldPhone
                     "
                   >
-                    <div class="form-group row">
-                      <label class="col-sm-4 col-form-label"
+                    <!-- <div class="row"> -->
+                      <!-- <label class="col-sm-4 col-form-label"
                         >New Password:
-                      </label>
-                      <div class="col-sm-8">
-                        <input
+                      </label> -->
+                      <!-- <div class="col-sm-8"> -->
+                        <!-- <input
                           type="password"
                           class="form-control"
                           :disabled="!enableEditing"
                           v-model="newPassword"
-                        />
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-4 col-form-label"
+                        /> -->
+                        <v-text-field
+                          :append-icon="
+                            newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
+                          "
+                          :type="newPasswordFlag ? 'text' : 'password'"
+                          outlined
+                          label="New Password"
+                          v-model="newPassword"
+                          class="input-group--focused"
+                          @click:append="newPasswordFlag = !newPasswordFlag"
+                          :disabled="!enableEditing"
+                        ></v-text-field>
+                      <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- <div class="form-group row"> -->
+                      <!-- <label class="col-sm-4 col-form-label"
                         >Confirm Password:
-                      </label>
-                      <div class="col-sm-8">
-                        <input
+                      </label> -->
+                      <!-- <div class="col-sm-8"> -->
+                        <!-- <input
                           type="password"
                           class="form-control"
                           :disabled="!enableEditing"
                           v-model="confirmPassword"
-                        />
-                      </div>
-                    </div>
+                        /> -->
+                        <v-text-field
+                          :append-icon="
+                            confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
+                          "
+                          :type="confirmPasswordFlag ? 'text' : 'password'"
+                          outlined
+                          label="Confirm Password"
+                          v-model="confirmPassword"
+                          class="input-group--focused"
+                          @click:append="
+                            confirmPasswordFlag = !confirmPasswordFlag
+                          "
+                          :disabled="!enableEditing"
+                        ></v-text-field>
+                      <!-- </div> -->
+                    <!-- </div> -->
                     <button
-                      v-if="designation == 1 && $store.getters.getPhone !== oldPhone"
+                      v-if="
+                        designation == 1 && $store.getters.getPhone !== oldPhone
+                      "
                       class="btn btn-outline-danger"
                       :disabled="!enableEditing"
                       style="width: 100%"
@@ -301,15 +391,14 @@
                     >
                       Demote this member to donor
                     </button>
-                    <br /><br />
                   </div>
 
                   <div
                     v-if="
                       $store.getters.getDesignation > 1 &&
                       designation == 0 &&
-                      hall !== 7 && 
-                      hall!==8
+                      hall !== 7 &&
+                      hall !== 8
                     "
                   >
                     <label>Promote this member to volunteer</label>
@@ -446,7 +535,7 @@
               @click="loadHistory()"
               >Load history
             </v-btn>
-            <br />
+            <br/>
             <div v-if="showHistory">
               <div class="input-group mb-3" v-for="date in history">
                 <input
@@ -490,7 +579,6 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
 import { halls, bloodGroups } from "@/constants";
 import axios from "axios";
 
@@ -551,6 +639,10 @@ export default {
       //person detail collapse and settings collapse
       personDetailCollapseFlag: false,
       settingsCollapseFlag: false,
+
+      //password field flag
+      confirmPasswordFlag: false,
+      newPasswordFlag: false,
     };
   },
   watch: {
@@ -566,8 +658,8 @@ export default {
         this.phone = profile.phone.toString().substr(2);
         this.oldPhone = profile.phone;
         this.studentID = profile.studentId;
-        this.bloodGroup = profile.bloodGroup;
-        this.hall = parseInt(profile.hall);
+        this.bloodGroup = bloodGroups[profile.bloodGroup];
+        this.hall = halls[profile.hall];
         this.room = profile.roomNumber;
         this.address = profile.address;
         this.comment = profile.comment;
@@ -595,6 +687,17 @@ export default {
   computed: {
     donorLoaderFlag() {
       return this.$store.getters["details/getDonorLoaderFlag"];
+    },
+    availableHalls() {
+      if (this.$store.getters.getDesignation !== null) {
+        if (this.$store.getters.getDesignation === 3) {
+          return halls;
+        } else {
+          //covid support
+          //return [halls[this.$store.getters.getHall], halls[7]];
+          return [halls[this.$store.getters.getHall], halls[7], halls[8]];
+        }
+      }
     },
   },
   methods: {

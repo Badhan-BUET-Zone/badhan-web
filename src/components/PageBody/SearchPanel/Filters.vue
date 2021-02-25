@@ -84,18 +84,6 @@
           </label>
         </div>
 
-        <!--        A check box to enable searching in archive-->
-        <!-- <div class="custom-control custom-checkbox">
-          <input
-            v-model="archiveSearch"
-            type="checkbox"
-            class="custom-control-input"
-            id="customCheck2"
-          />
-          <label class="custom-control-label" for="customCheck2">
-            Archive Search
-          </label>
-        </div> -->
         <br />
 
         <!--        A button to reset the form fields-->

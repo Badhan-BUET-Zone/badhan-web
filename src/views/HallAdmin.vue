@@ -286,47 +286,6 @@
         </div>
       </div>
 
-      <!--            <div class="card col-lg-6 col-md-12 col-sm-12 p-4">-->
-      <!--                <div>-->
-      <!--                    <div class="card">-->
-
-      <!--                        <div class="card-header">-->
-      <!--                            <h5 class="mb-0">-->
-      <!--                                <b-button variant="light" @click="seeVolunteersFlag=!seeVolunteersFlag">-->
-      <!--                                    Show Volunteers-->
-      <!--                                </b-button>-->
-      <!--                            </h5>-->
-      <!--                        </div>-->
-      <!--                        <div v-if="seeVolunteersFlag">-->
-      <!--                            <div class="card-body">-->
-      <!--                                <v-simple-table>-->
-      <!--                                    <template v-slot:default>-->
-      <!--                                        <thead>-->
-      <!--                                        <tr>-->
-      <!--                                            <th class="text-left">-->
-      <!--                                                Name-->
-      <!--                                            </th>-->
-      <!--                                            <th class="text-left">-->
-      <!--                                                Calories-->
-      <!--                                            </th>-->
-      <!--                                        </tr>-->
-      <!--                                        </thead>-->
-      <!--                                        <tbody>-->
-      <!--                                        <tr-->
-      <!--                                            v-for="item in desserts"-->
-      <!--                                            :key="item.name"-->
-      <!--                                        >-->
-      <!--                                            <td>{{ item.name }}</td>-->
-      <!--                                            <td>{{ item.calories }}</td>-->
-      <!--                                        </tr>-->
-      <!--                                        </tbody>-->
-      <!--                                    </template>-->
-      <!--                                </v-simple-table>-->
-      <!--                            </div>-->
-      <!--                        </div>-->
-      <!--                    </div>-->
-      <!--                </div>-->
-      <!--            </div>-->
     </div>
   </div>
 </template>
