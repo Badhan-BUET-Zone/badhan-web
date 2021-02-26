@@ -6,16 +6,29 @@
         transition="dialog-bottom-transition"
     >
         <v-card class="d-flex justify-center">
-            <v-progress-circular
-                :size="300"
-                :width="15"
-                color="red"
-                indeterminate
-                class="ma-auto"
-                style="align-content: center"
-            >
-                <h4>Signing into <br>Badhan Sync</h4>
-            </v-progress-circular>
+            <v-container>
+                <v-row
+                    class="fill-height"
+                    align-content="center"
+                    justify="center"
+                >
+                    <v-col
+                        class="text-center red--text"
+                        cols="12"
+                    >
+                        Signing into Badhan
+                    </v-col>
+                    <v-col cols="6">
+                        <v-progress-linear
+                            color="red"
+                            indeterminate
+                            rounded
+                            height="6"
+                        ></v-progress-linear>
+                    </v-col>
+                </v-row>
+            </v-container>
+
         </v-card>
     </v-dialog>
 </template>
@@ -23,7 +36,7 @@
 <script>
 export default {
     props: ['dialog'],
-    data () {
+    data() {
         return {
             // dialog: false,
             notifications: false,

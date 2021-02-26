@@ -3,7 +3,7 @@
     <div class="row d-flex justify-content-center" align="center">
       <div
         class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4"
-        style="height: fit-content; top: 10vh"
+        style="height: fit-content; top: 5vh"
       >
         <img
           src="../assets/images/badhanlogo.png"

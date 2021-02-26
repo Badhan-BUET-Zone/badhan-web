@@ -1,108 +1,122 @@
 <template>
-  <div>
-    <v-container fluid>
-      <v-row dense>
-        <!-- <carousel> -->
-          <v-col :cols="12" lg="4">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="300px"
-                src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media"
-              >
-                <v-card-title>MH Rahat</v-card-title>
-              </v-img>
-
-              <v-card-subtitle class="pb-0">Platform Manager </v-card-subtitle>
-
-              <v-card-text class="text--primary">
-                <div>Initiator of Badhan Website and Android App</div>
-                <div>Test and Bug Report</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col :cols="12" lg="4">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="300px"
-                src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media"
-              >
-                <v-card-title>Mir Mahathir Mohammad</v-card-title>
-              </v-img>
-
-              <v-card-subtitle class="pb-0">Frontend Developer</v-card-subtitle>
-
-              <v-card-text class="text--primary">
-                <div>UX Design</div>
-                <div>Web Frontend Development</div>
-                <div>Hybrid Android App Development</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col :cols="12" lg="4">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="300px"
-                src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Faniruddha.jpg?alt=media"
-              >
-                <v-card-title>Aniruddha GS</v-card-title>
-              </v-img>
-
-              <v-card-subtitle class="pb-0">Backend Developer</v-card-subtitle>
-
-              <v-card-text class="text--primary">
-                <div>API Development</div>
-                <div>Database Administration</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col :cols="12" lg="4">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="300px"
-                src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fpriyeta.jpg?alt=media"
-              >
-                <v-card-title>Priyeta Saha</v-card-title>
-              </v-img>
-
-              <v-card-subtitle class="pb-0">Android App Developer </v-card-subtitle>
-
-              <v-card-text class="text--primary">
-                <div>Flutter Android App Development</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col :cols="12" lg="4">
-            <v-card>
-              <v-img
-                class="white--text align-end"
-                height="300px"
-                src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fanisha.jpg?alt=media"
-              >
-                <v-card-title>Anisha Islam</v-card-title>
-              </v-img>
-
-              <v-card-subtitle class="pb-0">Backend Developer</v-card-subtitle>
-
-              <v-card-text class="text--primary">
-                <div>API Development</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        <!-- </carousel> -->
-      </v-row>
-    </v-container>
-  </div>
+    <div>
+        <v-container fluid>
+            <h3 class="ma-5">Developers</h3>
+            <v-row dense>
+                <ContributorCard
+                    v-for="(contributor,index) in contributors"
+                    :key="index"
+                    :name="contributor.name"
+                    :subtitle="contributor.subtitle"
+                    :image="contributor.image"
+                    :descriptions="contributor.descriptions"
+                    :links="contributor.links"
+                >
+                </ContributorCard>
+            </v-row>
+            <h3 class="ma-5">Contributors From Badhan</h3>
+            <v-row dense>
+                <ContributorCard
+                    v-for="(contributor,index) in badhanContributors"
+                    :key="index"
+                    :name="contributor.name"
+                    :subtitle="contributor.subtitle"
+                    :image="contributor.image"
+                    :descriptions="contributor.descriptions"
+                    :links="contributor.links"
+                >
+                </ContributorCard>
+            </v-row>
+        </v-container>
+    </div>
 </template>
 
 <script>
 import carousel from "vue-owl-carousel";
+import ContributorCard from "@/components/Credits/ContributorCard";
+
 export default {
-  name: "Credits",
-  components: { carousel },
+    name: "Credits",
+    components: {carousel, ContributorCard},
+    data() {
+        return {
+            contributors: [
+                {
+                    name: 'MH Rahat',
+                    subtitle: 'Platform Manager',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media',
+                    descriptions: ['Initiator of Badhan Website and Android App', 'Test and Bug Report'],
+                    links: [
+                        {icon: 'facebook', color: 'primary', link: 'https://www.facebook.com'},
+                        {icon: 'gmail', color: 'red', link: 'https://google.com'},
+                        {icon:'linkedin',color:'blue',link:''}
+                    ]
+                },
+                {
+                    name: 'Mir Mahathir Mohammad',
+                    subtitle: 'Frontend Developer',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media',
+                    descriptions: ['UX Design','Web Frontend Development','Hybrid Android App Development'],
+                    links:[
+                        {icon: 'facebook',color:'primary',link: 'https://web.facebook.com/MirMahathirMohammad'},
+                        {icon: 'gmail',color: 'red',link: 'mailto:mirmahathir1@gmail.com'},
+                        {icon: 'linkedin',color:'blue',link:'https://www.linkedin.com/in/mir-mahathir-59bb671a5/'},
+                        {icon: 'github',color:'grey',link:'https://github.com/mirmahathir1'}
+                    ]
+                },
+                {
+                    name: 'Aniruddha GS',
+                    subtitle: 'Backend Developer',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Faniruddha.jpg?alt=media',
+                    descriptions: ['API Development','Database Administration'],
+                    links:[
+                        {icon:'facebook',color:'primary',link:'https://www.facebook.com/aniruddhags3927'},
+                        {icon:'gmail',color:'red',link:'mailto:aniruddhags3927@gmail.com'},
+                        {icon:'linkedin',color:'blue',link: 'https://www.linkedin.com/in/aniruddha-ganguly-91b707136/'},
+                        {icon:'github',color:'grey',link:'https://github.com/ags3927'}
+                    ]
+                },
+                {
+                    name: 'Priyeta Saha',
+                    subtitle: 'Android App Developer',
+                    image:'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fpriyeta.jpg?alt=media',
+                    descriptions: ['Flutter Android App Development'],
+                    links: [
+                        {icon:'facebook',color:'primary',link:'https://www.facebook.com/profile.php?id=100010509641367'},
+                        {icon:'gmail',color:'red',link:'mailto:priyetasaha@gmail.com'},
+                        {icon:'github',color:'grey',link:'https://github.com/prism97'},
+                        {icon:'linkedin',color:'blue',link:'https://www.linkedin.com/in/priyeta-saha-929629151/'}
+                    ]
+                },
+                {
+                    name: 'Anisha Islam',
+                    subtitle: 'Backend Developer',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fanisha.jpg?alt=media',
+                    descriptions: ['API Development'],
+                    links:[
+                        {icon:'facebook',color:'primary',link:'https://www.facebook.com/anisha.islam.1690'},
+                        {icon:'linkedin',color:'blue',link:'https://www.linkedin.com/in/anishaislam8/'},
+                    ]
+                }
+            ],
+            badhanContributors:[
+                {
+                    name: 'Shadman Sakib Showrov',
+                    image:'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fsadman.jpg?alt=media',
+                    links:[
+                        {icon:'facebook',color:'primary',link:'https://www.facebook.com/Showrov1996'},
+                        {icon:'linkedin',color:'blue',link:'https://www.linkedin.com/in/showrov1996/'},
+                        {icon:'gmail', color: 'red', link: 'mailto:showrov.ndc16@gmail.com'},
+                    ]
+                }
+            ]
+        }
+    },
+    methods: {
+        goTo(url) {
+            window.open(url, '_blank');
+        }
+    }
 };
 </script>
 
