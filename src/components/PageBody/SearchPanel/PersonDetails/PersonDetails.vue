@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-card
+        data-aos="fade-down"
       v-if="$store.getters['details/getDonorLoaderFlag']"
       style="
         z-index: 90;

@@ -1,6 +1,7 @@
 <template>
   <div
     class="card bg-light col-lg-8 col-md-12 col-sm-12 p-3"
+
     style="height: fit-content"
   >
     <div v-if="$store.getters.isSearchResultShown">
@@ -8,7 +9,7 @@
         Found {{ $store.getters.getNumberOfDonors }} donors
       </div>
     </div>
-    <div v-if="$store.getters.isSearchResultShown">
+    <div v-if="$store.getters.isSearchResultShown" data-aos="fade-up">
       <div v-for="(obj, index) in $store.getters.getPersonGroups" :key="index">
         <div class="alert alert-primary card" role="alert">
           Batch {{ obj.batch }}:

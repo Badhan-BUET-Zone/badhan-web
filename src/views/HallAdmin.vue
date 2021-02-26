@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-aos="fade-up">
     <div class="row">
       <div class="card col-lg-6 col-md-12 col-sm-12 p-4">
         <div>
@@ -16,7 +16,7 @@
                 </b-button>
               </h5>
             </div>
-            <div v-if="personDetailsCollapseFlag">
+            <div v-if="personDetailsCollapseFlag" data-aos="fade-down">
               <div class="card-body">
                 <div class="form-group row required">
                   <label class="col-sm-4 col-form-label control-label"
@@ -235,7 +235,7 @@
                 </b-button>
               </h5>
             </div>
-            <div v-if="archiveCollapseFlag">
+            <div v-if="archiveCollapseFlag" data-aos="fade-down">
               <div class="card-body">
                 <div class="form-group row">
                   <label class="col-sm-4 col-form-label"
@@ -270,7 +270,7 @@
                     color="red"
                     class="white--text"
                     disabled
-                    >Archive batch (not implemented)</v-btn
+                    >Archive batch <br>(not implemented)</v-btn
                   >
                 </div>
               </div>

@@ -29,7 +29,7 @@
     </button>
 
     <!--    Main Filters-->
-    <div v-if="$store.getters.isFilterShown">
+    <div v-if="$store.getters.isFilterShown" data-aos="fade-down">
       <div class="form-group">
         <!--        Input field for name-->
 

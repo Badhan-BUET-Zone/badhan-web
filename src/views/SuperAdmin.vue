@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div data-aos="fade-up">
         <div class="row">
             <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card">
                 <h3>Hall Admins</h3>
@@ -21,7 +21,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index">
+                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index" data-aos="fade-right">
                         <th scope="row">{{ halls[hallAdmin.hall] }}</th>
                         <td>{{ hallAdmin.name }}</td>
                     </tr>

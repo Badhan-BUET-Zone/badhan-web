@@ -5,13 +5,14 @@
             dark
             app
             clipped-left
+            collapse-on-scroll
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
 
                 <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 40px; width: 40px" class="mr-4">
 
-            <v-toolbar-title>Badhan Sync</v-toolbar-title>
+            <v-toolbar-title>Badhan</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-progress-circular
