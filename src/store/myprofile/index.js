@@ -105,7 +105,7 @@ const mutations = {
 
   loadMyProfileFromLocalStorage(state) {
     let myprofile = localStorage.getItem('myprofile');
-    if (myprofile === undefined) {
+    if (myprofile === undefined || myprofile===null) {
       return;
     }
     myprofile = JSON.parse(myprofile);
