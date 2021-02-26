@@ -106,6 +106,8 @@ const mutations = {
   loadMyProfileFromLocalStorage(state) {
     let myprofile = localStorage.getItem('myprofile');
     if (myprofile === undefined || myprofile===null) {
+      state.token=null;
+      localStorage.removeItem('x-auth');
       return;
     }
     myprofile = JSON.parse(myprofile);

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container fluid>
-            <h3 class="ma-5">Developers</h3>
+            <h5 class="mt-5 mb-5">Developers</h5>
             <v-row dense>
                 <ContributorCard
                     v-for="(contributor,index) in contributors"
@@ -15,7 +15,7 @@
                 >
                 </ContributorCard>
             </v-row>
-            <h3 class="ma-5">Contributors From Badhan</h3>
+            <h5 class="mt-10 mb-5">Contributors From Badhan</h5>
             <v-row dense>
                 <ContributorCard
                     v-for="(contributor,index) in badhanContributors"

@@ -13,7 +13,6 @@
                 <div class="h4 p-2">Sign into Badhan Sync</div>
 
                 <div>
-                    <div>
 <!--                        <label>Phone </label>-->
 <!--                        <input-->
 <!--                            class="form-control"-->
@@ -29,7 +28,7 @@
                             class="input-group--focused"
 
                         ></v-text-field>
-                        <br/>
+
 <!--                        <label>Password </label>-->
 <!--                        <input-->
 <!--                            class="form-control"-->
@@ -65,7 +64,6 @@
                         >
                             Sign In
                         </v-btn>
-                    </div>
                 </div>
                 <div
                     class="alert alert-danger animated jello"

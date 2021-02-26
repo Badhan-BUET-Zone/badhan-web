@@ -15,7 +15,7 @@
                 <div v-for="(description, index) in descriptions">{{description}}</div>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="pa-5">
                 <v-btn
                     v-for="(link,index) in links"
                     :key="index"

@@ -42,4 +42,5 @@ export const store = new Vuex.Store({
     details,
   }
 });
+
 store.dispatch('autoLogin');
