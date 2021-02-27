@@ -145,6 +145,10 @@ export default {
       this.$store.commit("clearSearchError");
       //batch number input validation
       let inputBatch = 0;
+      if(this.batch===null){
+          this.batch="";
+      }
+
       inputBatch = parseInt(this.batch);
       if (this.batch.length === 0) {
         inputBatch = "";
@@ -170,6 +174,7 @@ export default {
       if (inputName.length === 0) {
         inputName = "";
       }
+
 
       let inputAddress = this.processName(this.address);
       if(inputAddress.length===0){
@@ -204,6 +209,9 @@ export default {
     },
 
     processName(name) {
+        if(name===null){
+            return "";
+        }
       let newName = name.toLowerCase();
       let nameWithoutWs = "";
       for (let i = 0; i < newName.length; i++) {
