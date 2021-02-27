@@ -74,6 +74,7 @@
                 </div>
 
                 <v-btn
+                    class="mt-3"
                   v-if="!isMobile"
                   text
                   style="text-decoration: none"
