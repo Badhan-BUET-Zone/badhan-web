@@ -87,7 +87,6 @@
                     v-if="!isMobile"
                     text
                     style="text-decoration: none"
-                    disabled
                 >
                     Download App
                     <v-icon right>mdi-google-play</v-icon>
