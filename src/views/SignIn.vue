@@ -73,7 +73,7 @@
                     {{ $store.getters.getError }}
                 </div>
 
-                <!-- <v-btn
+                <v-btn
                   v-if="!isMobile"
                   text
                   style="text-decoration: none"
@@ -81,16 +81,17 @@
                 >
                   Download App
                   <v-icon right>mdi-google-play</v-icon>
-                </v-btn> -->
-
-                <v-btn
-                    v-if="!isMobile"
-                    text
-                    style="text-decoration: none"
-                >
-                    Download App
-                    <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
+
+<!--                <v-btn-->
+<!--                    v-if="!isMobile"-->
+<!--                    text-->
+<!--                    style="text-decoration: none"-->
+<!--                    disabled-->
+<!--                >-->
+<!--                    App under review-->
+<!--                    <v-icon right>mdi-google-play</v-icon>-->
+<!--                </v-btn>-->
             </div>
         </div>
 
