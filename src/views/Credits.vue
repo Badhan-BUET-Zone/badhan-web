@@ -49,9 +49,8 @@ export default {
                     image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media',
                     descriptions: ['Initiator of Badhan Website and Android App', 'Test and Bug Report'],
                     links: [
-                        {icon: 'facebook', color: 'primary', link: 'https://www.facebook.com'},
-                        {icon: 'gmail', color: 'red', link: 'https://google.com'},
-                        {icon:'linkedin',color:'blue',link:''}
+                        {icon: 'facebook', color: 'primary', link: 'https://www.facebook.com/mhrahat01'},
+                        {icon: 'gmail', color: 'red', link: 'mailto:mahamudulrahat@gmail.com'},
                     ]
                 },
                 {
