@@ -71,20 +71,13 @@
             v-if="
               $store.getters.getDesignation === 3 ||
               $store.getters.getPhone == oldPhone ||
-              ($store.getters.getHall === hall &&
+              ($store.getters.getHall === halls.indexOf(hall) &&
                 $store.getters.getDesignation > designation) ||
               hall === 7 ||
               hall === 8
             "
           >
-            <!-- <input
-              type="checkbox"
-              class="custom-control-input"
-              id="customSwitch1"
-              v-model="enableEditing"
-            />
-            <h3 class="custom-control-label" for="customSwitch1"
-              >Toggle to edit details</h3> -->
+
             <v-switch
               v-model="enableEditing"
               inset
@@ -110,17 +103,7 @@
 
               <div v-if="personDetailCollapseFlag">
                 <div class="card-body">
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Name</label>
-                    <div class="col-sm-8">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="name"
-                      />
-                    </div>
-                  </div> -->
+
                   <v-text-field
                     type="'text'"
                     outlined
@@ -128,17 +111,7 @@
                     v-model="name"
                     :disabled="!enableEditing"
                   ></v-text-field>
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Phone</label>
-                    <div class="col-sm-8">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="phone"
-                      />
-                    </div>
-                  </div> -->
+
                   <v-text-field
                     type="'text'"
                     outlined
@@ -147,23 +120,6 @@
                     :disabled="!enableEditing"
                   ></v-text-field>
 
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Blood Group: </label>
-                    <div class="col-sm-8">
-                      <select
-                        class="form-control"
-                        v-model="bloodGroup"
-                        :disabled="!enableEditing"
-                      >
-                        <option
-                          v-for="(blood, index) in bloodGroups"
-                          :value="index"
-                        >
-                          {{ blood }}
-                        </option>
-                      </select>
-                    </div>
-                  </div> -->
                   <v-select
                     v-model="bloodGroup"
                     :items="bloodGroups"
@@ -172,17 +128,6 @@
                     :disabled="!enableEditing"
                   ></v-select>
 
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Student ID: </label>
-                    <div class="col-sm-8">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="studentID"
-                      />
-                    </div>
-                  </div> -->
 
                   <v-text-field
                     type="'text'"
@@ -192,32 +137,6 @@
                     :disabled="!enableEditing"
                   ></v-text-field>
 
-                  <!-- <div class="row"> -->
-                  <!-- <label class="col-sm-4 col-form-label">Hall: </label> -->
-                  <!-- <div class="col-sm-8"> -->
-                  <!-- <select
-                        class="form-control"
-                        v-model="hall"
-                        :disabled="
-                          !enableEditing ||
-                          designation === 2 ||
-                          designation === 1
-                        "
-                      >
-                        <option
-                          v-for="(oneHall, index) in halls"
-                          :value="index"
-                          v-if="
-                            $store.getters.getDesignation === 3 ||
-                            index === 7 ||
-                            $store.getters.getHall === index
-                          "
-                        >
-                          {{ oneHall }}
-                        </option>
-                      </select> -->
-                  <!-- </div> -->
-                  <!-- </div> -->
                   <v-select
                     v-model="hall"
                     :items="availableHalls"
@@ -228,17 +147,6 @@
                     "
                   ></v-select>
 
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Room: </label>
-                    <div class="col-sm-8">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="room"
-                      />
-                    </div>
-                  </div> -->
 
                   <v-text-field
                     type="'text'"
@@ -248,17 +156,6 @@
                     :disabled="!enableEditing"
                   ></v-text-field>
 
-                  <!-- <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Address: </label>
-                    <div class="col-sm-8">
-                      <input
-                        type="text"
-                        class="form-control"
-                        :disabled="!enableEditing"
-                        v-model="address"
-                      />
-                    </div>
-                  </div> -->
 
                   <v-text-field
                     type="'text'"
@@ -329,17 +226,7 @@
                       designation !== 0 || $store.getters.getPhone == oldPhone
                     "
                   >
-                    <!-- <div class="row"> -->
-                      <!-- <label class="col-sm-4 col-form-label"
-                        >New Password:
-                      </label> -->
-                      <!-- <div class="col-sm-8"> -->
-                        <!-- <input
-                          type="password"
-                          class="form-control"
-                          :disabled="!enableEditing"
-                          v-model="newPassword"
-                        /> -->
+
                         <v-text-field
                           :append-icon="
                             newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
@@ -352,19 +239,7 @@
                           @click:append="newPasswordFlag = !newPasswordFlag"
                           :disabled="!enableEditing"
                         ></v-text-field>
-                      <!-- </div> -->
-                    <!-- </div> -->
-                    <!-- <div class="form-group row"> -->
-                      <!-- <label class="col-sm-4 col-form-label"
-                        >Confirm Password:
-                      </label> -->
-                      <!-- <div class="col-sm-8"> -->
-                        <!-- <input
-                          type="password"
-                          class="form-control"
-                          :disabled="!enableEditing"
-                          v-model="confirmPassword"
-                        /> -->
+
                         <v-text-field
                           :append-icon="
                             confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
@@ -958,8 +833,8 @@ export default {
         newName: this.name,
         newPhone: parseInt("88" + this.phone),
         newStudentId: this.studentID,
-        newBloodGroup: this.bloodGroup,
-        newHall: this.hall,
+        newBloodGroup: bloodGroups.indexOf(this.bloodGroup),
+        newHall: halls.indexOf(this.hall),
         newRoomNumber: this.room,
         newAddress: this.address,
       };
