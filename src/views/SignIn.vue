@@ -89,7 +89,7 @@
                     style="text-decoration: none"
                     disabled
                 >
-                    App under review
+                    Download App
                     <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
             </div>
