@@ -153,9 +153,11 @@ const actions = {
             commit('hideFilter');
 
         } catch (error) {
-            commit('setSearchError', response.data.message);
-
-            console.log(error.response);
+            if(error.response.status===500){
+                commit('setSearchError',error);
+            }else{
+                commit('setSearchError', error.response.data.message);
+            }
         } finally {
             commit('searchLoaderFlagOff');
         }
