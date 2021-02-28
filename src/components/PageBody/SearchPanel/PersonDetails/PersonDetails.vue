@@ -456,7 +456,7 @@
 
 <script>
 import { halls, bloodGroups } from "@/constants";
-import axios from "axios";
+import {badhanAxios} from "@/api";
 
 export default {
   name: "PersonDetails",
@@ -606,7 +606,7 @@ export default {
       console.log("REQUEST TO /donor/comment: ", sendData);
       this.commentSpinner = true;
       try {
-        let response = await axios.post("/donor/comment", sendData, {
+        let response = await badhanAxios.post("/donor/comment", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donor/comment: ", response);
@@ -640,7 +640,7 @@ export default {
       this.historySpinner = true;
 
       try {
-        let response = await axios.post("/donation/delete", sendData, {
+        let response = await badhanAxios.post("/donation/delete", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donation/delete: ", response);
@@ -714,7 +714,7 @@ export default {
       this.settingsSpinner = true;
       console.log("REQUEST TO /admin/promote: ", sendData);
       try {
-        let response = await axios.post("/admin/promote", sendData, {
+        let response = await badhanAxios.post("/admin/promote", sendData, {
           headers: headers,
         });
 
@@ -749,7 +749,7 @@ export default {
 
       this.settingsSpinner = true;
       try {
-        let response = await axios.post("/admin/promote", sendData, {
+        let response = await badhanAxios.post("/admin/promote", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /admin/promote: ", response);
@@ -789,7 +789,7 @@ export default {
       console.log("REQUEST TO /donor/password/change: ", sendData);
       this.settingsSpinner = true;
       try {
-        let response = await axios.post("/donor/password/change", sendData, {
+        let response = await badhanAxios.post("/donor/password/change", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donor/password/change: ", response);
@@ -844,7 +844,7 @@ export default {
       console.log("REQUEST TO /donor/ecit: ", sendData);
 
       try {
-        let response = await axios.post("/donor/edit", sendData, {
+        let response = await badhanAxios.post("/donor/edit", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donor/edit: ", response);
@@ -883,7 +883,7 @@ export default {
       console.log("REQUEST TO /donor/donations: ", sendData);
 
       try {
-        let response = await axios.post("/donor/donations", sendData, {
+        let response = await badhanAxios.post("/donor/donations", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donor/donations: ", response);

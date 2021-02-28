@@ -293,7 +293,7 @@
 <script>
 import { bloodGroups, halls, departments } from "@/constants";
 import Datepicker from "vuejs-datepicker";
-import axios from "axios";
+import {badhanAxios} from "@/api";
 
 export default {
   name: "HallAdminPanel",
@@ -499,7 +499,7 @@ export default {
       this.newDonorLoaderFlag = true;
 
       try {
-        let response = await axios.post("/donor/insert", sendData, {
+        let response = await badhanAxios.post("/donor/insert", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donor/insert: ", response);
@@ -519,20 +519,7 @@ export default {
     },
 
     async getVolunteers() {
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      let sendData = {};
 
-      console.log("REQUEST TO /admin/volunteers: ", sendData);
-
-      try {
-        let response = await axios.post("/admin/volunteers", sendData, {
-          headers: headers,
-        });
-      } catch (e) {
-      } finally {
-      }
     },
   },
 };

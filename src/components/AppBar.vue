@@ -124,8 +124,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import {eventBus} from "@/main";
 
 export default {
     data: () => ({
@@ -146,35 +144,7 @@ export default {
             // this.$store.commit('showSearchPanel');
 
             await this.$router.push({path:'/home/details', query: { phone: this.$store.getters.getPhone }});
-            
-/*
-            let sendData = {
-                donorPhone: parseInt(this.$store.getters.getPhone)
-            };
-            let headers = {
-                'x-auth': this.$store.getters.getToken
-            }
-            console.log('REQUEST TO /donor/details: ', sendData);
 
-            this.$store.commit('setLoadingTrue');
-
-            try {
-                let response = await axios.post('/donor/details', sendData, {headers: headers});
-                console.log("RESPONSE FROM /donor/details: ",response);
-                if (response.status !== 200) {
-                    this.error = "Status code not 200";
-                    return;
-                }
-
-                eventBus.$emit('dataloaded', response.data.donor);
-
-
-            } catch (error) {
-                eventBus.$emit('errorFound', error.response);
-            } finally {
-                this.$store.commit('setLoadingFalse');
-            }
-            */
         },
         async signOutClicked() {
             

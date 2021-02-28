@@ -17,11 +17,10 @@ import Mixins from '@/mixins/index'
 Vue.mixin(Mixins);
 
 //previous badhan project
-import axios from 'axios';
 import vuetify from './plugins/vuetify';
 // import './registerServiceWorker'
 
-axios.defaults.baseURL='https://badhan-backend.herokuapp.com';
+
 
 Vue.config.productionTip = false;
 export const eventBus = new Vue();

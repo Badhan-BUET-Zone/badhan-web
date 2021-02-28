@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {badhanAxios} from '@/api';
 const state = {
     hallAdmins: null,
     hallAdminsLoaderFlag: false,
@@ -78,7 +78,7 @@ const actions = {
         console.log('REQUEST TO /admin/hall/show: ', sendData);
 
         try {
-            let response = await axios.post('/admin/hall/show', sendData, { headers: headers });
+            let response = await badhanAxios.post('/admin/hall/show', sendData, { headers: headers });
             console.log('RESPONSE FROM /admin/hall/show: ', response);
 
             if (response.status !== 200) {
@@ -118,7 +118,7 @@ const actions = {
             console.log('REQUEST TO /admin/hall/change: ', sendData);
 
             try {
-                let response = await axios.post('/admin/hall/change', sendData, {headers: headers});
+                let response = await badhanAxios.post('/admin/hall/change', sendData, {headers: headers});
                 console.log("RESPONSE FROM /admin/hall/change: ", response);
                 if (response.status !== 200) {
                     commit('setChangeAdminError',"Status code not 200");

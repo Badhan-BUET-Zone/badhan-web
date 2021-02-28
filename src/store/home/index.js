@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {badhanAxios} from '@/api';
 import { bloodGroups, halls } from "@/constants";
 
 let compareObject = (a, b) => {
@@ -140,7 +140,7 @@ const actions = {
         };
         console.log('REQUEST POST TO /donor/search: ', sendData);
         try {
-            let response = await axios.post('/donor/search', sendData, { headers: headers });
+            let response = await badhanAxios.post('/donor/search', sendData, { headers: headers });
             console.log("RESPONSE FROM /donor/search: ", response);
 
             if (response.status !== 200) {

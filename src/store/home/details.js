@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {badhanAxios} from '/src/api'
 const state={
     //SEE DONOR DETAILS
     name: null,
@@ -86,7 +86,7 @@ const actions={
         commit('donorLoaderFlagOn');
 
         try {
-            let response = await axios.post('/donor/details', sendData, {headers: headers});
+            let response = await badhanAxios.post('/donor/details', sendData, {headers: headers});
             console.log("RESPONSE FROM /donor/details: ",response);
             if (response.status !== 200) {
                 return;

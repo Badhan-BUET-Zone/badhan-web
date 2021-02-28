@@ -1,4 +1,4 @@
-import axios from 'axios';
+import {badhanAxios} from '@/api';
 
 const state = {
     token: null,
@@ -70,7 +70,7 @@ const actions = {
         try {
             commit('setLoadingTrue');
             console.log("REQUEST TO /users/signout: BLANK");
-            let response = await axios.post('/users/signout', {}, { headers: { 'x-auth': getters.getToken } });
+            let response = await badhanAxios.post('/users/signout', {}, { headers: { 'x-auth': getters.getToken } });
             console.log("RESPONSE FROM /users/signout: ", response);
             
         } catch (e) {
@@ -102,7 +102,7 @@ const actions = {
                 password: payload.password
             };
             console.log("REQUEST POST TO /users/signin: HIDDEN");
-            let response = await axios.post('/users/signin', sendData);
+            let response = await badhanAxios.post('/users/signin', sendData);
 
             console.log("RESPONSE FROM /users/signin: ", response);
 
@@ -121,7 +121,7 @@ const actions = {
             };
 
             console.log("REQUEST POST TO /donor/details: ", sendData);
-            let profileInfo = await axios.post('/donor/details', sendData, { headers: headers });
+            let profileInfo = await badhanAxios.post('/donor/details', sendData, { headers: headers });
 
             console.log("RESPONSE FROM /donor/details: ", profileInfo);
 

@@ -139,7 +139,7 @@
 import { eventBus } from "@/main";
 import { departments, bloodGroups } from "@/constants";
 import Datepicker from "vuejs-datepicker";
-import axios from "axios";
+import {badhanAxios} from "@/api";
 
 export default {
   name: "PersonCard",
@@ -186,38 +186,7 @@ export default {
         path: "/home/details",
         query: { phone:  this.$props.phone },
       });
-/*
-      let sendData = {
-        donorPhone: this.$props.phone,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donor/details: ", sendData);
 
-      try {
-        let response = await axios.post("/donor/details", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donor/details: ", response);
-        if (response.status !== 200) {
-          this.error = "Status code not 200";
-          eventBus.$emit("errorFound", {
-            message: this.error,
-          });
-        }
-
-        eventBus.$emit("dataloaded", response.data.donor);
-      } catch (error) {
-        this.error = error.response.data.message;
-        eventBus.$emit("errorFound", {
-          message: this.error,
-        });
-        console.log(error.response);
-      } finally {
-        this.seeDetailsLoaderFlag = false;
-      }
-      */
     },
     async donate() {
       this.error = "";
@@ -234,7 +203,7 @@ export default {
       console.log("REQUESTING TO /donation/insert : ", sendData);
 
       try {
-        let response = await axios.post("/donation/insert", sendData, {
+        let response = await badhanAxios.post("/donation/insert", sendData, {
           headers: headers,
         });
         console.log("RESPONSE FROM /donation/insert: ", response);
