@@ -73,8 +73,8 @@
               $store.getters.getPhone == oldPhone ||
               ($store.getters.getHall === halls.indexOf(hall) &&
                 $store.getters.getDesignation > designation) ||
-              hall === 7 ||
-              hall === 8
+              halls.indexOf(hall) === 7 ||
+              halls.indexOf(hall) === 8
             "
           >
 
