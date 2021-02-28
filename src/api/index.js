@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const badhanAxios = axios.create({
     baseURL:'https://badhan-backend.herokuapp.com'
 });

@@ -48,6 +48,10 @@ const routes = [
     name: 'Credits',
     path: '/credits',
     component: Credits
+  },
+  {
+    name: 'LogOut',
+    path: '/logout',
   }
 
 ]
