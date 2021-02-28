@@ -200,6 +200,8 @@ export default {
       this.bloodGroup = -1;
       this.name = "";
       this.error = "";
+      this.address="";
+      this.$store.commit('hideSearchResults');
     },
     showFilter() {
       this.$store.commit("showFilter");
