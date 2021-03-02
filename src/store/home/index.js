@@ -17,6 +17,8 @@ const state = {
     filterShownFlag: true,
     searchResultShown: false,
     personGroups: {},
+
+    persons:[],
     numOfDonor: 0,
 
 
@@ -48,6 +50,10 @@ const getters = {
     getNumberOfDonors: state => {
         return state.numOfDonor;
     },
+    getPersons: state=>{
+        return state.persons;
+    },
+
 
 
 };
@@ -89,7 +95,10 @@ const mutations = {
             //REDUNTANT PROPERTY USED!! NEED TO OPTIMIZE IN FUTURE
             human.studentID = Number(human.studentId);
         });
+
         let persons = payload;
+        state.persons = payload;
+
         //persons.sort(this.compare);
         let groupedPersons = persons.reduce(function (obj, person) {
             let batch = person.studentID.toString().substr(0, 2);
