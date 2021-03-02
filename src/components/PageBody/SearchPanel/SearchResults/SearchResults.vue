@@ -15,6 +15,7 @@
 
 
             <json-excel
+                v-if="!isSmallWindow"
                 :data="$store.getters.getPersons"
                 name="badhan.xls"
                 worksheet="Badhan"
@@ -41,6 +42,9 @@
                     Download Data
                 </v-btn>
             </json-excel>
+            <v-btn v-else color="primary" rounded class="mb-4" style="width: 100%" disabled>
+                Download available on PC
+            </v-btn>
 
             <div v-for="(obj, index) in $store.getters.getPersonGroups" :key="index">
                 <div class="alert alert-primary card" role="alert">
@@ -76,6 +80,11 @@ export default {
         };
     },
     methods: {},
+    computed:{
+      isSmallWindow(){
+          return window.innerWidth<500;
+      }
+    },
     created() {
     },
     components: {
