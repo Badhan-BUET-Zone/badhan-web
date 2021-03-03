@@ -13,57 +13,57 @@
                 <div class="h4 p-2">Sign into Badhan Sync</div>
 
                 <div>
-<!--                        <label>Phone </label>-->
-<!--                        <input-->
-<!--                            class="form-control"-->
-<!--                            type="text"-->
-<!--                            v-model="phone"-->
-<!--                            placeholder="11 Digit Phone number"-->
-<!--                        />-->
-                        <v-text-field
-                            :type="'text'"
-                            outlined
-                            label="Phone"
-                            v-model="phone"
-                            class="input-group--focused"
+                    <!--                        <label>Phone </label>-->
+                    <!--                        <input-->
+                    <!--                            class="form-control"-->
+                    <!--                            type="text"-->
+                    <!--                            v-model="phone"-->
+                    <!--                            placeholder="11 Digit Phone number"-->
+                    <!--                        />-->
+                    <v-text-field
+                        :type="'text'"
+                        outlined
+                        label="Phone"
+                        v-model="phone"
+                        class="input-group--focused"
 
-                        ></v-text-field>
+                    ></v-text-field>
 
-<!--                        <label>Password </label>-->
-<!--                        <input-->
-<!--                            class="form-control"-->
-<!--                            type="password"-->
-<!--                            v-model="password"-->
-<!--                            placeholder="Password"-->
-<!--                        />-->
+                    <!--                        <label>Password </label>-->
+                    <!--                        <input-->
+                    <!--                            class="form-control"-->
+                    <!--                            type="password"-->
+                    <!--                            v-model="password"-->
+                    <!--                            placeholder="Password"-->
+                    <!--                        />-->
 
-                        <v-text-field
-                            :append-icon="
+                    <v-text-field
+                        :append-icon="
                             passwordFlag ? 'mdi-eye' : 'mdi-eye-off'
                           "
-                            :type="passwordFlag ? 'text' : 'password'"
-                            outlined
-                            label="Password"
-                            v-model="password"
-                            class="input-group--focused"
-                            @click:append="passwordFlag = !passwordFlag"
+                        :type="passwordFlag ? 'text' : 'password'"
+                        outlined
+                        label="Password"
+                        v-model="password"
+                        class="input-group--focused"
+                        @click:append="passwordFlag = !passwordFlag"
 
-                        ></v-text-field>
+                    ></v-text-field>
 
 
-                        <v-checkbox v-model="rememberFlag" label="Remember me"></v-checkbox>
+                    <v-checkbox v-model="rememberFlag" label="Remember me"></v-checkbox>
 
-                        <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
-                        <v-btn
-                            color="primary"
-                            rounded
-                            class="ml-2"
-                            @click="signInClicked()"
-                            :disabled="$store.getters.getSignInLoaderFlag"
-                            :loading="$store.getters.getSignInLoaderFlag"
-                        >
-                            Sign In
-                        </v-btn>
+                    <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
+                    <v-btn
+                        color="primary"
+                        rounded
+                        class="ml-2"
+                        @click="signInClicked()"
+                        :disabled="$store.getters.getSignInLoaderFlag"
+                        :loading="$store.getters.getSignInLoaderFlag"
+                    >
+                        Sign In
+                    </v-btn>
                 </div>
                 <div
                     class="alert alert-danger mt-4"
@@ -75,24 +75,25 @@
 
                 <v-btn
                     class="mt-3"
-                  v-if="!isMobile"
-                  text
-                  style="text-decoration: none"
-                  href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
+                    v-if="!isMobile"
+                    text
+                    style="text-decoration: none"
+                    href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
                 >
-                  Download App
-                  <v-icon right>mdi-google-play</v-icon>
+                    Download App
+                    <v-icon right>mdi-google-play</v-icon>
+                </v-btn>
+                <v-btn
+                    class="mt-3"
+                    v-else
+                    text
+                    style="text-decoration: none"
+                    href="https://badhan-buet.web.app"
+                >
+                    Web Version
+                    <v-icon right>mdi-web</v-icon>
                 </v-btn>
 
-<!--                <v-btn-->
-<!--                    v-if="!isMobile"-->
-<!--                    text-->
-<!--                    style="text-decoration: none"-->
-<!--                    disabled-->
-<!--                >-->
-<!--                    App under review-->
-<!--                    <v-icon right>mdi-google-play</v-icon>-->
-<!--                </v-btn>-->
             </div>
         </div>
 
