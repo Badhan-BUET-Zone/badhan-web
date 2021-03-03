@@ -15,12 +15,12 @@ const routes = [
   {
     name: 'HallAdmin',
     path: '/halladmin',
-    component: HallAdmin
+    component: () => import('@/views/HallAdmin.vue')
   },
   {
     name: 'SuperAdmin',
     path: '/superadmin',
-    component: SuperAdmin
+    component: () => import('@/views/SuperAdmin.vue')
   },
   {
     name: 'Home',
@@ -42,12 +42,12 @@ const routes = [
   {
     name: 'Settings',
     path: '/settings',
-    component: Settings
+    component: () => import('@/views/Settings.vue')
   },
   {
     name: 'Credits',
     path: '/credits',
-    component: Credits
+    component: () => import('@/views/Credits.vue')
   },
   {
     name: 'LogOut',
