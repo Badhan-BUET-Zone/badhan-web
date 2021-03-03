@@ -66,7 +66,7 @@
                         </v-btn>
                 </div>
                 <div
-                    class="alert alert-danger animated jello"
+                    class="alert alert-danger mt-4"
                     role="alert"
                     v-if="$store.getters.getError.length !== 0"
                 >

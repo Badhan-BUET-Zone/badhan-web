@@ -222,7 +222,7 @@
         <br />
       </div>
 
-      <div class="card col-lg-6 col-md-12 col-sm-12 p-4 animated fadeIn">
+      <div class="card col-lg-6 col-md-12 col-sm-12 p-4">
         <div>
           <div class="card">
             <div class="card-header">
@@ -274,17 +274,64 @@
                   >
                 </div>
               </div>
-              <!-- <div
-                class="alert alert-danger animated jello"
-                role="alert"
-                v-if="errorArchive.length !== 0"
-              >
-                {{ errorArchive }}
-              </div> -->
             </div>
           </div>
         </div>
       </div>
+
+        <div class="card col-lg-6 col-md-12 col-sm-12 p-4" v-if="$store.getters.getDesignation===2">
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <b-button
+                                variant="light"
+                                @click="seeVolunteersFlag = !seeVolunteersFlag"
+                            >
+                                See volunteers
+                            </b-button>
+                        </h5>
+                    </div>
+                    <div v-if="seeVolunteersFlag">
+                        <div class="card-body">
+                            <v-btn rounded :loading="$store.getters.getVolunteerLoader" :disabled="$store.getters.getVolunteerLoader" color="primary" @click="$store.dispatch('fetchVolunteers')">Get volunteers</v-btn>
+                        </div>
+
+                        <v-simple-table v-if="$store.getters.getVolunteers.length!==0">
+                            <template v-slot:default>
+                                <thead>
+                                <tr>
+                                    <th class="text-left">
+                                        Name
+                                    </th>
+                                    <th class="text-left">
+                                        Phone
+                                    </th>
+                                    <th class="text-left">
+                                        Blood Group
+                                    </th>
+                                    <th class="text-left">
+                                        Room
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr
+                                    v-for="volunteer in $store.getters.getVolunteers"
+                                    :key="volunteer.name"
+                                >
+                                    <td>{{ volunteer.name }}</td>
+                                    <td>+{{ volunteer.phone }}</td>
+                                    <td>{{bloodGroups[volunteer.bloodGroup]}}</td>
+                                    <td>{{volunteer.roomNumber}}</td>
+                                </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
   </div>
@@ -299,48 +346,6 @@ export default {
   name: "HallAdminPanel",
   data: function () {
     return {
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-        },
-      ],
 
       //new donor
       phone: "",
@@ -379,6 +384,7 @@ export default {
       personDetailsCollapseFlag: !this.$isMobile(),
       archiveCollapseFlag: !this.$isMobile(),
       seeVolunteersFlag: !this.$isMobile(),
+
 
       newDonorLoaderFlag: false,
     };

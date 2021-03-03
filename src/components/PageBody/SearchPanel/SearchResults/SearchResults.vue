@@ -36,6 +36,8 @@
                         },
                     },
                     address:'address',
+                    roomNumber: 'roomNumber',
+                    donationCount: 'donationCount'
                 }"
             >
                 <v-btn color="primary" rounded class="mb-4" style="width: 100%">
