@@ -8,6 +8,7 @@ import halladmin from '@/store/halladmin';
 import home from '@/store/home';
 import superadmin from '@/store/superadmin';
 import details from '@/store/home/details';
+import userDetails from '@/store/userDetails';
 
 export const store = new Vuex.Store({
 
@@ -40,6 +41,7 @@ export const store = new Vuex.Store({
     home,
     superadmin,
     details,
+    userDetails,
   }
 });
 

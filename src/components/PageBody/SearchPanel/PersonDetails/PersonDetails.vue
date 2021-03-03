@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <v-card
-        data-aos="fade-down"
-      v-if="$store.getters['details/getDonorLoaderFlag']"
-      style="
+    <div>
+        <v-card
+            data-aos="fade-down"
+            v-if="$store.getters['details/getDonorLoaderFlag']"
+            style="
         z-index: 90;
         position: fixed;
         left: 0px;
@@ -12,13 +12,13 @@
         width: 100vw;
         overflow-y: scroll;
       "
-      class="pa-5 d-flex justify-center"
-    >
-      <v-progress-circular indeterminate color="red"></v-progress-circular>
-    </v-card>
-    <v-card
-      v-else
-      style="
+            class="pa-5 d-flex justify-center"
+        >
+            <v-progress-circular indeterminate color="red"></v-progress-circular>
+        </v-card>
+        <v-card
+            v-else
+            style="
         z-index: 90;
         position: fixed;
         left: 0px;
@@ -27,48 +27,48 @@
         width: 100vw;
         overflow-y: scroll;
       "
-      class="pa-5"
-    >
-      <v-app-bar color="red" dark>
-        <v-btn icon @click="$router.push('/home')">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <v-toolbar-title> Person Details </v-toolbar-title>
-      </v-app-bar>
+            class="pa-5"
+        >
+            <v-app-bar color="red" dark>
+                <v-btn icon @click="$router.push('/home')">
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+                <v-toolbar-title> Person Details</v-toolbar-title>
+            </v-app-bar>
 
-      <v-card-title
-        v-if="
+            <v-card-title
+                v-if="
           !$store.getters.getLoadingFlag && errorDetailsLoading.length === 0
         "
-      >
-        <span>{{ name }}</span>
-      </v-card-title>
+            >
+                <span>{{ name }}</span>
+            </v-card-title>
 
-      <v-card-subtitle>
-        (<span v-if="designation === 2">Hall admin</span>
-        <span v-else-if="designation === 3">Super admin</span>
-        <span v-else-if="designation === 1">Volunteer</span>
-        <span v-else-if="designation === 0">Donor</span>)
-      </v-card-subtitle>
+            <v-card-subtitle>
+                (<span v-if="designation === 2">Hall admin</span>
+                <span v-else-if="designation === 3">Super admin</span>
+                <span v-else-if="designation === 1">Volunteer</span>
+                <span v-else-if="designation === 0">Donor</span>)
+            </v-card-subtitle>
 
-      <div class="mb-5">
+            <div class="mb-5">
         <span v-if="availableIn > 0" class="alert alert-danger"
-          >{{ this.availableIn }} Days remaining</span
+        >{{ this.availableIn }} Days remaining</span
         >
-        <span v-else class="alert alert-success">Available</span>
-      </div>
+                <span v-else class="alert alert-success">Available</span>
+            </div>
 
-      <!--            Modal Body-->
-      <div
-        class="modal-body row"
-        v-if="!$store.getters.getLoadingFlag"
-      >
-        <!--                Modal First column-->
-        <div class="card col-lg-8 col-md-12 col-sm-12">
-          <br />
-          <div
-            class="custom-control custom-switch"
-            v-if="
+            <!--            Modal Body-->
+            <div
+                class="modal-body row"
+                v-if="!$store.getters.getLoadingFlag"
+            >
+                <!--                Modal First column-->
+                <div class="card col-lg-8 col-md-12 col-sm-12">
+                    <br/>
+                    <div
+                        class="custom-control custom-switch"
+                        v-if="
               $store.getters.getDesignation === 3 ||
               $store.getters.getPhone == oldPhone ||
               ($store.getters.getHall === halls.indexOf(hall) &&
@@ -76,881 +76,807 @@
               halls.indexOf(hall) === 7 ||
               halls.indexOf(hall) === 8
             "
-          >
+                    >
 
-            <v-switch
-              v-model="enableEditing"
-              inset
-              :label="'Toggle to edit details'"
-            ></v-switch>
-          </div>
-          <br />
+                        <v-switch
+                            v-model="enableEditing"
+                            inset
+                            :label="'Toggle to edit details'"
+                        ></v-switch>
+                    </div>
+                    <br/>
 
-          <div>
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                  <button
-                    class="btn btn-link"
-                    @click="
+                    <div>
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button
+                                        class="btn btn-link"
+                                        @click="
                       personDetailCollapseFlag = !personDetailCollapseFlag
                     "
-                  >
-                    Person Details
-                  </button>
-                </h5>
-              </div>
+                                    >
+                                        Person Details
+                                    </button>
+                                </h5>
+                            </div>
 
-              <div v-if="personDetailCollapseFlag">
-                <div class="card-body">
+                            <div v-if="personDetailCollapseFlag">
+                                <div class="card-body">
 
-                  <v-text-field
-                    type="'text'"
-                    outlined
-                    label="Name"
-                    v-model="name"
-                    :disabled="!enableEditing"
-                  ></v-text-field>
+                                    <v-text-field
+                                        type="'text'"
+                                        outlined
+                                        label="Name"
+                                        v-model="name"
+                                        :disabled="!enableEditing"
+                                    ></v-text-field>
 
-                  <v-text-field
-                    type="'text'"
-                    outlined
-                    label="Phone"
-                    v-model="phone"
-                    :disabled="!enableEditing"
-                  ></v-text-field>
+                                    <v-text-field
+                                        type="'text'"
+                                        outlined
+                                        label="Phone"
+                                        v-model="phone"
+                                        :disabled="!enableEditing"
+                                    ></v-text-field>
 
-                  <v-select
-                    v-model="bloodGroup"
-                    :items="bloodGroups"
-                    label="Blood Group"
-                    outlined
-                    :disabled="!enableEditing"
-                  ></v-select>
+                                    <v-select
+                                        v-model="bloodGroup"
+                                        :items="bloodGroups"
+                                        label="Blood Group"
+                                        outlined
+                                        :disabled="!enableEditing"
+                                    ></v-select>
 
 
-                  <v-text-field
-                    type="'text'"
-                    outlined
-                    label="Student ID: "
-                    v-model="studentID"
-                    :disabled="!enableEditing"
-                  ></v-text-field>
+                                    <v-text-field
+                                        type="'text'"
+                                        outlined
+                                        label="Student ID: "
+                                        v-model="studentID"
+                                        :disabled="!enableEditing"
+                                    ></v-text-field>
 
-                  <v-select
-                    v-model="hall"
-                    :items="availableHalls"
-                    label="Hall"
-                    outlined
-                    :disabled="
+                                    <v-select
+                                        v-model="hall"
+                                        :items="availableHalls"
+                                        label="Hall"
+                                        outlined
+                                        :disabled="
                       !enableEditing || designation === 2 || designation === 1
                     "
-                  ></v-select>
+                                    ></v-select>
 
 
-                  <v-text-field
-                    type="'text'"
-                    outlined
-                    label="Room"
-                    v-model="room"
-                    :disabled="!enableEditing"
-                  ></v-text-field>
+                                    <v-text-field
+                                        type="'text'"
+                                        outlined
+                                        label="Room"
+                                        v-model="room"
+                                        :disabled="!enableEditing"
+                                    ></v-text-field>
 
 
-                  <v-text-field
-                    type="'text'"
-                    outlined
-                    label="Address"
-                    v-model="address"
-                    :disabled="!enableEditing"
-                  ></v-text-field>
+                                    <v-text-field
+                                        type="'text'"
+                                        outlined
+                                        label="Address"
+                                        v-model="address"
+                                        :disabled="!enableEditing"
+                                    ></v-text-field>
 
-                  <div
-                    v-if="
+                                    <div
+                                        v-if="
                       $store.getters.getDesignation > designation ||
                       $store.getters.getPhone == oldPhone
                     "
-                  >
-                    <v-btn color="warning" rounded @click="dialog = false"
-                      >Cancel
-                    </v-btn>
-                    <v-btn
-                      color="primary"
-                      rounded
-                      class="white--text ml-2"
-                      :disabled="detailsSpinner || !enableEditing"
-                      :loading="detailsSpinner"
-                      @click="saveDetailsClicked()"
-                      >Save
-                    </v-btn>
-                  </div>
-                  <br />
-                  <div
-                    class="alert alert-danger animated jello"
-                    role="alert"
-                    v-if="errorDetails.length !== 0"
-                  >
-                    {{ errorDetails }}
-                  </div>
-                  <div
-                    class="alert alert-success animated jello"
-                    role="alert"
-                    v-if="successDetails.length !== 0"
-                  >
-                    {{ successDetails }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="card"
-              v-if="
+                                    >
+                                        <v-btn color="warning" rounded @click="dialog = false"
+                                        >Cancel
+                                        </v-btn>
+                                        <v-btn
+                                            color="primary"
+                                            rounded
+                                            class="white--text ml-2"
+                                            :disabled="$store.getters['userDetails/getDetailsLoaderFlag'] || !enableEditing"
+                                            :loading="$store.getters['userDetails/getDetailsLoaderFlag']"
+                                            @click="saveDetailsClicked()"
+                                        >Save
+                                        </v-btn>
+                                    </div>
+                                    <br/>
+                                    <div
+                                        class="alert alert-danger animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['userDetails/getDetailsError']!==null"
+                                    >
+                                        {{ $store.getters['userDetails/getDetailsError'] }}
+                                    </div>
+                                    <div
+                                        class="alert alert-success animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['userDetails/getDetailsSuccess']!==null"
+                                    >
+                                        {{ $store.getters['userDetails/getDetailsSuccess'] }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="card"
+                            v-if="
                 $store.getters.getDesignation > designation ||
                 $store.getters.getPhone == oldPhone
               "
-            >
-              <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                  <button
-                    class="btn btn-link"
-                    @click="settingsCollapseFlag = !settingsCollapseFlag"
-                  >
-                    Settings
-                  </button>
-                </h5>
-              </div>
-              <div v-if="settingsCollapseFlag">
-                <div class="card-body">
-                  <div
-                    v-if="
+                        >
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <button
+                                        class="btn btn-link"
+                                        @click="settingsCollapseFlag = !settingsCollapseFlag"
+                                    >
+                                        Settings
+                                    </button>
+                                </h5>
+                            </div>
+                            <div v-if="settingsCollapseFlag">
+                                <div class="card-body">
+                                    <div
+                                        v-if="
                       designation !== 0 || $store.getters.getPhone == oldPhone
                     "
-                  >
+                                    >
 
-                        <v-text-field
-                          :append-icon="
+                                        <v-text-field
+                                            :append-icon="
                             newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
                           "
-                          :type="newPasswordFlag ? 'text' : 'password'"
-                          outlined
-                          label="New Password"
-                          v-model="newPassword"
-                          class="input-group--focused"
-                          @click:append="newPasswordFlag = !newPasswordFlag"
-                          :disabled="!enableEditing"
-                        ></v-text-field>
+                                            :type="newPasswordFlag ? 'text' : 'password'"
+                                            outlined
+                                            label="New Password"
+                                            v-model="newPassword"
+                                            class="input-group--focused"
+                                            @click:append="newPasswordFlag = !newPasswordFlag"
+                                            :disabled="!enableEditing"
+                                        ></v-text-field>
 
-                        <v-text-field
-                          :append-icon="
+                                        <v-text-field
+                                            :append-icon="
                             confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
                           "
-                          :type="confirmPasswordFlag ? 'text' : 'password'"
-                          outlined
-                          label="Confirm Password"
-                          v-model="confirmPassword"
-                          class="input-group--focused"
-                          @click:append="
+                                            :type="confirmPasswordFlag ? 'text' : 'password'"
+                                            outlined
+                                            label="Confirm Password"
+                                            v-model="confirmPassword"
+                                            class="input-group--focused"
+                                            @click:append="
                             confirmPasswordFlag = !confirmPasswordFlag
                           "
-                          :disabled="!enableEditing"
-                        ></v-text-field>
-                      <!-- </div> -->
-                    <!-- </div> -->
-                    <button
-                      v-if="
+                                            :disabled="!enableEditing"
+                                        ></v-text-field>
+                                        <!-- </div> -->
+                                        <!-- </div> -->
+                                        <button
+                                            v-if="
                         designation == 1 && $store.getters.getPhone !== oldPhone
                       "
-                      class="btn btn-outline-danger"
-                      :disabled="!enableEditing"
-                      style="width: 100%"
-                      @click="demote()"
-                    >
-                      Demote this member to donor
-                    </button>
-                  </div>
+                                            class="btn btn-outline-danger"
+                                            :disabled="!enableEditing"
+                                            style="width: 100%"
+                                            @click="demote()"
+                                        >
+                                            Demote this member to donor
+                                        </button>
+                                    </div>
 
-                  <div
-                    v-if="
+                                    <div
+                                        v-if="
                       $store.getters.getDesignation > 1 &&
                       designation == 0 &&
                       hall !== 7 &&
                       hall !== 8
                     "
-                  >
-                    <label>Promote this member to volunteer</label>
-                    <div class="form-group row">
-                      <label class="col-sm-4 col-form-label"
-                        >New Password:
-                      </label>
-                      <div class="col-sm-8">
-                        <input
-                          type="password"
-                          class="form-control"
-                          :disabled="!enableEditing"
-                          v-model="newPassword"
-                        />
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-sm-4 col-form-label"
-                        >Confirm Password:
-                      </label>
-                      <div class="col-sm-8">
-                        <input
-                          type="password"
-                          class="form-control"
-                          :disabled="!enableEditing"
-                          v-model="confirmPassword"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                                    >
+                                        <label>Promote this member to volunteer</label>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label"
+                                            >New Password:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input
+                                                    type="password"
+                                                    class="form-control"
+                                                    :disabled="!enableEditing"
+                                                    v-model="newPassword"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label"
+                                            >Confirm Password:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input
+                                                    type="password"
+                                                    class="form-control"
+                                                    :disabled="!enableEditing"
+                                                    v-model="confirmPassword"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                  <div
-                    v-if="
+                                    <div
+                                        v-if="
                       $store.getters.phone === oldPhone ||
                       $store.getters.getDesignation > 1
                     "
-                  >
-                    <v-btn color="warning" @click="hideDetails()" rounded
-                      >Cancel
-                    </v-btn>
-                    <v-btn
-                      color="primary"
-                      class="white--text ml-2"
-                      rounded
-                      :disabled="settingsSpinner || !enableEditing"
-                      :loading="settingsSpinner"
-                      @click="saveSettingsClicked()"
-                      >Save
-                    </v-btn>
-                  </div>
-                  <br />
-                  <div
-                    class="alert alert-danger animated jello"
-                    role="alert"
-                    v-if="errorSettings.length !== 0"
-                  >
-                    {{ errorSettings }}
-                  </div>
-                  <div
-                    class="alert alert-success animated jello"
-                    role="alert"
-                    v-if="successSettings.length !== 0"
-                  >
-                    {{ successSettings }}
-                  </div>
+                                    >
+                                        <v-btn color="warning" @click="hideDetails()" rounded
+                                        >Cancel
+                                        </v-btn>
+                                        <v-btn
+                                            color="primary"
+                                            class="white--text ml-2"
+                                            rounded
+                                            :disabled="settingsSpinner || !enableEditing"
+                                            :loading="settingsSpinner"
+                                            @click="saveSettingsClicked()"
+                                        >Save
+                                        </v-btn>
+                                    </div>
+                                    <br/>
+                                    <div
+                                        class="alert alert-danger animated jello"
+                                        role="alert"
+                                        v-if="errorSettings.length !== 0"
+                                    >
+                                        {{ errorSettings }}
+                                    </div>
+                                    <div
+                                        class="alert alert-success animated jello"
+                                        role="alert"
+                                        v-if="successSettings.length !== 0"
+                                    >
+                                        {{ successSettings }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div>
+                        <div class="card">
+
+                            <div class="col-sm-12">
+
+                                <v-textarea
+                                    name="comment"
+                                    outlined
+                                    v-model="comment"
+                                    label="Comment"
+                                    auto-grow
+                                    dense
+                                    :disabled="!enableEditing"
+                                    :rows="1"
+                                ></v-textarea>
+                            </div>
+                            <v-btn
+                                color="primary"
+                                :disabled="commentSpinner || !enableEditing"
+                                :loading="commentSpinner"
+                                @click="saveCommentClicked()"
+                            >
+                                Save Comment
+                            </v-btn>
+                        </div>
+                    </div>
+
+                    <div
+                        class="alert alert-danger animated jello"
+                        role="alert"
+                        v-if="errorComment.length !== 0"
+                    >
+                        {{ errorComment }}
+                    </div>
+                    <div
+                        class="alert alert-success animated jello"
+                        role="alert"
+                        v-if="successComment.length !== 0"
+                    >
+                        {{ successComment }}
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <br />
-          <div>
-            <div class="card">
-              <!-- <label class="col-sm-12 col-form-label">Comment: </label> -->
 
-              <div class="col-sm-12">
-                <!-- <input
-                type="text"
-                class="form-control"
-                :disabled="!enableEditing"
-                v-model="comment"
-              /> -->
-                <v-textarea
-                  name="comment"
-                  outlined
-                  v-model="comment"
-                  label="Comment"
-                  auto-grow
-                  dense
-                  :disabled="!enableEditing"
-                  :rows="1"
-                ></v-textarea>
-              </div>
-              <v-btn
-                color="primary"
-                :disabled="commentSpinner || !enableEditing"
-                :loading="commentSpinner"
-                @click="saveCommentClicked()"
-              >
-                Save Comment
-              </v-btn>
-            </div>
-          </div>
-
-          <div
-            class="alert alert-danger animated jello"
-            role="alert"
-            v-if="errorComment.length !== 0"
-          >
-            {{ errorComment }}
-          </div>
-          <div
-            class="alert alert-success animated jello"
-            role="alert"
-            v-if="successComment.length !== 0"
-          >
-            {{ successComment }}
-          </div>
-        </div>
-
-        <!--                Modal Second Column-->
-        <div
-          class="card col-lg-4 col-md-12 col-md-12"
-          style="height: fit-content"
-        >
-          <p>Last Donation:</p>
-          <template v-if="lastDonation !== 0">
-            <p class="text-dark">{{ lastDonation }}</p>
-            <v-btn
-              :loading="historySpinner"
-              :disabled="historySpinner"
-              color="primary"
-              rounded
-              class="mb-2"
-              @click="loadHistory()"
-              >Load history
-            </v-btn>
-            <br/>
-            <div v-if="showHistory">
-              <div class="input-group mb-3" v-for="date in history">
-                <input
-                  type="text"
-                  readonly
-                  class="form-control"
-                  :value="datePrint(date)"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-success"
-                    type="button"
-                    @click="deleteDonation(date)"
-                  >
-                    Delete
-                  </button>
+                <!--                Modal Second Column-->
+                <div
+                    class="card col-lg-4 col-md-12 col-md-12"
+                    style="height: fit-content"
+                >
+                    <p>Last Donation:</p>
+                    <template v-if="lastDonation !== 0">
+                        <p class="text-dark">{{ lastDonation }}</p>
+                        <v-btn
+                            :loading="historySpinner"
+                            :disabled="historySpinner"
+                            color="primary"
+                            rounded
+                            class="mb-2"
+                            @click="loadHistory()"
+                        >Load history
+                        </v-btn>
+                        <br/>
+                        <div v-if="showHistory">
+                            <div class="input-group mb-3" v-for="date in history">
+                                <input
+                                    type="text"
+                                    readonly
+                                    class="form-control"
+                                    :value="datePrint(date)"
+                                />
+                                <div class="input-group-append">
+                                    <button
+                                        class="btn btn-success"
+                                        type="button"
+                                        @click="deleteDonation(date)"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                        <div
+                            class="alert alert-danger animated jello"
+                            role="alert"
+                            v-if="errorHistory.length !== 0"
+                        >
+                            {{ errorHistory }}
+                        </div>
+                        <div
+                            class="alert alert-success animated jello"
+                            role="alert"
+                            v-if="successHistory.length !== 0"
+                        >
+                            {{ successHistory }}
+                        </div>
+                    </template>
+                    <template v-else>No donation found</template>
                 </div>
-              </div>
-              <br />
             </div>
-            <div
-              class="alert alert-danger animated jello"
-              role="alert"
-              v-if="errorHistory.length !== 0"
-            >
-              {{ errorHistory }}
-            </div>
-            <div
-              class="alert alert-success animated jello"
-              role="alert"
-              v-if="successHistory.length !== 0"
-            >
-              {{ successHistory }}
-            </div>
-          </template>
-          <template v-else>No donation found</template>
-        </div>
-      </div>
-    </v-card>
-  </div>
+        </v-card>
+    </div>
 </template>
 
 <script>
-import { halls, bloodGroups } from "@/constants";
+import {halls, bloodGroups} from "@/constants";
 import {badhanAxios} from "@/api";
 
 export default {
-  name: "PersonDetails",
-  data: function () {
-    return {
-      //form fields
-      name: "",
-      oldPhone: "",
-      phone: "",
-      studentID: "",
-      bloodGroup: "",
-      availableIn: "",
-      designation: "",
-      hall: "",
-      room: "",
-      address: "",
-      lastDonation: "",
+    name: "PersonDetails",
+    data: function () {
+        return {
+            //form fields
+            name: "",
+            oldPhone: "",
+            phone: "",
+            studentID: "",
+            bloodGroup: "",
+            availableIn: "",
+            designation: "",
+            hall: "",
+            room: "",
+            address: "",
+            lastDonation: "",
 
-      history: [],
-      dateToBeDeleted: "",
+            history: [],
+            dateToBeDeleted: "",
 
-      halls,
-      // dummyMe,
-      bloodGroups,
-      showDetails: false,
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-      comment: "",
+            halls,
+            // dummyMe,
+            bloodGroups,
+            showDetails: false,
+            oldPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+            comment: "",
 
-      //history flag
-      showHistory: false,
+            //history flag
+            showHistory: false,
 
-      //spinner controller flags
-      detailsSpinner: false,
-      settingsSpinner: false,
-      commentSpinner: false,
-      historySpinner: false,
-      enableEditing: false,
+            //spinner controller flags
+            detailsSpinner: false,
+            settingsSpinner: false,
+            commentSpinner: false,
+            historySpinner: false,
+            enableEditing: false,
 
-      //error messages
-      errorDetails: "",
-      errorComment: "",
-      errorSettings: "",
-      errorHistory: "",
-      errorDetailsLoading: "",
+            //error messages
+            errorDetails: "",
+            errorComment: "",
+            errorSettings: "",
+            errorHistory: "",
+            errorDetailsLoading: "",
 
-      successComment: "",
-      successSettings: "",
-      successHistory: "",
-      successDetails: "",
+            successComment: "",
+            successSettings: "",
+            successHistory: "",
+            successDetails: "",
 
-      //vuetify modal
-      dialog: false,
+            //vuetify modal
+            dialog: false,
 
-      //person detail collapse and settings collapse
-      personDetailCollapseFlag: false,
-      settingsCollapseFlag: false,
+            //person detail collapse and settings collapse
+            personDetailCollapseFlag: false,
+            settingsCollapseFlag: false,
 
-      //password field flag
-      confirmPasswordFlag: false,
-      newPasswordFlag: false,
-    };
-  },
-  watch: {
-    dialog(to, from) {
-      if (to === false) {
-        this.$router.push("/home");
-      }
+            //password field flag
+            confirmPasswordFlag: false,
+            newPasswordFlag: false,
+        };
     },
-    donorLoaderFlag(to, from) {
-      if (to === false) {
-        let profile = this.$store.getters["details/getProfile"];
-        this.name = profile.name;
-        this.phone = profile.phone.toString().substr(2);
-        this.oldPhone = profile.phone;
-        this.studentID = profile.studentId;
-        this.bloodGroup = bloodGroups[profile.bloodGroup];
-        this.hall = halls[profile.hall];
-        this.room = profile.roomNumber;
-        this.address = profile.address;
-        this.comment = profile.comment;
-        this.designation = profile.designation;
+    watch: {
+        dialog(to, from) {
+            if (to === false) {
+                this.$router.push("/home");
+            }
+        },
+        donorLoaderFlag(to, from) {
+            if (to === false) {
+                let profile = this.$store.getters["details/getProfile"];
+                this.name = profile.name;
+                this.phone = profile.phone.toString().substr(2);
+                this.oldPhone = profile.phone;
+                this.studentID = profile.studentId;
+                this.bloodGroup = bloodGroups[profile.bloodGroup];
+                this.hall = halls[profile.hall];
+                this.room = profile.roomNumber;
+                this.address = profile.address;
+                this.comment = profile.comment;
+                this.designation = profile.designation;
 
-        let date = new Date(profile.lastDonation);
-        this.lastDonation =
-          date.getDate() +
-          "/" +
-          (date.getMonth() + 1) +
-          "/" +
-          date.getFullYear();
-        if (profile.lastDonation === 0) {
-          this.lastDonation = "No donations found";
-        }
-        this.availableIn =
-          120 -
-          Math.round(
-            (Math.round(new Date().getTime()) - date.getTime()) /
-              (1000 * 3600 * 24)
-          );
-      }
+                let date = new Date(profile.lastDonation);
+                this.lastDonation =
+                    date.getDate() +
+                    "/" +
+                    (date.getMonth() + 1) +
+                    "/" +
+                    date.getFullYear();
+                if (profile.lastDonation === 0) {
+                    this.lastDonation = "No donations found";
+                }
+                this.availableIn =
+                    120 -
+                    Math.round(
+                        (Math.round(new Date().getTime()) - date.getTime()) /
+                        (1000 * 3600 * 24)
+                    );
+            }
+        },
     },
-  },
-  computed: {
-    donorLoaderFlag() {
-      return this.$store.getters["details/getDonorLoaderFlag"];
+    computed: {
+        donorLoaderFlag() {
+            return this.$store.getters["details/getDonorLoaderFlag"];
+        },
+        availableHalls() {
+            if (this.$store.getters.getDesignation !== null) {
+                if (this.$store.getters.getDesignation === 3) {
+                    return halls;
+                } else {
+                    //covid support
+                    //return [halls[this.$store.getters.getHall], halls[7]];
+                    return [halls[this.$store.getters.getHall], halls[7], halls[8]];
+                }
+            }
+        },
     },
-    availableHalls() {
-      if (this.$store.getters.getDesignation !== null) {
-        if (this.$store.getters.getDesignation === 3) {
-          return halls;
-        } else {
-          //covid support
-          //return [halls[this.$store.getters.getHall], halls[7]];
-          return [halls[this.$store.getters.getHall], halls[7], halls[8]];
-        }
-      }
+    methods: {
+        datePrint(date) {
+            let dateObj = new Date(date);
+            return (
+                dateObj.getDate() +
+                "/" +
+                (dateObj.getMonth() + 1) +
+                "/" +
+                dateObj.getFullYear()
+            );
+        },
+        hideDetails() {
+            this.showHistory = false;
+            this.enableEditing = false;
+            this.errorDetailsLoading = "";
+        },
+        async saveCommentClicked() {
+            this.errorComment = "";
+            this.successComment = "";
+
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+                comment: this.comment,
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+            console.log("REQUEST TO /donor/comment: ", sendData);
+            this.commentSpinner = true;
+            try {
+                let response = await badhanAxios.post("/donor/comment", sendData, {
+                    headers: headers,
+                });
+                console.log("RESPONSE FROM /donor/comment: ", response);
+
+                if (response.status !== 200) {
+                    this.error = "Status code not 200";
+                    return;
+                }
+                this.successComment = "Successfully changed comment";
+                this.enableEditing = false;
+            } catch (error) {
+                this.errorComment = error.response.message;
+                console.log(error.response);
+            } finally {
+                this.commentSpinner = false;
+            }
+        },
+        async deleteDonation(date) {
+            this.errorHistory = "";
+            this.successHistory = "";
+
+            this.dateToBeDeleted = date;
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+                date: date,
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+            console.log("REQUEST TO /donation/delete: ", sendData);
+            this.historySpinner = true;
+
+            try {
+                let response = await badhanAxios.post("/donation/delete", sendData, {
+                    headers: headers,
+                });
+                console.log("RESPONSE FROM /donation/delete: ", response);
+                if (response.status !== 200) {
+                    this.errorHistory = "Status code not 200";
+                    return;
+                }
+                for (let i = 0; i < this.history.length; i++) {
+                    if (this.history[i] == this.dateToBeDeleted) {
+                        this.history.splice(i, 1);
+                        break;
+                    }
+                }
+                let lastDonationNew = 0;
+                if (this.history.length !== 0) {
+                    lastDonationNew = this.history.reduce(function (a, b) {
+                        return Math.max(a, b);
+                    });
+                }
+
+                let date = new Date(lastDonationNew);
+                this.availableIn =
+                    120 -
+                    Math.round(
+                        (Math.round(new Date().getTime()) - date.getTime()) /
+                        (1000 * 3600 * 24)
+                    );
+                this.lastDonation =
+                    date.getDate() +
+                    "/" +
+                    (date.getMonth() + 1) +
+                    "/" +
+                    date.getFullYear();
+                this.successHistory = "Successfully deleted donation";
+            } catch (error) {
+                this.errorHistory = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.historySpinner = false;
+            }
+        },
+
+        saveSettingsClicked() {
+            if (this.newPassword !== this.confirmPassword) {
+                this.errorSettings = "Passwords didn't match";
+                return;
+            } else if (this.newPassword.length === 0) {
+                this.errorSettings = "Password can't have length of zero";
+                return;
+            }
+
+            if (this.designation === 0) {
+                this.promote();
+            } else {
+                this.savePasswordClicked();
+            }
+        },
+        async promote() {
+            this.errorSettings = "";
+            this.successSettings = "";
+
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+                promoteFlag: true,
+                newPassword: this.newPassword,
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+
+            this.settingsSpinner = true;
+            console.log("REQUEST TO /admin/promote: ", sendData);
+            try {
+                let response = await badhanAxios.post("/admin/promote", sendData, {
+                    headers: headers,
+                });
+
+                console.log("RESPONSE FROM /admin/promote: ", response);
+
+                if (response.status !== 200) {
+                    this.errorSettings = "Status code not 200";
+                    return;
+                }
+                this.successSettings = "Successfully promoted to volunteer";
+                this.enableEditing = false;
+            } catch (error) {
+                this.errorSettings = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.settingsSpinner = false;
+            }
+        },
+        async demote() {
+            this.errorSettings = "";
+            this.successSettings = "";
+
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+                promoteFlag: false,
+                newPassword: "",
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+            console.log("REQUEST TO /admin/promote: ", sendData);
+
+            this.settingsSpinner = true;
+            try {
+                let response = await badhanAxios.post("/admin/promote", sendData, {
+                    headers: headers,
+                });
+                console.log("RESPONSE FROM /admin/promote: ", response);
+                if (response.status !== 200) {
+                    this.errorSettings = "Status code not 200";
+                    return;
+                }
+                console.log("demotion successful");
+                this.successSettings = "Successfully demoted to donor";
+                this.enableEditing = false;
+            } catch (error) {
+                this.errorSettings = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.settingsSpinner = false;
+            }
+        },
+        async savePasswordClicked() {
+            this.errorSettings = "";
+            this.successSettings = "";
+
+            if (this.newPassword !== this.confirmPassword) {
+                this.errorSettings = "Passwords didn't match";
+                return;
+            }
+            if (this.newPassword.length === 0) {
+                this.errorSettings = "Passwords can't be of length zero";
+                return;
+            }
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+                newPassword: this.newPassword,
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+            console.log("REQUEST TO /donor/password/change: ", sendData);
+            this.settingsSpinner = true;
+            try {
+                let response = await badhanAxios.post("/donor/password/change", sendData, {
+                    headers: headers,
+                });
+                console.log("RESPONSE FROM /donor/password/change: ", response);
+
+                if (response.status !== 200) {
+                    this.errorSettings = "Status code not 200";
+                    return;
+                }
+                this.successSettings = "Successfully changed password";
+                this.enableEditing = false;
+            } catch (error) {
+                this.errorSettings = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.settingsSpinner = false;
+            }
+        },
+        async saveDetailsClicked() {
+            this.$store.commit('userDetails/clearDetailsMessage');
+
+            if (this.name.length === 0) {
+                this.$store.commit('userDetails/setDetailsError', "Please input the name of donor");
+                return;
+            }
+
+            if (isNaN(this.phone) || this.phone.toString().length !== 11) {
+                this.$store.commit('userDetails/setDetailsError', "Please enter a 11 digit phone number");
+                return;
+            }
+
+            if (isNaN(this.studentID) || this.studentID.toString().length !== 7) {
+                this.$store.commit('userDetails/setDetailsError', "Please enter a valid student ID");
+                return;
+            }
+
+            let sendData = {
+                oldPhone: this.oldPhone,
+                newName: this.name,
+                newPhone: parseInt("88" + this.phone),
+                newStudentId: this.studentID,
+                newBloodGroup: bloodGroups.indexOf(this.bloodGroup),
+                newHall: halls.indexOf(this.hall),
+                newRoomNumber: this.room,
+                newAddress: this.address,
+            };
+
+            await this.$store.dispatch('userDetails/saveUserDetails', sendData);
+
+        },
+        async loadHistory() {
+            this.errorHistory = "";
+            this.successHistory = "";
+
+            if (this.showHistory) {
+                this.showHistory = false;
+                return;
+            }
+
+            this.historySpinner = true;
+
+            let sendData = {
+                donorPhone: parseInt("88" + this.phone),
+            };
+            let headers = {
+                "x-auth": this.$store.getters.getToken,
+            };
+            console.log("REQUEST TO /donor/donations: ", sendData);
+
+            try {
+                let response = await badhanAxios.post("/donor/donations", sendData, {
+                    headers: headers,
+                });
+                console.log("RESPONSE FROM /donor/donations: ", response);
+
+                if (response.status !== 200) {
+                    this.errorHistory = "Status code not 200";
+                    return;
+                }
+                this.history = response.data.donations;
+                this.showHistory = true;
+                this.successHistory = "Successfully loaded history";
+            } catch (error) {
+                this.errorHistory = error.response.data.message;
+                console.log(error.response);
+            } finally {
+                this.historySpinner = false;
+            }
+        },
     },
-  },
-  methods: {
-    datePrint(date) {
-      let dateObj = new Date(date);
-      return (
-        dateObj.getDate() +
-        "/" +
-        (dateObj.getMonth() + 1) +
-        "/" +
-        dateObj.getFullYear()
-      );
+
+    async mounted() {
+        await this.$store.dispatch("details/getDetails", this.$route.query.phone);
     },
-    hideDetails() {
-      this.showHistory = false;
-      this.enableEditing = false;
-      this.errorDetailsLoading = "";
-    },
-    async saveCommentClicked() {
-      this.errorComment = "";
-      this.successComment = "";
-
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-        comment: this.comment,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donor/comment: ", sendData);
-      this.commentSpinner = true;
-      try {
-        let response = await badhanAxios.post("/donor/comment", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donor/comment: ", response);
-
-        if (response.status !== 200) {
-          this.error = "Status code not 200";
-          return;
-        }
-        this.successComment = "Successfully changed comment";
-        this.enableEditing = false;
-      } catch (error) {
-        this.errorComment = error.response.message;
-        console.log(error.response);
-      } finally {
-        this.commentSpinner = false;
-      }
-    },
-    async deleteDonation(date) {
-      this.errorHistory = "";
-      this.successHistory = "";
-
-      this.dateToBeDeleted = date;
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-        date: date,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donation/delete: ", sendData);
-      this.historySpinner = true;
-
-      try {
-        let response = await badhanAxios.post("/donation/delete", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donation/delete: ", response);
-        if (response.status !== 200) {
-          this.errorHistory = "Status code not 200";
-          return;
-        }
-        for (let i = 0; i < this.history.length; i++) {
-          if (this.history[i] == this.dateToBeDeleted) {
-            this.history.splice(i, 1);
-            break;
-          }
-        }
-        let lastDonationNew = 0;
-        if (this.history.length !== 0) {
-          lastDonationNew = this.history.reduce(function (a, b) {
-            return Math.max(a, b);
-          });
-        }
-
-        let date = new Date(lastDonationNew);
-        this.availableIn =
-          120 -
-          Math.round(
-            (Math.round(new Date().getTime()) - date.getTime()) /
-              (1000 * 3600 * 24)
-          );
-        this.lastDonation =
-          date.getDate() +
-          "/" +
-          (date.getMonth() + 1) +
-          "/" +
-          date.getFullYear();
-        this.successHistory = "Successfully deleted donation";
-      } catch (error) {
-        this.errorHistory = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.historySpinner = false;
-      }
-    },
-
-    saveSettingsClicked() {
-      if (this.newPassword !== this.confirmPassword) {
-        this.errorSettings = "Passwords didn't match";
-        return;
-      } else if (this.newPassword.length === 0) {
-        this.errorSettings = "Password can't have length of zero";
-        return;
-      }
-
-      if (this.designation === 0) {
-        this.promote();
-      } else {
-        this.savePasswordClicked();
-      }
-    },
-    async promote() {
-      this.errorSettings = "";
-      this.successSettings = "";
-
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-        promoteFlag: true,
-        newPassword: this.newPassword,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-
-      this.settingsSpinner = true;
-      console.log("REQUEST TO /admin/promote: ", sendData);
-      try {
-        let response = await badhanAxios.post("/admin/promote", sendData, {
-          headers: headers,
-        });
-
-        console.log("RESPONSE FROM /admin/promote: ", response);
-
-        if (response.status !== 200) {
-          this.errorSettings = "Status code not 200";
-          return;
-        }
-        this.successSettings = "Successfully promoted to volunteer";
-        this.enableEditing = false;
-      } catch (error) {
-        this.errorSettings = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.settingsSpinner = false;
-      }
-    },
-    async demote() {
-      this.errorSettings = "";
-      this.successSettings = "";
-
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-        promoteFlag: false,
-        newPassword: "",
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /admin/promote: ", sendData);
-
-      this.settingsSpinner = true;
-      try {
-        let response = await badhanAxios.post("/admin/promote", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /admin/promote: ", response);
-        if (response.status !== 200) {
-          this.errorSettings = "Status code not 200";
-          return;
-        }
-        console.log("demotion successful");
-        this.successSettings = "Successfully demoted to donor";
-        this.enableEditing = false;
-      } catch (error) {
-        this.errorSettings = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.settingsSpinner = false;
-      }
-    },
-    async savePasswordClicked() {
-      this.errorSettings = "";
-      this.successSettings = "";
-
-      if (this.newPassword !== this.confirmPassword) {
-        this.errorSettings = "Passwords didn't match";
-        return;
-      }
-      if (this.newPassword.length === 0) {
-        this.errorSettings = "Passwords can't be of length zero";
-        return;
-      }
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-        newPassword: this.newPassword,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donor/password/change: ", sendData);
-      this.settingsSpinner = true;
-      try {
-        let response = await badhanAxios.post("/donor/password/change", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donor/password/change: ", response);
-
-        if (response.status !== 200) {
-          this.errorSettings = "Status code not 200";
-          return;
-        }
-        this.successSettings = "Successfully changed password";
-        this.enableEditing = false;
-      } catch (error) {
-        this.errorSettings = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.settingsSpinner = false;
-      }
-    },
-    async saveDetailsClicked() {
-      this.errorDetails = "";
-      this.successDetails = "";
-
-      if (this.name.length === 0) {
-        this.errorDetails = "Please input the name of donor";
-        return;
-      }
-
-      if (isNaN(this.phone) || this.phone.toString().length !== 11) {
-        this.errorDetails = "Please enter a 11 digit phone number";
-        return;
-      }
-
-      if (isNaN(this.studentID) || this.studentID.toString().length !== 7) {
-        this.errorDetails = "Please enter a valid student ID";
-        return;
-      }
-
-      this.detailsSpinner = true;
-
-      let sendData = {
-        oldPhone: this.oldPhone,
-        newName: this.name,
-        newPhone: parseInt("88" + this.phone),
-        newStudentId: this.studentID,
-        newBloodGroup: bloodGroups.indexOf(this.bloodGroup),
-        newHall: halls.indexOf(this.hall),
-        newRoomNumber: this.room,
-        newAddress: this.address,
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donor/ecit: ", sendData);
-
-      try {
-        let response = await badhanAxios.post("/donor/edit", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donor/edit: ", response);
-        if (response.status !== 200) {
-          this.errorDetails = "Status code not 200";
-          return;
-        }
-
-        this.successDetails = "Successfully saved details.";
-        this.$store.commit("setPhone", parseInt("88" + this.phone));
-        this.enableEditing = false;
-      } catch (error) {
-        this.errorDetails = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.detailsSpinner = false;
-      }
-    },
-    async loadHistory() {
-      this.errorHistory = "";
-      this.successHistory = "";
-
-      if (this.showHistory) {
-        this.showHistory = false;
-        return;
-      }
-
-      this.historySpinner = true;
-
-      let sendData = {
-        donorPhone: parseInt("88" + this.phone),
-      };
-      let headers = {
-        "x-auth": this.$store.getters.getToken,
-      };
-      console.log("REQUEST TO /donor/donations: ", sendData);
-
-      try {
-        let response = await badhanAxios.post("/donor/donations", sendData, {
-          headers: headers,
-        });
-        console.log("RESPONSE FROM /donor/donations: ", response);
-
-        if (response.status !== 200) {
-          this.errorHistory = "Status code not 200";
-          return;
-        }
-        this.history = response.data.donations;
-        this.showHistory = true;
-        this.successHistory = "Successfully loaded history";
-      } catch (error) {
-        this.errorHistory = error.response.data.message;
-        console.log(error.response);
-      } finally {
-        this.historySpinner = false;
-      }
-    },
-  },
-
-  async mounted() {
-    // console.log("data got from route query",this.$route.query.phone);
-    this.$store.dispatch("details/getDetails", this.$route.query.phone);
-    // eventBus.$on("dataloaded", (data) => {
-    //   this.dialog = true;
-
-    //   this.successHistory = "";
-    //   this.successSettings = "";
-    //   this.successComment = "";
-    //   this.successDetails = "";
-    //   this.errorHistory = "";
-    //   this.errorDetails = "";
-    //   this.errorComment = "";
-    //   this.errorSettings = "";
-    //   this.enableEditing = false;
-
-    //   this.name = data.name;
-    //   this.phone = data.phone.toString().substr(2);
-    //   this.oldPhone = data.phone;
-    //   this.studentID = data.studentId;
-    //   this.bloodGroup = data.bloodGroup;
-    //   this.hall = parseInt(data.hall);
-    //   this.room = data.roomNumber;
-    //   this.address = data.address;
-    //   this.comment = data.comment;
-    //   this.designation = data.designation;
-
-    //   let date = new Date(data.lastDonation);
-    //   this.lastDonation =
-    //     date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    //   if (data.lastDonation === 0) {
-    //     this.lastDonation = "No donations found";
-    //   }
-    //   this.availableIn =
-    //     120 -
-    //     Math.round(
-    //       (Math.round(new Date().getTime()) - date.getTime()) /
-    //         (1000 * 3600 * 24)
-    //     );
-    //   this.showDetails = true;
-    // });
-    // eventBus.$on("errorFound", (data) => {
-    //   this.dialog = true;
-    //   this.errorDetailsLoading = data.message;
-    //   console.log(data.message);
-    // });
-  },
 };
 </script>
 
