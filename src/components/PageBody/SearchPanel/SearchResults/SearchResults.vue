@@ -10,16 +10,14 @@
             </div>
         </div>
 
-
-        <div v-if="$store.getters.isSearchResultShown" data-aos="fade-up">
-
-
-            <json-excel
-                v-if="!isSmallWindow"
-                :data="$store.getters.getPersons"
-                name="badhan.xls"
-                worksheet="Badhan"
-                :fields="{
+        <div>
+            <div v-if="$store.getters.isSearchResultShown && ($store.getters.getDesignation===2 || $store.getters.getDesignation===3)" data-aos="fade-up">
+                <json-excel
+                    v-if="!isSmallWindow"
+                    :data="$store.getters.getPersons"
+                    name="badhan.xls"
+                    worksheet="Badhan"
+                    :fields="{
                     name:'name',
                     studentId:'studentId',
                     lastDonation:{
@@ -39,15 +37,15 @@
                     roomNumber: 'roomNumber',
                     donationCount: 'donationCount'
                 }"
-            >
-                <v-btn color="primary" rounded class="mb-4" style="width: 100%">
-                    Download Data
+                >
+                    <v-btn color="primary" rounded class="mb-4" style="width: 100%">
+                        Download Data
+                    </v-btn>
+                </json-excel>
+                <v-btn v-else color="primary" rounded class="mb-4" style="width: 100%" disabled>
+                    Download available on PC
                 </v-btn>
-            </json-excel>
-            <v-btn v-else color="primary" rounded class="mb-4" style="width: 100%" disabled>
-                Download available on PC
-            </v-btn>
-
+            </div>
             <div v-for="(obj, index) in $store.getters.getPersonGroups" :key="index">
                 <div class="alert alert-primary card" role="alert">
                     Batch {{ obj.batch }}:
@@ -82,10 +80,10 @@ export default {
         };
     },
     methods: {},
-    computed:{
-      isSmallWindow(){
-          return window.innerWidth<500;
-      }
+    computed: {
+        isSmallWindow() {
+            return window.innerWidth < 500;
+        }
     },
     created() {
     },
