@@ -439,7 +439,6 @@
 
 <script>
 import {halls, bloodGroups} from "@/constants";
-import {badhanAxios} from "@/api";
 
 export default {
     name: "PersonDetails",
@@ -609,62 +608,6 @@ export default {
                 "/" +
                 newDate.getFullYear();
 
-            // this.errorHistory = "";
-            // this.successHistory = "";
-            //
-            // this.dateToBeDeleted = date;
-            // let sendData = {
-            //     donorPhone: parseInt("88" + this.phone),
-            //     date: date,
-            // };
-            // let headers = {
-            //     "x-auth": this.$store.getters.getToken,
-            // };
-            // console.log("REQUEST TO /donation/delete: ", sendData);
-            // this.historySpinner = true;
-            //
-            // try {
-            //     let response = await badhanAxios.post("/donation/delete", sendData, {
-            //         headers: headers,
-            //     });
-            //     console.log("RESPONSE FROM /donation/delete: ", response);
-            //     if (response.status !== 200) {
-            //         this.errorHistory = "Status code not 200";
-            //         return;
-            //     }
-            //     for (let i = 0; i < this.history.length; i++) {
-            //         if (this.history[i] == this.dateToBeDeleted) {
-            //             this.history.splice(i, 1);
-            //             break;
-            //         }
-            //     }
-            //     let lastDonationNew = 0;
-            //     if (this.history.length !== 0) {
-            //         lastDonationNew = this.history.reduce(function (a, b) {
-            //             return Math.max(a, b);
-            //         });
-            //     }
-            //
-            //     let date = new Date(lastDonationNew);
-            //     this.availableIn =
-            //         120 -
-            //         Math.round(
-            //             (Math.round(new Date().getTime()) - date.getTime()) /
-            //             (1000 * 3600 * 24)
-            //         );
-            //     this.lastDonation =
-            //         date.getDate() +
-            //         "/" +
-            //         (date.getMonth() + 1) +
-            //         "/" +
-            //         date.getFullYear();
-            //     this.successHistory = "Successfully deleted donation";
-            // } catch (error) {
-            //     this.errorHistory = error.response.data.message;
-            //     console.log(error.response);
-            // } finally {
-            //     this.historySpinner = false;
-            // }
         },
 
         saveSettingsClicked() {
@@ -758,43 +701,7 @@ export default {
             await this.$store.dispatch('donation/fetchDonationHistory', {
                 phone: this.phone
             });
-            // this.errorHistory = "";
-            // this.successHistory = "";
-            //
-            // if (this.showHistory) {
-            //     this.showHistory = false;
-            //     return;
-            // }
-            //
-            // this.historySpinner = true;
-            //
-            // let sendData = {
-            //     donorPhone: parseInt("88" + this.phone),
-            // };
-            // let headers = {
-            //     "x-auth": this.$store.getters.getToken,
-            // };
-            // console.log("REQUEST TO /donor/donations: ", sendData);
-            //
-            // try {
-            //     let response = await badhanAxios.post("/donor/donations", sendData, {
-            //         headers: headers,
-            //     });
-            //     console.log("RESPONSE FROM /donor/donations: ", response);
-            //
-            //     if (response.status !== 200) {
-            //         this.errorHistory = "Status code not 200";
-            //         return;
-            //     }
-            //     this.history = response.data.donations;
-            //     this.showHistory = true;
-            //     this.successHistory = "Successfully loaded history";
-            // } catch (error) {
-            //     this.errorHistory = error.response.data.message;
-            //     console.log(error.response);
-            // } finally {
-            //     this.historySpinner = false;
-            // }
+
         },
     },
 

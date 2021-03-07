@@ -1,5 +1,6 @@
 import {badhanAxios} from '@/api';
 import { bloodGroups, halls } from "@/constants";
+import donate from "@/store/home/donate";
 
 let compareObject = (a, b) => {
     if (a.batch < b.batch) {
@@ -88,6 +89,7 @@ const mutations = {
         state.searchResultShown = false;
     },
     setPersonGroups(state, payload) {
+        state.personGroups=[];
         state.numOfDonor = payload.length;
 
         payload.forEach((human, index) => {
@@ -181,4 +183,7 @@ export default {
     actions,
     getters,
     mutations,
+    modules:{
+        donate
+    }
 }

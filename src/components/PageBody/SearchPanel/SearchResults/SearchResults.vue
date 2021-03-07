@@ -10,8 +10,8 @@
             </div>
         </div>
 
-        <div>
-            <div v-if="$store.getters.isSearchResultShown && ($store.getters.getDesignation===2 || $store.getters.getDesignation===3)" data-aos="fade-up">
+        <div v-if="$store.getters.isSearchResultShown">
+            <div v-if="($store.getters.getDesignation===2 || $store.getters.getDesignation===3)" data-aos="fade-up">
                 <json-excel
                     v-if="!isSmallWindow"
                     :data="$store.getters.getPersons"

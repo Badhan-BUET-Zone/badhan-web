@@ -9,12 +9,12 @@
             <v-row no-gutters>
                 <v-col cols="2" md="2" sm="2" xl="2">
                     <div
-                        v-if="availableIn > 0"
+                        v-if="availableInRendered > 0"
                         class="alert alert-danger"
                         style="text-align: center; vertical-align: middle; height: 100%"
                         role="alert"
                     >
-                        <span style="font-size: small">{{ availableIn }} <br/>day</span>
+                        <span style="font-size: small">{{ availableInRendered }} <br/>day</span>
                     </div>
                     <div
                         v-else
@@ -114,8 +114,8 @@
                     color="red"
                     rounded
                     @click="donate()"
-                    :loading="donateLoaderFlag"
-                    :disabled="donateLoaderFlag || newDonationDate.length === 0"
+                    :loading="$store.getters['donate/getDonationLoaderFlag']"
+                    :disabled="$store.getters['donate/getDonationLoaderFlag'] || newDonationDate.length === 0"
                 >Done
                 </v-btn>
             </div>
@@ -138,7 +138,6 @@
 </template>
 
 <script>
-import {eventBus} from "@/main";
 import {departments, bloodGroups} from "@/constants";
 import Datepicker from "vuejs-datepicker";
 import {badhanAxios} from "@/api";
@@ -176,7 +175,11 @@ export default {
             showExtensionFlag: false,
             seeDetailsLoaderFlag: false,
             donateLoaderFlag: false,
+            availableInRendered: 0,
         };
+    },
+    mounted() {
+        this.availableInRendered = this.$props.availableIn;
     },
     methods: {
         callFromDialer() {
@@ -191,46 +194,26 @@ export default {
 
         },
         async donate() {
-            this.error = "";
-            this.success = "";
-            let sendData = {
-                donorPhone: this.$props.phone,
-                date: new Date(this.newDonationDate).getTime(),
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
+            let success = await this.$store.dispatch('donate/donate',{
+                phone: this.$props.phone,
+                newDonationDate: this.newDonationDate
+            });
 
-            this.donateLoaderFlag = true;
-            console.log("REQUESTING TO /donation/insert : ", sendData);
-
-            try {
-                let response = await badhanAxios.post("/donation/insert", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donation/insert: ", response);
-                if (response.status !== 200) {
-                    this.error = "Status code not 200";
-                }
-
+            if(success){
                 let newAvailableIn =
-                    120 -
-                    Math.round(
-                        (Math.round(new Date().getTime()) -
-                            new Date(this.newDonationDate).getTime()) /
-                        (1000 * 3600 * 24)
-                    );
-                if (newAvailableIn > this.$props.availableIn) {
-                    this.$props.availableIn = newAvailableIn;
-                }
+                        120 -
+                        Math.round(
+                            (Math.round(new Date().getTime()) -
+                                new Date(this.newDonationDate).getTime()) /
+                            (1000 * 3600 * 24)
+                        );
+                    if (newAvailableIn > this.availableInRendered) {
+                        this.availableInRendered = newAvailableIn;
+                    }
+
                 this.newDonationDate = "";
-                this.success = "Successfully added donation";
-            } catch (error) {
-                this.error = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.donateLoaderFlag = false;
             }
+
         },
     },
 };
