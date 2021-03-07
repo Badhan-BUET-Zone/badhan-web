@@ -140,7 +140,6 @@
 <script>
 import {departments, bloodGroups} from "@/constants";
 import Datepicker from "vuejs-datepicker";
-import {badhanAxios} from "@/api";
 
 export default {
     name: "PersonCard",
