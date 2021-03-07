@@ -225,15 +225,6 @@
                                             :disabled="!enableEditing"
                                         ></v-text-field>
 
-                                        <button
-                                            v-if="designation == 1 && $store.getters.getPhone !== oldPhone"
-                                            class="btn btn-outline-danger"
-                                            :disabled="!enableEditing"
-                                            style="width: 100%"
-                                            @click="demote()"
-                                        >
-                                            Demote this member to donor
-                                        </button>
                                     </div>
 
                                     <div
@@ -278,12 +269,28 @@
                                             color="primary"
                                             class="white--text ml-2"
                                             rounded
-                                            :disabled="settingsSpinner || !enableEditing || $store.getters['password/getPasswordLoader']"
-                                            :loading="settingsSpinner || $store.getters['password/getPasswordLoader']"
+                                            :disabled="settingsSpinner || !enableEditing ||
+                                            $store.getters['password/getPasswordLoader'] ||
+                                            $store.getters['promote/getPromoteFlag']"
+                                            :loading="settingsSpinner ||
+                                            $store.getters['password/getPasswordLoader'] ||
+                                            $store.getters['promote/getPromoteFlag']"
                                             @click="saveSettingsClicked()"
                                         >Save
                                         </v-btn>
                                     </div>
+                                    <v-btn
+                                        v-if="designation == 1 && $store.getters.getPhone !== oldPhone"
+                                        rounded
+                                        color="red"
+                                        :disabled="!enableEditing || $store.getters['promote/getPromoteFlag']"
+                                        :loading="$store.getters['promote/getPromoteFlag']"
+                                        style="width: 100%"
+                                        class="mt-3 white--text"
+                                        @click="demote()"
+                                    >
+                                        Demote this member to donor
+                                    </v-btn>
                                     <br/>
                                     <div
                                         class="alert alert-danger animated jello"
@@ -314,6 +321,23 @@
                                     >
                                         {{ $store.getters['password/getPasswordSuccess'] }}
                                     </div>
+
+                                    <div
+                                        class="alert alert-danger animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['promote/getPromoteError']!==null"
+                                    >
+                                        {{ $store.getters['promote/getPromoteError'] }}
+                                    </div>
+                                    <div
+                                        class="alert alert-success animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['promote/getPromoteSuccess']!==null"
+                                    >
+                                        {{ $store.getters['promote/getPromoteSuccess'] }}
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -321,18 +345,8 @@
                     <br/>
                     <div>
                         <div class="card">
-
                             <div class="col-sm-12">
-
-                                <v-textarea
-                                    name="comment"
-                                    outlined
-                                    v-model="comment"
-                                    label="Comment"
-                                    auto-grow
-                                    dense
-                                    :disabled="!enableEditing"
-                                    :rows="1"
+                                <v-textarea name="comment" outlined v-model="comment" label="Comment" auto-grow dense :disabled="!enableEditing" :rows="1"
                                 ></v-textarea>
                             </div>
                             <v-btn
@@ -635,81 +649,62 @@ export default {
             }
         },
         async promote() {
-            this.errorSettings = "";
-            this.successSettings = "";
+            this.$store.commit('promote/clearPromoteMessage');
 
             if (this.newPassword !== this.confirmPassword) {
-                this.errorSettings = "Passwords didn't match";
+                this.$store.commit('promote/setPromoteError',"Passwords did not match");
                 return;
             } else if (this.newPassword.length === 0) {
-                this.errorSettings = "Password can't have length of zero";
+                this.$store.commit('promote/setPromoteError',"Password can't have length of zero");
                 return;
             }
 
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
+            await this.$store.dispatch('promote/promote',{
+                phone: this.phone,
                 promoteFlag: true,
-                newPassword: this.newPassword,
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
+                newPassword: this.newPassword
+            })
 
-            this.settingsSpinner = true;
-            console.log("REQUEST TO /admin/promote: ", sendData);
-            try {
-                let response = await badhanAxios.post("/admin/promote", sendData, {
-                    headers: headers,
-                });
 
-                console.log("RESPONSE FROM /admin/promote: ", response);
-
-                if (response.status !== 200) {
-                    this.errorSettings = "Status code not 200";
-                    return;
-                }
-                this.successSettings = "Successfully promoted to volunteer";
-                this.enableEditing = false;
-            } catch (error) {
-                this.errorSettings = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.settingsSpinner = false;
-            }
         },
         async demote() {
-            this.errorSettings = "";
-            this.successSettings = "";
+            this.$store.commit('promote/clearPromoteMessage');
 
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
+            await this.$store.dispatch('promote/promote',{
+                phone: this.phone,
                 promoteFlag: false,
-                newPassword: "",
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /admin/promote: ", sendData);
+                newPassword: this.newPassword
+            })
 
-            this.settingsSpinner = true;
-            try {
-                let response = await badhanAxios.post("/admin/promote", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /admin/promote: ", response);
-                if (response.status !== 200) {
-                    this.errorSettings = "Status code not 200";
-                    return;
-                }
-                console.log("demotion successful");
-                this.successSettings = "Successfully demoted to donor";
-                this.enableEditing = false;
-            } catch (error) {
-                this.errorSettings = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.settingsSpinner = false;
-            }
+            // let sendData = {
+            //     donorPhone: parseInt("88" + this.phone),
+            //     promoteFlag: false,
+            //     newPassword: "",
+            // };
+            // let headers = {
+            //     "x-auth": this.$store.getters.getToken,
+            // };
+            // console.log("REQUEST TO /admin/promote: ", sendData);
+            //
+            // this.settingsSpinner = true;
+            // try {
+            //     let response = await badhanAxios.post("/admin/promote", sendData, {
+            //         headers: headers,
+            //     });
+            //     console.log("RESPONSE FROM /admin/promote: ", response);
+            //     if (response.status !== 200) {
+            //         this.errorSettings = "Status code not 200";
+            //         return;
+            //     }
+            //     console.log("demotion successful");
+            //     this.successSettings = "Successfully demoted to donor";
+            //     this.enableEditing = false;
+            // } catch (error) {
+            //     this.errorSettings = error.response.data.message;
+            //     console.log(error.response);
+            // } finally {
+            //     this.settingsSpinner = false;
+            // }
         },
         async savePasswordClicked() {
             this.$store.commit('password/clearPasswordMessage');
