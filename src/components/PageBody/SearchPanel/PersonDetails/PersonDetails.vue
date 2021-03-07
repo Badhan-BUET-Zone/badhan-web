@@ -346,7 +346,8 @@
                     <div>
                         <div class="card">
                             <div class="col-sm-12">
-                                <v-textarea name="comment" outlined v-model="comment" label="Comment" auto-grow dense :disabled="!enableEditing" :rows="1"
+                                <v-textarea name="comment" outlined v-model="comment" label="Comment" auto-grow dense
+                                            :disabled="!enableEditing" :rows="1"
                                 ></v-textarea>
                             </div>
                             <v-btn
@@ -385,8 +386,8 @@
                     <template v-if="lastDonation !== 0">
                         <p class="text-dark">{{ lastDonation }}</p>
                         <v-btn
-                            :loading="historySpinner"
-                            :disabled="historySpinner"
+                            :loading="$store.getters['donation/getDonationLoader']"
+                            :disabled="$store.getters['donation/getDonationLoader']"
                             color="primary"
                             rounded
                             class="mb-2"
@@ -394,8 +395,8 @@
                         >Load history
                         </v-btn>
                         <br/>
-                        <div v-if="showHistory">
-                            <div class="input-group mb-3" v-for="date in history">
+                        <div v-if="$store.getters['donation/getDonationList'].length!==0">
+                            <div class="input-group mb-3" v-for="date in $store.getters['donation/getDonationList']">
                                 <input
                                     type="text"
                                     readonly
@@ -417,16 +418,16 @@
                         <div
                             class="alert alert-danger animated jello"
                             role="alert"
-                            v-if="errorHistory.length !== 0"
+                            v-if="$store.getters['donation/getDonationError']!==null"
                         >
-                            {{ errorHistory }}
+                            {{ $store.getters['donation/getDonationError'] }}
                         </div>
                         <div
                             class="alert alert-success animated jello"
                             role="alert"
-                            v-if="successHistory.length !== 0"
+                            v-if="$store.getters['donation/getDonationSuccess']!==null"
                         >
-                            {{ successHistory }}
+                            {{ $store.getters['donation/getDonationSuccess'] }}
                         </div>
                     </template>
                     <template v-else>No donation found</template>
@@ -580,62 +581,90 @@ export default {
 
         },
         async deleteDonation(date) {
-            this.errorHistory = "";
-            this.successHistory = "";
-
-            this.dateToBeDeleted = date;
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
+            let lastDonation = await this.$store.dispatch('donation/deleteDonation', {
+                phone: this.phone,
                 date: date,
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /donation/delete: ", sendData);
-            this.historySpinner = true;
+            });
 
-            try {
-                let response = await badhanAxios.post("/donation/delete", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donation/delete: ", response);
-                if (response.status !== 200) {
-                    this.errorHistory = "Status code not 200";
-                    return;
-                }
-                for (let i = 0; i < this.history.length; i++) {
-                    if (this.history[i] == this.dateToBeDeleted) {
-                        this.history.splice(i, 1);
-                        break;
-                    }
-                }
-                let lastDonationNew = 0;
-                if (this.history.length !== 0) {
-                    lastDonationNew = this.history.reduce(function (a, b) {
-                        return Math.max(a, b);
-                    });
-                }
+            let newDate = new Date(lastDonation);
 
-                let date = new Date(lastDonationNew);
-                this.availableIn =
-                    120 -
-                    Math.round(
-                        (Math.round(new Date().getTime()) - date.getTime()) /
-                        (1000 * 3600 * 24)
-                    );
-                this.lastDonation =
-                    date.getDate() +
-                    "/" +
-                    (date.getMonth() + 1) +
-                    "/" +
-                    date.getFullYear();
-                this.successHistory = "Successfully deleted donation";
-            } catch (error) {
-                this.errorHistory = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.historySpinner = false;
+
+
+            this.availableIn =
+                120 -
+                Math.round(
+                    (Math.round(new Date().getTime()) - newDate.getTime()) /
+                    (1000 * 3600 * 24)
+                );
+
+            if(lastDonation===0){
+                this.lastDonation = "No donation found";
+                return;
             }
+
+            this.lastDonation =
+                newDate.getDate() +
+                "/" +
+                (newDate.getMonth() + 1) +
+                "/" +
+                newDate.getFullYear();
+
+            // this.errorHistory = "";
+            // this.successHistory = "";
+            //
+            // this.dateToBeDeleted = date;
+            // let sendData = {
+            //     donorPhone: parseInt("88" + this.phone),
+            //     date: date,
+            // };
+            // let headers = {
+            //     "x-auth": this.$store.getters.getToken,
+            // };
+            // console.log("REQUEST TO /donation/delete: ", sendData);
+            // this.historySpinner = true;
+            //
+            // try {
+            //     let response = await badhanAxios.post("/donation/delete", sendData, {
+            //         headers: headers,
+            //     });
+            //     console.log("RESPONSE FROM /donation/delete: ", response);
+            //     if (response.status !== 200) {
+            //         this.errorHistory = "Status code not 200";
+            //         return;
+            //     }
+            //     for (let i = 0; i < this.history.length; i++) {
+            //         if (this.history[i] == this.dateToBeDeleted) {
+            //             this.history.splice(i, 1);
+            //             break;
+            //         }
+            //     }
+            //     let lastDonationNew = 0;
+            //     if (this.history.length !== 0) {
+            //         lastDonationNew = this.history.reduce(function (a, b) {
+            //             return Math.max(a, b);
+            //         });
+            //     }
+            //
+            //     let date = new Date(lastDonationNew);
+            //     this.availableIn =
+            //         120 -
+            //         Math.round(
+            //             (Math.round(new Date().getTime()) - date.getTime()) /
+            //             (1000 * 3600 * 24)
+            //         );
+            //     this.lastDonation =
+            //         date.getDate() +
+            //         "/" +
+            //         (date.getMonth() + 1) +
+            //         "/" +
+            //         date.getFullYear();
+            //     this.successHistory = "Successfully deleted donation";
+            // } catch (error) {
+            //     this.errorHistory = error.response.data.message;
+            //     console.log(error.response);
+            // } finally {
+            //     this.historySpinner = false;
+            // }
         },
 
         saveSettingsClicked() {
@@ -652,14 +681,14 @@ export default {
             this.$store.commit('promote/clearPromoteMessage');
 
             if (this.newPassword !== this.confirmPassword) {
-                this.$store.commit('promote/setPromoteError',"Passwords did not match");
+                this.$store.commit('promote/setPromoteError', "Passwords did not match");
                 return;
             } else if (this.newPassword.length === 0) {
-                this.$store.commit('promote/setPromoteError',"Password can't have length of zero");
+                this.$store.commit('promote/setPromoteError', "Password can't have length of zero");
                 return;
             }
 
-            await this.$store.dispatch('promote/promote',{
+            await this.$store.dispatch('promote/promote', {
                 phone: this.phone,
                 promoteFlag: true,
                 newPassword: this.newPassword
@@ -670,54 +699,25 @@ export default {
         async demote() {
             this.$store.commit('promote/clearPromoteMessage');
 
-            await this.$store.dispatch('promote/promote',{
+            await this.$store.dispatch('promote/promote', {
                 phone: this.phone,
                 promoteFlag: false,
                 newPassword: this.newPassword
             })
 
-            // let sendData = {
-            //     donorPhone: parseInt("88" + this.phone),
-            //     promoteFlag: false,
-            //     newPassword: "",
-            // };
-            // let headers = {
-            //     "x-auth": this.$store.getters.getToken,
-            // };
-            // console.log("REQUEST TO /admin/promote: ", sendData);
-            //
-            // this.settingsSpinner = true;
-            // try {
-            //     let response = await badhanAxios.post("/admin/promote", sendData, {
-            //         headers: headers,
-            //     });
-            //     console.log("RESPONSE FROM /admin/promote: ", response);
-            //     if (response.status !== 200) {
-            //         this.errorSettings = "Status code not 200";
-            //         return;
-            //     }
-            //     console.log("demotion successful");
-            //     this.successSettings = "Successfully demoted to donor";
-            //     this.enableEditing = false;
-            // } catch (error) {
-            //     this.errorSettings = error.response.data.message;
-            //     console.log(error.response);
-            // } finally {
-            //     this.settingsSpinner = false;
-            // }
         },
         async savePasswordClicked() {
             this.$store.commit('password/clearPasswordMessage');
 
             if (this.newPassword !== this.confirmPassword) {
-                this.$store.commit('password/setPasswordError',"Passwords didn't match");
+                this.$store.commit('password/setPasswordError', "Passwords didn't match");
                 return;
             }
             if (this.newPassword.length === 0) {
-                this.$store.commit('password/setPasswordError',"Passwords can't be of length zero");
+                this.$store.commit('password/setPasswordError', "Passwords can't be of length zero");
                 return;
             }
-            await this.$store.dispatch('password/savePassword',{
+            await this.$store.dispatch('password/savePassword', {
                 phone: this.phone,
                 newPassword: this.newPassword,
             })
@@ -755,43 +755,46 @@ export default {
 
         },
         async loadHistory() {
-            this.errorHistory = "";
-            this.successHistory = "";
-
-            if (this.showHistory) {
-                this.showHistory = false;
-                return;
-            }
-
-            this.historySpinner = true;
-
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /donor/donations: ", sendData);
-
-            try {
-                let response = await badhanAxios.post("/donor/donations", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donor/donations: ", response);
-
-                if (response.status !== 200) {
-                    this.errorHistory = "Status code not 200";
-                    return;
-                }
-                this.history = response.data.donations;
-                this.showHistory = true;
-                this.successHistory = "Successfully loaded history";
-            } catch (error) {
-                this.errorHistory = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.historySpinner = false;
-            }
+            await this.$store.dispatch('donation/fetchDonationHistory', {
+                phone: this.phone
+            });
+            // this.errorHistory = "";
+            // this.successHistory = "";
+            //
+            // if (this.showHistory) {
+            //     this.showHistory = false;
+            //     return;
+            // }
+            //
+            // this.historySpinner = true;
+            //
+            // let sendData = {
+            //     donorPhone: parseInt("88" + this.phone),
+            // };
+            // let headers = {
+            //     "x-auth": this.$store.getters.getToken,
+            // };
+            // console.log("REQUEST TO /donor/donations: ", sendData);
+            //
+            // try {
+            //     let response = await badhanAxios.post("/donor/donations", sendData, {
+            //         headers: headers,
+            //     });
+            //     console.log("RESPONSE FROM /donor/donations: ", response);
+            //
+            //     if (response.status !== 200) {
+            //         this.errorHistory = "Status code not 200";
+            //         return;
+            //     }
+            //     this.history = response.data.donations;
+            //     this.showHistory = true;
+            //     this.successHistory = "Successfully loaded history";
+            // } catch (error) {
+            //     this.errorHistory = error.response.data.message;
+            //     console.log(error.response);
+            // } finally {
+            //     this.historySpinner = false;
+            // }
         },
     },
 
