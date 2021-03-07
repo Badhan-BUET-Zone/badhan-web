@@ -81,13 +81,8 @@ const actions={
         commit('clearVolunteerError');
         commit('volunteerLoaderOn');
 
-        let headers = {
-            'x-auth': getters.getToken
-        };
-        console.log("REQUEST TO /admin/volunteers: ","BLANK");
         try {
-            let response = await badhanAxios.post('/admin/volunteers', {}, {headers});
-            console.log("RESPONSE FROM /admin/volunteers: ",response);
+            let response = await badhanAxios.post('/admin/volunteers', {});
             commit('setVolunteers',response.data.volunteerList);
         }catch (e){
             if(e.response && e.response.data.message){
@@ -114,16 +109,10 @@ const actions={
             comment: payload.comment,
             lastDonation: payload.lastDonation,
         };
-        let headers = {
-            "x-auth": getters.getToken,
-        };
-        console.log("REQUEST TO /donor/insert: ", sendData);
+
 
         try {
-            let response = await badhanAxios.post("/donor/insert", sendData, {
-                headers: headers,
-            });
-            console.log("RESPONSE FROM /donor/insert: ", response);
+            let response = await badhanAxios.post("/donor/insert", sendData);
 
             commit('setNewDonorSuccess',"Donor added successfully");
 

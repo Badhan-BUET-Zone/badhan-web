@@ -50,13 +50,10 @@ const actions = {
             "x-auth": rootGetters.getToken,
         };
 
-        console.log("REQUESTING TO /donation/insert : ", sendData);
-
         try {
             let response = await badhanAxios.post("/donation/insert", sendData, {
                 headers: headers,
             });
-            console.log("RESPONSE FROM /donation/insert: ", response);
 
             commit('setDonationSuccess',"Successfully added donation");
             return true;

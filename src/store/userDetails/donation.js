@@ -83,7 +83,6 @@ const actions = {
             let response = await badhanAxios.post("/donor/donations", sendData, {
                 headers: headers,
             });
-            console.log("RESPONSE FROM /donor/donations: ", response);
 
             commit('setDonationList',response.data.donations);
             commit('setDonationSuccess',"Successfully loaded history");
@@ -111,13 +110,11 @@ const actions = {
         let headers = {
             "x-auth": rootGetters.getToken,
         };
-        console.log("REQUEST TO /donation/delete: ", sendData);
 
         try {
             let response = await badhanAxios.post("/donation/delete", sendData, {
                 headers: headers,
             });
-            console.log("RESPONSE FROM /donation/delete: ", response);
 
             let history = getters['getDonationList'];
 

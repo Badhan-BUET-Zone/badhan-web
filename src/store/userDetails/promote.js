@@ -49,13 +49,11 @@ const actions = {
             "x-auth": rootGetters.getToken,
         };
 
-        console.log("REQUEST TO /admin/promote: ", sendData);
         try {
             let response = await badhanAxios.post("/admin/promote", sendData, {
                 headers: headers,
             });
 
-            console.log("RESPONSE FROM /admin/promote: ", response);
 
             if(payload.promoteFlag){
                 commit('setPromoteSuccess',"Successfully promoted to volunteer");

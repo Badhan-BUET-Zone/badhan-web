@@ -72,14 +72,10 @@ const actions = {
         commit('clearHallAdminsFetchError');
         commit('hallAdminsLoaderFlagOn');
         let sendData = {};
-        let headers = {
-            'x-auth': getters.getToken
-        }
-        console.log('REQUEST TO /admin/hall/show: ', sendData);
+
 
         try {
-            let response = await badhanAxios.post('/admin/hall/show', sendData, { headers: headers });
-            console.log('RESPONSE FROM /admin/hall/show: ', response);
+            let response = await badhanAxios.post('/admin/hall/show', sendData);
 
             if (response.status !== 200) {
                 commit('setHallAdminsFetchError',"Status code not 200")
@@ -111,15 +107,9 @@ const actions = {
                 userPhone: getters.getPhone,
                 donorPhone: parseInt('88' + payload.newAdminPhone)
             };
-            let headers = {
-                'x-auth': getters.getToken
-            }
-
-            console.log('REQUEST TO /admin/hall/change: ', sendData);
 
             try {
-                let response = await badhanAxios.post('/admin/hall/change', sendData, {headers: headers});
-                console.log("RESPONSE FROM /admin/hall/change: ", response);
+                let response = await badhanAxios.post('/admin/hall/change', sendData);
                 if (response.status !== 200) {
                     commit('setChangeAdminError',"Status code not 200");
                     return;

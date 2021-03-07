@@ -40,16 +40,10 @@ const actions = {
     async saveUserDetails({commit,getters,rootState,rootGetters},payload){
 
         commit('detailsLoaderFlagOn');
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
-        console.log("REQUEST TO /donor/edit: ", payload);
+
 
         try {
-            let response = await badhanAxios.post("/donor/edit", payload, {
-                headers: headers,
-            });
-            console.log("RESPONSE FROM /donor/edit: ", response);
+            let response = await badhanAxios.post("/donor/edit", payload);
 
             commit('setDetailsSuccess',"Successfully saved details.");
             commit("setPhone", parseInt(payload.newPhone),{root:true});

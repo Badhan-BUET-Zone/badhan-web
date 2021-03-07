@@ -506,18 +506,11 @@ export default {
                 comment: this.comment,
                 lastDonation: this.newDonationDate.getTime(),
             };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /donor/insert: ", sendData);
 
             this.newDonorLoaderFlag = true;
 
             try {
-                let response = await badhanAxios.post("/donor/insert", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donor/insert: ", response);
+                let response = await badhanAxios.post("/donor/insert", sendData);
                 if (response.status !== 201) {
                     this.errorAddDonor = "Status code not 200";
                     return;

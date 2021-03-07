@@ -78,23 +78,15 @@ const actions={
         let sendData = {
             donorPhone: parseInt(payload)
         };
-        let headers = {
-            'x-auth': rootGetters['getToken']
-        }
-        console.log('REQUEST TO /donor/details: ', sendData);
 
         commit('donorLoaderFlagOn');
 
         try {
-            let response = await badhanAxios.post('/donor/details', sendData, {headers: headers});
-            console.log("RESPONSE FROM /donor/details: ",response);
-            if (response.status !== 200) {
-                return;
-            }
+            let response = await badhanAxios.post('/donor/details', sendData);
+
             commit('setProfile',response.data.donor)
         } catch (error) {
             console.log(error.response.data.message);
-
         } finally {
             commit('donorLoaderFlagOff');
         }

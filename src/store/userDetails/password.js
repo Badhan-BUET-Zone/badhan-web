@@ -47,12 +47,10 @@ const actions = {
         let headers = {
             "x-auth": rootGetters.getToken,
         };
-        console.log("REQUEST TO /donor/password/change: ", sendData);
         try {
             let response = await badhanAxios.post("/donor/password/change", sendData, {
                 headers: headers,
             });
-            console.log("RESPONSE FROM /donor/password/change: ", response);
 
             commit('setPasswordSuccess',"Successfully changed password")
         } catch (error) {

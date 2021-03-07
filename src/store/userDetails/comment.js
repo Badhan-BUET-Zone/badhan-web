@@ -50,16 +50,10 @@ const actions = {
             donorPhone: parseInt("88" + payload.phone),
             comment: payload.comment,
         };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
-        console.log("REQUEST TO /donor/comment: ", sendData);
+
         commit('commentLoaderFlagOn');
         try {
-            let response = await badhanAxios.post("/donor/comment", sendData, {
-                headers: headers,
-            });
-            console.log("RESPONSE FROM /donor/comment: ", response);
+            let response = await badhanAxios.post("/donor/comment", sendData);
 
             commit('setCommentSuccess',"Successfully changed comment");
 

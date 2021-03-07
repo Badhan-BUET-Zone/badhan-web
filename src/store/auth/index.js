@@ -69,10 +69,8 @@ const actions = {
     async logout({ getters, commit }) {
         try {
             commit('setLoadingTrue');
-            console.log("REQUEST TO /users/signout: BLANK");
-            let response = await badhanAxios.post('/users/signout', {}, { headers: { 'x-auth': getters.getToken } });
-            console.log("RESPONSE FROM /users/signout: ", response);
-            
+            let response = await badhanAxios.post('/users/signout', {});
+
         } catch (e) {
             console.log(e);
         } finally {
@@ -101,10 +99,8 @@ const actions = {
                 phone: parseInt('88' + payload.phone),
                 password: payload.password
             };
-            console.log("REQUEST POST TO /users/signin: HIDDEN");
             let response = await badhanAxios.post('/users/signin', sendData);
 
-            console.log("RESPONSE FROM /users/signin: ", response);
 
             if (response.status !== 201) {
                 commit('setSignInError', "Status code not 201")
@@ -113,21 +109,13 @@ const actions = {
 
             commit('setToken', response.data.token);
 
-            let headers = {
-                'x-auth': getters.getToken
-            };
             sendData = {
                 donorPhone: parseInt('88' + payload.phone)
             };
 
-            console.log("REQUEST POST TO /donor/details: ", sendData);
-            let profileInfo = await badhanAxios.post('/donor/details', sendData, { headers: headers });
-
-            console.log("RESPONSE FROM /donor/details: ", profileInfo);
+            let profileInfo = await badhanAxios.post('/donor/details', sendData);
 
             commit('setMyProfile', profileInfo.data.donor);
-
-
 
             if (payload.rememberFlag) {
                 commit('saveTokenToLocalStorage');

@@ -132,7 +132,6 @@ const mutations = {
 };
 const actions = {
     async search({ getters, commit }, payload) {
-        console.log("INSIDE SEARCH ACTION")
 
         //clear previous search results
         commit('hideSearchResults');
@@ -146,13 +145,9 @@ const actions = {
             isAvailable: payload.availability,
             address: payload.inputAddress
         };
-        let headers = {
-            'x-auth': getters.getToken
-        };
-        console.log('REQUEST POST TO /donor/search: ', sendData);
+
         try {
-            let response = await badhanAxios.post('/donor/search', sendData, { headers: headers });
-            console.log("RESPONSE FROM /donor/search: ", response);
+            let response = await badhanAxios.post('/donor/search', sendData );
 
             if (response.status !== 200) {
                 commit('setSearchError', "Status code not 200");
