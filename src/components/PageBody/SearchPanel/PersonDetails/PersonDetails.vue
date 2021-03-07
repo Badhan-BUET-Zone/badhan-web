@@ -37,10 +37,7 @@
             </v-app-bar>
 
             <v-card-title
-                v-if="
-          !$store.getters.getLoadingFlag && errorDetailsLoading.length === 0
-        "
-            >
+                v-if="!$store.getters.getLoadingFlag">
                 <span>{{ name }}</span>
             </v-card-title>
 
@@ -53,7 +50,7 @@
 
             <div class="mb-5">
         <span v-if="availableIn > 0" class="alert alert-danger"
-        >{{ this.availableIn }} Days remaining</span
+        >{{ availableIn }} Days remaining</span
         >
                 <span v-else class="alert alert-success">Available</span>
             </div>
@@ -68,15 +65,7 @@
                     <br/>
                     <div
                         class="custom-control custom-switch"
-                        v-if="
-              $store.getters.getDesignation === 3 ||
-              $store.getters.getPhone == oldPhone ||
-              ($store.getters.getHall === halls.indexOf(hall) &&
-                $store.getters.getDesignation > designation) ||
-              halls.indexOf(hall) === 7 ||
-              halls.indexOf(hall) === 8
-            "
-                    >
+                        v-if="$store.getters.getDesignation === 3 ||$store.getters.getPhone == oldPhone ||($store.getters.getHall === halls.indexOf(hall) &&$store.getters.getDesignation > designation) ||halls.indexOf(hall) === 7 ||halls.indexOf(hall) === 8">
 
                         <v-switch
                             v-model="enableEditing"
@@ -92,10 +81,7 @@
                                 <h5 class="mb-0">
                                     <button
                                         class="btn btn-link"
-                                        @click="
-                      personDetailCollapseFlag = !personDetailCollapseFlag
-                    "
-                                    >
+                                        @click="personDetailCollapseFlag = !personDetailCollapseFlag">
                                         Person Details
                                     </button>
                                 </h5>
@@ -166,10 +152,7 @@
                                     ></v-text-field>
 
                                     <div
-                                        v-if="
-                      $store.getters.getDesignation > designation ||
-                      $store.getters.getPhone == oldPhone
-                    "
+                                        v-if="$store.getters.getDesignation > designation ||$store.getters.getPhone == oldPhone"
                                     >
                                         <v-btn color="warning" rounded @click="dialog = false"
                                         >Cancel
@@ -204,10 +187,7 @@
                         </div>
                         <div
                             class="card"
-                            v-if="
-                $store.getters.getDesignation > designation ||
-                $store.getters.getPhone == oldPhone
-              "
+                            v-if="$store.getters.getDesignation > designation ||$store.getters.getPhone == oldPhone"
                         >
                             <div class="card-header" id="headingTwo">
                                 <h5 class="mb-0">
@@ -222,15 +202,9 @@
                             <div v-if="settingsCollapseFlag">
                                 <div class="card-body">
                                     <div
-                                        v-if="
-                      designation !== 0 || $store.getters.getPhone == oldPhone
-                    "
-                                    >
-
+                                        v-if="designation !== 0 || $store.getters.getPhone == oldPhone">
                                         <v-text-field
-                                            :append-icon="
-                            newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
-                          "
+                                            :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                             :type="newPasswordFlag ? 'text' : 'password'"
                                             outlined
                                             label="New Password"
@@ -241,25 +215,18 @@
                                         ></v-text-field>
 
                                         <v-text-field
-                                            :append-icon="
-                            confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'
-                          "
+                                            :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                             :type="confirmPasswordFlag ? 'text' : 'password'"
                                             outlined
                                             label="Confirm Password"
                                             v-model="confirmPassword"
                                             class="input-group--focused"
-                                            @click:append="
-                            confirmPasswordFlag = !confirmPasswordFlag
-                          "
+                                            @click:append="confirmPasswordFlag = !confirmPasswordFlag"
                                             :disabled="!enableEditing"
                                         ></v-text-field>
-                                        <!-- </div> -->
-                                        <!-- </div> -->
+
                                         <button
-                                            v-if="
-                        designation == 1 && $store.getters.getPhone !== oldPhone
-                      "
+                                            v-if="designation == 1 && $store.getters.getPhone !== oldPhone"
                                             class="btn btn-outline-danger"
                                             :disabled="!enableEditing"
                                             style="width: 100%"
@@ -270,12 +237,7 @@
                                     </div>
 
                                     <div
-                                        v-if="
-                      $store.getters.getDesignation > 1 &&
-                      designation == 0 &&
-                      hall !== 7 &&
-                      hall !== 8
-                    "
+                                        v-if="$store.getters.getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8"
                                     >
                                         <label>Promote this member to volunteer</label>
                                         <div class="form-group row">
@@ -307,10 +269,7 @@
                                     </div>
 
                                     <div
-                                        v-if="
-                      $store.getters.phone === oldPhone ||
-                      $store.getters.getDesignation > 1
-                    "
+                                        v-if="$store.getters.phone === oldPhone ||$store.getters.getDesignation > 1 ||($store.getters.getDesignation === 1 && $store.getters.getPhone == oldPhone)"
                                     >
                                         <v-btn color="warning" @click="hideDetails()" rounded
                                         >Cancel
@@ -319,8 +278,8 @@
                                             color="primary"
                                             class="white--text ml-2"
                                             rounded
-                                            :disabled="settingsSpinner || !enableEditing"
-                                            :loading="settingsSpinner"
+                                            :disabled="settingsSpinner || !enableEditing || $store.getters['password/getPasswordLoader']"
+                                            :loading="settingsSpinner || $store.getters['password/getPasswordLoader']"
                                             @click="saveSettingsClicked()"
                                         >Save
                                         </v-btn>
@@ -339,6 +298,21 @@
                                         v-if="successSettings.length !== 0"
                                     >
                                         {{ successSettings }}
+                                    </div>
+
+                                    <div
+                                        class="alert alert-danger animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['password/getPasswordError']!==null"
+                                    >
+                                        {{ $store.getters['password/getPasswordError'] }}
+                                    </div>
+                                    <div
+                                        class="alert alert-success animated jello"
+                                        role="alert"
+                                        v-if="$store.getters['password/getPasswordSuccess']!==null"
+                                    >
+                                        {{ $store.getters['password/getPasswordSuccess'] }}
                                     </div>
                                 </div>
                             </div>
@@ -363,8 +337,8 @@
                             </div>
                             <v-btn
                                 color="primary"
-                                :disabled="commentSpinner || !enableEditing"
-                                :loading="commentSpinner"
+                                :disabled="$store.getters['comment/getCommentLoaderFlag'] || !enableEditing"
+                                :loading="$store.getters['comment/getCommentLoaderFlag']"
                                 @click="saveCommentClicked()"
                             >
                                 Save Comment
@@ -375,16 +349,16 @@
                     <div
                         class="alert alert-danger animated jello"
                         role="alert"
-                        v-if="errorComment.length !== 0"
+                        v-if="$store.getters['comment/getCommentError']!==null"
                     >
-                        {{ errorComment }}
+                        {{ $store.getters['comment/getCommentError'] }}
                     </div>
                     <div
                         class="alert alert-success animated jello"
                         role="alert"
-                        v-if="successComment.length !== 0"
+                        v-if="$store.getters['comment/getCommentSuccess']!==null"
                     >
-                        {{ successComment }}
+                        {{ $store.getters['comment/getCommentSuccess'] }}
                     </div>
                 </div>
 
@@ -496,7 +470,6 @@ export default {
             errorComment: "",
             errorSettings: "",
             errorHistory: "",
-            errorDetailsLoading: "",
 
             successComment: "",
             successSettings: "",
@@ -584,39 +557,13 @@ export default {
         hideDetails() {
             this.showHistory = false;
             this.enableEditing = false;
-            this.errorDetailsLoading = "";
         },
         async saveCommentClicked() {
-            this.errorComment = "";
-            this.successComment = "";
+            await this.$store.dispatch('comment/saveComment', {
+                phone: this.phone,
+                comment: this.comment
+            })
 
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
-                comment: this.comment,
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /donor/comment: ", sendData);
-            this.commentSpinner = true;
-            try {
-                let response = await badhanAxios.post("/donor/comment", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donor/comment: ", response);
-
-                if (response.status !== 200) {
-                    this.error = "Status code not 200";
-                    return;
-                }
-                this.successComment = "Successfully changed comment";
-                this.enableEditing = false;
-            } catch (error) {
-                this.errorComment = error.response.message;
-                console.log(error.response);
-            } finally {
-                this.commentSpinner = false;
-            }
         },
         async deleteDonation(date) {
             this.errorHistory = "";
@@ -678,15 +625,10 @@ export default {
         },
 
         saveSettingsClicked() {
-            if (this.newPassword !== this.confirmPassword) {
-                this.errorSettings = "Passwords didn't match";
-                return;
-            } else if (this.newPassword.length === 0) {
-                this.errorSettings = "Password can't have length of zero";
-                return;
-            }
+
 
             if (this.designation === 0) {
+
                 this.promote();
             } else {
                 this.savePasswordClicked();
@@ -695,6 +637,14 @@ export default {
         async promote() {
             this.errorSettings = "";
             this.successSettings = "";
+
+            if (this.newPassword !== this.confirmPassword) {
+                this.errorSettings = "Passwords didn't match";
+                return;
+            } else if (this.newPassword.length === 0) {
+                this.errorSettings = "Password can't have length of zero";
+                return;
+            }
 
             let sendData = {
                 donorPhone: parseInt("88" + this.phone),
@@ -762,44 +712,20 @@ export default {
             }
         },
         async savePasswordClicked() {
-            this.errorSettings = "";
-            this.successSettings = "";
+            this.$store.commit('password/clearPasswordMessage');
 
             if (this.newPassword !== this.confirmPassword) {
-                this.errorSettings = "Passwords didn't match";
+                this.$store.commit('password/setPasswordError',"Passwords didn't match");
                 return;
             }
             if (this.newPassword.length === 0) {
-                this.errorSettings = "Passwords can't be of length zero";
+                this.$store.commit('password/setPasswordError',"Passwords can't be of length zero");
                 return;
             }
-            let sendData = {
-                donorPhone: parseInt("88" + this.phone),
+            await this.$store.dispatch('password/savePassword',{
+                phone: this.phone,
                 newPassword: this.newPassword,
-            };
-            let headers = {
-                "x-auth": this.$store.getters.getToken,
-            };
-            console.log("REQUEST TO /donor/password/change: ", sendData);
-            this.settingsSpinner = true;
-            try {
-                let response = await badhanAxios.post("/donor/password/change", sendData, {
-                    headers: headers,
-                });
-                console.log("RESPONSE FROM /donor/password/change: ", response);
-
-                if (response.status !== 200) {
-                    this.errorSettings = "Status code not 200";
-                    return;
-                }
-                this.successSettings = "Successfully changed password";
-                this.enableEditing = false;
-            } catch (error) {
-                this.errorSettings = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.settingsSpinner = false;
-            }
+            })
         },
         async saveDetailsClicked() {
             this.$store.commit('userDetails/clearDetailsMessage');
