@@ -10,7 +10,8 @@
                     style="width: 150px; height: 150px"
                 />
 
-                <div class="h4 p-2">Sign into Badhan Sync</div>
+                <div class="h4 p-2">Sign into Badhan</div>
+                <div class="h6" v-if="isMobile">Version: {{version}}</div>
 
                 <div>
                     <!--                        <label>Phone </label>-->
@@ -104,6 +105,8 @@
 <script>
 import SignInDialog from "@/components/SignInDialog";
 import {Capacitor} from "@capacitor/core";
+import {Plugins} from '@capacitor/core';
+const { Device } = Plugins;
 
 export default {
     name: "SignIn",
@@ -114,6 +117,7 @@ export default {
             rememberFlag: localStorage.getItem("rememberFlag") == "true",
 
             passwordFlag: false,
+            version: "2.0.1"
         };
     },
     watch: {
@@ -161,6 +165,8 @@ export default {
         },
     },
     async mounted() {
+        const info = await Device.getInfo();
+        this.version = info.appVersion;
     },
 
     components: {
