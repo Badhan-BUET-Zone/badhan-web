@@ -1,6 +1,29 @@
 <template>
     <div>
         <v-container fluid>
+            <v-card
+                class="mx-auto"
+                max-width="344"
+            >
+                <v-card-title>
+                    Feedback
+                </v-card-title>
+                <v-card-text>
+                    <div>Please report any bugs you may find. We would really love to hear any new ideas for our app.</div>
+                    <div>Note: contact mirmahathir1@gmail.com for editing the document</div>
+                </v-card-text>
+                <v-card-actions class="pa-5">
+                    <v-btn
+                        rounded
+                        class="white--text"
+                        color="red"
+                        @click="goTo('https://docs.google.com/document/d/1beh8V5miXqWf6zEHfDnwHGv5PeI2tn0KqOQmwgLz5KM/edit?usp=sharing')"
+                    >
+                        Go to doc
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+
             <h5 class="mt-5 mb-5">Developers</h5>
             <v-row dense>
                 <ContributorCard
