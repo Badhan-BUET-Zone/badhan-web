@@ -67,16 +67,6 @@ export default {
         return {
             contributors: [
                 {
-                    name: 'MH Rahat',
-                    subtitle: 'Platform Manager',
-                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media',
-                    descriptions: ['Initiator of Badhan Website and Android App', 'Test and Bug Report'],
-                    links: [
-                        {icon: 'facebook', color: 'primary', link: 'https://www.facebook.com/mhrahat01'},
-                        {icon: 'gmail', color: 'red', link: 'mailto:mahamudulrahat@gmail.com'},
-                    ]
-                },
-                {
                     name: 'Mir Mahathir Mohammad',
                     subtitle: 'Frontend Developer',
                     image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media',
@@ -86,6 +76,16 @@ export default {
                         {icon: 'gmail',color: 'red',link: 'mailto:mirmahathir1@gmail.com'},
                         {icon: 'linkedin',color:'blue',link:'https://www.linkedin.com/in/mir-mahathir-59bb671a5/'},
                         {icon: 'github',color:'grey',link:'https://github.com/mirmahathir1'}
+                    ]
+                },
+                {
+                    name: 'MH Rahat',
+                    subtitle: 'Platform Manager',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media',
+                    descriptions: ['Initiator of Badhan Website and Android App', 'Test and Bug Report'],
+                    links: [
+                        {icon: 'facebook', color: 'primary', link: 'https://www.facebook.com/mhrahat01'},
+                        {icon: 'gmail', color: 'red', link: 'mailto:mahamudulrahat@gmail.com'},
                     ]
                 },
                 {
