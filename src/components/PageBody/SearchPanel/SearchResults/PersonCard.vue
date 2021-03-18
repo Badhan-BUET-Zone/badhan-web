@@ -86,6 +86,7 @@
                     transition="scale-transition"
                     offset-y
                     min-width="auto"
+
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
@@ -93,8 +94,10 @@
                             label="Add a donation date"
                             prepend-icon="mdi-calendar"
                             readonly
+                            outlined
                             v-bind="attrs"
                             v-on="on"
+                            class="mt-3"
                         ></v-text-field>
                     </template>
                     <v-date-picker v-model="newDonationDate" no-title scrollable>
