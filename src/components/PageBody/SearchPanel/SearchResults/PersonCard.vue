@@ -78,6 +78,10 @@
                     >
                 </div>
                 <br/>
+
+                <p class="mt-3"><b>Comment:</b> {{ comment }}</p>
+
+                <br/>
                 <v-menu
                     ref="menu"
                     v-model="menu"
@@ -97,7 +101,6 @@
                             outlined
                             v-bind="attrs"
                             v-on="on"
-                            class="mt-3"
                         ></v-text-field>
                     </template>
                     <v-date-picker v-model="newDonationDate" no-title scrollable>
@@ -153,6 +156,7 @@ export default {
         "availableIn",
         "studentID",
         "lastDonation",
+        "comment"
     ],
     components: {
         Datepicker,
@@ -196,22 +200,22 @@ export default {
 
         },
         async donate() {
-            let success = await this.$store.dispatch('donate/donate',{
+            let success = await this.$store.dispatch('donate/donate', {
                 phone: this.$props.phone,
                 newDonationDate: this.newDonationDate
             });
 
-            if(success){
+            if (success) {
                 let newAvailableIn =
-                        120 -
-                        Math.round(
-                            (Math.round(new Date().getTime()) -
-                                new Date(this.newDonationDate).getTime()) /
-                            (1000 * 3600 * 24)
-                        );
-                    if (newAvailableIn > this.availableInRendered) {
-                        this.availableInRendered = newAvailableIn;
-                    }
+                    120 -
+                    Math.round(
+                        (Math.round(new Date().getTime()) -
+                            new Date(this.newDonationDate).getTime()) /
+                        (1000 * 3600 * 24)
+                    );
+                if (newAvailableIn > this.availableInRendered) {
+                    this.availableInRendered = newAvailableIn;
+                }
 
                 this.newDonationDate = "";
             }

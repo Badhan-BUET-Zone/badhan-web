@@ -58,6 +58,7 @@
                     :bloodGroup="person.bloodGroup"
                     :studentID="person.studentID"
                     :lastDonation="person.lastDonation"
+                    :comment="person.comment"
                     :key="personIndex"
                 ></person-card>
             </div>
