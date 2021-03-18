@@ -77,11 +77,7 @@
                     </v-btn
                     >
                 </div>
-                <br/>
-
                 <p class="mt-3"><b>Comment:</b> {{ comment }}</p>
-
-                <br/>
                 <v-menu
                     ref="menu"
                     v-model="menu"
@@ -90,7 +86,6 @@
                     transition="scale-transition"
                     offset-y
                     min-width="auto"
-
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
@@ -115,7 +110,6 @@
                         >
                     </v-date-picker>
                 </v-menu>
-                <br/>
                 <v-btn
                     color="red"
                     rounded
