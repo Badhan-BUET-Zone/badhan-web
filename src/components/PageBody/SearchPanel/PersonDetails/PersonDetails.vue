@@ -49,11 +49,14 @@
             </v-card-subtitle>
 
             <div class="mb-5">
-        <span v-if="availableIn > 0" class="alert alert-danger"
-        >{{ availableIn }} Days remaining</span
-        >
+                <span v-if="availableIn > 0" class="alert alert-danger rounded">{{ availableIn }} Days remaining</span>
                 <span v-else class="alert alert-success">Available</span>
+
+                <v-btn rounded color="light-blue" max-width="150px" class="ml-2" @click="callFromDialer"
+                >Direct call
+                </v-btn>
             </div>
+
 
             <!--            Modal Body-->
             <div
@@ -62,6 +65,7 @@
             >
                 <!--                Modal First column-->
                 <div class="card col-lg-8 col-md-12 col-sm-12">
+
                     <br/>
                     <div
                         class="custom-control custom-switch"
@@ -558,6 +562,9 @@ export default {
         },
     },
     methods: {
+        callFromDialer() {
+            document.location.href = "tel:+88" + this.phone;
+        },
         datePrint(date) {
             let dateObj = new Date(date);
             return (
