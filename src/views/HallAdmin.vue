@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Roll</label>
+                                    <label class="col-sm-4 col-form-label">Roll (3 digit roll number)</label>
                                     <div class="col-sm-8">
                                         <input
                                             type="text"
