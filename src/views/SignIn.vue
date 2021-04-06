@@ -3,7 +3,7 @@
         <div class="row d-flex justify-content-center" align="center">
             <div
                 class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4"
-                style="height: fit-content; top: 5vh"
+                style="height: fit-content; top: 2vh"
             >
                 <img
                     src="../assets/images/badhanlogo.png"
@@ -14,13 +14,6 @@
                 <div class="h6" v-if="isMobile">Version: {{version}}</div>
 
                 <div>
-                    <!--                        <label>Phone </label>-->
-                    <!--                        <input-->
-                    <!--                            class="form-control"-->
-                    <!--                            type="text"-->
-                    <!--                            v-model="phone"-->
-                    <!--                            placeholder="11 Digit Phone number"-->
-                    <!--                        />-->
                     <v-text-field
                         :type="'text'"
                         outlined
@@ -29,14 +22,6 @@
                         class="input-group--focused"
 
                     ></v-text-field>
-
-                    <!--                        <label>Password </label>-->
-                    <!--                        <input-->
-                    <!--                            class="form-control"-->
-                    <!--                            type="password"-->
-                    <!--                            v-model="password"-->
-                    <!--                            placeholder="Password"-->
-                    <!--                        />-->
 
                     <v-text-field
                         :append-icon="
@@ -74,8 +59,10 @@
                     {{ $store.getters.getError }}
                 </div>
 
+
+
                 <v-btn
-                    class="mt-3"
+                    class="mt-2"
                     v-if="!isMobile"
                     text
                     style="text-decoration: none"
@@ -94,6 +81,9 @@
                     Web Version
                     <v-icon right>mdi-web</v-icon>
                 </v-btn>
+              <v-btn text x-small style="text-decoration: none" class="mt-2" href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
+                Don't have an account? Click here
+              </v-btn>
 
             </div>
         </div>
