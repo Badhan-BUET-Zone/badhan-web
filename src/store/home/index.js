@@ -18,6 +18,7 @@ const state = {
     filterShownFlag: true,
     searchResultShown: false,
     personGroups: {},
+    searchedHall: 0,
 
     persons:[],
     numOfDonor: 0,
@@ -54,6 +55,9 @@ const getters = {
     getPersons: state=>{
         return state.persons;
     },
+    getSearchedHall: state=>{
+        return state.searchedHall;
+    }
 
 
 
@@ -127,6 +131,10 @@ const mutations = {
         state.searchResultShown = true;
     },
 
+    setSearchedHall(state,payload){
+        state.searchedHall = payload;
+    }
+
 
 
 };
@@ -155,7 +163,7 @@ const actions = {
             }
 
             commit('setPersonGroups', response.data.filteredDonors);
-
+            commit('setSearchedHall',payload.hall);
             commit('hideFilter');
 
         } catch (error) {

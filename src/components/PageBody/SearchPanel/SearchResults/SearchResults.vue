@@ -15,7 +15,7 @@
                 <json-excel
                     v-if="!isSmallWindow"
                     :data="$store.getters.getPersons"
-                    name="badhan.xls"
+                    :name="'badhan_'+$store.getters.getSearchedHall+'.xls'"
                     worksheet="Badhan"
                     :fields="{
                     name:'name',
@@ -59,7 +59,9 @@
                     :studentID="person.studentID"
                     :lastDonation="person.lastDonation"
                     :comment="person.comment"
+                    :address="person.address"
                     :key="personIndex"
+                    :roomNumber="person.roomNumber"
                 ></person-card>
             </div>
         </div>

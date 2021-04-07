@@ -36,8 +36,6 @@
                     <div style="font-size: small; width: 100%" class="text-wrap pa-4">
                         <b style="width: 100%">{{ name }}</b>
                         <br/>
-                        <b>Dept: </b><span>{{ studentID | idToDept }}</span>
-                        <br/>
                         <b>Phone: </b>
                         <span v-if="phone">{{ phone.toString().substr(2) }}</span>
                     </div>
@@ -61,8 +59,13 @@
         <!--    Person card extension-->
         <div v-if="showExtensionFlag">
             <div class="card card-body" style="background-color: lightgrey">
+                <p><b>Department: </b>{{ studentID | idToDept }}</p>
+                <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
+                <p v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }}</p>
+                <p v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b> {{ roomNumber }}</p>
                 <div>
                     <v-btn
+                        small
                         rounded
                         color="light-blue"
                         v-b-modal="'detailsModal'"
@@ -72,47 +75,50 @@
                     >
                         See profile
                     </v-btn>
-                    <v-btn rounded color="light-blue" class="ml-2" @click="callFromDialer"
+                    <v-btn small rounded color="light-blue" class="ml-2" @click="callFromDialer"
                     >Direct call
                     </v-btn
                     >
                 </div>
-                <p class="mt-3"><b>Comment:</b> {{ comment }}</p>
-                <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :return-value.sync="newDonationDate"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="newDonationDate"
-                            label="Add a donation date"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="newDonationDate" no-title scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                        <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(newDonationDate)"
-                        >OK
-                        </v-btn
-                        >
-                    </v-date-picker>
-                </v-menu>
+                <div class="mt-2">
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="newDonationDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                v-model="newDonationDate"
+                                label="Add a donation date"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                outlined
+                                v-bind="attrs"
+                                v-on="on"
+                                dense
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="newDonationDate" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                            <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.menu.save(newDonationDate)"
+                            >OK
+                            </v-btn
+                            >
+                        </v-date-picker>
+                    </v-menu>
+                </div>
                 <v-btn
                     color="red"
                     rounded
+                    small
                     @click="donate()"
                     :loading="$store.getters['donate/getDonationLoaderFlag']"
                     :disabled="$store.getters['donate/getDonationLoaderFlag'] || newDonationDate.length === 0"
@@ -150,7 +156,9 @@ export default {
         "availableIn",
         "studentID",
         "lastDonation",
-        "comment"
+        "comment",
+        "address",
+        "roomNumber"
     ],
     components: {
         Datepicker,
