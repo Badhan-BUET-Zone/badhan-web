@@ -62,6 +62,7 @@
                     :address="person.address"
                     :key="personIndex"
                     :roomNumber="person.roomNumber"
+                    :id="person._id"
                 ></person-card>
             </div>
         </div>

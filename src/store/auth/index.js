@@ -110,10 +110,10 @@ const actions = {
             commit('setToken', response.data.token);
 
             sendData = {
-                donorPhone: parseInt('88' + payload.phone)
+
             };
 
-            let profileInfo = await badhanAxios.post('/donor/details', sendData);
+            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
 
             commit('setMyProfile', profileInfo.data.donor);
 

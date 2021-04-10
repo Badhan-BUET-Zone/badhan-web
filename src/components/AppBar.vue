@@ -146,7 +146,7 @@ export default {
         async myProfileclicked() {
             // this.$store.commit('showSearchPanel');
 
-            await this.$router.push({path: '/home/details', query: {phone: this.$store.getters.getPhone}});
+            await this.$router.push({path: '/home/details', query: {id: this.$store.getters.getID}});
 
         },
         async signOutClicked() {

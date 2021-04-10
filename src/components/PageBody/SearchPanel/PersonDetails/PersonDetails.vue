@@ -713,7 +713,7 @@ export default {
     },
 
     async mounted() {
-        await this.$store.dispatch("details/getDetails", this.$route.query.phone);
+        await this.$store.dispatch("details/getDetails", this.$route.query.id);
     },
 };
 </script>

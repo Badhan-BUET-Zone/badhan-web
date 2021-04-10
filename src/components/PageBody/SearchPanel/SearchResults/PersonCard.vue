@@ -158,7 +158,8 @@ export default {
         "lastDonation",
         "comment",
         "address",
-        "roomNumber"
+        "roomNumber",
+        "id"
     ],
     components: {
         Datepicker,
@@ -197,7 +198,7 @@ export default {
             //   await this.$router.push("/home/details");
             await this.$router.push({
                 path: "/home/details",
-                query: {phone: this.$props.phone},
+                query: {id: this.$props.id},
             });
 
         },

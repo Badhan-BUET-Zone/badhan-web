@@ -1,4 +1,5 @@
 const state = {
+  _id: null,
   name: null,
   studentId: null,
   lastDonation: null,
@@ -42,6 +43,9 @@ const getters = {
   getComment: state => {
     return state.comment;
   },
+  getID: state=>{
+    return state._id;
+  },
   getMyProfile: state => {
     return {
       name: state.name,
@@ -53,11 +57,15 @@ const getters = {
       address: state.address,
       comment: state.comment,
       designation: state.designation,
-      roomNumber: state.roomNumber
+      roomNumber: state.roomNumber,
+      _id: state._id
     }
   }
 };
 const mutations = {
+  setID(state,id){
+    state._id = id;
+  },
   setName(state, name) {
     state.name = name;
   },
@@ -90,6 +98,7 @@ const mutations = {
   },
 
   setMyProfile(state, payload) {
+    state._id = payload._id;
     state.name = payload.name;
     state.studentId = payload.studentId;
     state.lastDonation = payload.lastDonation;
@@ -112,6 +121,7 @@ const mutations = {
     }
     myprofile = JSON.parse(myprofile);
 
+    state._id = myprofile._id;
     state.name = myprofile.name;
     state.studentId = myprofile.studentId;
     state.lastDonation = myprofile.lastDonation;
@@ -126,6 +136,7 @@ const mutations = {
   },
   saveMyProfileToLocalStorage(state) {
     let myprofile = {
+      _id: state._id,
       name: state.name,
       studentId : state.studentId,
       lastDonation : state.lastDonation,

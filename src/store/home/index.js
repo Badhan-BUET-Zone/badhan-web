@@ -155,7 +155,7 @@ const actions = {
         };
 
         try {
-            let response = await badhanAxios.post('/donor/search', sendData );
+            let response = await badhanAxios.post('v2/donor/search', sendData );
 
             if (response.status !== 200) {
                 commit('setSearchError', "Status code not 200");
