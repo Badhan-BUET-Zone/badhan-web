@@ -204,7 +204,7 @@ export default {
         },
         async donate() {
             let success = await this.$store.dispatch('donate/donate', {
-                phone: this.$props.phone,
+                donorId: this.$props.id,
                 newDonationDate: this.newDonationDate
             });
 

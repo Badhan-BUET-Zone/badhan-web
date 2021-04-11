@@ -73,16 +73,15 @@ const actions = {
         commit('hallAdminsLoaderFlagOn');
         let sendData = {};
 
-
         try {
-            let response = await badhanAxios.post('/admin/hall/show', sendData);
+            let response = await badhanAxios.post('v2/admin/hall/show', sendData);
 
             if (response.status !== 200) {
                 commit('setHallAdminsFetchError',"Status code not 200")
                 return;
             }
             
-            commit('setHallAdmins',response.data.filteredAdmins)
+            commit('setHallAdmins',response.data.admins)
 
         } catch (error) {
             console.log(error);
@@ -98,18 +97,18 @@ const actions = {
             commit('changeAdminLoaderFlagOn');
             commit('clearChangeAdminSuccess');
 
-            if (isNaN(payload.newAdminPhone) || payload.newAdminPhone.toString().length !== 11) {
-                commit('setChangeAdminError',"Please enter a valid phone number");
-                return;
-            }
+            // if (isNaN(payload.newAdminPhone) || payload.newAdminPhone.toString().length !== 11) {
+            //     commit('setChangeAdminError',"Please enter a valid phone number");
+            //     return;
+            // }
 
-            let sendData = {
-                userPhone: getters.getPhone,
-                donorPhone: parseInt('88' + payload.newAdminPhone)
-            };
+            // let sendData = {
+            //     userPhone: getters.getPhone,
+            //     donorPhone: parseInt('88' + payload.newAdminPhone)
+            // };
 
             try {
-                let response = await badhanAxios.post('/admin/hall/change', sendData);
+                let response = await badhanAxios.post('v2/admin/hall/change', payload);
                 if (response.status !== 200) {
                     commit('setChangeAdminError',"Status code not 200");
                     return;
@@ -119,9 +118,12 @@ const actions = {
 
                 dispatch('fetchHallAdmins');
 
+                return true;
+
             } catch (error) {
                 commit('setChangeAdminError',error.response.data.message);
                 console.log(error.response);
+                return false;
             } finally {
                 commit('changeAdminLoaderFlagOff');
             }

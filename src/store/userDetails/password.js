@@ -40,17 +40,8 @@ const actions = {
         commit('clearPasswordMessage');
         commit('passwordLoaderOn');
 
-        let sendData = {
-            donorPhone: parseInt("88" + payload.phone),
-            newPassword: payload.newPassword,
-        };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
         try {
-            let response = await badhanAxios.post("/donor/password/change", sendData, {
-                headers: headers,
-            });
+            let response = await badhanAxios.post("v2/donor/password/change", payload);
 
             commit('setPasswordSuccess',"Successfully changed password")
         } catch (error) {

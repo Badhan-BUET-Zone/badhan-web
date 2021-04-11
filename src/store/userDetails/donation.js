@@ -71,18 +71,8 @@ const actions = {
         commit('clearDonationMessage');
         commit('donationLoaderOn');
 
-        let sendData = {
-            donorPhone: parseInt("88" + payload.phone),
-        };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
-        console.log("REQUEST TO /donor/donations: ", sendData);
-
         try {
-            let response = await badhanAxios.post("/donor/donations", sendData, {
-                headers: headers,
-            });
+            let response = await badhanAxios.post("v2/donor/donations", payload);
 
             commit('setDonationList',response.data.donations);
             commit('setDonationSuccess',"Successfully loaded history");
@@ -103,18 +93,9 @@ const actions = {
         commit('donationDeleteLoaderOn');
 
         let dateToBeDeleted = payload.date;
-        let sendData = {
-            donorPhone: parseInt("88" + payload.phone),
-            date: payload.date,
-        };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
 
         try {
-            let response = await badhanAxios.post("/donation/delete", sendData, {
-                headers: headers,
-            });
+            let response = await badhanAxios.post("v2/donation/delete", payload);
 
             let history = getters['getDonationList'];
 

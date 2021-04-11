@@ -43,7 +43,7 @@ const actions = {
 
         let sendData = {
             // donorPhone: this.$props.phone,
-            donorPhone: payload.phone,
+            donorId: payload.donorId,
             date: new Date(payload.newDonationDate).getTime(),
         };
         let headers = {
@@ -51,7 +51,7 @@ const actions = {
         };
 
         try {
-            let response = await badhanAxios.post("/donation/insert", sendData, {
+            let response = await badhanAxios.post("v2/donation/insert", sendData, {
                 headers: headers,
             });
 

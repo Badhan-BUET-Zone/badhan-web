@@ -38,12 +38,10 @@ const mutations = {
 };
 const actions = {
     async saveUserDetails({commit,getters,rootState,rootGetters},payload){
-
         commit('detailsLoaderFlagOn');
 
-
         try {
-            let response = await badhanAxios.post("/donor/edit", payload);
+            let response = await badhanAxios.post("v2/donor/edit", payload);
 
             commit('setDetailsSuccess',"Successfully saved details.");
             commit("setPhone", parseInt(payload.newPhone),{root:true});

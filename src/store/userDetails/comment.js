@@ -46,20 +46,17 @@ const mutations = {
 const actions = {
     async saveComment({commit,getters,rootState,rootGetters},payload){
         commit('clearCommentMessage');
-        let sendData = {
-            donorPhone: parseInt("88" + payload.phone),
-            comment: payload.comment,
-        };
+        let sendData = payload;
 
         commit('commentLoaderFlagOn');
         try {
-            let response = await badhanAxios.post("/donor/comment", sendData);
+            let response = await badhanAxios.post("v2/donor/comment", sendData);
 
             commit('setCommentSuccess',"Successfully changed comment");
 
         } catch (error) {
             if(error.response && error.response.messsage){
-                commit('setCommentError',message);
+                commit('setCommentError',error.response.messsage);
             }
             else{
                 commit('setCommentError',error);

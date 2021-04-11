@@ -230,77 +230,16 @@
                             <h5 class="mb-0">
                                 <b-button
                                     variant="light"
-                                    @click="archiveCollapseFlag = !archiveCollapseFlag"
-                                >
-                                    Archive batch:
-                                </b-button>
-                            </h5>
-                        </div>
-                        <div v-if="archiveCollapseFlag" data-aos="fade-down">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label"
-                                    >Enter batch number to be archived:
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input
-                                            type="text"
-                                            v-model="archiveBatch"
-                                            class="form-control"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label"
-                                    >Enter your password:
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input
-                                            type="password"
-                                            v-model="password"
-                                            class="form-control"
-                                        />
-                                    </div>
-                                </div>
-
-                                <br/>
-                                <div class="col-sm-8">
-                                    <v-btn
-                                        rounded
-                                        color="red"
-                                        class="white--text"
-                                        disabled
-                                    >Archive batch <br>(not implemented)
-                                    </v-btn
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card col-lg-6 col-md-12 col-sm-12 p-4">
-                <div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <b-button
-                                    variant="light"
                                     @click="seeVolunteersFlag = !seeVolunteersFlag"
                                 >
                                     See volunteers
                                 </b-button>
                             </h5>
                         </div>
-                        <div v-if="seeVolunteersFlag">
-                            <div class="card-body">
-                                <v-btn rounded :loading="$store.getters.getVolunteerLoader"
-                                       :disabled="$store.getters.getVolunteerLoader" color="primary"
-                                       @click="$store.dispatch('fetchVolunteers')">Get volunteers
-                                </v-btn>
-                            </div>
+                        <div v-if="seeVolunteersFlag" class="pa-4">
+                            <v-progress-circular indeterminate color="primary" v-if="$store.getters.getVolunteerLoader">
+
+                            </v-progress-circular>
 
                             <v-simple-table v-if="$store.getters.getVolunteers.length!==0">
                                 <template v-slot:default>
@@ -530,6 +469,9 @@ export default {
 
         },
     },
+  mounted() {
+    this.$store.dispatch('fetchVolunteers')
+  }
 };
 </script>
 

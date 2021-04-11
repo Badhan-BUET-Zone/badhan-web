@@ -10,6 +10,7 @@ import superadmin from '@/store/superadmin';
 import details from '@/store/home/details';
 import userDetails from '@/store/userDetails';
 
+
 export const store = new Vuex.Store({
 
   state: {

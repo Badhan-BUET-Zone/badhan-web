@@ -40,20 +40,8 @@ const actions = {
 
         commit('promoteFlagOn');
 
-        let sendData = {
-            donorPhone: parseInt("88" + payload.phone),
-            promoteFlag: payload.promoteFlag,
-            newPassword: payload.newPassword,
-        };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
-
         try {
-            let response = await badhanAxios.post("/admin/promote", sendData, {
-                headers: headers,
-            });
-
+            let response = await badhanAxios.post("v2/admin/promote", payload);
 
             if(payload.promoteFlag){
                 commit('setPromoteSuccess',"Successfully promoted to volunteer");
@@ -61,6 +49,8 @@ const actions = {
             }else{
                 commit('setPromoteSuccess',"Successfully demoted");
             }
+
+            return true;
 
         } catch (error) {
             if(error.response && error.response.data) {
@@ -70,6 +60,7 @@ const actions = {
             }
 
             console.log(error.response);
+            return false;
         } finally {
             commit('promoteFlagOff');
         }

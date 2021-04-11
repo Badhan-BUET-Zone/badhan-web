@@ -3,6 +3,7 @@ import userDetails from "@/store/userDetails/userDetails";
 import promote from "@/store/userDetails/promote";
 import donation from "@/store/userDetails/donation";
 import password from "@/store/userDetails/password";
+import deleteDonor from '@/store/userDetails/deleteDonor';
 
 export default {
     modules:{
@@ -10,6 +11,7 @@ export default {
         userDetails,
         promote,
         donation,
-        password
+        password,
+        deleteDonor
     }
 }

@@ -21,56 +21,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index" data-aos="fade-right">
+                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index">
                         <th scope="row">{{ halls[hallAdmin.hall] }}</th>
                         <td>{{ hallAdmin.name }}</td>
                     </tr>
                     </tbody>
                 </table>
                 <hr>
-                <b>Change Hall Admin: </b>
-
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Enter phone number of volunteer: </label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" v-model="newAdminPhone"
-                               placeholder="Enter phone number of volunteer to be promoted">
-                    </div>
-                    <div class="col-sm-8">
-                        <v-btn color="primary" rounded :disabled="$store.getters.getChangeAdminLoaderFlag" :loading="$store.getters.getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">Change Hall Admin</v-btn>
-                    </div>
-                </div>
-
-                <div class="alert alert-danger animated jello" role="alert" v-if="$store.getters.getChangeAdminError!==null">
-                    {{ $store.getters.getChangeAdminError }}
-                </div>
-                <div class="alert alert-success animated jello" role="alert" v-if="$store.getters.getChangeAdminSuccess!==null">
-                    {{ $store.getters.getChangeAdminSuccess }}
-                </div>
             </div>
-            <div class="jumbotron col-lg-6 col-md-12 col-sm-12 card animated fadeInDown" style="height: fit-content">
-                <div>
-                    <p>Archive: (CAUTION)</p>
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Enter batch number to be archived: </label>
-                        <div class="col-sm-8">
-                            <input type="text" v-model="batch" class="form-control">
-                        </div>
-                        <label class="col-sm-4 col-form-label">Enter your password: </label>
-                        <div class="col-sm-8">
-                            <input type="password" v-model="password" class="form-control">
-                        </div>
-                        <div class="col-sm-8">
-                            <v-btn rounded color="red" class="white--text" @click="archiveBatchClicked()" disabled>Archive batch (not implemented)</v-btn>
-                        </div>
-                    </div>
-                    <!-- <div class="alert alert-danger" role="alert" v-if="errorArchive.length!==0">
-                        {{ errorArchive }}
-                    </div> -->
-                </div>
-            </div>
-
-
         </div>
     </div>
 </template>

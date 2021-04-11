@@ -82,7 +82,7 @@ const actions={
         commit('volunteerLoaderOn');
 
         try {
-            let response = await badhanAxios.post('/admin/volunteers', {});
+            let response = await badhanAxios.post('/v2/admin/volunteers', {});
             commit('setVolunteers',response.data.volunteerList);
         }catch (e){
             if(e.response && e.response.data.message){
@@ -112,7 +112,7 @@ const actions={
 
 
         try {
-            let response = await badhanAxios.post("/donor/insert", sendData);
+            let response = await badhanAxios.post("/v2/donor/insert", sendData);
 
             commit('setNewDonorSuccess',"Donor added successfully");
 
