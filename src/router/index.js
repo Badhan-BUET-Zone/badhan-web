@@ -5,8 +5,9 @@ import SuperAdmin from "@/views/SuperAdmin";
 import Home from "@/views/Home";
 import SignIn from "@/views/SignIn";
 import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/PersonDetails";
-import Settings from "@/views/Settings";
-import Credits from "@/views/Credits";
+import Settings from "../views/Settings";
+import Credits from "../views/Credits";
+import About from "../views/About";
 import { store } from "@/store/store";
 
 Vue.use(VueRouter)
@@ -52,6 +53,11 @@ const routes = [
   {
     name: 'LogOut',
     path: '/logout',
+  },
+  {
+    name: 'About',
+    path: '/about',
+    component: () => import('@/views/About.vue')
   }
 
 ]
