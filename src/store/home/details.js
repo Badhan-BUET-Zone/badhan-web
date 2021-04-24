@@ -74,7 +74,9 @@ const mutations={
     
 };
 const actions={
-    async getDetails({ commit, getters,rootState, rootGetters}, payload) {
+    async getDetails({ commit, getters,rootState, rootGetters,dispatch}, payload) {
+        dispatch('resetAllMessages',null,{root:true})
+
         let sendData = {
             donorId: payload
         };

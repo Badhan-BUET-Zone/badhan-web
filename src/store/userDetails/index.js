@@ -6,6 +6,17 @@ import password from "@/store/userDetails/password";
 import deleteDonor from '@/store/userDetails/deleteDonor';
 
 export default {
+    actions:{
+        resetAllMessages({commit,getters}){
+            commit('comment/clearCommentMessage');
+            commit('deleteDonor/clearDeleteMessage');
+            commit('donation/clearDonationMessage');
+            commit('password/clearPasswordMessage');
+            commit('promote/clearPromoteMessage');
+            commit('userDetails/clearDetailsMessage');
+        }
+    },
+
     modules:{
         comment,
         userDetails,

@@ -10,7 +10,7 @@
                     style="width: 150px; height: 150px"
                 />
 
-                <div class="h4 p-2">Sign into Badhan</div>
+                <div class="h5 ma-10">Badhan BUET Zone<br>Sign In</div>
                 <div class="h6" v-if="isMobile">Version: {{version}}</div>
 
                 <div>
@@ -20,7 +20,7 @@
                         label="Phone"
                         v-model="phone"
                         class="input-group--focused"
-
+                        dense
                     ></v-text-field>
 
                     <v-text-field
@@ -33,11 +33,12 @@
                         v-model="password"
                         class="input-group--focused"
                         @click:append="passwordFlag = !passwordFlag"
+                        dense
 
                     ></v-text-field>
 
 
-                    <v-checkbox v-model="rememberFlag" label="Remember me"></v-checkbox>
+                    <v-checkbox dense v-model="rememberFlag" label="Remember me"></v-checkbox>
 
                     <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
                     <v-btn

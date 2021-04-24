@@ -6,9 +6,9 @@ export const departments = [
     'NAME','NULL','NULL','URP',
     'WRE','NULL','BME'];
 //covid support
-//export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardi', 'Titumir','Attached'];
+//export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir','Attached'];
 
-export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardi', 'Titumir','Attached','COVID'];
+export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir','Attached','COVID'];
 export const designations=['Donor', 'Volunteer', 'Hall Admin', 'Super Admin'];
 export const bloodGroups=['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 

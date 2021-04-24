@@ -16,7 +16,7 @@
                         class="text-center red--text"
                         cols="12"
                     >
-                        Signing into Badhan
+                        Signing into Badhan BUET Zone
                     </v-col>
                     <v-col cols="6">
                         <v-progress-linear

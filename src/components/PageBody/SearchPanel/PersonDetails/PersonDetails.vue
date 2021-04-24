@@ -273,11 +273,10 @@
                         color="primary"
                         class="white--text ml-2"
                         rounded
-                        :disabled="settingsSpinner || !enableEditing ||
+                        :disabled="!enableEditing ||
                                             $store.getters['password/getPasswordLoader'] ||
                                             $store.getters['promote/getPromoteFlag']"
-                        :loading="settingsSpinner ||
-                                            $store.getters['password/getPasswordLoader'] ||
+                        :loading="$store.getters['password/getPasswordLoader'] ||
                                             $store.getters['promote/getPromoteFlag']"
                         @click="saveSettingsClicked()"
                     >Save
@@ -301,21 +300,6 @@
                     Demote to donor
                   </v-btn>
                   <br/>
-                  <div
-                      class="alert alert-danger"
-                      role="alert"
-                      v-if="errorSettings.length !== 0"
-                  >
-                    {{ errorSettings }}
-                  </div>
-                  <div
-                      class="alert alert-success"
-                      role="alert"
-                      v-if="successSettings.length !== 0"
-                  >
-                    {{ successSettings }}
-                  </div>
-
                   <div
                       class="alert alert-danger"
                       role="alert"
@@ -521,22 +505,7 @@ export default {
       showHistory: false,
 
       //spinner controller flags
-      detailsSpinner: false,
-      settingsSpinner: false,
-      commentSpinner: false,
-      historySpinner: false,
       enableEditing: false,
-
-      //error messages
-      errorDetails: "",
-      errorComment: "",
-      errorSettings: "",
-      errorHistory: "",
-
-      successComment: "",
-      successSettings: "",
-      successHistory: "",
-      successDetails: "",
 
       //vuetify modal
       dialog: false,
