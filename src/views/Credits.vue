@@ -2,7 +2,7 @@
     <div>
         <v-container fluid>
             <v-card
-                class="mx-auto"
+                class="mx-auto mt-5"
                 max-width="344"
             >
                 <v-card-title>
@@ -59,10 +59,10 @@
 <script>
 import carousel from "vue-owl-carousel";
 import ContributorCard from "@/components/Credits/ContributorCard";
-
+import PageTitle from "../components/PageTitle";
 export default {
     name: "Credits",
-    components: {carousel, ContributorCard},
+    components: {PageTitle, carousel, ContributorCard},
     data() {
         return {
             contributors: [
@@ -70,7 +70,7 @@ export default {
                     name: 'Mir Mahathir Mohammad',
                     subtitle: 'Frontend Developer',
                     image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media',
-                    descriptions: ['UX Design','Web Frontend Development','Hybrid Android App Development'],
+                    descriptions: ['UX Design','Web Frontend Development','Hybrid Android App Development','API Development'],
                     links:[
                         {icon: 'facebook',color:'primary',link: 'https://web.facebook.com/MirMahathirMohammad'},
                         {icon: 'gmail',color: 'red',link: 'mailto:mirmahathir1@gmail.com'},
@@ -98,6 +98,18 @@ export default {
                         {icon:'gmail',color:'red',link:'mailto:aniruddhags3927@gmail.com'},
                         {icon:'linkedin',color:'blue',link: 'https://www.linkedin.com/in/aniruddha-ganguly-91b707136/'},
                         {icon:'github',color:'grey',link:'https://github.com/ags3927'}
+                    ]
+                },
+                {
+                    name: "Atiqur Rahman Shuvo",
+                    subtitle: 'Backend Developer',
+                    image: 'https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fatiq.jpg?alt=media',
+                    descriptions: ["Database Administration"],
+                    links: [
+                        {icon: 'facebook',color: 'primary', link:'https://www.facebook.com/Shiroe041'},
+                        {icon: 'gmail',color: 'red',link:'mailto:arshuvo2015@gmail.com'},
+                        {icon: 'linkedin',color:'blue',link:'https://www.linkedin.com/in/atiqur-rahman-shuvo-14173b1aa/'},
+                        {icon: 'github',color:'grey',link:'https://github.com/SchrodingersCat041'}
                     ]
                 },
                 {

@@ -1,11 +1,25 @@
 <template>
     <v-col :cols="12" lg="4">
+
         <v-card>
             <v-img
                 class="white--text align-end"
                 height="300px"
                 :src="image"
+                lazy-src="../../assets/account.png"
             >
+                <template v-slot:placeholder>
+                    <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                    >
+                        <v-progress-circular
+                            indeterminate
+                            color="grey lighten-5"
+                        ></v-progress-circular>
+                    </v-row>
+                </template>
                 <v-card-title>{{ name }}</v-card-title>
             </v-img>
 

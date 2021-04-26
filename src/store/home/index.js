@@ -102,7 +102,10 @@ const mutations = {
             human.studentID = Number(human.studentId);
         });
 
+        payload.sort((a, b) => (a.lastDonation < b.lastDonation) ? 1 : -1)
+
         let persons = payload;
+
         state.persons = payload;
 
 

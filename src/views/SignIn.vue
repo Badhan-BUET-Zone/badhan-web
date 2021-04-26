@@ -86,6 +86,10 @@
                 Don't have an account? Click here
               </v-btn>
 
+                <v-btn text x-small style="text-decoration: none" class="mt-2" to="/credits">
+                    Developers of Badhan, BUET
+                </v-btn>
+
             </div>
         </div>
 

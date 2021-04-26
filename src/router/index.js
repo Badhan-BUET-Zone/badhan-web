@@ -8,76 +8,91 @@ import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/Perso
 import Settings from "../views/Settings";
 import Credits from "../views/Credits";
 import About from "../views/About";
-import { store } from "@/store/store";
+import {store} from "@/store/store";
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    name: 'HallAdmin',
-    path: '/halladmin',
-    component: () => import('@/views/HallAdmin.vue')
-  },
-  {
-    name: 'SuperAdmin',
-    path: '/superadmin',
-    component: () => import('@/views/SuperAdmin.vue')
-  },
-  {
-    name: 'Home',
-    path: '/home',
-    component: Home,
-    children: [
-      {
-        name: 'Details',
-        path: 'details',
-        component: PersonDetails
-      }
-    ]
-  },
-  {
-    name: 'SignIn',
-    path: '/',
-    component: SignIn
-  },
-  {
-    name: 'Settings',
-    path: '/settings',
-    component: () => import('@/views/Settings.vue')
-  },
-  {
-    name: 'Credits',
-    path: '/credits',
-    component: () => import('@/views/Credits.vue')
-  },
-  {
-    name: 'LogOut',
-    path: '/logout',
-  },
-  {
-    name: 'About',
-    path: '/about',
-    component: () => import('@/views/About.vue')
-  }
+    {
+        name: 'HallAdmin',
+        path: '/halladmin',
+        component: () => import('@/views/HallAdmin.vue'),
+        meta: {requiresAuth: true,title:"Hall Admin Panel"}
+    },
+    {
+        name: 'SuperAdmin',
+        path: '/superadmin',
+        component: () => import('@/views/SuperAdmin.vue'),
+        meta: {requiresAuth: true,title: 'Super Admin Panel'}
+    },
+    {
+        name: 'Home',
+        path: '/home',
+        component: Home,
+        meta: {requiresAuth: true, title: 'Home'},
+        children: [
+            {
+                name: 'Details',
+                path: 'details',
+                component: PersonDetails,
+                meta: {requiresAuth: true}
+            }
+        ]
+    },
+    {
+        name: 'SignIn',
+        path: '/',
+        component: SignIn,
+        meta: {requiresAuth: false, title: 'Sign In Page'}
+    },
+    {
+        name: 'Settings',
+        path: '/settings',
+        component: () => import('@/views/Settings.vue'),
+        meta: {requiresAuth: true, title: 'Settings'}
+    },
+    {
+        name: 'Credits',
+        path: '/credits',
+        component: () => import('@/views/Credits.vue'),
+        meta: {requiresAuth: false, title: "Developers of Badhan"}
+    },
+    {
+        name: 'LogOut',
+        path: '/logout',
+        meta: {requiresAuth: true, title: 'Log Out Confirmation'}
+    },
+    {
+        name: 'About',
+        path: '/about',
+        component: () => import('@/views/About.vue'),
+        meta: {requiresAuth: false, title: "About Badhan"}
+    }
 
 ]
 
 const router = new VueRouter({
-  routes
+    routes
 })
 router.beforeEach((to, from, next) => {
+    if(!to.meta.requiresAuth && to.name!='SignIn'){
+        next();
+    }else if(!store.getters.isLoggedIn && to.meta.requiresAuth){
+        next('/');
+    }else if(store.getters.isLoggedIn && to.name == 'SignIn'){
+        next('/home');
+    }else{
+        next()
+    }
 
+    // if (!store.getters.isLoggedIn && to.name != 'SignIn') {
+    //     next('/');
+    // }
+    // if (store.getters.isLoggedIn && to.name == 'SignIn') {
+    //     next('/home');
+    // }
+    // next();
 
-  if(!store.getters.isLoggedIn && to.name!='SignIn'){
-    next('/');
-  }
-  if(store.getters.isLoggedIn && to.name=='SignIn'){
-    next('/home');
-  }
-  
-    
-  next();
-  
 
 })
 export default router

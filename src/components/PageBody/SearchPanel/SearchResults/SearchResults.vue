@@ -11,7 +11,7 @@
         </div>
 
         <div v-if="$store.getters.isSearchResultShown">
-            <div v-if="($store.getters.getDesignation===2 || $store.getters.getDesignation===3)" data-aos="fade-up">
+            <div data-aos="fade-up">
                 <json-excel
                     v-if="!isSmallWindow"
                     :data="$store.getters.getPersons"
@@ -25,7 +25,7 @@
                         callback: (value) => {
                             let date = new Date(value);
                             return date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
-                        },
+                        }
                     },
                     bloodGroup:{
                         field: 'bloodGroup',
