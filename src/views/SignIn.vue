@@ -10,7 +10,7 @@
                     style="width: 150px; height: 150px"
                 />
 
-                <div class="h5 ma-10">Badhan BUET Zone<br>Sign In</div>
+                <div class="h5 ma-6">Badhan BUET Zone<br>Sign In</div>
                 <div class="h6" v-if="isMobile">Version: {{version}}</div>
 
                 <div>

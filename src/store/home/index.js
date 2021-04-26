@@ -105,6 +105,7 @@ const mutations = {
         let persons = payload;
         state.persons = payload;
 
+
         //persons.sort(this.compare);
         let groupedPersons = persons.reduce(function (obj, person) {
             let batch = person.studentID.toString().substr(0, 2);
@@ -151,6 +152,7 @@ const actions = {
             batch: payload.inputBatch.toString(),
             hall: halls.indexOf(payload.hall),
             isAvailable: payload.availability,
+            isNotAvailable: payload.notAvailability,
             address: payload.inputAddress
         };
 
