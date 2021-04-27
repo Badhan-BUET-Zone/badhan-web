@@ -17,9 +17,9 @@
                         rounded
                         class="white--text"
                         color="red"
-                        @click="goTo('https://docs.google.com/document/d/1beh8V5miXqWf6zEHfDnwHGv5PeI2tn0KqOQmwgLz5KM/edit?usp=sharing')"
+                        @click="goTo('https://github.com/mirmahathir1/badhan/issues')"
                     >
-                        Go to doc
+                        Github issues
                     </v-btn>
                 </v-card-actions>
             </v-card>
