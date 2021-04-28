@@ -42,6 +42,12 @@ const actions = {
         commit('setNotifiationColor',"success");
         commit('dismissNotification');
     },
+    notifyInfo({commit,getters},payload){
+        commit('setNotificationFlag',true);
+        commit('setNotification',payload);
+        commit('setNotifiationColor',"primary");
+        commit('dismissNotification');
+    },
     notifyError({commit,getters,rootState,rootGetters},payload){
         commit('setNotificationFlag',true);
         commit('setNotification',payload);

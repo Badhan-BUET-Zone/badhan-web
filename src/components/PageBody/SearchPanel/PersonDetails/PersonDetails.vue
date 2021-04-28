@@ -64,7 +64,7 @@
                 v-if="!$store.getters.getLoadingFlag"
             >
                 <!--                Modal First column-->
-                <div class="card col-lg-8 col-md-12 col-sm-12">
+                <div class="card col-lg-8 col-md-12 col-sm-12" id="firstColumn" v-on:click="promptForEdit($event)">
 
                     <br/>
                     <div
@@ -478,7 +478,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notification', ['notifyError', 'notifySuccess']),
+        ...mapActions('notification', ['notifyError', 'notifySuccess','notifyInfo']),
         async changeHallAdminClicked() {
             if (await this.$store.dispatch('changeHallAdmin', {donorId: this.$route.query.id})) {
                 setTimeout(() => {
@@ -640,10 +640,11 @@ export default {
             await this.$store.dispatch('userDetails/saveUserDetails', sendData);
 
         },
-        async loadHistory() {
-
-
-        },
+        promptForEdit(event){
+            if(!this.enableEditing){
+                this.notifyInfo("Please enable toggle to edit ");
+            }
+        }
     },
 
     async mounted() {
