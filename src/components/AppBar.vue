@@ -168,7 +168,6 @@ export default {
                     if (value === true) {
                         await this.$store.dispatch('logout');
                         this.$router.push('/');
-                        this.notifySuccess('You have been signed out');
                     }else{
                         this.$router.go(-1);
                     }

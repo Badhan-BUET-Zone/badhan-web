@@ -129,34 +129,25 @@ export default {
     methods: {
         ...mapActions('notification',['notifySuccess','notifyError']),
         async signInClicked() {
-            this.$store.commit("clearSignInError");
-
             if (this.phone === null || isNaN(this.phone)) {
-                this.$store.commit("setSignInError", "Invalid Phone Number");
+                this.notifyError("Invalid Phone Number")
                 return;
             }
 
             if (this.phone.toString().length !== 11) {
-                this.$store.commit(
-                    "setSignInError",
-                    "Phone number must be of 11 digits"
-                );
+                this.notifyError("Phone number must be of 11 digits")
                 return;
             }
 
-
-
-            let signInResponse = await this.$store.dispatch("login", {
+            let isSignInOk = await this.$store.dispatch("login", {
                 phone: this.phone,
                 password: this.password,
                 rememberFlag: this.rememberFlag,
             });
 
-            if (signInResponse.success) {
+            if (isSignInOk) {
                 await this.$router.push("/home");
-                this.notifySuccess(signInResponse.message);
-            }else{
-                this.notifyError(signInResponse.message)
+                this.notifySuccess('Sign in successful');
             }
         },
 

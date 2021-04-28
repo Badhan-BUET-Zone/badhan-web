@@ -30,6 +30,9 @@ const mutations = {
         setTimeout(()=>{
             state.notificationFlag = false;
         },3000)
+    },
+    clearNotification(state){
+        state.notificationFlag= false;
     }
 };
 const actions = {
@@ -46,6 +49,9 @@ const actions = {
     },
     setNotificationFlag({commit,getters,rootState,rootGetters},payload){
         commit('setNotificationFlag',payload);
+    },
+    clearNotification({commit}) {
+        commit('clearNotification');
     }
 };
 

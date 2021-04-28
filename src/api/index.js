@@ -12,6 +12,9 @@ const firebaseAxios = axios.create({
 badhanAxios.interceptors.request.use( (config)=>{
     // Do something before request is sent
     console.log("%cREQUEST TO "+config.url+": ",'color: #ff00ff',config.data);
+
+    store.dispatch('notification/clearNotification');
+
     config.headers={
         'x-auth':store.getters.getToken
     }

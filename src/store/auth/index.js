@@ -1,4 +1,5 @@
 import {badhanAxios} from '@/api';
+import {processError} from "../../mixins/helpers";
 
 const state = {
     token: null,
@@ -66,16 +67,17 @@ const mutations = {
 
 };
 const actions = {
-    async logout({ getters, commit }) {
+    async logout({ getters, commit,dispatch }) {
         try {
             commit('setLoadingTrue');
             let response = await badhanAxios.post('/users/signout', {});
-
+            dispatch('notification/notifySuccess',response.data.message);
         } catch (e) {
+            dispatch('notification/notifyError',processError(e));
             console.log(e);
         } finally {
             commit('setLoadingFalse');
-		commit('removeToken');
+		    commit('removeToken');
             commit('removeTokenFromLocalStorage');
             commit('removeProfileFromLocalStorage');
         }
@@ -91,13 +93,8 @@ const actions = {
             return true;
         }
 
-
-
-
-
     },
-    async login({ getters, commit }, payload) {
-
+    async login({ getters, commit,dispatch }, payload) {
         commit('signInLoaderFlagOn');
         try {
             let sendData = {
@@ -108,8 +105,8 @@ const actions = {
 
 
             if (response.status !== 201) {
-                // commit('setSignInError', "Status code not 201")
-                return {success: false,message:"Status code not 201"}
+                dispatch('notification/notifyError',"Status code not 201")
+                return;
             }
 
             commit('setToken', response.data.token);
@@ -119,6 +116,8 @@ const actions = {
             };
 
             let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
+
+            dispatch('notification/notifySuccess',"Successfully Logged In");
 
             commit('setMyProfile', profileInfo.data.donor);
 
@@ -130,12 +129,12 @@ const actions = {
                 commit('removeProfileFromLocalStorage');
             }
 
-            return {success: true,message:"Welcome to Badhan App"};
+            return true;
 
         } catch (error) {
             console.log(error);
-            commit('setSignInError', error.response.data.message);
-            return {success: false,message:error.response.data.message};
+            dispatch('notification/notifyError',processError(error));
+            return false;
         } finally {
             commit('signInLoaderFlagOff');
         }
