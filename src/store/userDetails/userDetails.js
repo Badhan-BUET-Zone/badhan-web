@@ -33,32 +33,20 @@ const mutations = {
         state.detailsError = null;
         state.detailsSuccess=null;
     },
-
-
 };
 const actions = {
-    async saveUserDetails({commit,getters,rootState,rootGetters},payload){
+    async saveUserDetails({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('detailsLoaderFlagOn');
-
         try {
             let response = await badhanAxios.post("v2/donor/edit", payload);
-
-            commit('setDetailsSuccess',"Successfully saved details.");
+            dispatch('notification/notifySuccess',"Successfully saved details",{root:true})
             commit("setPhone", parseInt(payload.newPhone),{root:true});
         } catch (error) {
-            if(error.response && error.response.data && error.response.data.message){
-                commit('setDetailsError',error.response.data.message);
-            }else{
-                commit('setDetailsError',error);
-            }
-            console.log(error.response);
         } finally {
             commit('detailsLoaderFlagOff');
         }
     }
 };
-
-
 export default {
     state,
     actions,

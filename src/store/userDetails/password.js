@@ -36,21 +36,14 @@ const mutations = {
 
 };
 const actions = {
-    async savePassword({commit,getters,rootState,rootGetters},payload){
+    async savePassword({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('clearPasswordMessage');
         commit('passwordLoaderOn');
 
         try {
             let response = await badhanAxios.post("v2/donor/password/change", payload);
-
-            commit('setPasswordSuccess',"Successfully changed password")
+            dispatch('notification/notifySuccess',"Successfully changed password",{root:true});
         } catch (error) {
-            if(error.response && error.response.data && error.response.data.message){
-                commit('setPasswordError',error.response.data.message);
-            }else{
-                commit('setPasswordError',error);
-            }
-            console.log(error.response);
         } finally {
             commit('passwordLoaderOff');
         }

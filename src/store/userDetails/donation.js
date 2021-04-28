@@ -63,42 +63,25 @@ const mutations = {
         state.donationSuccess = null;
 
     }
-
-
 };
 const actions = {
-    async fetchDonationHistory({commit,getters,rootState,rootGetters},payload){
-        commit('clearDonationMessage');
+    async fetchDonationHistory({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('donationLoaderOn');
-
         try {
             let response = await badhanAxios.post("v2/donor/donations", payload);
-
             commit('setDonationList',response.data.donations);
-            commit('setDonationSuccess',"Successfully loaded history");
         } catch (error) {
-            if(error.response && error.response.data){
-                commit('setDonationError',error.response.data.message);
-            }else{
-                commit('setDonationError',error);
-            }
-
-            console.log(error.response);
         } finally {
             commit('donationLoaderOff');
         }
     },
-    async deleteDonation({commit,getters,rootState,rootGetters},payload){
-        commit('clearDonationMessage');
+    async deleteDonation({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('donationDeleteLoaderOn');
-
         let dateToBeDeleted = payload.date;
 
         try {
             let response = await badhanAxios.post("v2/donation/delete", payload);
-
             let history = getters['getDonationList'];
-
             for (let i = 0; i < history.length; i++) {
                 if (history[i] == dateToBeDeleted) {
                     history.splice(i, 1);
@@ -111,20 +94,10 @@ const actions = {
                     return Math.max(a, b);
                 });
             }
-            commit('setDonationSuccess',"Successfully deleted donation");
+            dispatch("notification/notifySuccess","Successfully deleted donation",{root: true});
             commit('setDonationList',history);
             return lastDonationNew;
-
-
         } catch (error) {
-            if(error.response && error.response.data){
-                commit('setDonationError',error.response.data.message);
-            }else{
-                commit('setDonationError',error);
-            }
-            console.log(error.response);
-            return 0;
-
         } finally {
             commit('donationDeleteLoaderOff');
         }

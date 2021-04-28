@@ -194,28 +194,13 @@
                                     </div>
                                 </div>
                                 <v-btn
-                                    :disabled="newDonorLoaderFlag"
+                                    :disabled="$store.getters['halladmin/getNewDonorLoader']"
                                     rounded
-                                    :loading="newDonorLoaderFlag"
+                                    :loading="$store.getters['halladmin/getNewDonorLoader']"
                                     color="primary"
                                     @click="createDonor"
                                 >Save Donor
                                 </v-btn>
-                                <br/>
-                                <div
-                                    class="alert alert-danger animated jello"
-                                    role="alert"
-                                    v-if="errorAddDonor.length !== 0"
-                                >
-                                    {{ errorAddDonor }}
-                                </div>
-                                <div
-                                    class="alert alert-success animated jello"
-                                    role="alert"
-                                    v-if="successAddDonor.length !== 0"
-                                >
-                                    {{ successAddDonor }}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -237,11 +222,11 @@
                             </h5>
                         </div>
                         <div v-if="seeVolunteersFlag" class="pa-4">
-                            <v-progress-circular indeterminate color="primary" v-if="$store.getters.getVolunteerLoader">
+                            <v-progress-circular indeterminate color="primary" v-if="$store.getters['halladmin/getVolunteerLoader']">
 
                             </v-progress-circular>
 
-                            <v-simple-table v-if="$store.getters.getVolunteers.length!==0">
+                            <v-simple-table v-if="$store.getters['halladmin/getVolunteers'].length!==0">
                                 <template v-slot:default>
                                     <thead>
                                     <tr>
@@ -258,7 +243,7 @@
                                     </thead>
                                     <tbody>
                                     <tr
-                                        v-for="volunteer in $store.getters.getVolunteers"
+                                        v-for="volunteer in $store.getters['halladmin/getVolunteers']"
                                         :key="volunteer.name"
                                     >
                                         <td>{{ volunteer.name }}</td>
@@ -342,18 +327,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notification',['notify']),
-        archiveClicked() {
-            console.log("Archive button clicked: ");
-            console.log("password: ", this.password);
-            console.log("archiveBatch: ", this.archiveBatch);
-
-            //SIMULATION START
-            setTimeout(() => {
-                console.log("Archive complete");
-            }, 2000);
-            //SIMULATION STOP
-        },
+        ...mapActions('notification',['notifySuccess','notifyError']),
         clearFields() {
             this.phone = "";
             this.bloodGroup = -1;
@@ -371,57 +345,39 @@ export default {
             this.comment = "";
         },
         async createDonor() {
-            console.log("create Donor clicked");
-
-            this.errorAddDonor = "";
-            this.successAddDonor = "";
-
-            //input validation
             if (isNaN(this.batch) || this.batch.length !== 2) {
-                this.errorAddDonor = "Please enter valid batch number";
-                console.log("Enter valid batch number");
+                this.notifyError("Please enter valid batch number for creating a donor")
                 return;
             }
-
             if (this.department === "") {
-                this.errorAddDonor = "Please enter department of donor";
-                console.log("Please enter department of donor");
+                this.notifyError("Please enter department of new donor")
                 return;
             }
-
             if (this.roll === "") {
                 this.roll = "000";
             }
-
             if (this.bloodGroup === -1) {
-                console.log("Blood group can't be left blank");
-                this.errorAddDonor = "Please enter blood group";
+                this.notifyError("Blood group can't be left blank for new donor")
                 return;
             }
             if (this.name.length === 0) {
-                console.log("Name field can't be empty");
-                this.errorAddDonor = "Please enter the name of donor";
+                this.notifyError("Please enter the name of donor")
                 return;
             }
             if (this.phone.toString().length === 0) {
-                console.log("Please enter the phone number of donor");
-                this.errorAddDonor = "Please enter the phone number of donor";
+                this.notifyError("Please enter the phone number of donor");
                 return;
             }
             if (isNaN(this.phone)) {
-                console.log("Please enter a valid phone number");
-                this.errorAddDonor = "Please enter a valid phone number";
+                this.notifyError("Please enter a valid phone number");
                 return;
             }
             if (this.phone.toString().length !== 11) {
-                console.log("Phone number must be of 11 digits");
-                this.errorAddDonor = "Please enter an 11 digit phone number";
+                this.notifyError("Please enter an 11 digit phone number for new donor")
                 return;
             }
-
             if (this.hall === -1) {
-                console.log("Hall name can't be left blank");
-                this.errorAddDonor = "Please enter a hall name";
+                this.notifyError("Hall name can't be left blank for new donor");
                 return;
             }
             if (this.newDonationDate === "") {
@@ -429,7 +385,6 @@ export default {
             } else {
                 this.newDonationDate = new Date(this.newDonationDate);
             }
-
             let newStudentId = this.batch;
             if (this.department < 10) {
                 newStudentId += "0";
@@ -448,31 +403,16 @@ export default {
                 lastDonation: this.newDonationDate.getTime(),
             };
 
-            this.newDonorLoaderFlag = true;
-
-            try {
-                let response = await badhanAxios.post("/donor/insert", sendData);
-                if (response.status !== 201) {
-                    this.errorAddDonor = "Status code not 200";
-                    return;
-                }
-                console.log("donor save successful");
-                this.successAddDonor = "Donor added successfully";
+            let ok = await this.$store.dispatch('halladmin/saveDonor',sendData);
+            if(ok){
                 this.clearFields();
-            } catch (error) {
-                this.errorAddDonor = error.response.data.message;
-                console.log(error.response);
-            } finally {
-                this.newDonorLoaderFlag = false;
             }
         },
-
         async getVolunteers() {
-
         },
     },
   mounted() {
-    this.$store.dispatch('fetchVolunteers')
+    this.$store.dispatch('halladmin/fetchVolunteers')
   }
 };
 </script>

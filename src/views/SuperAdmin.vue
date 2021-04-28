@@ -8,11 +8,6 @@
                     indeterminate
                     color="primary"
                 ></v-progress-circular>
-
-                <div class="alert alert-danger" role="alert" v-if="$store.getters.getHallAdminsFetchError!==null">
-                    {{ $store.getters.getHallAdminsFetchError }}
-                </div>
-
                 <table class="table table-hover" v-if="$store.getters.getHallAdmins!==null && !$store.getters.getHallAdminsLoaderFlag">
                     <thead>
                     <tr>
@@ -47,28 +42,17 @@ export default {
             batch: '',
             loadingComplete: false,
 
-            //error message controller flags
-            errorArchive: "route archive not enabled",
-            errorChangeAdmin: "",
-            errorAdminsLoaded: "",
-
-            successChangeAdmin: "",
-
             changeHallAdminLoaderFlag: false,
         }
     },
     methods: {
         changeHallAdminClicked() {
-            //01878514798
             this.$store.dispatch('changeHallAdmin',{newAdminPhone:this.newAdminPhone});
         },
         archiveBatchClicked() {
-
         },
-
     },
     created() {
-
     },
     mounted() {
         this.$store.dispatch('fetchHallAdmins');

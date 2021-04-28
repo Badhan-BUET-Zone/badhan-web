@@ -75,20 +75,16 @@ const mutations={
 };
 const actions={
     async getDetails({ commit, getters,rootState, rootGetters,dispatch}, payload) {
-        dispatch('resetAllMessages',null,{root:true})
-
         let sendData = {
             donorId: payload
         };
-
         commit('donorLoaderFlagOn');
-
         try {
             let response = await badhanAxios.post('v2/donor/details', sendData);
 
             commit('setProfile',response.data.donor)
         } catch (error) {
-            console.log(error.response.data.message);
+
         } finally {
             commit('donorLoaderFlagOff');
         }

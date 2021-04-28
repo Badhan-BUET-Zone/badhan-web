@@ -125,20 +125,6 @@
                 >Done
                 </v-btn>
             </div>
-            <div
-                class="alert alert-danger animated jello"
-                role="alert"
-                v-if="error.length !== 0"
-            >
-                {{ error }}
-            </div>
-            <div
-                class="alert alert-success animated jello"
-                role="alert"
-                v-if="success.length !== 0"
-            >
-                {{ success }}
-            </div>
         </div>
     </div>
 </template>

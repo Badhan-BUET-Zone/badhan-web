@@ -70,20 +70,6 @@
                     v-model="address"
                 ></v-text-field>
 
-                <!--        A check box to search by availability-->
-<!--                <div class="custom-control custom-checkbox">-->
-<!--                    <input-->
-<!--                        v-model="availability"-->
-<!--                        type="checkbox"-->
-<!--                        class="custom-control-input"-->
-<!--                        checked-->
-<!--                        id="customCheck1"-->
-<!--                    />-->
-<!--                    <label class="custom-control-label" for="customCheck1">-->
-<!--                        Available-->
-<!--                    </label>-->
-<!--                </div>-->
-
                 <v-checkbox
                     dense
                     v-model="availability"
@@ -114,16 +100,6 @@
                 >
                     Search
                 </v-btn>
-                <br/><br/>
-
-                <!--        a division to show errors in the GUI-->
-                <div
-                    class="alert alert-danger"
-                    role="alert"
-                    v-if="$store.getters.getSearchError.length !== 0"
-                >
-                    {{ $store.getters.getSearchError }}
-                </div>
             </div>
         </div>
     </div>
@@ -180,9 +156,6 @@ export default {
                 );
                 return;
             }
-            // if(this.$store.getters.getDesignation !==3){
-            //   this.hall =  halls[this.$store.getters.getHall];
-            // }
 
             //name input validation
             let inputName = this.processName(this.name);

@@ -22,19 +22,14 @@ export const store = new Vuex.Store({
     getLoadingFlag: state =>{
       return state.loadingFlag
     },
-
   },
   mutations: {
-    
     setLoadingTrue (state) {
       state.loadingFlag=true;
     },
     setLoadingFalse(state){
       state.loadingFlag=false;
     },
-
-
-
   },
   modules:{
     auth,

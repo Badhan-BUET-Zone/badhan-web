@@ -33,33 +33,16 @@ const mutations = {
     setPromoteSuccess(state,payload){
         state.promoteSuccess=payload;
     }
-
 };
 const actions = {
-    async promote({commit,getters,rootState,rootGetters},payload){
-
+    async promote({commit,getters,rootState,rootGetters,dispatch},payload){
         commit('promoteFlagOn');
-
         try {
             let response = await badhanAxios.post("v2/admin/promote", payload);
-
-            if(payload.promoteFlag){
-                commit('setPromoteSuccess',"Successfully promoted to volunteer");
-
-            }else{
-                commit('setPromoteSuccess',"Successfully demoted");
-            }
-
+            dispatch('notification/notifySuccess',response.data.message,{root:true});
             return true;
 
         } catch (error) {
-            if(error.response && error.response.data) {
-                commit('setPromoteError', error.response.data.message);
-            }else{
-                commit('setPromoteError', error);
-            }
-
-            console.log(error.response);
             return false;
         } finally {
             commit('promoteFlagOff');

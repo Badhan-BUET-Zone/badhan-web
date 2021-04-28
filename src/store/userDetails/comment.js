@@ -44,24 +44,17 @@ const mutations = {
 
 };
 const actions = {
-    async saveComment({commit,getters,rootState,rootGetters},payload){
-        commit('clearCommentMessage');
+    async saveComment({commit,getters,rootState,rootGetters, dispatch},payload){
         let sendData = payload;
 
         commit('commentLoaderFlagOn');
         try {
             let response = await badhanAxios.post("v2/donor/comment", sendData);
 
-            commit('setCommentSuccess',"Successfully changed comment");
+            dispatch('notification/notifySuccess',"Successfully changed comment",{root: true})
 
         } catch (error) {
-            if(error.response && error.response.messsage){
-                commit('setCommentError',error.response.messsage);
-            }
-            else{
-                commit('setCommentError',error);
-            }
-            console.log(error.response);
+
         } finally {
             commit('commentLoaderFlagOff');
         }

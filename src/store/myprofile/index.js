@@ -1,169 +1,167 @@
 const state = {
-  _id: null,
-  name: null,
-  studentId: null,
-  lastDonation: null,
-  bloodGroup: null,
-  hall: null,
-  phone: null,
-  address: null,
-  comment: null,
-  designation: null,
-  roomNumber: null,
+    _id: null,
+    name: null,
+    studentId: null,
+    lastDonation: null,
+    bloodGroup: null,
+    hall: null,
+    phone: null,
+    address: null,
+    comment: null,
+    designation: null,
+    roomNumber: null,
 };
 
 const getters = {
-  getRoomNumber: state => {
-    return state.roomNumber;
-  },
-  getDesignation: state => {
-    return state.designation
-  },
-  getPhone: state => {
-    return state.phone
-  },
-  getHall: state => {
-    return state.hall
-  },
-  getName: state => {
-    return state.name;
-  },
-  getStudentId: state => {
-    return state.studentId;
-  },
-  getLastDonation: state => {
-    return state.lastDonation;
-  },
-  getBloodGroup: state => {
-    return state.bloodGroup;
-  },
-  getAddress: state => {
-    return state.address;
-  },
-  getComment: state => {
-    return state.comment;
-  },
-  getID: state=>{
-    return state._id;
-  },
-  getMyProfile: state => {
-    return {
-      name: state.name,
-      studentId: state.studentId,
-      lastDonation: state.lastDonation,
-      bloodGroup: state.bloodGroup,
-      hall: state.hall,
-      phone: state.phone,
-      address: state.address,
-      comment: state.comment,
-      designation: state.designation,
-      roomNumber: state.roomNumber,
-      _id: state._id
+    getRoomNumber: state => {
+        return state.roomNumber;
+    },
+    getDesignation: state => {
+        return state.designation
+    },
+    getPhone: state => {
+        return state.phone
+    },
+    getHall: state => {
+        return state.hall
+    },
+    getName: state => {
+        return state.name;
+    },
+    getStudentId: state => {
+        return state.studentId;
+    },
+    getLastDonation: state => {
+        return state.lastDonation;
+    },
+    getBloodGroup: state => {
+        return state.bloodGroup;
+    },
+    getAddress: state => {
+        return state.address;
+    },
+    getComment: state => {
+        return state.comment;
+    },
+    getID: state => {
+        return state._id;
+    },
+    getMyProfile: state => {
+        return {
+            name: state.name,
+            studentId: state.studentId,
+            lastDonation: state.lastDonation,
+            bloodGroup: state.bloodGroup,
+            hall: state.hall,
+            phone: state.phone,
+            address: state.address,
+            comment: state.comment,
+            designation: state.designation,
+            roomNumber: state.roomNumber,
+            _id: state._id
+        }
     }
-  }
 };
 const mutations = {
-  setID(state,id){
-    state._id = id;
-  },
-  setName(state, name) {
-    state.name = name;
-  },
-  setStudentId(state, studentId) {
-    state.studentId = studentId;
-  },
-  setLastDonation(state, lastDonation) {
-    state.lastDonation = lastDonation;
-  },
-  setBloodGroup(state, bloodGroup) {
-    state.bloodGroup = bloodGroup;
-  },
-  setAddress(state, address) {
-    state.address = address;
-  },
-  setComment(state, comment) {
-    state.comment = comment;
-  },
-  setDesignation(state, designation) {
-    state.designation = designation;
-  },
-  setPhone(state, phone) {
-    state.phone = phone;
-  },
-  setHall(state, hall) {
-    state.hall = hall;
-  },
-  setRoomNumber(state, roomNumber) {
-    state.roomNumber = roomNumber;
-  },
+    setID(state, id) {
+        state._id = id;
+    },
+    setName(state, name) {
+        state.name = name;
+    },
+    setStudentId(state, studentId) {
+        state.studentId = studentId;
+    },
+    setLastDonation(state, lastDonation) {
+        state.lastDonation = lastDonation;
+    },
+    setBloodGroup(state, bloodGroup) {
+        state.bloodGroup = bloodGroup;
+    },
+    setAddress(state, address) {
+        state.address = address;
+    },
+    setComment(state, comment) {
+        state.comment = comment;
+    },
+    setDesignation(state, designation) {
+        state.designation = designation;
+    },
+    setPhone(state, phone) {
+        state.phone = phone;
+    },
+    setHall(state, hall) {
+        state.hall = hall;
+    },
+    setRoomNumber(state, roomNumber) {
+        state.roomNumber = roomNumber;
+    },
 
-  setMyProfile(state, payload) {
-    state._id = payload._id;
-    state.name = payload.name;
-    state.studentId = payload.studentId;
-    state.lastDonation = payload.lastDonation;
-    state.bloodGroup = payload.bloodGroup;
-    state.hall = payload.hall;
-    state.phone = payload.phone;
-    state.address = payload.address;
-    state.comment = payload.comment;
-    state.designation = payload.designation;
-    state.roomNumber = payload.roomNumber;
+    setMyProfile(state, payload) {
+        state._id = payload._id;
+        state.name = payload.name;
+        state.studentId = payload.studentId;
+        state.lastDonation = payload.lastDonation;
+        state.bloodGroup = payload.bloodGroup;
+        state.hall = payload.hall;
+        state.phone = payload.phone;
+        state.address = payload.address;
+        state.comment = payload.comment;
+        state.designation = payload.designation;
+        state.roomNumber = payload.roomNumber;
 
-  },
+    },
 
-  loadMyProfileFromLocalStorage(state) {
-    let myprofile = localStorage.getItem('myprofile');
-    if (myprofile === undefined || myprofile===null) {
-      state.token=null;
-      localStorage.removeItem('x-auth');
-      return;
+    loadMyProfileFromLocalStorage(state) {
+        let myprofile = localStorage.getItem('myprofile');
+        if (myprofile === undefined || myprofile === null) {
+            state.token = null;
+            localStorage.removeItem('x-auth');
+            return;
+        }
+        myprofile = JSON.parse(myprofile);
+
+        state._id = myprofile._id;
+        state.name = myprofile.name;
+        state.studentId = myprofile.studentId;
+        state.lastDonation = myprofile.lastDonation;
+        state.bloodGroup = myprofile.bloodGroup;
+        state.hall = myprofile.hall;
+        state.phone = myprofile.phone;
+        state.address = myprofile.address;
+        state.comment = myprofile.comment;
+        state.designation = myprofile.designation;
+        state.roomNumber = myprofile.roomNumber;
+
+    },
+    saveMyProfileToLocalStorage(state) {
+        let myprofile = {
+            _id: state._id,
+            name: state.name,
+            studentId: state.studentId,
+            lastDonation: state.lastDonation,
+            bloodGroup: state.bloodGroup,
+            hall: state.hall,
+            phone: state.phone,
+            address: state.address,
+            comment: state.comment,
+            designation: state.designation,
+            roomNumber: state.roomNumber
+        }
+        myprofile = JSON.stringify(myprofile);
+        localStorage.setItem('myprofile', myprofile);
+    },
+    removeProfileFromLocalStorage(state) {
+        localStorage.removeItem('myprofile');
     }
-    myprofile = JSON.parse(myprofile);
-
-    state._id = myprofile._id;
-    state.name = myprofile.name;
-    state.studentId = myprofile.studentId;
-    state.lastDonation = myprofile.lastDonation;
-    state.bloodGroup = myprofile.bloodGroup;
-    state.hall = myprofile.hall;
-    state.phone = myprofile.phone;
-    state.address = myprofile.address;
-    state.comment = myprofile.comment;
-    state.designation = myprofile.designation;
-    state.roomNumber = myprofile.roomNumber;
-
-  },
-  saveMyProfileToLocalStorage(state) {
-    let myprofile = {
-      _id: state._id,
-      name: state.name,
-      studentId : state.studentId,
-      lastDonation : state.lastDonation,
-      bloodGroup : state.bloodGroup,
-      hall : state.hall,
-      phone : state.phone,
-      address : state.address,
-      comment : state.comment,
-      designation : state.designation,
-      roomNumber : state.roomNumber
-    }
-    myprofile = JSON.stringify(myprofile);
-    localStorage.setItem('myprofile', myprofile);
-  },
-  removeProfileFromLocalStorage(state){
-    localStorage.removeItem('myprofile');
-  }
 
 };
-const actions = {
-
-};
+const actions = {};
 
 
 export default {
-  state,
-  actions,
-  getters,
-  mutations
+    state,
+    actions,
+    getters,
+    mutations
 }

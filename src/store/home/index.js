@@ -162,21 +162,11 @@ const actions = {
         try {
             let response = await badhanAxios.post('v2/donor/search', sendData );
 
-            if (response.status !== 200) {
-                commit('setSearchError', "Status code not 200");
-                return;
-            }
-
             commit('setPersonGroups', response.data.filteredDonors);
             commit('setSearchedHall',payload.hall);
             commit('hideFilter');
 
         } catch (error) {
-            if(error.response.status===500){
-                commit('setSearchError',error);
-            }else{
-                commit('setSearchError', error.response.data.message);
-            }
         } finally {
             commit('searchLoaderFlagOff');
         }

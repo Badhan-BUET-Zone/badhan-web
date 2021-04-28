@@ -37,33 +37,19 @@ const mutations = {
     }
 };
 const actions = {
-    async donate({ commit, getters,rootState, rootGetters},payload){
-        commit('clearDonationMessage');
+    async donate({ commit, getters,rootState, rootGetters, dispatch},payload){
         commit('donationLoaderFlagOn');
-
         let sendData = {
             // donorPhone: this.$props.phone,
             donorId: payload.donorId,
             date: new Date(payload.newDonationDate).getTime(),
         };
-        let headers = {
-            "x-auth": rootGetters.getToken,
-        };
 
         try {
-            let response = await badhanAxios.post("v2/donation/insert", sendData, {
-                headers: headers,
-            });
-
-            commit('setDonationSuccess',"Successfully added donation");
+            let response = await badhanAxios.post("v2/donation/insert", sendData);
+            dispatch('notification/notifySuccess',"Successfully added donation",{root: true});
             return true;
         } catch (error) {
-            if(error.response && error.response.data){
-                commit('setDonationError',error.response.data.message);
-            }else{
-                commit('setDonationError',error);
-            }
-            console.log(error.response);
             return false;
         } finally {
             commit('donationLoaderFlagOff');

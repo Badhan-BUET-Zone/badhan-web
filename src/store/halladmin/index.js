@@ -59,7 +59,7 @@ const mutations={
         state.newDonorLoader=true;
     },
     newDonorLoaderOff(state){
-        state.newD=false;
+        state.newDonorLoader=false;
     },
 
     setNewDonorError(state,payload){
@@ -78,25 +78,20 @@ const mutations={
 const actions={
     async fetchVolunteers({commit,getters}){
         commit('clearVolunteers');
-        commit('clearVolunteerError');
         commit('volunteerLoaderOn');
 
         try {
             let response = await badhanAxios.post('/v2/admin/volunteers', {});
             commit('setVolunteers',response.data.volunteerList);
         }catch (e){
-            if(e.response && e.response.data.message){
-                commit('setVolunteerError');
-            }
+
         }finally {
             commit('volunteerLoaderOff');
         }
 
     },
-    async saveDonor({commit, getters, },payload){
-        commit('clearNewDonorMessage');
+    async saveDonor({commit, getters, dispatch },payload){
         commit('newDonorLoaderOn');
-
         let sendData = {
             userPhone: payload.userPhone,
             phone: payload.phone,
@@ -110,20 +105,12 @@ const actions={
             lastDonation: payload.lastDonation,
         };
 
-
         try {
             let response = await badhanAxios.post("/v2/donor/insert", sendData);
-
-            commit('setNewDonorSuccess',"Donor added successfully");
-
+            dispatch('notification/notifySuccess',"Donor added successfully",{root: true});
             return true;
         } catch (error) {
-            if(error.response && error.response.data){
-                commit('setNewDonorError',error.response.data.message);
-            }else{
-                commit('setNewDonorError',error);
-            }
-            console.log(error.response);
+            console.log("error occured");
             return false;
         } finally {
             commit('newDonorLoaderOff')
@@ -136,5 +123,6 @@ export default{
     state,
     actions,
     getters,
-    mutations
+    mutations,
+    namespaced: true
 }

@@ -11,7 +11,7 @@
                 />
 
                 <div class="h5 ma-6">Badhan BUET Zone<br>Sign In</div>
-                <div class="h6" v-if="isMobile">Version: {{version}}</div>
+                <div class="h6" v-if="isMobile">Version: {{ version }}</div>
 
                 <div>
                     <v-text-field
@@ -36,10 +36,7 @@
                         dense
 
                     ></v-text-field>
-
-
                     <v-checkbox dense v-model="rememberFlag" label="Remember me"></v-checkbox>
-
                     <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
                     <v-btn
                         color="primary"
@@ -52,16 +49,6 @@
                         Sign In
                     </v-btn>
                 </div>
-                <div
-                    class="alert alert-danger mt-4"
-                    role="alert"
-                    v-if="$store.getters.getError.length !== 0"
-                >
-                    {{ $store.getters.getError }}
-                </div>
-
-
-
                 <v-btn
                     class="mt-2"
                     v-if="!isMobile"
@@ -82,17 +69,16 @@
                     Web Version
                     <v-icon right>mdi-web</v-icon>
                 </v-btn>
-              <v-btn text x-small style="text-decoration: none" class="mt-2" href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
-                Don't have an account? Click here
-              </v-btn>
+                <v-btn text x-small style="text-decoration: none" class="mt-2"
+                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
+                    Don't have an account? Click here
+                </v-btn>
 
                 <v-btn text x-small style="text-decoration: none" class="mt-2" to="/credits">
                     Developers of Badhan, BUET
                 </v-btn>
-
             </div>
         </div>
-
         <SignInDialog :dialog="$store.getters.getSignInLoaderFlag"></SignInDialog>
     </div>
 </template>
@@ -101,8 +87,9 @@
 import SignInDialog from "@/components/SignInDialog";
 import {Capacitor} from "@capacitor/core";
 import {Plugins} from '@capacitor/core';
-const { Device } = Plugins;
-import {mapActions,mapGetters} from 'vuex';
+
+const {Device} = Plugins;
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: "SignIn",
@@ -127,7 +114,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notification',['notifySuccess','notifyError']),
+        ...mapActions('notification', ['notifySuccess', 'notifyError']),
         async signInClicked() {
             if (this.phone === null || isNaN(this.phone)) {
                 this.notifyError("Invalid Phone Number")
