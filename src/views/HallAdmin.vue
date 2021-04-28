@@ -281,6 +281,7 @@
 import {bloodGroups, halls, departments} from "@/constants";
 import Datepicker from "vuejs-datepicker";
 import {badhanAxios} from "@/api";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
     name: "HallAdminPanel",
@@ -341,6 +342,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions('notification',['notify']),
         archiveClicked() {
             console.log("Archive button clicked: ");
             console.log("password: ", this.password);

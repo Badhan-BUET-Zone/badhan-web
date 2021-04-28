@@ -136,6 +136,7 @@
 <script>
 
 import {Plugins} from "@capacitor/core";
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     data: () => ({
@@ -152,6 +153,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions('notification',['notify']),
         async myProfileclicked() {
             // this.$store.commit('showSearchPanel');
 
@@ -159,8 +161,6 @@ export default {
 
         },
         async signOutClicked() {
-
-
             this.$bvModal.msgBoxConfirm('Confirm Logout?', {
                 centered: true
             })
@@ -168,6 +168,7 @@ export default {
                     if (value === true) {
                         await this.$store.dispatch('logout');
                         this.$router.push('/');
+                        this.notify('You have been signed out');
                     }else{
                         this.$router.go(-1);
                     }

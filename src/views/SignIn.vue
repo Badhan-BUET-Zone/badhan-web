@@ -102,6 +102,7 @@ import SignInDialog from "@/components/SignInDialog";
 import {Capacitor} from "@capacitor/core";
 import {Plugins} from '@capacitor/core';
 const { Device } = Plugins;
+import {mapActions,mapGetters} from 'vuex';
 
 export default {
     name: "SignIn",
@@ -126,6 +127,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions('notification',['notify']),
         async signInClicked() {
             this.$store.commit("clearSignInError");
 
@@ -142,6 +144,8 @@ export default {
                 return;
             }
 
+
+
             let isSignInOk = await this.$store.dispatch("login", {
                 phone: this.phone,
                 password: this.password,
@@ -150,6 +154,7 @@ export default {
 
             if (isSignInOk) {
                 await this.$router.push("/home");
+                this.notify('Sign in successful');
             }
         },
 
