@@ -108,8 +108,8 @@ const actions = {
 
 
             if (response.status !== 201) {
-                commit('setSignInError', "Status code not 201")
-                return;
+                // commit('setSignInError', "Status code not 201")
+                return {success: false,message:"Status code not 201"}
             }
 
             commit('setToken', response.data.token);
@@ -130,13 +130,12 @@ const actions = {
                 commit('removeProfileFromLocalStorage');
             }
 
-            return true;
+            return {success: true,message:"Welcome to Badhan App"};
 
         } catch (error) {
             console.log(error);
             commit('setSignInError', error.response.data.message);
-
-            return false;
+            return {success: false,message:error.response.data.message};
         } finally {
             commit('signInLoaderFlagOff');
         }

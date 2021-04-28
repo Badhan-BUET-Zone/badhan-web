@@ -1,11 +1,11 @@
 <template>
-
+    <div>
     <v-snackbar
         v-model="notification"
-        color="red"
+        :color="getNotificationColor"
         left
         bottom
-        timeout="3000"
+        :timeout="-1"
     >
             {{ getNotification }}
         <template v-slot:action="{ attrs }">
@@ -18,6 +18,7 @@
             </v-btn>
         </template>
     </v-snackbar>
+    </div>
 
 </template>
 
@@ -27,7 +28,7 @@ import {mapGetters, mapActions} from 'vuex';
 export default {
     name: "Snackbar.vue",
     computed: {
-        ...mapGetters('notification', ['getNotification', "getNotificationFlag"]),
+        ...mapGetters('notification', ['getNotification', "getNotificationFlag","getNotificationColor"]),
         notification: {
             // getter
             get: function () {

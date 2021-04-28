@@ -127,7 +127,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notification',['notify']),
+        ...mapActions('notification',['notifySuccess','notifyError']),
         async signInClicked() {
             this.$store.commit("clearSignInError");
 
@@ -146,15 +146,17 @@ export default {
 
 
 
-            let isSignInOk = await this.$store.dispatch("login", {
+            let signInResponse = await this.$store.dispatch("login", {
                 phone: this.phone,
                 password: this.password,
                 rememberFlag: this.rememberFlag,
             });
 
-            if (isSignInOk) {
+            if (signInResponse.success) {
                 await this.$router.push("/home");
-                this.notify('Sign in successful');
+                this.notifySuccess(signInResponse.message);
+            }else{
+                this.notifyError(signInResponse.message)
             }
         },
 
