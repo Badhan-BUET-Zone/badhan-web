@@ -1,5 +1,6 @@
 import axios from "axios";
 import {store} from "@/store/store";
+import {processError} from "../mixins/helpers";
 
 const badhanAxios = axios.create({
     baseURL:'https://badhan-backend.herokuapp.com'
@@ -32,6 +33,8 @@ badhanAxios.interceptors.response.use( (response)=>{
     return response;
 },  (error)=>{
     // Do something with request error
+    store.dispatch('notification/notifyError',processError(error))
+    console.log(error)
     return Promise.reject(error);
 });
 

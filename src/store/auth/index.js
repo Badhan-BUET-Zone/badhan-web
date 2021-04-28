@@ -73,15 +73,12 @@ const actions = {
             let response = await badhanAxios.post('/users/signout', {});
             dispatch('notification/notifySuccess',response.data.message);
         } catch (e) {
-            dispatch('notification/notifyError',processError(e));
-            console.log(e);
         } finally {
             commit('setLoadingFalse');
 		    commit('removeToken');
             commit('removeTokenFromLocalStorage');
             commit('removeProfileFromLocalStorage');
         }
-
     },
     autoLogin({ getters, commit }) {
         commit('loadTokenFromLocalStorage');
@@ -128,12 +125,8 @@ const actions = {
                 commit('removeTokenFromLocalStorage');
                 commit('removeProfileFromLocalStorage');
             }
-
             return true;
-
         } catch (error) {
-            console.log(error);
-            dispatch('notification/notifyError',processError(error));
             return false;
         } finally {
             commit('signInLoaderFlagOff');
