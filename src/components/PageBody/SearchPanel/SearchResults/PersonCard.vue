@@ -62,7 +62,8 @@
                 <p><b>Department: </b>{{ studentID | idToDept }}</p>
                 <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
                 <p v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }}</p>
-                <p v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b> {{ roomNumber }}</p>
+                <p v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
+                    {{ roomNumber }}</p>
                 <div>
                     <v-btn
                         small
@@ -119,7 +120,7 @@
                     color="red"
                     rounded
                     small
-                    @click="donate()"
+                    @click="donateClicked()"
                     :loading="$store.getters['donate/getDonationLoaderFlag']"
                     :disabled="$store.getters['donate/getDonationLoaderFlag'] || newDonationDate.length === 0"
                 >Done
@@ -132,6 +133,7 @@
 <script>
 import {departments, bloodGroups} from "@/constants";
 import Datepicker from "vuejs-datepicker";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "PersonCard",
@@ -173,10 +175,14 @@ export default {
             availableInRendered: 0,
         };
     },
+    computed:{
+        ...mapGetters('donate',['getDonationLoaderFlag']),
+    },
     mounted() {
         this.availableInRendered = this.$props.availableIn;
     },
     methods: {
+        ...mapActions('donate',['donate']),
         callFromDialer() {
             document.location.href = "tel:+" + this.phone;
         },
@@ -188,8 +194,8 @@ export default {
             });
 
         },
-        async donate() {
-            let success = await this.$store.dispatch('donate/donate', {
+        async donateClicked() {
+            let success = await this.donate({
                 donorId: this.$props.id,
                 newDonationDate: this.newDonationDate
             });
