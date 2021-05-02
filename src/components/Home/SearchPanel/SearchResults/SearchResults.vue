@@ -71,7 +71,7 @@
 <script>
 import PersonCard from "./PersonCard";
 import JsonExcel from "vue-json-excel";
-import {bloodGroups} from "@/constants";
+import {bloodGroups} from "@/mixins/constants";
 import {mapGetters} from "vuex";
 
 export default {

@@ -1,5 +1,5 @@
 import {badhanAxios} from '@/api';
-import { bloodGroups, halls } from "@/constants";
+import { bloodGroups, halls } from "@/mixins/constants";
 import donate from "@/store/home/donate";
 
 let compareObject = (a, b) => {

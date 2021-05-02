@@ -109,8 +109,8 @@
                                                 v-for="(oneHall, index) in halls"
                                                 :value="index"
                                                 v-if="
-                          $store.getters.getDesignation === 3 ||
-                          $store.getters.getHall === index ||
+                          getDesignation === 3 ||
+                          getHall === index ||
                           index === 7
                         "
                                             >
@@ -194,11 +194,11 @@
                                     </div>
                                 </div>
                                 <v-btn
-                                    :disabled="$store.getters['halladmin/getNewDonorLoader']"
+                                    :disabled="getNewDonorLoader"
                                     rounded
-                                    :loading="$store.getters['halladmin/getNewDonorLoader']"
+                                    :loading="getNewDonorLoader"
                                     color="primary"
-                                    @click="createDonor"
+                                    @click="createDonorClicked"
                                 >Save Donor
                                 </v-btn>
                             </div>
@@ -222,11 +222,11 @@
                             </h5>
                         </div>
                         <div v-if="seeVolunteersFlag" class="pa-4">
-                            <v-progress-circular indeterminate color="primary" v-if="$store.getters['halladmin/getVolunteerLoader']">
+                            <v-progress-circular indeterminate color="primary" v-if="getVolunteerLoader">
 
                             </v-progress-circular>
 
-                            <v-simple-table v-if="$store.getters['halladmin/getVolunteers'].length!==0">
+                            <v-simple-table v-if="getVolunteers.length!==0">
                                 <template v-slot:default>
                                     <thead>
                                     <tr>
@@ -243,7 +243,7 @@
                                     </thead>
                                     <tbody>
                                     <tr
-                                        v-for="(volunteer,index) in $store.getters['halladmin/getVolunteers']"
+                                        v-for="(volunteer,index) in getVolunteers"
                                         :key="index"
                                     >
                                         <td>{{ volunteer.name }}</td>
@@ -263,7 +263,7 @@
 </template>
 
 <script>
-import {bloodGroups, halls, departments} from "@/constants";
+import {bloodGroups, halls, departments} from "@/mixins/constants";
 import Datepicker from "vuejs-datepicker";
 import {badhanAxios} from "@/api";
 import {mapGetters, mapActions} from "vuex";
@@ -315,6 +315,10 @@ export default {
             newDonorLoaderFlag: false,
         };
     },
+    computed:{
+        ...mapGetters(['getPhone','getHall','getDesignation']),
+        ...mapGetters('halladmin',['getVolunteerLoader','getVolunteers','getNewDonorLoader']),
+    },
     components: {
         Datepicker,
     },
@@ -328,10 +332,11 @@ export default {
     },
     methods: {
         ...mapActions('notification',['notifySuccess','notifyError']),
+        ...mapActions('halladmin',['fetchVolunteers','saveDonor']),
         clearFields() {
             this.phone = "";
             this.bloodGroup = -1;
-            this.hall = this.$store.getters.getHall;
+            this.hall = this.getHall;
             this.name = "";
             this.studentId = "";
             this.address = "";
@@ -344,7 +349,7 @@ export default {
             this.newDonationDate = "";
             this.comment = "";
         },
-        async createDonor() {
+        async createDonorClicked() {
             if (isNaN(this.batch) || this.batch.length !== 2) {
                 this.notifyError("Please enter valid batch number for creating a donor")
                 return;
@@ -391,7 +396,7 @@ export default {
             }
             newStudentId += this.department + this.roll;
             let sendData = {
-                userPhone: this.$store.getters.getPhone,
+                userPhone: this.getPhone,
                 phone: parseInt("88" + this.phone),
                 bloodGroup: this.bloodGroup,
                 hall: this.hall,
@@ -403,16 +408,15 @@ export default {
                 lastDonation: this.newDonationDate.getTime(),
             };
 
-            let ok = await this.$store.dispatch('halladmin/saveDonor',sendData);
+            let ok = await this.saveDonor(sendData);
             if(ok){
                 this.clearFields();
             }
         },
-        async getVolunteers() {
-        },
+
     },
   mounted() {
-    this.$store.dispatch('halladmin/fetchVolunteers')
+    this.fetchVolunteers();
   }
 };
 </script>

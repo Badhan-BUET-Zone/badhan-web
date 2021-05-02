@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import {bloodGroups, halls} from "@/constants";
+import {bloodGroups, halls} from "@/mixins/constants";
 import {mapActions, mapGetters,mapMutations} from "vuex";
 
 export default {

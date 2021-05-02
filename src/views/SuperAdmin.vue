@@ -4,11 +4,11 @@
             <div class="col-lg-6 col-sm-12 col-md-12 jumbotron card">
                 <h3>Hall Admins</h3>
                 <v-progress-circular
-                    v-if="$store.getters.getHallAdminsLoaderFlag"
+                    v-if="getHallAdminsLoaderFlag"
                     indeterminate
                     color="primary"
                 ></v-progress-circular>
-                <table class="table table-hover" v-if="$store.getters.getHallAdmins!==null && !$store.getters.getHallAdminsLoaderFlag">
+                <table class="table table-hover" v-if="getHallAdmins!==null && !getHallAdminsLoaderFlag">
                     <thead>
                     <tr>
                         <th scope="col">Hall Name</th>
@@ -16,7 +16,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(hallAdmin,index) in $store.getters.getHallAdmins" :key="index">
+                    <tr v-for="(hallAdmin,index) in getHallAdmins" :key="index">
                         <th scope="row">{{ halls[hallAdmin.hall] }}</th>
                         <td>{{ hallAdmin.name }}</td>
                     </tr>
@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import {halls} from '@/constants';
+import {halls} from '@/mixins/constants';
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "SuperAdminPanel",
@@ -45,9 +46,13 @@ export default {
             changeHallAdminLoaderFlag: false,
         }
     },
+    computed:{
+        ...mapGetters(['getHallAdmins','getHallAdminsLoaderFlag']),
+    },
     methods: {
+        ...mapActions(['changeHallAdmin','fetchHallAdmins']),
         changeHallAdminClicked() {
-            this.$store.dispatch('changeHallAdmin',{newAdminPhone:this.newAdminPhone});
+            this.changeHallAdmin({newAdminPhone:this.newAdminPhone});
         },
         archiveBatchClicked() {
         },
@@ -55,7 +60,7 @@ export default {
     created() {
     },
     mounted() {
-        this.$store.dispatch('fetchHallAdmins');
+        this.fetchHallAdmins();
     }
 }
 </script>

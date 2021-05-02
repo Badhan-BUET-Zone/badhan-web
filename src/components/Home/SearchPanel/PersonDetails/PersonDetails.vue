@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import {halls, bloodGroups} from "@/constants";
+import {halls, bloodGroups} from "@/mixins/constants";
 import {Plugins} from "@capacitor/core";
 import {mapActions, mapGetters} from "vuex";
 

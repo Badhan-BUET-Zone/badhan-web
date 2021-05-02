@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import SearchResults from "@/components/PageBody/SearchPanel/SearchResults/SearchResults";
-import Filters from "@/components/PageBody/SearchPanel/Filters";
-import PersonDetails from "@/components/PageBody/SearchPanel/PersonDetails/PersonDetails";
+import SearchResults from "@/components/Home/SearchPanel/SearchResults/SearchResults";
+import Filters from "@/components/Home/SearchPanel/Filters";
+import PersonDetails from "@/components/Home/SearchPanel/PersonDetails/PersonDetails";
 export default {
     name: "ActiveSearch",
     components: {

@@ -43,8 +43,8 @@
                         rounded
                         class="ml-2"
                         @click="signInClicked()"
-                        :disabled="$store.getters.getSignInLoaderFlag"
-                        :loading="$store.getters.getSignInLoaderFlag"
+                        :disabled="getSignInLoaderFlag"
+                        :loading="getSignInLoaderFlag"
                     >
                         Sign In
                     </v-btn>
@@ -79,7 +79,7 @@
                 </v-btn>
             </div>
         </div>
-        <SignInDialog :dialog="$store.getters.getSignInLoaderFlag"></SignInDialog>
+        <SignInDialog :dialog="getSignInLoaderFlag"></SignInDialog>
     </div>
 </template>
 
@@ -89,7 +89,7 @@ import {Capacitor} from "@capacitor/core";
 import {Plugins} from '@capacitor/core';
 
 const {Device} = Plugins;
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions, mapGetters, mapMutations} from 'vuex';
 
 export default {
     name: "SignIn",
@@ -109,12 +109,16 @@ export default {
         },
     },
     computed: {
+        ...mapGetters(['getSignInLoaderFlag']),
         isMobile() {
             return Capacitor.isNative;
         },
+
     },
     methods: {
         ...mapActions('notification', ['notifySuccess', 'notifyError']),
+        ...mapActions(['login']),
+        ...mapMutations(['clearSignInError']),
         async signInClicked() {
             if (this.phone === null || isNaN(this.phone)) {
                 this.notifyError("Invalid Phone Number")
@@ -126,7 +130,7 @@ export default {
                 return;
             }
 
-            let isSignInOk = await this.$store.dispatch("login", {
+            let isSignInOk = await this.login({
                 phone: this.phone,
                 password: this.password,
                 rememberFlag: this.rememberFlag,
@@ -141,7 +145,7 @@ export default {
         clearClicked() {
             this.phone = "";
             this.password = "";
-            this.$store.commit("clearSignInError");
+            this.clearSignInError();
         },
     },
     async mounted() {

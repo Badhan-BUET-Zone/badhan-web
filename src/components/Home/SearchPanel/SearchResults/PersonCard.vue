@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import {departments, bloodGroups} from "@/constants";
+import {departments, bloodGroups} from "@/mixins/constants";
 import Datepicker from "vuejs-datepicker";
 import {mapActions, mapGetters} from "vuex";
 
