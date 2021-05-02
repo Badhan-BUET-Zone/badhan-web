@@ -7,10 +7,10 @@
             >
                 <img
                     src="../assets/images/badhanlogo.png"
-                    style="width: 150px; height: 150px"
+                    style="width: 120px; height: 120px"
                 />
 
-                <div class="h5 ma-6">Badhan BUET Zone<br>Sign In</div>
+                <div class="h5 ma-2">Badhan BUET Zone<br>Sign In</div>
                 <div class="h6" v-if="isMobile">Version: {{ version }}</div>
 
                 <div>
@@ -50,7 +50,7 @@
                     </v-btn>
                 </div>
                 <v-btn
-                    class="mt-2"
+                    class="mt-1"
                     v-if="!isMobile"
                     text
                     style="text-decoration: none"
@@ -60,7 +60,7 @@
                     <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
                 <v-btn
-                    class="mt-3"
+                    class="mt-2"
                     v-else
                     text
                     style="text-decoration: none"
@@ -69,12 +69,12 @@
                     Web Version
                     <v-icon right>mdi-web</v-icon>
                 </v-btn>
-                <v-btn text x-small style="text-decoration: none" class="mt-2"
+                <v-btn text x-small style="text-decoration: none" class="mt-1"
                        href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
                     Don't have an account? Click here
                 </v-btn>
 
-                <v-btn text x-small style="text-decoration: none" class="mt-2" to="/credits">
+                <v-btn text x-small style="text-decoration: none" class="mt-1" to="/credits">
                     Developers of Badhan, BUET
                 </v-btn>
             </div>
