@@ -15,11 +15,39 @@
             <v-toolbar-title>Badhan BUET Zone</v-toolbar-title>
 
             <v-spacer></v-spacer>
-            <v-progress-circular
-                indeterminate
-                color="white"
-                v-if="getLoadingFlag"
-            ></v-progress-circular>
+<!--            <v-progress-circular-->
+<!--                indeterminate-->
+<!--                color="white"-->
+<!--                v-if="getLoadingFlag"-->
+<!--            ></v-progress-circular>-->
+
+            <v-menu
+                right
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                        :loading="getLoadingFlag"
+                    >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                </template>
+
+                <v-list>
+                    <v-list-item @click="signOutClicked">
+                        <v-list-item-icon>
+                            <v-icon>
+                                mdi-logout
+                            </v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Sign Out</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
 
         </v-app-bar>
 
@@ -35,10 +63,12 @@
                         {{ getName }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
+                        <v-chip color="primary" class="ma-1">
                         <span v-if="getDesignation===2">Hall admin</span>
                         <span v-else-if="getDesignation===3">Super admin</span>
                         <span v-else-if="getDesignation===1">Volunteer</span>
                         <span v-else-if="getDesignation===0">Donor</span>
+                        </v-chip>
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
@@ -49,7 +79,6 @@
                 dense
             >
                 <v-list-item-group
-                    v-model="group"
                     active-class="red--text text--accent-4"
                 >
                     <v-list-item link to="/home" style="text-decoration: none">
@@ -109,23 +138,23 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                  <v-list-item link to="/about" style="text-decoration: none">
-                    <v-list-item-icon>
-                      <v-icon>mdi-information</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>About</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                    <v-list-item to="/logout" @click="signOutClicked" style="text-decoration: none">
+                    <v-list-item link to="/about" style="text-decoration: none">
                         <v-list-item-icon>
-                            <v-icon>mdi-logout</v-icon>
+                            <v-icon>mdi-information</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>Sign Out</v-list-item-title>
+                            <v-list-item-title>About</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
+
+<!--                    <v-list-item to="/logout" @click="signOutClicked" style="text-decoration: none">-->
+<!--                        <v-list-item-icon>-->
+<!--                            <v-icon>mdi-logout</v-icon>-->
+<!--                        </v-list-item-icon>-->
+<!--                        <v-list-item-content>-->
+<!--                            <v-list-item-title>Sign Out</v-list-item-title>-->
+<!--                        </v-list-item-content>-->
+<!--                    </v-list-item>-->
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
@@ -141,10 +170,9 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     data: () => ({
         drawer: false,
-        group: null,
     }),
     computed: {
-        ...mapGetters(['getLoadingFlag','getName','getDesignation','getID']),
+        ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID']),
         isMobile() {
             let check = false;
             (function (a) {
@@ -153,8 +181,11 @@ export default {
             return check;
         }
     },
+    mounted() {
+        this.drawer = !this.isMobile;
+    },
     methods: {
-        ...mapActions('notification',['notifySuccess']),
+        ...mapActions('notification', ['notifySuccess']),
         ...mapActions(['logout']),
         async myProfileclicked() {
             await this.$router.push({path: '/home/details', query: {id: this.getID}});
@@ -168,8 +199,6 @@ export default {
                     if (value === true) {
                         await this.logout();
                         this.$router.push('/');
-                    }else{
-                        this.$router.go(-1);
                     }
                 })
         },

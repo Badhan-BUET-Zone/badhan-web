@@ -58,11 +58,6 @@ const routes = [
         meta: {requiresAuth: false, title: "Developers of Badhan"}
     },
     {
-        name: 'LogOut',
-        path: '/logout',
-        meta: {requiresAuth: true, title: 'Log Out Confirmation'}
-    },
-    {
         name: 'About',
         path: '/about',
         component: () => import('@/views/About.vue'),

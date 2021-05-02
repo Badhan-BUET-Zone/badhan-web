@@ -10,7 +10,7 @@
                 </v-card-title>
                 <v-card-text>
                     <div>Please report any bugs you may find. We would really love to hear any new ideas for our app.</div>
-                    <div>Note: contact mirmahathir1@gmail.com for editing the document</div>
+                    <div>Note: contact mirmahathir1@gmail.com for any further assistance</div>
                 </v-card-text>
                 <v-card-actions class="pa-5">
                     <v-btn
