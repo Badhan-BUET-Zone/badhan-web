@@ -1,13 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HallAdmin from "@/views/HallAdmin";
-import SuperAdmin from "@/views/SuperAdmin";
 import Home from "@/views/Home";
 import SignIn from "@/views/SignIn";
 import PersonDetails from "@/components/Home/SearchPanel/PersonDetails/PersonDetails";
-import Settings from "../views/Settings";
-import Credits from "../views/Credits";
-import About from "../views/About";
 import {store} from "@/store/store";
 
 Vue.use(VueRouter)
@@ -62,8 +57,13 @@ const routes = [
         path: '/about',
         component: () => import('@/views/About.vue'),
         meta: {requiresAuth: false, title: "About Badhan"}
-    }
-
+    },
+    {
+        name: 'NotFound',
+        path: '/*',
+        component: () => import('@/views/NotFound.vue'),
+        meta: {requiresAuth: false, title: "404 Not Found"}
+    },
 ]
 
 const router = new VueRouter({

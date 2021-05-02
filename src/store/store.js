@@ -10,6 +10,7 @@ import superadmin from '@/store/superadmin';
 import details from '@/store/home/details';
 import userDetails from '@/store/userDetails';
 import notification from "./notification";
+import release from "@/store/release"
 
 
 export const store = new Vuex.Store({
@@ -39,7 +40,8 @@ export const store = new Vuex.Store({
     superadmin,
     details,
     userDetails,
-    notification
+    notification,
+    release
   }
 });
 
