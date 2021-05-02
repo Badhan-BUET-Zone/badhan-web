@@ -121,8 +121,8 @@
                     rounded
                     small
                     @click="donateClicked()"
-                    :loading="$store.getters['donate/getDonationLoaderFlag']"
-                    :disabled="$store.getters['donate/getDonationLoaderFlag'] || newDonationDate.length === 0"
+                    :loading="getDonationLoaderFlag"
+                    :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
                 >Done
                 </v-btn>
             </div>

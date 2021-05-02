@@ -4,18 +4,18 @@
 
         style="height: fit-content"
     >
-        <div v-if="$store.getters.isSearchResultShown">
+        <div v-if="isSearchResultShown">
             <div class="alert alert-secondary">
-                Found {{ $store.getters.getNumberOfDonors }} donors
+                Found {{ getNumberOfDonors }} donors
             </div>
         </div>
 
-        <div v-if="$store.getters.isSearchResultShown">
+        <div v-if="isSearchResultShown">
             <div data-aos="fade-up">
                 <json-excel
                     v-if="!isSmallWindow"
-                    :data="$store.getters.getPersons"
-                    :name="'badhan_'+$store.getters.getSearchedHall+'.xls'"
+                    :data="getPersons"
+                    :name="'badhan_'+getSearchedHall+'.xls'"
                     worksheet="Badhan"
                     :fields="{
                     name:'name',
@@ -46,7 +46,7 @@
                     Download available on PC
                 </v-btn>
             </div>
-            <div v-for="(obj, index) in $store.getters.getPersonGroups" :key="index">
+            <div v-for="(obj, index) in getPersonGroups" :key="index">
                 <div class="alert alert-primary card" role="alert">
                     Batch {{ obj.batch }}:
                 </div>
@@ -72,6 +72,7 @@
 import PersonCard from "./PersonCard";
 import JsonExcel from "vue-json-excel";
 import {bloodGroups} from "@/constants";
+import {mapGetters} from "vuex";
 
 export default {
     name: "SearchResults",
@@ -85,6 +86,7 @@ export default {
     },
     methods: {},
     computed: {
+        ...mapGetters(['getPersonGroups','isSearchResultShown','getNumberOfDonors','getPersons','getSearchedHall']),
         isSmallWindow() {
             return window.innerWidth < 500;
         }

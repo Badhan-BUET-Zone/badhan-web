@@ -243,8 +243,8 @@
                                     </thead>
                                     <tbody>
                                     <tr
-                                        v-for="volunteer in $store.getters['halladmin/getVolunteers']"
-                                        :key="volunteer.name"
+                                        v-for="(volunteer,index) in $store.getters['halladmin/getVolunteers']"
+                                        :key="index"
                                     >
                                         <td>{{ volunteer.name }}</td>
                                         <td>{{ volunteer.studentId.substr(0, 2) }}</td>

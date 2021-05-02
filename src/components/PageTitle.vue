@@ -8,7 +8,7 @@
                 class="mx-2"
                 icon
                 small
-                @click="$router.push($store.getters.isLoggedIn?'/home':'/')"
+                @click="$router.push(isLoggedIn?'/home':'/')"
             >
                 <v-icon>
                     mdi-arrow-left
@@ -20,9 +20,14 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
     name: "PageTitle",
-    props: ["title"]
+    props: ["title"],
+    computed:{
+        ...mapGetters(['isLoggedIn']),
+    }
 }
 </script>
 

@@ -18,7 +18,7 @@
             <v-progress-circular
                 indeterminate
                 color="white"
-                v-if="$store.getters.getLoadingFlag"
+                v-if="getLoadingFlag"
             ></v-progress-circular>
 
         </v-app-bar>
@@ -32,13 +32,13 @@
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="title">
-                        {{ $store.getters.getName }}
+                        {{ getName }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        <span v-if="$store.getters.getDesignation===2">Hall admin</span>
-                        <span v-else-if="$store.getters.getDesignation===3">Super admin</span>
-                        <span v-else-if="$store.getters.getDesignation===1">Volunteer</span>
-                        <span v-else-if="$store.getters.getDesignation===0">Donor</span>
+                        <span v-if="getDesignation===2">Hall admin</span>
+                        <span v-else-if="getDesignation===3">Super admin</span>
+                        <span v-else-if="getDesignation===1">Volunteer</span>
+                        <span v-else-if="getDesignation===0">Donor</span>
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
@@ -62,7 +62,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item link to="/halladmin" v-if="$store.getters.getDesignation >=2"
+                    <v-list-item link to="/halladmin" v-if="getDesignation >=2"
                                  style="text-decoration: none">
                         <v-list-item-icon>
                             <v-icon>mdi-shield-account</v-icon>
@@ -72,7 +72,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item link to="/superadmin" v-if="$store.getters.getDesignation === 3"
+                    <v-list-item link to="/superadmin" v-if="getDesignation === 3"
                                  style="text-decoration: none">
                         <v-list-item-icon>
                             <v-icon>mdi-star</v-icon>
@@ -144,6 +144,7 @@ export default {
         group: null,
     }),
     computed: {
+        ...mapGetters(['getLoadingFlag','getName','getDesignation','getID']),
         isMobile() {
             let check = false;
             (function (a) {
@@ -154,10 +155,9 @@ export default {
     },
     methods: {
         ...mapActions('notification',['notifySuccess']),
+        ...mapActions(['logout']),
         async myProfileclicked() {
-            // this.$store.commit('showSearchPanel');
-
-            await this.$router.push({path: '/home/details', query: {id: this.$store.getters.getID}});
+            await this.$router.push({path: '/home/details', query: {id: this.getID}});
 
         },
         async signOutClicked() {
@@ -166,7 +166,7 @@ export default {
             })
                 .then(async (value) => {
                     if (value === true) {
-                        await this.$store.dispatch('logout');
+                        await this.logout();
                         this.$router.push('/');
                     }else{
                         this.$router.go(-1);

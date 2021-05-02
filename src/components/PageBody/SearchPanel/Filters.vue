@@ -3,16 +3,16 @@
         class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12"
         style="height: fit-content"
     >
-        <div v-if="$store.getters.isFilterShown">
+        <div v-if="isFilterShown">
             <!--      Filter title-->
             <h1 class="h4 p-2">Filters</h1>
 
             <!--      A button to hide the filters-->
             <button
-                v-if="$store.getters.isFilterShown"
+                v-if="isFilterShown"
                 class="h4 p-2 btn btn-outline-dark"
                 style="width: 100%"
-                @click="hideFilter()"
+                @click="hideFilterClicked()"
             >
                 Hide filters
             </button>
@@ -23,13 +23,13 @@
             v-else
             class="h4 p-2 btn btn-outline-dark"
             style="width: 100%"
-            @click="showFilter()"
+            @click="showFilterClicked()"
         >
             Show filters
         </button>
 
         <!--    Main Filters-->
-        <div v-if="$store.getters.isFilterShown" data-aos="fade-down">
+        <div v-if="isFilterShown" data-aos="fade-down">
             <div class="form-group">
                 <!--        Input field for name-->
 
@@ -93,9 +93,9 @@
                 <v-btn
                     rounded
                     color="primary"
-                    :disabled="$store.getters.isSearchLoading"
-                    :loading="$store.getters.isSearchLoading"
-                    @click="searchClick()"
+                    :disabled="isSearchLoading"
+                    :loading="isSearchLoading"
+                    @click="searchClicked()"
                     class="ml-2"
                 >
                     Search
@@ -107,6 +107,7 @@
 
 <script>
 import {bloodGroups, halls} from "@/constants";
+import {mapActions, mapGetters,mapMutations} from "vuex";
 
 export default {
     name: "Filters",
@@ -131,9 +132,11 @@ export default {
         };
     },
     methods: {
-        async searchClick() {
+        ...mapActions(['search']),
+        ...mapActions('notification',['notifyError']),
+        ...mapMutations(['hideSearchResults','showFilter','hideFilter']),
+        async searchClicked() {
             //front end input validation
-            this.$store.commit("clearSearchError");
             //batch number input validation
             let inputBatch = 0;
             if (this.batch === null) {
@@ -144,16 +147,10 @@ export default {
             if (this.batch.length === 0) {
                 inputBatch = "";
             } else if (isNaN(inputBatch)) {
-                this.$store.commit(
-                    "setSearchError",
-                    "Please input a valid batch number"
-                );
+                this.notifyError("Please input a valid batch number");
                 return;
             } else if (this.batch.length !== 2) {
-                this.$store.commit(
-                    "setSearchError",
-                    "Please input a 2 digit batch number"
-                );
+                this.notifyError("Please input a 2 digit batch number");
                 return;
             }
 
@@ -169,7 +166,7 @@ export default {
                 inputAddress = "";
             }
 
-            this.$store.dispatch("search", {
+            this.search({
                 inputName: inputName,
                 bloodGroup: this.bloodGroup,
                 inputBatch: inputBatch,
@@ -182,21 +179,20 @@ export default {
 
         clearFields() {
             this.batch = "";
-            //this.hall=halls[this.$store.getters.getHall];
-            if (this.$store.getters.getDesignation === 3) {
+            if (this.getDesignation === 3) {
                 this.hall = -1;
             }
             this.bloodGroup = -1;
             this.name = "";
             this.error = "";
             this.address = "";
-            this.$store.commit('hideSearchResults');
+            this.hideSearchResults();
         },
-        showFilter() {
-            this.$store.commit("showFilter");
+        showFilterClicked() {
+            this.showFilter();
         },
-        hideFilter() {
-            this.$store.commit("hideFilter");
+        hideFilterClicked() {
+            this.hideFilter();
         },
 
         processName(name) {
@@ -221,14 +217,15 @@ export default {
     mounted() {
     },
     computed: {
+        ...mapGetters(['getDesignation','getHall','isSearchLoading','isFilterShown']),
         availableHalls() {
-            if (this.$store.getters.getDesignation !== null) {
-                if (this.$store.getters.getDesignation === 3) {
+            if (this.getDesignation !== null) {
+                if (this.getDesignation === 3) {
                     return halls;
                 } else {
                     //covid support
-                    //return [halls[this.$store.getters.getHall], halls[7]];
-                    return [halls[this.$store.getters.getHall], halls[7], halls[8]];
+                    //return [halls[this.getHall], halls[7]];
+                    return [halls[this.getHall], halls[7], halls[8]];
                 }
             }
         },
