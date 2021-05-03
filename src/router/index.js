@@ -12,7 +12,9 @@ const routes = [
         name: 'HallAdmin',
         path: '/halladmin',
         component: () => import('@/views/HallAdmin.vue'),
-        meta: {requiresAuth: true, title: "Hall Admin Panel"}
+        meta: {
+            requiresAuth: true, title: "Hall Admin Panel"
+        }
     },
     {
         name: 'SuperAdmin',

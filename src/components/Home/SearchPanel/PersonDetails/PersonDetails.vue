@@ -43,7 +43,8 @@
                 <v-chip class="ma-1" v-else color="success">Available</v-chip>
                 <!--                <span v-if="availableIn > 0" class="alert alert-danger rounded">{{ availableIn }} Days remaining</span>-->
                 <!--                <span v-else class="alert alert-success">Available</span>-->
-                <v-btn rounded color="blue" max-width="150px" @click="callFromDialer">
+                <br>
+                <v-btn rounded color="blue lighten-3" class="ma-1" @click="callFromDialer">
                     <v-icon left>
                         mdi-phone
                     </v-icon>
@@ -82,7 +83,7 @@
                                         <v-text-field type="'text'" outlined label="Address" v-model="address"
                                                       :disabled="!enableEditing"></v-text-field>
                                         <div v-if="getDesignation > designation ||getPhone == oldPhone">
-                                            <v-btn color="warning" rounded @click="dialog = false">Cancel</v-btn>
+                                            <v-btn color="warning" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
                                             <v-btn color="primary" rounded class="white--text ml-2"
                                                    :disabled="getDetailsLoaderFlag || !enableEditing"
                                                    :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">Save
@@ -153,7 +154,7 @@
 
                                         <div
                                             v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
-                                            <v-btn color="warning" @click="hideDetails()" rounded>Cancel</v-btn>
+                                            <v-btn color="warning"  style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
                                             <v-btn color="primary" class="white--text ml-2" rounded
                                                    :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag"
                                                    :loading="getPasswordLoader ||getPromoteFlag"
@@ -487,5 +488,6 @@ export default {
     },
 };
 </script>
-<style scoped>
+<style>
+
 </style>
