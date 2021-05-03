@@ -9,18 +9,10 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        name: 'HallAdmin',
-        path: '/halladmin',
-        component: () => import('@/views/HallAdmin.vue'),
-        meta: {
-            requiresAuth: true, title: "Hall Admin Panel"
-        }
-    },
-    {
-        name: 'SuperAdmin',
-        path: '/superadmin',
-        component: () => import('@/views/SuperAdmin.vue'),
-        meta: {requiresAuth: true, title: 'Super Admin Panel'}
+        name: 'HallAdminList',
+        path: '/halladminlist',
+        component: () => import('@/views/HallAdminList.vue'),
+        meta: {requiresAuth: true, title: 'List of Hall Admins'}
     },
     {
         name: 'Home',
@@ -59,6 +51,18 @@ const routes = [
         path: '/about',
         component: () => import('@/views/About.vue'),
         meta: {requiresAuth: false, title: "About Badhan"}
+    },
+    {
+        name: 'CreateDonor',
+        path: '/createdonor',
+        component: () => import('@/views/CreateDonor.vue'),
+        meta: {requiresAuth: true, title: 'Create a Donor'}
+    },
+    {
+        name: 'VolunteerList',
+        path: '/volunteerlist',
+        component: () => import('@/views/VolunteerList.vue'),
+        meta: {requiresAuth: true, title: 'List of Volunteers'}
     },
     {
         name: 'NotFound',

@@ -15,11 +15,11 @@
             <v-toolbar-title>Badhan BUET Zone</v-toolbar-title>
 
             <v-spacer></v-spacer>
-<!--            <v-progress-circular-->
-<!--                indeterminate-->
-<!--                color="white"-->
-<!--                v-if="getLoadingFlag"-->
-<!--            ></v-progress-circular>-->
+            <!--            <v-progress-circular-->
+            <!--                indeterminate-->
+            <!--                color="white"-->
+            <!--                v-if="getLoadingFlag"-->
+            <!--            ></v-progress-circular>-->
 
             <v-menu
                 right
@@ -64,10 +64,10 @@
                     </v-list-item-title>
                     <v-list-item-subtitle>
                         <v-chip color="primary" class="ma-1">
-                        <span v-if="getDesignation===2">Hall admin</span>
-                        <span v-else-if="getDesignation===3">Super admin</span>
-                        <span v-else-if="getDesignation===1">Volunteer</span>
-                        <span v-else-if="getDesignation===0">Donor</span>
+                            <span v-if="getDesignation===2">Hall admin</span>
+                            <span v-else-if="getDesignation===3">Super admin</span>
+                            <span v-else-if="getDesignation===1">Volunteer</span>
+                            <span v-else-if="getDesignation===0">Donor</span>
                         </v-chip>
                     </v-list-item-subtitle>
                 </v-list-item-content>
@@ -91,23 +91,32 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item link to="/halladmin" v-if="getDesignation >=2"
+
+                    <v-list-item link to="/createdonor"
                                  style="text-decoration: none">
                         <v-list-item-icon>
-                            <v-icon>mdi-shield-account</v-icon>
+                            <v-icon>mdi-shield-plus</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>Hall Admin Panel</v-list-item-title>
+                            <v-list-item-title>Create New Donor</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item link to="/superadmin" v-if="getDesignation === 3"
-                                 style="text-decoration: none">
+                    <v-list-item link to="/volunteerlist" style="text-decoration: none">
+                        <v-list-item-icon>
+                            <v-icon>mdi-account-check</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>List of Volunteers</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item link to="/halladminlist" style="text-decoration: none">
                         <v-list-item-icon>
                             <v-icon>mdi-star</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>Super Admin Panel</v-list-item-title>
+                            <v-list-item-title>List of Hall Admins</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 
@@ -146,15 +155,6 @@
                             <v-list-item-title>About</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-
-<!--                    <v-list-item to="/logout" @click="signOutClicked" style="text-decoration: none">-->
-<!--                        <v-list-item-icon>-->
-<!--                            <v-icon>mdi-logout</v-icon>-->
-<!--                        </v-list-item-icon>-->
-<!--                        <v-list-item-content>-->
-<!--                            <v-list-item-title>Sign Out</v-list-item-title>-->
-<!--                        </v-list-item-content>-->
-<!--                    </v-list-item>-->
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
