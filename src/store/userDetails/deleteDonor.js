@@ -44,7 +44,7 @@ const actions = {
         commit('deleteLoaderFlagOn');
         try {
             let response = await badhanAxios.post("v2/admin/donor/delete", payload);
-            dispatch('notification/notifySuccess',"Successfully changed comment",{root: true});
+            dispatch('notification/notifySuccess',"Successfully deleted donor",{root: true});
             return true;
         } catch (error) {
             return false;
