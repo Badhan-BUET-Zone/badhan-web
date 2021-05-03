@@ -96,7 +96,8 @@
                                     v-if="
                           getDesignation === 3 ||
                           getHall === index ||
-                          index === 7
+                          index === 7 ||
+                          index === 8
                         "
                                 >
                                     {{ oneHall }}
