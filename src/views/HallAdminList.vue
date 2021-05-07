@@ -1,5 +1,5 @@
 <template>
-    <div data-aos="fade-up">
+    <div>
         <v-progress-circular
             v-if="getHallAdminsLoaderFlag"
             indeterminate

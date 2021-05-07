@@ -1,5 +1,5 @@
 <template>
-    <div data-aos="fade-up">
+    <div>
         <div class="row d-flex justify-content-center" align="center">
             <div
                 class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12 p-4"

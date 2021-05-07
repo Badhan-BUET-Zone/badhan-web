@@ -10,7 +10,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 import Mixins from '@/mixins/index'
@@ -18,18 +17,12 @@ Vue.mixin(Mixins);
 
 //previous badhan project
 import vuetify from './plugins/vuetify';
-// import './registerServiceWorker'
-
-
 
 Vue.config.productionTip = false;
 export const eventBus = new Vue();
 
 
 new Vue({
-  created () {
-    AOS.init()
-  },
   router,
   store,
   vuetify,

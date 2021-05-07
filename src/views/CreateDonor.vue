@@ -1,7 +1,7 @@
 <template>
-    <div data-aos="fade-up">
+    <div>
         <div class="card">
-            <div data-aos="fade-down">
+            <div>
                 <div class="card-body">
                     <div class="form-group row required">
                         <label class="col-sm-4 col-form-label control-label"

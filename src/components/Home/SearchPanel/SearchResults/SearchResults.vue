@@ -11,7 +11,7 @@
         </div>
 
         <div v-if="isSearchResultShown">
-            <div data-aos="fade-up">
+            <div>
                 <json-excel
                     v-if="!isSmallWindow"
                     :data="getPersons"

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card data-aos="fade-down" v-if="getDonorLoaderFlag"
+        <v-card v-if="getDonorLoaderFlag"
                 style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 20vh;width: 100vw;overflow-y: scroll;"
                 class="d-flex justify-center">
             <v-app-bar color="red" dark>

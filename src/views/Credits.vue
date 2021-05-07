@@ -34,7 +34,6 @@
                     :image="contributor.image"
                     :descriptions="contributor.descriptions"
                     :links="contributor.links"
-                    data-aos="fade-up"
                 >
                 </ContributorCard>
             </v-row>
@@ -48,7 +47,6 @@
                     :image="contributor.image"
                     :descriptions="contributor.descriptions"
                     :links="contributor.links"
-                    data-aos="fade-up"
                 >
                 </ContributorCard>
             </v-row>

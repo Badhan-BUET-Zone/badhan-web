@@ -75,7 +75,6 @@ const actions = {
             commit('setLoadingFalse');
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
-            commit('removeProfileFromLocalStorage');
         }
     },
     async logoutAll({getters, commit, dispatch}) {
@@ -89,13 +88,12 @@ const actions = {
             commit('setLoadingFalse');
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
-            commit('removeProfileFromLocalStorage');
         }
     },
     async autoLogin({getters, commit, dispatch}) {
         commit('loadTokenFromLocalStorage');
         if (getters.getToken === null)
-            return
+            return true;
         console.log(getters.getToken);
         try {
             commit('signInLoaderFlagOn');
@@ -103,11 +101,13 @@ const actions = {
 
             let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
 
-            dispatch('notification/notifySuccess', "Successfully Logged In");
+            // dispatch('notification/notifySuccess', "Successfully Logged In");
             commit('setMyProfile', profileInfo.data.donor);
+            return true;
         } catch (error) {
-            console.log(error);
-
+            commit('removeToken');
+            commit('removeTokenFromLocalStorage');
+            return false;
         } finally {
             commit('signInLoaderFlagOff');
         }
@@ -119,7 +119,7 @@ const actions = {
         try {
             let sendData = {
                 phone: parseInt('88' + payload.phone),
-                password: payload.password
+                password: payload.password,
             };
             let response = await badhanAxios.post('/users/signin', sendData);
 
