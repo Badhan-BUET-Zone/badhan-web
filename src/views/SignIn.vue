@@ -79,7 +79,7 @@
                 </v-btn>
             </div>
         </div>
-        <SignInDialog :dialog="getSignInLoaderFlag"></SignInDialog>
+
     </div>
 </template>
 

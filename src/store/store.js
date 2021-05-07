@@ -45,4 +45,4 @@ export const store = new Vuex.Store({
   }
 });
 
-store.dispatch('autoLogin');
+store.commit('loadTokenFromLocalStorage');

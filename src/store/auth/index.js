@@ -1,6 +1,4 @@
-import {badhanAxios} from '@/api';
-import {processError} from "../../mixins/helpers";
-
+import {badhanAxios} from '../../api';
 const state = {
     token: null,
     signInLoaderFlag: false,
@@ -24,7 +22,7 @@ const getters = {
     }
 };
 const mutations = {
-    autoLogin({ getters, commit }) {
+    autoLogin({getters, commit}) {
 
     },
 
@@ -67,31 +65,56 @@ const mutations = {
 
 };
 const actions = {
-    async logout({ getters, commit,dispatch }) {
+    async logout({getters, commit, dispatch}) {
         try {
             commit('setLoadingTrue');
             let response = await badhanAxios.post('/users/signout', {});
-            dispatch('notification/notifySuccess',response.data.message);
+            dispatch('notification/notifySuccess', response.data.message);
         } catch (e) {
         } finally {
             commit('setLoadingFalse');
-		    commit('removeToken');
+            commit('removeToken');
             commit('removeTokenFromLocalStorage');
             commit('removeProfileFromLocalStorage');
         }
     },
-    autoLogin({ getters, commit }) {
-        commit('loadTokenFromLocalStorage');
+    async logoutAll({getters, commit, dispatch}) {
+        try {
+            commit('setLoadingTrue');
+            let response = await badhanAxios.post('/users/signoutall', {});
+            dispatch('notification/notifySuccess', response.data.message);
+        } catch (e) {
 
-        if (getters.getToken === null) {
-            return false;
-        } else {
-            commit('loadMyProfileFromLocalStorage');
-            return true;
+        } finally {
+            commit('setLoadingFalse');
+            commit('removeToken');
+            commit('removeTokenFromLocalStorage');
+            commit('removeProfileFromLocalStorage');
+        }
+    },
+    async autoLogin({getters, commit, dispatch}) {
+        commit('loadTokenFromLocalStorage');
+        if (getters.getToken === null)
+            return
+        console.log(getters.getToken);
+        try {
+            commit('signInLoaderFlagOn');
+            let sendData = {};
+
+            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
+
+            dispatch('notification/notifySuccess', "Successfully Logged In");
+            commit('setMyProfile', profileInfo.data.donor);
+        } catch (error) {
+            console.log(error);
+
+        } finally {
+            commit('signInLoaderFlagOff');
         }
 
+
     },
-    async login({ getters, commit,dispatch }, payload) {
+    async login({getters, commit, dispatch}, payload) {
         commit('signInLoaderFlagOn');
         try {
             let sendData = {
@@ -102,19 +125,17 @@ const actions = {
 
 
             if (response.status !== 201) {
-                dispatch('notification/notifyError',"Status code not 201")
+                dispatch('notification/notifyError', "Status code not 201")
                 return;
             }
 
             commit('setToken', response.data.token);
 
-            sendData = {
-
-            };
+            sendData = {};
 
             let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
 
-            dispatch('notification/notifySuccess',"Successfully Logged In");
+            dispatch('notification/notifySuccess', "Successfully Logged In");
 
             commit('setMyProfile', profileInfo.data.donor);
 

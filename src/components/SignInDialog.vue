@@ -1,11 +1,5 @@
 <template>
-    <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-    >
-        <v-card class="d-flex justify-center">
+        <v-card class="d-flex justify-center" style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;">
             <v-container>
                 <v-row
                     class="fill-height"
@@ -16,7 +10,7 @@
                         class="text-center red--text"
                         cols="12"
                     >
-                        Signing into Badhan BUET Zone
+                        Loading... Please wait...
                     </v-col>
                     <v-col cols="6">
                         <v-progress-linear
@@ -30,7 +24,7 @@
             </v-container>
 
         </v-card>
-    </v-dialog>
+
 </template>
 
 <script>
