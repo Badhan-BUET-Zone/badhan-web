@@ -82,6 +82,8 @@ const actions={
 
         try {
             let response = await badhanAxios.post('/v2/admin/volunteers', {});
+            let volunteers = response.data.volunteerList;
+            volunteers.sort((a, b) => (a.studentId > b.studentId) ? 1 : -1)
             commit('setVolunteers',response.data.volunteerList);
         }catch (e){
 
