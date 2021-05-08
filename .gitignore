@@ -22,9 +22,12 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-.firebase
-.firebaserc
-package-lock.json
 android
 backup
-passwordforsignature.txt
+src/App.vue
+.firebase
+.firebaserc
+package.json
+package-lock.json
+signature.jks
+upload.sh
