@@ -10,7 +10,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-import 'aos/dist/aos.css'
+// import 'aos/dist/aos.css'
 
 import Mixins from '@/mixins/index'
 Vue.mixin(Mixins);

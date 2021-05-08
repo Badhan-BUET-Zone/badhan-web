@@ -141,10 +141,10 @@ const actions = {
 
             if (payload.rememberFlag) {
                 commit('saveTokenToLocalStorage');
-                commit('saveMyProfileToLocalStorage');
+                // commit('saveMyProfileToLocalStorage');
             } else {
                 commit('removeTokenFromLocalStorage');
-                commit('removeProfileFromLocalStorage');
+                // commit('removeProfileFromLocalStorage');
             }
             return true;
         } catch (error) {

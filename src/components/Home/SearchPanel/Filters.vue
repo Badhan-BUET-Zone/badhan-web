@@ -3,41 +3,27 @@
         class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12"
         style="height: fit-content"
     >
-        <div v-if="isFilterShown">
+        <div>
             <!--      Filter title-->
-            <h1 class="h4 p-2">Filters</h1>
+            <h5 class="p-2">Filters</h5>
 
-            <!--      A button to hide the filters-->
-            <button
-                v-if="isFilterShown"
-                class="h4 p-2 btn btn-outline-dark"
-                style="width: 100%"
-                @click="hideFilterClicked()"
-            >
-                Hide filters
-            </button>
+            <v-btn @click="toggleFilterClicked()" style="width: 100%" rounded>
+                <span v-if="!isFilterShown">Show Filters</span>
+                <span v-else>Hide Filters</span>
+            </v-btn>
         </div>
 
-        <!--    A button to show the filters-->
-        <button
-            v-else
-            class="h4 p-2 btn btn-outline-dark"
-            style="width: 100%"
-            @click="showFilterClicked()"
-        >
-            Show filters
-        </button>
-
         <!--    Main Filters-->
-        <div v-if="isFilterShown">
-            <div class="form-group">
-                <!--        Input field for name-->
 
+        <v-form v-if="isFilterShown">
+            <v-container>
+                <!--        Input field for name-->
                 <v-text-field
                     v-model="name"
                     outlined
                     label="Name of Donor"
                     clearable
+                    dense
                 ></v-text-field>
 
                 <v-select
@@ -45,6 +31,7 @@
                     :items="bloodGroups"
                     label="Blood Group"
                     outlined
+                    dense
                 ></v-select>
 
                 <!--        Input field for batch-->
@@ -53,6 +40,7 @@
                     outlined
                     label="Batch"
                     clearable
+                    dense
                 ></v-text-field>
 
                 <!--        Input field for hall-->
@@ -61,6 +49,7 @@
                     :items="availableHalls"
                     label="Select Hall"
                     outlined
+                    dense
                 ></v-select>
 
                 <v-text-field
@@ -68,26 +57,28 @@
                     label="Address"
                     clearable
                     v-model="address"
+                    dense
                 ></v-text-field>
 
-                <v-checkbox
-                    dense
-                    v-model="availability"
-                    :label="'Available'"
-
-                ></v-checkbox>
-
-                <v-checkbox
-                    dense
-                    v-model="notAvailability"
-                    :label="'Not Available'"
-
-                ></v-checkbox>
-
-                <br/>
+                <v-row>
+                    <v-col>
+                        <v-checkbox
+                            dense
+                            v-model="availability"
+                            :label="'Available'"
+                        ></v-checkbox>
+                    </v-col>
+                    <v-col>
+                        <v-checkbox
+                            dense
+                            v-model="notAvailability"
+                            :label="'Not Available'"
+                        ></v-checkbox>
+                    </v-col>
+                </v-row>
 
                 <!--        A button to reset the form fields-->
-                <v-btn rounded color="warning" @click="clearFields"> Reset</v-btn>
+                <v-btn small rounded color="warning" @click="clearFields"> Reset</v-btn>
 
                 <!--        The button for executing search-->
                 <v-btn
@@ -97,17 +88,19 @@
                     :loading="isSearchLoading"
                     @click="searchClicked()"
                     class="ml-2"
+                    small
                 >
                     Search
                 </v-btn>
-            </div>
-        </div>
+            </v-container>
+        </v-form>
+
     </div>
 </template>
 
 <script>
 import {bloodGroups, halls} from "@/mixins/constants";
-import {mapActions, mapGetters,mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
     name: "Filters",
@@ -133,8 +126,8 @@ export default {
     },
     methods: {
         ...mapActions(['search']),
-        ...mapActions('notification',['notifyError']),
-        ...mapMutations(['hideSearchResults','showFilter','hideFilter']),
+        ...mapActions('notification', ['notifyError']),
+        ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter','toggleFilter']),
         async searchClicked() {
             //front end input validation
             //batch number input validation
@@ -194,6 +187,9 @@ export default {
         hideFilterClicked() {
             this.hideFilter();
         },
+        toggleFilterClicked(){
+            this.toggleFilter();
+        },
 
         processName(name) {
             if (name === null) {
@@ -217,7 +213,7 @@ export default {
     mounted() {
     },
     computed: {
-        ...mapGetters(['getDesignation','getHall','isSearchLoading','isFilterShown']),
+        ...mapGetters(['getDesignation', 'getHall', 'isSearchLoading', 'isFilterShown']),
         availableHalls() {
             if (this.getDesignation !== null) {
                 if (this.getDesignation === 3) {
