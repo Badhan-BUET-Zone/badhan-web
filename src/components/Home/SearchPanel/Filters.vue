@@ -3,11 +3,11 @@
         class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12"
         style="height: fit-content"
     >
-        <div>
+        <div style="width: 100%" class="justify-center">
             <!--      Filter title-->
-            <h5 class="p-2">Filters</h5>
+            <h6>Filters</h6>
 
-            <v-btn @click="toggleFilterClicked()" style="width: 100%" rounded>
+            <v-btn small @click="toggleFilterClicked()" style="width: 100%" rounded>
                 <span v-if="!isFilterShown">Show Filters</span>
                 <span v-else>Hide Filters</span>
             </v-btn>
