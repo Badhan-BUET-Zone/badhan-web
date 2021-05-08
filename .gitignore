@@ -26,8 +26,8 @@ android
 backup
 src/App.vue
 .firebase
-.firebaserc
 package.json
 package-lock.json
 signature.jks
 upload.sh
+capacitor.config.json
