@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-card max-width="500">
         <v-progress-circular
             v-if="getHallAdminsLoaderFlag"
             indeterminate
@@ -20,16 +20,18 @@
             </tbody>
         </table>
         <hr>
-    </div>
+    </v-card>
 </template>
 
 <script>
 import {halls} from '@/mixins/constants';
 import {mapActions, mapGetters} from "vuex";
+import Card from "../components/Credits/ContributorCard";
 
 export default {
     name: "SuperAdminPanel",
-    data: function () {
+  components: {Card},
+  data: function () {
         return {
             hallAdmins: [],
             halls,

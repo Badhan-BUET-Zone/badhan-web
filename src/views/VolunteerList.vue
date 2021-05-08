@@ -1,5 +1,5 @@
 <template>
-    <div class="pa-4">
+    <v-card max-width="500" class="pa-4">
         <v-progress-circular indeterminate color="primary" v-if="getVolunteerLoader">
 
         </v-progress-circular>
@@ -31,7 +31,7 @@
                 </tbody>
             </template>
         </v-simple-table>
-    </div>
+    </v-card>
 </template>
 
 <script>

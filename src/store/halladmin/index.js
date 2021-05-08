@@ -95,7 +95,6 @@ const actions={
     async saveDonor({commit, getters, dispatch },payload){
         commit('newDonorLoaderOn');
         let sendData = {
-            userPhone: payload.userPhone,
             phone: payload.phone,
             bloodGroup: payload.bloodGroup,
             hall: payload.hall,
@@ -109,10 +108,19 @@ const actions={
 
         try {
             let response = await badhanAxios.post("/v2/donor/insert", sendData);
+
+            if(payload.lastDonation!==0){
+                let donationData = {
+                    donorId: response.data.newDonor._id,
+                    date: payload.lastDonation,
+                };
+                await badhanAxios.post("v2/donation/insert", donationData);
+            }
+
+
             dispatch('notification/notifySuccess',"Donor added successfully",{root: true});
             return true;
         } catch (error) {
-            console.log("error occured");
             return false;
         } finally {
             commit('newDonorLoaderOff')
