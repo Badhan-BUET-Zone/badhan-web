@@ -27,6 +27,7 @@
                     outlined
                     label="Name of Donor"
                     clearable
+                    dense
                 ></v-text-field>
 
                 <v-select
@@ -34,6 +35,7 @@
                     :items="bloodGroups"
                     label="Blood Group"
                     outlined
+                    dense
                 ></v-select>
 
                 <!--        Input field for batch-->
@@ -42,6 +44,7 @@
                     outlined
                     label="Batch"
                     clearable
+                    dense
                 ></v-text-field>
 
                 <!--        Input field for hall-->
@@ -50,6 +53,7 @@
                     :items="availableHalls"
                     label="Select Hall"
                     outlined
+                    dense
                 ></v-select>
 
                 <v-text-field
@@ -57,6 +61,7 @@
                     label="Address"
                     clearable
                     v-model="address"
+                    dense
                 ></v-text-field>
 
                 <v-row>
