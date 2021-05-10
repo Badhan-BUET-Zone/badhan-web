@@ -1,22 +1,39 @@
 <template>
-    <v-card
-        class="mb-2"
-    >
-        <v-card-title>
-            <v-btn
-                v-if="$route.name!='Home'"
-                class="mx-2"
-                icon
-                small
-                @click="$router.push(isLoggedIn?'/home':'/')"
-            >
-                <v-icon>
-                    mdi-arrow-left
-                </v-icon>
-            </v-btn>
-            {{ title }}
-        </v-card-title>
-    </v-card>
+<!--    <v-card-->
+<!--        class="mb-2"-->
+<!--    >-->
+<!--        <v-card-title>-->
+<!--            <v-btn-->
+<!--                v-if="$route.name!='Home'"-->
+<!--                class="mx-2"-->
+<!--                icon-->
+<!--                small-->
+<!--                @click="$router.push(isLoggedIn?'/home':'/')"-->
+<!--            >-->
+<!--                <v-icon>-->
+<!--                    mdi-arrow-left-->
+<!--                </v-icon>-->
+<!--            </v-btn>-->
+<!--            {{ title }}-->
+<!--        </v-card-title>-->
+<!--    </v-card>-->
+
+    <v-toolbar floating dense width="100%">
+        <v-btn
+            v-if="$route.name!='Home'"
+            class="mx-2"
+            icon
+            small
+            @click="$router.push(isLoggedIn?'/home':'/')"
+        >
+            <v-icon>
+                mdi-arrow-left
+            </v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+    </v-toolbar>
 </template>
 
 <script>

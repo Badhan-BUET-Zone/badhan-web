@@ -3,14 +3,18 @@
         class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12"
         style="height: fit-content"
     >
-        <div style="width: 100%" class="justify-center">
+        <div class="ml-5">
+        <v-row>
             <!--      Filter title-->
-            <h6>Filters</h6>
+            <v-col><h5>Filters</h5></v-col>
 
-            <v-btn small @click="toggleFilterClicked()" style="width: 100%" rounded>
+            <v-col>
+            <v-btn small @click="toggleFilterClicked()" rounded>
                 <span v-if="!isFilterShown">Show Filters</span>
                 <span v-else>Hide Filters</span>
             </v-btn>
+            </v-col>
+        </v-row>
         </div>
 
         <!--    Main Filters-->
@@ -23,7 +27,6 @@
                     outlined
                     label="Name of Donor"
                     clearable
-                    dense
                 ></v-text-field>
 
                 <v-select
@@ -31,7 +34,6 @@
                     :items="bloodGroups"
                     label="Blood Group"
                     outlined
-                    dense
                 ></v-select>
 
                 <!--        Input field for batch-->
@@ -40,7 +42,6 @@
                     outlined
                     label="Batch"
                     clearable
-                    dense
                 ></v-text-field>
 
                 <!--        Input field for hall-->
@@ -49,7 +50,6 @@
                     :items="availableHalls"
                     label="Select Hall"
                     outlined
-                    dense
                 ></v-select>
 
                 <v-text-field
@@ -57,7 +57,6 @@
                     label="Address"
                     clearable
                     v-model="address"
-                    dense
                 ></v-text-field>
 
                 <v-row>
@@ -78,7 +77,7 @@
                 </v-row>
 
                 <!--        A button to reset the form fields-->
-                <v-btn small rounded color="warning" @click="clearFields"> Reset</v-btn>
+                <v-btn rounded color="warning" @click="clearFields"> Reset</v-btn>
 
                 <!--        The button for executing search-->
                 <v-btn
@@ -88,7 +87,6 @@
                     :loading="isSearchLoading"
                     @click="searchClicked()"
                     class="ml-2"
-                    small
                 >
                     Search
                 </v-btn>
