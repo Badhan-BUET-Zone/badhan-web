@@ -65,6 +65,7 @@
                     :id="person._id"
                 ></person-card>
             </div>
+            <v-btn x-small rounded disabled v-if="getDesignation ===3 || getDesignation ===2">Archive these donors</v-btn>
         </div>
     </div>
 </template>
@@ -72,7 +73,7 @@
 import PersonCard from "./PersonCard";
 import JsonExcel from "vue-json-excel";
 import {bloodGroups} from "@/mixins/constants";
-import {mapGetters} from "vuex";
+import {mapGetters,mapActions} from "vuex";
 
 export default {
     name: "SearchResults",
@@ -84,13 +85,16 @@ export default {
             bloodGroups
         };
     },
-    methods: {},
+    methods: {
+
+    },
     computed: {
-        ...mapGetters(['getPersonGroups','isSearchResultShown','getNumberOfDonors','getPersons','getSearchedHall']),
+        ...mapGetters(['getPersonGroups','isSearchResultShown','getNumberOfDonors','getPersons','getSearchedHall','getDesignation']),
         isSmallWindow() {
             return window.innerWidth < 500;
         }
     },
+
     created() {
     },
     components: {

@@ -65,6 +65,12 @@ const routes = [
         meta: {requiresAuth: true, title: 'List of Volunteers'}
     },
     {
+        name: 'Archive',
+        path: '/archive',
+        component: () => import('@/views/Archive.vue'),
+        meta: {requiresAuth: true, title: 'Archived Donors'}
+    },
+    {
         name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),
