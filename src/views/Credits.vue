@@ -9,7 +9,7 @@
                     Feedback
                 </v-card-title>
                 <v-card-text>
-                    <div>Please report any bugs you may find. We would really love to hear any new ideas for our app.</div>
+                    <div>If you love using this app, give a review in Google play store and put a star on the open-source github repository of this platform :D It would really inspire us to keep this app alive.</div>
                     <div>Note: contact mirmahathir1@gmail.com for any further assistance</div>
                 </v-card-text>
                 <v-card-actions class="pa-5">
@@ -17,9 +17,12 @@
                         rounded
                         class="white--text"
                         color="red"
-                        @click="goTo('https://github.com/mirmahathir1/badhan/issues')"
+                        @click="goTo('https://github.com/mirmahathir1/badhan-web/issues')"
                     >
-                        Github issues
+                        <v-icon left>
+                            mdi-github
+                        </v-icon>
+                        Github
                     </v-btn>
                 </v-card-actions>
             </v-card>
