@@ -21,6 +21,8 @@
                         v-model="phone"
                         class="input-group--focused"
                         dense
+                        @blur="$v.phone.$touch()"
+                        :error-messages="phoneErrors"
                     ></v-text-field>
 
                     <v-text-field
@@ -34,7 +36,8 @@
                         class="input-group--focused"
                         @click:append="passwordFlag = !passwordFlag"
                         dense
-
+                        @blur="$v.password.$touch()"
+                        :error-messages="passwordErrors"
                     ></v-text-field>
                     <v-checkbox dense v-model="rememberFlag" label="Remember me"></v-checkbox>
                     <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
@@ -43,7 +46,7 @@
                         rounded
                         class="ml-2"
                         @click="signInClicked()"
-                        :disabled="getSignInLoaderFlag"
+                        :disabled="getSignInLoaderFlag || $v.$anyError"
                         :loading="getSignInLoaderFlag"
                     >
                         Sign In
@@ -90,6 +93,7 @@ import {Plugins} from '@capacitor/core';
 
 const {Device} = Plugins;
 import {mapActions, mapGetters, mapMutations} from 'vuex';
+import {required, minLength} from 'vuelidate/lib/validators'
 
 export default {
     name: "SignIn",
@@ -103,6 +107,15 @@ export default {
             version: "2.0.1"
         };
     },
+    validations: {
+        phone: {
+            required,
+            minLength: minLength(11)
+        },
+        password: {
+            required
+        }
+    },
     watch: {
         rememberFlag(to, from) {
             localStorage.setItem("rememberFlag", to);
@@ -114,19 +127,28 @@ export default {
             return Capacitor.isNative;
         },
 
+        phoneErrors(){
+            const errors = []
+            if (!this.$v.phone.$dirty) return errors
+            !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
+            !this.$v.phone.required && errors.push('Phone is required.')
+            return errors
+        },
+        passwordErrors(){
+            const errors = []
+            if (!this.$v.password.$dirty) return errors
+            !this.$v.password.required && errors.push('Password is required.')
+            return errors
+        }
+
     },
     methods: {
         ...mapActions('notification', ['notifySuccess', 'notifyError']),
         ...mapActions(['login']),
         ...mapMutations(['clearSignInError']),
         async signInClicked() {
-            if (this.phone === null || isNaN(this.phone)) {
-                this.notifyError("Invalid Phone Number")
-                return;
-            }
-
-            if (this.phone.toString().length !== 11) {
-                this.notifyError("Phone number must be of 11 digits")
+            await this.$v.$touch();
+            if(this.$v.$anyError){
                 return;
             }
 
@@ -143,6 +165,7 @@ export default {
         },
 
         clearClicked() {
+            this.$v.$reset()
             this.phone = "";
             this.password = "";
             this.clearSignInError();
