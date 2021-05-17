@@ -93,7 +93,7 @@ import {Plugins} from '@capacitor/core';
 
 const {Device} = Plugins;
 import {mapActions, mapGetters, mapMutations} from 'vuex';
-import {required, minLength} from 'vuelidate/lib/validators'
+import {required, minLength,maxLength} from 'vuelidate/lib/validators'
 
 export default {
     name: "SignIn",
@@ -110,7 +110,8 @@ export default {
     validations: {
         phone: {
             required,
-            minLength: minLength(11)
+            minLength: minLength(11),
+            maxLength: maxLength(11)
         },
         password: {
             required
@@ -131,6 +132,7 @@ export default {
             const errors = []
             if (!this.$v.phone.$dirty) return errors
             !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
+            !this.$v.phone.maxLength && errors.push('Phone must be at least 11 digits long')
             !this.$v.phone.required && errors.push('Phone is required.')
             return errors
         },

@@ -3,6 +3,7 @@ import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
 const badhanAxios = axios.create({
+    // baseURL:'https://badhan-backend.herokuapp.com'
     baseURL:'https://badhan-web.herokuapp.com'
     // baseURL:'http://localhost:3000'
 });
