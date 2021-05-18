@@ -480,13 +480,13 @@ export default {
     async promoteClicked() {
 
 
-      if (this.newPassword !== this.confirmPassword) {
-        this.notifyError("Passwords did not match");
-        return;
-      } else if (this.newPassword.length === 0) {
-        this.notifyError("Password can't have length of zero");
-        return;
-      }
+      // if (this.newPassword !== this.confirmPassword) {
+      //   this.notifyError("Passwords did not match");
+      //   return;
+      // } else if (this.newPassword.length === 0) {
+      //   this.notifyError("Password can't have length of zero");
+      //   return;
+      // }
       if (await this.promote({
         donorId: this.$route.query.id,
         promoteFlag: true,
@@ -505,14 +505,14 @@ export default {
       }
     },
     async savePasswordClicked() {
-      if (this.newPassword !== this.confirmPassword) {
-        this.notifyError("Passwords didn't match");
-        return;
-      }
-      if (this.newPassword.length === 0) {
-        this.notifyError("Passwords can't be of length zero");
-        return;
-      }
+      // if (this.newPassword !== this.confirmPassword) {
+      //   this.notifyError("Passwords didn't match");
+      //   return;
+      // }
+      // if (this.newPassword.length === 0) {
+      //   this.notifyError("Passwords can't be of length zero");
+      //   return;
+      // }
       await this.savePassword({
         donorId: this.$route.query.id,
         newPassword: this.newPassword,
