@@ -24,14 +24,6 @@
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
-
-        <!--            <v-card-subtitle>-->
-        <!--                (<span v-if="designation === 2">Hall admin</span>-->
-        <!--                <span v-else-if="designation === 3">Super admin</span>-->
-        <!--                <span v-else-if="designation === 1">Volunteer</span>-->
-        <!--                <span v-else-if="designation === 0">Donor</span>)-->
-        <!--            </v-card-subtitle>-->
-
         <v-card-text class="mb-5">
           <v-chip color="primary" class="ma-1">
             <span v-if="designation === 0">Donor</span>
@@ -41,8 +33,6 @@
           </v-chip>
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
-          <!--                <span v-if="availableIn > 0" class="alert alert-danger rounded">{{ availableIn }} Days remaining</span>-->
-          <!--                <span v-else class="alert alert-success">Available</span>-->
           <br>
           <v-btn rounded color="blue lighten-3" class="ma-1" @click="callFromDialer">
             <v-icon left>
@@ -68,28 +58,31 @@
                   </div>
                   <div v-if="personDetailCollapseFlag">
                     <div class="card-body" v-on:click="promptForEdit($event)">
-                      <v-text-field type="'text'" outlined label="Name" v-model="name"
-                                    :disabled="!enableEditing"></v-text-field>
-                      <v-text-field type="'text'" outlined label="Phone" v-model="phone"
-                                    :disabled="!enableEditing"></v-text-field>
-                      <v-select v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
+                      <v-text-field dense type="'text'" outlined label="Name" v-model="name"
+                                    :disabled="!enableEditing" @blur="$v.name.$touch()"
+                                    :error-messages="nameErrors"></v-text-field>
+                      <v-text-field dense type="'text'" outlined label="Phone" v-model="phone"
+                                    :disabled="!enableEditing" @blur="$v.phone.$touch()"
+                                    :error-messages="phoneErrors"></v-text-field>
+                      <v-select dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!enableEditing"></v-select>
-                      <v-text-field type="'text'" outlined label="Student ID: " v-model="studentID"
-                                    :disabled="!enableEditing"></v-text-field>
-                      <v-select v-model="hall" :items="availableHalls" label="Hall" outlined
+                      <v-text-field dense type="'text'" outlined label="Student ID: " v-model="studentID"
+                                    :disabled="!enableEditing" @blur="$v.studentID.$touch()"
+                                    :error-messages="studentIDErrors"></v-text-field>
+                      <v-select dense v-model="hall" :items="availableHalls" label="Hall" outlined
                                 :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                      <v-text-field type="'text'" outlined label="Room" v-model="room"
+                      <v-text-field dense type="'text'" outlined label="Room" v-model="room"
                                     :disabled="!enableEditing"></v-text-field>
-                      <v-text-field type="'text'" outlined label="Address" v-model="address"
+                      <v-text-field dense type="'text'" outlined label="Address" v-model="address"
                                     :disabled="!enableEditing"></v-text-field>
                       <div v-if="getDesignation > designation ||getPhone == oldPhone">
                         <v-btn color="warning" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
                         <v-btn color="primary" rounded class="white--text ml-2"
-                               :disabled="getDetailsLoaderFlag || !enableEditing"
+                               :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentID.$error"
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">Save
                         </v-btn>
                       </div>
-                      <v-textarea class="mt-5" name="comment" outlined v-model="comment"
+                      <v-textarea dense class="mt-5" name="comment" outlined v-model="comment"
                                   label="Comment" auto-grow
                                   :disabled="!enableEditing" :rows="1"></v-textarea>
 
@@ -116,47 +109,53 @@
                   </div>
                   <div v-if="settingsCollapseFlag">
                     <div class="card-body" v-on:click="promptForEdit($event)">
+                      <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">
+                        <label>Promote this member to volunteer</label>
+                      </div>
                       <div
-                          v-if="designation !== 0 || getPhone == oldPhone">
-                        <v-text-field :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                          v-if="(designation !== 0 || getPhone == oldPhone) || (getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8)">
+                        <v-text-field dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="newPasswordFlag ? 'text' : 'password'" outlined
                                       label="New Password" v-model="newPassword"
                                       class="input-group--focused"
                                       @click:append="newPasswordFlag = !newPasswordFlag"
-                                      :disabled="!enableEditing"></v-text-field>
-                        <v-text-field :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                                      :disabled="!enableEditing"
+                                      @blur="$v.newPassword.$touch()"
+                                      :error-messages="newPasswordErrors"></v-text-field>
+                        <v-text-field dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="confirmPasswordFlag ? 'text' : 'password'" outlined
-                                      label="Confirm Password" v-model="confirmPassword"
-                                      class="input-group--focused"
+                                      label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
                                       @click:append="confirmPasswordFlag = !confirmPasswordFlag"
-                                      :disabled="!enableEditing"></v-text-field>
+                                      :disabled="!enableEditing"
+                                      @blur="$v.confirmPassword.$touch()"
+                                      :error-messages="confirmPasswordErrors"></v-text-field>
                       </div>
 
-                      <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">
-                        <label>Promote this member to volunteer</label>
-                        <div class="form-group row">
-                          <label class="col-sm-4 col-form-label">New Password:</label>
-                          <div class="col-sm-8">
-                            <input type="password" class="form-control"
-                                   :disabled="!enableEditing"
-                                   v-model="newPassword"/>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-4 col-form-label">Confirm Password:</label>
-                          <div class="col-sm-8">
-                            <input type="password" class="form-control"
-                                   :disabled="!enableEditing"
-                                   v-model="confirmPassword"/>
-                          </div>
-                        </div>
-                      </div>
+                      <!--                      <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">-->
+                      <!--                        <label>Promote this member to volunteer</label>-->
+                      <!--                        <div class="form-group row">-->
+                      <!--                          <label class="col-sm-4 col-form-label">New Password:</label>-->
+                      <!--                          <div class="col-sm-8">-->
+                      <!--                            <input type="password" class="form-control"-->
+                      <!--                                   :disabled="!enableEditing"-->
+                      <!--                                   v-model="newPassword"/>-->
+                      <!--                          </div>-->
+                      <!--                        </div>-->
+                      <!--                        <div class="form-group row">-->
+                      <!--                          <label class="col-sm-4 col-form-label">Confirm Password:</label>-->
+                      <!--                          <div class="col-sm-8">-->
+                      <!--                            <input type="password" class="form-control"-->
+                      <!--                                   :disabled="!enableEditing"-->
+                      <!--                                   v-model="confirmPassword"/>-->
+                      <!--                          </div>-->
+                      <!--                        </div>-->
+                      <!--                      </div>-->
 
                       <div
                           v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
                         <v-btn color="warning" style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
                         <v-btn color="primary" class="white--text ml-2" rounded
-                               :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag"
+                               :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag || $v.newPassword.$error || $v.confirmPassword.$error"
                                :loading="getPasswordLoader ||getPromoteFlag"
                                @click="saveSettingsClicked()">Save
                         </v-btn>
@@ -220,6 +219,7 @@
 import {halls, bloodGroups} from "@/mixins/constants";
 import {Plugins} from "@capacitor/core";
 import {mapActions, mapGetters} from "vuex";
+import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 
 export default {
   name: "PersonDetails",
@@ -244,8 +244,8 @@ export default {
       halls,
       bloodGroups,
       showDetails: false,
-      oldPassword: "",
-      newPassword: "",
+      oldPassword: null,
+      newPassword: null,
       confirmPassword: "",
       comment: "",
 
@@ -266,6 +266,30 @@ export default {
       confirmPasswordFlag: false,
       newPasswordFlag: false,
     };
+  },
+  validations: {
+    phone: {
+      required,
+      minLength: minLength(11),
+      maxLength: maxLength(11),
+      numeric,
+    },
+    studentID: {
+      minLength: minLength(7),
+      maxLength: maxLength(7),
+      numeric,
+      required
+    },
+    name: {
+      required
+    },
+    newPassword: {
+      required,
+      minLength: minLength(6),
+    },
+    confirmPassword: {
+      sameAs: sameAs('newPassword')
+    }
   },
   watch: {
     dialog(to, from) {
@@ -317,6 +341,44 @@ export default {
     ...mapGetters(['getChangeAdminLoaderFlag']),
     ...mapGetters('comment', ['getCommentLoaderFlag']),
     ...mapGetters('donation', ['getDonationList']),
+    phoneErrors() {
+      const errors = []
+      if (!this.$v.phone.$dirty) return errors
+      !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.maxLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.numeric && errors.push('Phone must be numeric')
+      !this.$v.phone.required && errors.push('Phone is required.')
+      return errors
+    },
+    studentIDErrors() {
+      const errors = []
+      if (!this.$v.studentID.$dirty) return errors
+      !this.$v.studentID.minLength && errors.push('Student ID must be of 7 digits')
+      !this.$v.studentID.maxLength && errors.push('Student ID must be of 7 digits')
+      !this.$v.studentID.numeric && errors.push('Student ID must be numeric')
+      !this.$v.studentID.required && errors.push('Student ID is required')
+      return errors
+    },
+    nameErrors() {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.required && errors.push('Name is required')
+      return errors
+    },
+    newPasswordErrors() {
+      const errors = []
+      if (!this.$v.newPassword.$dirty) return errors
+      !this.$v.newPassword.required && errors.push('Specify a password')
+      !this.$v.newPassword.minLength && errors.push('Password must be at least 6 characters long')
+      return errors
+    },
+    confirmPasswordErrors() {
+      const errors = []
+      if (!this.$v.confirmPassword.$dirty) return errors
+      !this.$v.confirmPassword.sameAs && errors.push('Password does not match')
+      return errors
+    },
+
     donorLoaderFlag() {
       return this.getDonorLoaderFlag;
     },
@@ -402,7 +464,13 @@ export default {
           "/" +
           newDate.getFullYear();
     },
-    saveSettingsClicked() {
+    async saveSettingsClicked() {
+      await this.$v.newPassword.$touch();
+      await this.$v.confirmPassword.$touch();
+      if (this.$v.newPassword.$error || this.$v.confirmPassword.$error) {
+        return;
+      }
+
       if (this.designation === 0) {
         this.promoteClicked();
       } else {
@@ -410,6 +478,8 @@ export default {
       }
     },
     async promoteClicked() {
+
+
       if (this.newPassword !== this.confirmPassword) {
         this.notifyError("Passwords did not match");
         return;
@@ -449,18 +519,11 @@ export default {
       })
     },
     async saveDetailsClicked() {
-      if (this.name.length === 0) {
-        this.notifyError("Please input the name of donor")
-        return;
-      }
+      await this.$v.name.$touch();
+      await this.$v.phone.$touch();
+      await this.$v.studentID.$touch();
 
-      if (isNaN(this.phone) || this.phone.toString().length !== 11) {
-        this.notifyError("Please enter a 11 digit phone number");
-        return;
-      }
-
-      if (isNaN(this.studentID) || this.studentID.toString().length !== 7) {
-        this.notifyError("Please enter a valid student ID");
+      if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentID.$error) {
         return;
       }
 

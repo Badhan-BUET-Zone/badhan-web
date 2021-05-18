@@ -1,246 +1,67 @@
 <template>
   <v-card max-width="500px">
-    <v-form>
-      <v-container>
-        <v-text-field outlined label="Name of Donor" dense v-model="name"></v-text-field>
-        <v-text-field outlined label="Phone Number (11 Digits)" dense v-model="phone"></v-text-field>
-        <v-select v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense></v-select>
-        <v-text-field outlined label="Batch Number (2 Digits)" dense v-model="batch"></v-text-field>
-        <v-select outlined dense label="Department" v-model="department" :items="departments.filter(word => word!=='NULL')"></v-select>
-        <v-text-field outlined label="Roll (3 Digits)" v-model="roll" dense></v-text-field>
-        <v-select :items="availableHalls" label="Select Hall" outlined dense v-model="hall"></v-select>
-        <v-text-field outlined label="Room" dense v-model="roomNumber"></v-text-field>
-        <v-text-field outlined label="Address" dense v-model="address"></v-text-field>
-        <v-text-field outlined label="Comment" dense v-model="comment"></v-text-field>
-        <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="newDonationDate" transition="scale-transition" offset-y min-width="auto">
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field v-model="newDonationDate" label="Picker in menu" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-          </template>
-          <v-date-picker v-model="newDonationDate" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
-          </v-date-picker>
-        </v-menu>
-        <v-btn :disabled="getNewDonorLoader" rounded :loading="getNewDonorLoader" color="primary" @click="createDonorClicked">Save Donor
-        </v-btn>
-      </v-container>
-    </v-form>
-<!--    <div class="card">-->
-<!--      <div>-->
-<!--        <div class="card-body">-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Name</label-->
-<!--            >-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="name"-->
-<!--                  placeholder="Enter name of donor"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Phone</label-->
-<!--            >-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="phone"-->
-<!--                  placeholder="Enter 11 digit phone number"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Blood Group:-->
-<!--            </label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <select class="form-control" v-model="bloodGroup">-->
-<!--                <option-->
-<!--                    v-for="(blood, index) in bloodGroups"-->
-<!--                    :value="index"-->
-<!--                >-->
-<!--                  {{ blood }}-->
-<!--                </option>-->
-<!--              </select>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Batch</label-->
-<!--            >-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="batch"-->
-<!--                  placeholder="Enter 2 digit batch number"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Department:-->
-<!--            </label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <select class="form-control" v-model="department">-->
-<!--                <option-->
-<!--                    v-for="(dept, index) in departments"-->
-<!--                    :value="index"-->
-<!--                    v-if="dept !== 'NULL'"-->
-<!--                >-->
-<!--                  {{ dept }}-->
-<!--                </option>-->
-<!--              </select>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label">Roll (3 digit roll number)</label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="roll"-->
-<!--                  placeholder="Enter 3 digit roll number"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row required">-->
-<!--            <label class="col-sm-4 col-form-label control-label"-->
-<!--            >Hall:-->
-<!--            </label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <select class="form-control" v-model="hall">-->
-<!--                <option-->
-<!--                    v-for="(oneHall, index) in halls"-->
-<!--                    :value="index"-->
-<!--                    v-if="-->
-<!--                          getDesignation === 3 ||-->
-<!--                          getHall === index ||-->
-<!--                          index === 7 ||-->
-<!--                          index === 8-->
-<!--                        "-->
-<!--                >-->
-<!--                  {{ oneHall }}-->
-<!--                </option>-->
-<!--              </select>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label">Room: </label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="roomNumber"-->
-<!--                  placeholder="Enter room number"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label">Address: </label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <input-->
-<!--                  type="text"-->
-<!--                  class="form-control"-->
-<!--                  v-model="address"-->
-<!--                  placeholder="Enter address"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label">Add a comment</label>-->
-<!--            <div class="col-sm-8">-->
-<!--              <input type="text" class="form-control" v-model="comment"/>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="form-group row">-->
-<!--            <label class="col-sm-4 col-form-label"-->
-<!--            >Add a donation date</label-->
-<!--            >-->
-<!--            <div class="col-sm-8">-->
-<!--              <v-menu-->
-<!--                  ref="menu"-->
-<!--                  v-model="menu"-->
-<!--                  :close-on-content-click="false"-->
-<!--                  :return-value.sync="newDonationDate"-->
-<!--                  transition="scale-transition"-->
-<!--                  offset-y-->
-<!--                  min-width="auto"-->
-<!--              >-->
-<!--                <template v-slot:activator="{ on, attrs }">-->
-<!--                  <v-text-field-->
-<!--                      v-model="newDonationDate"-->
-<!--                      label="Picker in menu"-->
-<!--                      prepend-icon="mdi-calendar"-->
-<!--                      readonly-->
-<!--                      v-bind="attrs"-->
-<!--                      v-on="on"-->
-<!--                  ></v-text-field>-->
-<!--                </template>-->
-<!--                <v-date-picker-->
-<!--                    v-model="newDonationDate"-->
-<!--                    no-title-->
-<!--                    scrollable-->
-<!--                >-->
-<!--                  <v-spacer></v-spacer>-->
-<!--                  <v-btn text color="primary" @click="menu = false"-->
-<!--                  >Cancel-->
-<!--                  </v-btn-->
-<!--                  >-->
-<!--                  <v-btn-->
-<!--                      text-->
-<!--                      color="primary"-->
-<!--                      @click="$refs.menu.save(newDonationDate)"-->
-<!--                  >-->
-<!--                    OK-->
-<!--                  </v-btn>-->
-<!--                </v-date-picker>-->
-<!--              </v-menu>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <v-btn-->
-<!--              :disabled="getNewDonorLoader"-->
-<!--              rounded-->
-<!--              :loading="getNewDonorLoader"-->
-<!--              color="primary"-->
-<!--              @click="createDonorClicked"-->
-<!--          >Save Donor-->
-<!--          </v-btn>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <v-container>
+      <v-text-field outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
+                    :error-messages="nameErrors"></v-text-field>
+      <v-text-field outlined label="Phone Number (11 Digits)" dense v-model="phone" @blur="$v.phone.$touch()"
+                    :error-messages="phoneErrors"></v-text-field>
+      <v-select v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
+                @blur="$v.bloodGroup.$touch()"
+                :error-messages="bloodGroupErrors"></v-select>
+      <v-text-field outlined label="Batch Number (2 Digits)" dense v-model="batch" @blur="$v.batch.$touch()"
+                    :error-messages="batchErrors"></v-text-field>
+      <v-select outlined dense label="Department" v-model="department"
+                :items="departments.filter(word => word!=='NULL')" @blur="$v.department.$touch()"
+                :error-messages="departmentErrors"></v-select>
+      <v-text-field outlined label="Roll (3 Digits)" v-model="roll" dense @blur="$v.roll.$touch()"
+                    :error-messages="rollErrors"></v-text-field>
+      <v-select :items="availableHalls" label="Select Hall" outlined dense v-model="hall"></v-select>
+      <v-text-field outlined label="Room" dense v-model="roomNumber"></v-text-field>
+      <v-text-field outlined label="Address" dense v-model="address"></v-text-field>
+      <v-text-field outlined label="Comment" dense v-model="comment"></v-text-field>
+      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="newDonationDate"
+              transition="scale-transition" offset-y min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field v-model="newDonationDate" label="Pick Last Donation Date" prepend-icon="mdi-calendar" readonly
+                        v-bind="attrs" v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="newDonationDate" no-title scrollable>
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-container>
+    <v-card-actions>
+      <v-btn rounded :loading="getNewDonorLoader" color="info" @click="clearFields">Reset</v-btn>
+      <v-btn :disabled="getNewDonorLoader|| $v.$anyError" rounded :loading="getNewDonorLoader" color="primary"
+             @click="createDonorClicked">Save Donor
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import {bloodGroups, halls, departments} from "@/mixins/constants";
 import {mapGetters, mapActions} from "vuex";
+import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 
 export default {
   name: "CreateDonor",
   data() {
     return {
       //new donor
-      phone: "",
-      bloodGroup: -1,
+      phone: null,
+      bloodGroup: null,
       hall: halls[this.$store.getters.getHall],
-      name: "",
-      // studentId:'',
-      address: "",
-      roomNumber: "",
-      batch: "",
-      roll: "",
-      department: "",
+      name: null,
+      address: null,
+      roomNumber: null,
+      batch: null,
+      roll: null,
+      department: null,
 
-      password: "",
-      comment: "",
+      comment: null,
       newDonationDate: "",
 
       //constants
@@ -250,8 +71,35 @@ export default {
 
       //vuetify date picker
       menu: false,
-
-      newDonorLoaderFlag: false,
+    }
+  },
+  validations: {
+    phone: {
+      required,
+      minLength: minLength(11),
+      maxLength: maxLength(11),
+      numeric,
+    },
+    batch: {
+      minLength: minLength(2),
+      maxLength: maxLength(2),
+      numeric,
+      required
+    },
+    name: {
+      required
+    },
+    bloodGroup: {
+      required
+    },
+    department: {
+      required
+    },
+    roll: {
+      minLength: minLength(3),
+      maxLength: maxLength(3),
+      numeric,
+      required
     }
   },
 
@@ -269,6 +117,52 @@ export default {
         }
       }
     },
+    phoneErrors() {
+      const errors = []
+      if (!this.$v.phone.$dirty) return errors
+      !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.maxLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.required && errors.push('Phone is required')
+      !this.$v.phone.numeric && errors.push('Phone must be numeric')
+      return errors
+    },
+
+    batchErrors() {
+      const errors = []
+      if (!this.$v.batch.$dirty) return errors
+      !this.$v.batch.minLength && errors.push('Batch number must be of 2 digits')
+      !this.$v.batch.maxLength && errors.push('Batch number must be of 2 digits')
+      !this.$v.batch.numeric && errors.push('Batch number must be numeric')
+      !this.$v.batch.required && errors.push('Batch number is required')
+      return errors
+    },
+    nameErrors() {
+      const errors = []
+      if (!this.$v.name.$dirty) return errors
+      !this.$v.name.required && errors.push('Name is required')
+      return errors
+    },
+    bloodGroupErrors() {
+      const errors = []
+      if (!this.$v.bloodGroup.$dirty) return errors
+      !this.$v.bloodGroup.required && errors.push('Blood group is required')
+      return errors
+    },
+    departmentErrors() {
+      const errors = []
+      if (!this.$v.department.$dirty) return errors
+      !this.$v.department.required && errors.push('Department is required')
+      return errors
+    },
+    rollErrors() {
+      const errors = []
+      if (!this.$v.roll.$dirty) return errors
+      !this.$v.roll.minLength && errors.push('Roll number must be of 3 digits')
+      !this.$v.roll.maxLength && errors.push('Roll number must be of 3 digits')
+      !this.$v.roll.numeric && errors.push('Roll number must be numeric')
+      !this.$v.roll.required && errors.push('Roll number is required')
+      return errors
+    }
   },
   filters: {
     idToDept(studentID) {
@@ -282,20 +176,19 @@ export default {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions('halladmin', ['saveDonor']),
     clearFields() {
-      this.phone = "";
-      this.bloodGroup = -1;
-      this.hall = this.getHall;
-      this.name = "";
-      this.studentId = "";
-      this.address = "";
-      this.roomNumber = "";
-      this.batch = "";
-      this.roll = "";
-      this.department = "";
-      this.batch = "";
-      this.password = "";
+      this.$v.$reset();
+      this.phone = null;
+      this.bloodGroup = null;
+      this.hall = halls[this.$store.getters.getHall];
+      this.name = null;
+      this.address = null;
+      this.roomNumber = null;
+      this.batch = null;
+      this.roll = null;
+      this.department = null;
+      this.batch = null;
       this.newDonationDate = "";
-      this.comment = "";
+      this.comment = null;
     },
     pad(n, width, z) {
       z = z || '0';
@@ -303,6 +196,10 @@ export default {
       return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     },
     async createDonorClicked() {
+      await this.$v.$touch();
+      if (this.$v.$anyError) {
+        return;
+      }
       if (isNaN(this.batch) || this.batch.length !== 2) {
         this.notifyError("Please enter valid batch number for creating a donor")
         return;
@@ -342,7 +239,7 @@ export default {
         newDonationDate = new Date(this.newDonationDate);
       }
 
-      let newStudentId = this.batch + this.pad(this.departments.indexOf(this.department),2,'0') + this.pad(this.roll,3,'0')
+      let newStudentId = this.batch + this.pad(this.departments.indexOf(this.department), 2, '0') + this.pad(this.roll, 3, '0')
 
       let sendData = {
         phone: parseInt("88" + this.phone),
