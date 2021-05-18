@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <PageTitle :title="$route.meta.title"></PageTitle>
   <v-card max-width="500px">
     <v-container>
       <v-text-field outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
@@ -39,12 +41,14 @@
       </v-btn>
     </v-card-actions>
   </v-card>
+  </div>
 </template>
 
 <script>
 import {bloodGroups, halls, departments} from "@/mixins/constants";
 import {mapGetters, mapActions} from "vuex";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
+import PageTitle from "../components/PageTitle";
 
 export default {
   name: "CreateDonor",
@@ -72,6 +76,9 @@ export default {
       //vuetify date picker
       menu: false,
     }
+  },
+  components:{
+    PageTitle
   },
   validations: {
     phone: {

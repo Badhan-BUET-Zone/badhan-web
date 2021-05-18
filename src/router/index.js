@@ -71,11 +71,18 @@ const routes = [
         meta: {requiresAuth: true, title: 'Archived Donors'}
     },
     {
+        name: 'SignInCover',
+        path: '/cover',
+        component: ()=> import('@/views/SignInCover.vue'),
+        meta: {requiresAuth: false, title: 'Cover Page'}
+    },
+    {
         name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),
         meta: {requiresAuth: false, title: "404 Not Found"}
     },
+
 ]
 
 const router = new VueRouter({

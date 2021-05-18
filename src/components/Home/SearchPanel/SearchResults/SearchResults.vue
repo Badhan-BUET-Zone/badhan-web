@@ -1,6 +1,6 @@
 <template>
     <div
-        class="card bg-light col-lg-8 col-md-12 col-sm-12 p-3"
+        class="col-lg-8 col-md-12 col-sm-12 p-3"
 
         style="height: fit-content"
     >

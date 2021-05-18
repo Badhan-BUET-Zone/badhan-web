@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <PageTitle :title="$route.meta.title"></PageTitle>
 <v-container>
 
     <v-row>
@@ -75,14 +77,16 @@
         </v-col>
     </v-row>
 </v-container>
+  </div>
 </template>
 
 <script>
 import ArchivedPersonList from "../components/Archive/ArchivedPersonList";
 import {mapActions} from "vuex";
+import PageTitle from "../components/PageTitle";
 export default {
 name: "Archive",
-    components: {ArchivedPersonList},
+    components: {ArchivedPersonList, PageTitle},
     methods:{
     ...mapActions('notification',['notifyInfo'])
     },

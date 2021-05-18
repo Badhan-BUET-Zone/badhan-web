@@ -1,5 +1,6 @@
 <template>
     <div>
+      <PageTitle :title="$route.meta.title"></PageTitle>
         <v-container fluid>
             <v-card
                 class="mx-auto mt-5"

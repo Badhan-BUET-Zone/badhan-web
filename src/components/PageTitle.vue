@@ -18,7 +18,7 @@
 <!--        </v-card-title>-->
 <!--    </v-card>-->
 
-    <v-toolbar floating dense width="100%">
+    <v-toolbar floating dense elevation="1" width="100%">
         <v-btn
             v-if="$route.name!='Home'"
             class="mx-2"

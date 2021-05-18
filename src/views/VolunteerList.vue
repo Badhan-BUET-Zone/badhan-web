@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4">
         <v-progress-circular indeterminate color="primary" v-if="getVolunteerLoader">
 
@@ -32,14 +34,19 @@
             </template>
         </v-simple-table>
     </v-card>
+  </div>
 </template>
 
 <script>
 import {bloodGroups, halls, departments} from "@/mixins/constants";
 import {mapGetters, mapActions} from "vuex";
+import PageTitle from "../components/PageTitle";
 
 export default {
     name: "VolunteerList",
+  components:{
+      PageTitle
+  },
     data: function () {
         return {
             //constants

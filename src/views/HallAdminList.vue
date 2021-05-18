@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500">
         <v-progress-circular
             v-if="getHallAdminsLoaderFlag"
@@ -21,16 +23,18 @@
         </table>
         <hr>
     </v-card>
+  </div>
 </template>
 
 <script>
 import {halls} from '@/mixins/constants';
 import {mapActions, mapGetters} from "vuex";
 import Card from "../components/Credits/ContributorCard";
+import PageTitle from "../components/PageTitle";
 
 export default {
     name: "SuperAdminPanel",
-  components: {Card},
+  components: {Card,PageTitle},
   data: function () {
         return {
             hallAdmins: [],

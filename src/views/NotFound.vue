@@ -1,5 +1,6 @@
 <template>
     <div>
+      <PageTitle :title="$route.meta.title"></PageTitle>
         <v-container fluid>
             <v-card
                 class="mx-auto"
@@ -14,8 +15,13 @@
 </template>
 
 <script>
+import PageTitle from "../components/PageTitle";
+
 export default {
-name: "Release.vue"
+name: "Release.vue",
+  components:{
+  PageTitle
+  }
 }
 </script>
 

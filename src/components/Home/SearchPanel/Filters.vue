@@ -1,6 +1,6 @@
 <template>
   <div
-      class="bg-light mb-3 col-lg-4 col-md-12 col-sm-12"
+      class="mb-3 col-lg-4 col-md-12 col-sm-12"
       style="height: fit-content"
   >
     <div class="ml-5">
