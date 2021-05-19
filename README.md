@@ -56,7 +56,7 @@ In each donor card,these informations are shown,
 - Name
 - Phone Number
 - Blood Group <br/>
-<br/>
+
 In the dropdown,
 - Department
 - Room/Address (if Any)
