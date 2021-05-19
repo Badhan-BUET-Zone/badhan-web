@@ -13,23 +13,24 @@
               v-if="availableInRendered > 0"
               class="ma-1 text-center"
               color="error lighten-4"
-
+              flat
           >
             <v-card-text>
-              {{ availableInRendered }} day
-              <br>
               {{ bloodGroup | numToBloodGroup }}
+              <br>
+              {{ availableInRendered }} day
             </v-card-text>
           </v-card>
           <v-card
               v-else
-              class="ma-1"
+              class="ma-1 text-center"
               color="success lighten-3"
+              flat
           >
             <v-card-text>
-              Available
-              <br>
               {{ bloodGroup | numToBloodGroup }}
+              <br>
+              Available
             </v-card-text>
           </v-card>
 
