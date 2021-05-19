@@ -83,14 +83,14 @@ Using the three horizontal bar shown on the upper left corner,One can find
 ![Credits](https://user-images.githubusercontent.com/38842742/118790416-8e3fbd80-b8b7-11eb-82d2-52340315cf7e.gif)
 Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app for badhan community to help searching and managing blood donors.
 
-**Contributor from CSE Department**: 
+**Contributors from CSE Department**: 
 [Mir Mahathir Mohammad](https://www.facebook.com/MirMahathirMohammad?_rdc=1&_rdr),
 [Aniruddha GS](https://www.facebook.com/aniruddhags3927),
 [Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367),
 [Anisha Islam](https://www.facebook.com/anisha.islam.1690),
 [Atiqur Rahman Shuvo](https://www.facebook.com/Shiroe041)
 
-**Contributor from BADHAN, BUET Zone**: 
+**Contributors from BADHAN, BUET Zone**: 
 [MH Rahat](https://www.facebook.com/mhrahat01),
 [Shadman Sakib Showrov](https://www.facebook.com/Showrov1996)
 
