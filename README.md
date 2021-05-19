@@ -3,7 +3,15 @@
 
 BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal, non-regional, non-racial, secular and voluntary social organization.It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
 
-BADHAN,BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit- Ahsan Ullah Hall Unit, Chattri Hall Unit, Nazrul Hall Unit, Suhrawardy Hall Unit, Sher-e-Bangla Hall Unit, Rashid Hall Unit, Titumir Hall Unit.
+BADHAN,BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit 
+chronologically,
+- Ahsan Ullah Hall Unit
+- chattri Hall Unit 
+- Nazrul Hall Unit
+- Suhrawardy Hall Unit
+- Sher-e-Bangla Hall Unit
+- Rashid Hall Unit
+- Titumir Hall Unit.
 
 ## App Overview
 
