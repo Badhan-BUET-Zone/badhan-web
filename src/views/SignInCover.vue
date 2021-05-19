@@ -24,20 +24,10 @@
                       src="../assets/images/badhanlogo.png"
                       style="width: 100px; height: 100px"
                   />
-                  <br>
-                    <span
-                        class="font-weight-light"
-                    >
-                      WELCOME TO
-                    </span>
-
-                  <br>
-
                   <span
                       class="font-weight-black"
                   >
                       Badhan
-
                     </span>
                   <p class="subtitle-1">BUET Zone</p>
                   <p class="subtitle-1" v-if="isMobile">Version: {{ version }}</p>
@@ -97,6 +87,17 @@
                 <v-btn
                     small
                     color="primary"
+                    class="align-self-end ma-1"
+                    outlined
+                    rounded
+                    style="text-decoration: none"
+                    :to="'/about'"
+                >
+                  About the App
+                </v-btn>
+                <v-btn
+                    small
+                    color="primary"
                     rounded
                     class="align-self-end ma-1"
                     outlined
@@ -120,6 +121,7 @@
                   Web Version
                   <v-icon right>mdi-web</v-icon>
                 </v-btn>
+
                 <v-btn
                     small
                     color="primary"

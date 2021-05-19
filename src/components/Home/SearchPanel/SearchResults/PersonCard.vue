@@ -23,14 +23,14 @@
           </v-card>
           <v-card
               v-else
-              class="ma-1 text-center"
+              class="text-center"
               color="success lighten-5"
               flat
           >
             <v-card-text>
               {{ bloodGroup | numToBloodGroup }}
               <br>
-              Available
+              <span class="text-caption">Available</span>
             </v-card-text>
           </v-card>
 
