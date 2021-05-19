@@ -1,6 +1,6 @@
 # BADHAN, BUET Zone
-**Website** : https://badhan-buet.web.app
-**App Link** : https://play.google.com/store/apps/details?id=com.mmmbadhan
+**Website** : https://badhan-buet.web.app <br/>
+**App Link** : https://play.google.com/store/apps/details?id=com.mmmbadhan <br/>
 **Contributors** : https://badhan-buet.web.app/#/credits
 ## Description
 
