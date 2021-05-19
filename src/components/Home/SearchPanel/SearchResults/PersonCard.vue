@@ -118,6 +118,7 @@
             color="primary"
             rounded
             small
+            style="width: 100%"
             @click="donateClicked()"
             :loading="getDonationLoaderFlag"
             :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
