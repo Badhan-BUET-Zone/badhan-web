@@ -77,6 +77,9 @@
                         color="primary"
                         rounded
                         class="ml-2"
+                        @click="signInClicked()"
+                        :disabled="getSignInLoaderFlag || $v.$anyError"
+                        :loading="getSignInLoaderFlag"
                     >
                       Sign In
                     </v-btn>

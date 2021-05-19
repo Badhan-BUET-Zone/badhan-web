@@ -154,6 +154,9 @@ export default {
         goTo(url) {
             window.open(url, '_blank');
         }
+    },
+    mounted() {
+      this.$vuetify.goTo(0)
     }
 };
 </script>
