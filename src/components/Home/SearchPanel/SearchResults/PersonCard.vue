@@ -24,7 +24,7 @@
           <v-card
               v-else
               class="ma-1 text-center"
-              color="success lighten-3"
+              color="success lighten-5"
               flat
           >
             <v-card-text>
