@@ -36,14 +36,54 @@ One can search for donors using 5 different filters-
 - Address
 
 ![Searching](https://user-images.githubusercontent.com/38842742/118790546-afa0a980-b8b7-11eb-831f-bb06b312ea66.gif)
+Search results are sorted in a descending manner based on batch.
+Only Super Admin can select every hall.Hall Admins and Volunteers can search using,
+- Own respective hall
+- Attached Data
+- Covid Data
 
 ![Donor card](https://user-images.githubusercontent.com/38842742/118790462-9ac41600-b8b7-11eb-935a-72596e7a1b1a.gif)
+In each donor card,these informations are shown,
+- Availability
+- Name
+- Phone Number
+- Blood Group
+In the dropdown,
+- Department
+- Room/Address (if Any)
+- Comment (if Any)
+- Add a donation Date
 
 ![Donor Profile](https://user-images.githubusercontent.com/38842742/118790492-a1eb2400-b8b7-11eb-8339-eedde397d340.gif)
+One can get into the donor profile after selecting the ‘See Profile’ button from the donor card.
+There is a ‘toggle to edit details’ option as a solution to accidental edit.One has to toggle this option in order to edit the details.
+One can find all the details of a donor from ‘personal details’ option and also donors’ blood donation history
+Super Admin and Hall Admins can promote a donor using the ‘Settings’ option
 
 ![Side Bar](https://user-images.githubusercontent.com/38842742/118790565-b5968a80-b8b7-11eb-97a1-daa3606fe7a5.gif)
+Using the three horizontal bar shown on the upper left corner,One can find
+- Create New Donor
+- List of Volunteers
+- List of Hall Admins
+- My Profile
+- Settings
+- Credits
+- About
+
 
 ![Credits](https://user-images.githubusercontent.com/38842742/118790416-8e3fbd80-b8b7-11eb-82d2-52340315cf7e.gif)
+Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app for badhan community to help searching and managing blood donors.
+
+**Contributor from CSE Department**
+[Mir Mahathir Mohammad](https://www.facebook.com/MirMahathirMohammad?_rdc=1&_rdr)
+[Aniruddha GS](https://www.facebook.com/aniruddhags3927)
+[Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367r)
+[Anisha Islam](https://www.facebook.com/anisha.islam.1690)
+[Atiqur Rahman Shuvo](https://www.facebook.com/Shiroe041)
+
+**Contributor from BADHAN, BUET Zone**
+[MH Rahat](https://www.facebook.com/mhrahat01)
+[Shadman Sakib Showrov](https://www.facebook.com/Showrov1996)
 
 ![Sign Out](https://user-images.githubusercontent.com/38842742/118790614-c3e4a680-b8b7-11eb-9e24-3bd1d9c1b756.gif)
 
