@@ -4,9 +4,9 @@
 **Developers** : https://badhan-buet.web.app/#/credits
 ## Description
 
-BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal, non-regional, non-racial, secular and voluntary social organization.It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
+BADHAN is a Voluntary Blood Donors’ Orgnanization. It is totally a non-political, non-communal, non-regional, non-racial, secular and voluntary social organization. It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers. It was established on 24 October, 1997.
 
-BADHAN,BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit 
+BADHAN,BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN. It has seven unit 
 chronologically,
 - Ahsan Ullah Hall Unit
 - chattri Hall Unit 
@@ -19,7 +19,7 @@ chronologically,
 
 ## App Overview
 
-Badhan,Buet Zone App is a record keeping app that enables the volunteers to synchronize their blood donation activities.It helps the volunteers to track record and update the donor profiles.
+Badhan,Buet Zone App is a record keeping app that enables the volunteers to synchronize their blood donation activities. It helps the volunteers to track record and update the donor profiles.
 
 There are 3 types of user in this app.
 
@@ -34,7 +34,6 @@ There are 3 types of user in this app.
 ## Features
 
 ![Sign In](https://user-images.githubusercontent.com/38842742/118790600-c0e9b600-b8b7-11eb-857e-25bba44a4226.gif)
-<img src="https://user-images.githubusercontent.com/38842742/118790600-c0e9b600-b8b7-11eb-857e-25bba44a4226.gif" alt="drawing" width="300"/><br>
 Only assigned members can sign in.
 
 There is no automatic sign up button in the login page.A donor has  to be promoted to at least Volunteer by respective Hall Admin to sign in.However,one can request by clicking [Don’t Have an Account](https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/) and fill up the google doc form.
