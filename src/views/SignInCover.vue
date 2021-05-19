@@ -108,44 +108,11 @@
           src="../assets/cover2.png"
       >
         <v-container fill-height class="text-dark">
+
+
           <div class="py-12"></div>
 
           <v-container class="text-center">
-            <h2 class="display-2 font-weight-bold mb-3">ABOUT BADHAN</h2>
-
-            <v-responsive
-                class="mx-auto mb-8"
-                width="56"
-            >
-              <v-divider class="mb-1"></v-divider>
-
-              <v-divider></v-divider>
-            </v-responsive>
-            <v-avatar
-                class="elevation-12 mb-12"
-                size="128"
-            >
-              <v-img src="../assets/images/badhanlogo.png"></v-img>
-            </v-avatar>
-            <v-responsive
-                class="mx-auto title font-weight-light mb-8"
-                max-width="720"
-            >
-              <b>
-                BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal,
-                non-regional, non-racial, secular and voluntary social organization.
-                <span v-if="!$vuetify.breakpoint.smAndDown">
-              It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
-          <br>
-
-          BADHAN, BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit- Ahsan Ullah Hall Unit, Chattri Hall Unit, Nazrul Hall Unit, Suhrawardy Hall Unit, Sher-e-Bangla Hall Unit, Rashid Hall Unit, Titumir Hall Unit.
-          </span>
-              </b>
-            </v-responsive>
-
-
-            <div></div>
-
             <v-btn
                 class="align-self-end ma-1"
                 outlined
@@ -182,6 +149,42 @@
                    href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
               Don't have an account?
             </v-btn>
+            <h2 class="display-2 font-weight-bold mt-5">ABOUT BADHAN</h2>
+
+            <v-responsive
+                class="mx-auto"
+                width="56"
+            >
+              <v-divider class="mb-1"></v-divider>
+
+              <v-divider></v-divider>
+            </v-responsive>
+            <v-avatar
+                class="elevation-12 mb-12"
+                size="128"
+            >
+              <v-img src="../assets/images/badhanlogo.png"></v-img>
+            </v-avatar>
+            <v-responsive
+                class="mx-auto title font-weight-light mb-8"
+                max-width="720"
+            >
+              <b>
+                BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal,
+                non-regional, non-racial, secular and voluntary social organization.
+                <span v-if="!$vuetify.breakpoint.smAndDown">
+              It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
+          <br>
+
+          BADHAN, BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit- Ahsan Ullah Hall Unit, Chattri Hall Unit, Nazrul Hall Unit, Suhrawardy Hall Unit, Sher-e-Bangla Hall Unit, Rashid Hall Unit, Titumir Hall Unit.
+          </span>
+              </b>
+            </v-responsive>
+
+
+            <div></div>
+
+
           </v-container>
 
           <div class="py-12"></div>
