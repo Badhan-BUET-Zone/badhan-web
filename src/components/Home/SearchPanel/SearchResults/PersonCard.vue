@@ -8,35 +8,34 @@
         @click="showExtensionFlag = !showExtensionFlag"
     >
       <v-row no-gutters>
-        <v-col align-self="center">
-          <v-chip
-              large
+        <v-col align-self="center" cols="4">
+          <v-card
               v-if="availableInRendered > 0"
-              class="ma-1"
-              color="error"
+              class="ma-1 text-center"
+              color="error lighten-4"
+
           >
-            {{ availableInRendered }} day
-          </v-chip>
-          <v-chip
-              large
+            <v-card-text>
+              {{ availableInRendered }} day
+              <br>
+              {{ bloodGroup | numToBloodGroup }}
+            </v-card-text>
+          </v-card>
+          <v-card
               v-else
               class="ma-1"
-              color="success"
+              color="success lighten-3"
           >
-            Available
-          </v-chip>
-
-            <v-chip
-                large
-                class="ma-1"
-                color="secondary"
-            >
+            <v-card-text>
+              Available
+              <br>
               {{ bloodGroup | numToBloodGroup }}
-            </v-chip>
-
+            </v-card-text>
+          </v-card>
 
         </v-col>
         <v-col
+            cols="8"
             align-self="center"
             class="d-flex align-content-center"
         >
@@ -49,15 +48,13 @@
         </v-col>
 
 
-
-
       </v-row>
 
     </v-card>
 
     <!--    Person card extension-->
     <v-card color="grey lighten-3" class="rounded-xl" v-if="showExtensionFlag">
-        <v-card-text>
+      <v-card-text>
         <p><b>Department: </b>{{ studentID | idToDept }}</p>
         <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
         <p v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }}</p>
@@ -125,7 +122,7 @@
             :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
         >Done
         </v-btn>
-        </v-card-text>
+      </v-card-text>
     </v-card>
   </div>
 </template>
