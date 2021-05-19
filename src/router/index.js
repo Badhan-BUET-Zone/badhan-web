@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from "@/views/Home";
 import SignIn from "@/views/SignIn";
+import SignInCover from "@/views/SignInCover";
 import PersonDetails from "@/components/Home/SearchPanel/PersonDetails/PersonDetails";
 import {store} from "@/store/store";
 
@@ -31,7 +32,7 @@ const routes = [
     {
         name: 'SignIn',
         path: '/',
-        component: SignIn,
+        component: SignInCover,
         meta: {requiresAuth: false, title: 'Sign In Page'}
     },
     {
@@ -69,12 +70,6 @@ const routes = [
         path: '/archive',
         component: () => import('@/views/Archive.vue'),
         meta: {requiresAuth: true, title: 'Archived Donors'}
-    },
-    {
-        name: 'SignInCover',
-        path: '/cover',
-        component: ()=> import('@/views/SignInCover.vue'),
-        meta: {requiresAuth: false, title: 'Cover Page'}
     },
     {
         name: 'NotFound',

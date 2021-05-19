@@ -1,21 +1,23 @@
 <template>
-<div>
+  <div style="background-image: url('../assets/cover.png')">
     <section id="hero">
       <v-row no-gutters>
         <v-img
-            :min-height="'calc(100vh - ' + $vuetify.application.top + 'px)'"
-            src="https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80"
+            min-height="100vh"
+            src="../assets/cover.png"
         >
-          <v-theme-provider dark>
+          <v-theme-provider>
             <v-container fill-height>
               <v-row
                   align="center"
-                  class="white--text mx-auto"
+                  class="mx-auto"
                   justify="center"
+
               >
                 <v-col
-                    class="white--text text-center"
+                    class="text-center"
                     cols="12"
+                    sm="8"
                     tag="h1"
                 >
                     <span
@@ -31,18 +33,64 @@
                       :class="[$vuetify.breakpoint.smAndDown ? 'display-3': 'display-4']"
                       class="font-weight-black"
                   >
-                      VUETIFY
+                      Badhan
+
                     </span>
+                  <p class="subtitle-1">BUET Zone</p>
+                  <p class="subtitle-1" v-if="isMobile">Version: {{ version }}</p>
+
+                </v-col>
+                <v-col class="text-center"
+                       cols="12"
+                       sm="4">
+
+                  <div style="max-width: 300px">
+                    <v-text-field
+                        :type="'text'"
+                        outlined
+                        label="Phone"
+                        class="input-group--focused"
+                        dense
+                        v-model="phone"
+                        @blur="$v.phone.$touch()"
+                        :error-messages="phoneErrors"
+
+                    ></v-text-field>
+
+                    <v-text-field
+                        outlined
+                        label="Password"
+                        class="input-group--focused"
+                        dense
+                        :append-icon="
+                            passwordFlag ? 'mdi-eye' : 'mdi-eye-off'
+                          "
+                        :type="passwordFlag ? 'text' : 'password'"
+                        v-model="password"
+                        @click:append="passwordFlag = !passwordFlag"
+                        dense
+                        @blur="$v.password.$touch()"
+                        :error-messages="passwordErrors"
+                    ></v-text-field>
+                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>
+                    <v-btn
+                        color="primary"
+                        rounded
+                        class="ml-2"
+                    >
+                      Sign In
+                    </v-btn>
+                  </div>
 
                 </v-col>
 
                 <v-btn
                     class="align-self-end"
-                    fab
+
                     outlined
                     @click="$vuetify.goTo('#about-me')"
                 >
-                  <v-icon>mdi-chevron-double-down</v-icon>
+                  See More
                 </v-btn>
               </v-row>
             </v-container>
@@ -52,318 +100,189 @@
     </section>
 
     <section id="about-me">
-      <div class="py-12"></div>
-
-      <v-container class="text-center">
-        <h2 class="display-2 font-weight-bold mb-3">ABOUT ME</h2>
-
-        <v-responsive
-            class="mx-auto mb-8"
-            width="56"
-        >
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
-
-        <v-responsive
-            class="mx-auto title font-weight-light mb-8"
-            max-width="720"
-        >
-          Vuetify is the #1 component library for Vue.js and has been in active development since 2016. The goal of the project is to provide users with everything that is needed to build rich and engaging web applications using the Material Design specification. It accomplishes that with a consistent update cycle, Long-term Support (LTS) for previous versions, responsive community engagement, a vast ecosystem of resources and a dedication to quality components.
-        </v-responsive>
-
-        <v-avatar
-            class="elevation-12 mb-12"
-            size="128"
-        >
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-        </v-avatar>
-
-        <div></div>
-
-        <v-btn
-            color="grey"
-            href="https://vuetifyjs.com"
-            outlined
-            large
-        >
-            <span class="grey--text text--darken-1 font-weight-bold">
-              Vuetify Documentation
-            </span>
-        </v-btn>
-      </v-container>
-
-      <div class="py-12"></div>
-    </section>
-
-    <section
-        id="features"
-        class="grey lighten-3"
-    >
-      <div class="py-12"></div>
-
-      <v-container class="text-center">
-        <h2 class="display-2 font-weight-bold mb-3">VUETIFY FEATURES</h2>
-
-        <v-responsive
-            class="mx-auto mb-12"
-            width="56"
-        >
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
-
-        <v-row>
-          <v-col
-              v-for="({ icon, title, text }, i) in features"
-              :key="i"
-              cols="12"
-              md="4"
-          >
-            <v-card
-                class="py-12 px-4"
-                color="grey lighten-5"
-                flat
-            >
-              <v-theme-provider dark>
-                <div>
-                  <v-avatar
-                      color="primary"
-                      size="88"
-                  >
-                    <v-icon
-                        large
-                        v-text="icon"
-                    ></v-icon>
-                  </v-avatar>
-                </div>
-              </v-theme-provider>
-
-              <v-card-title
-                  class="justify-center font-weight-black text-uppercase"
-                  v-text="title"
-              ></v-card-title>
-
-              <v-card-text
-                  class="subtitle-1"
-                  v-text="text"
-              >
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <div class="py-12"></div>
-    </section>
-
-    <section id="stats">
       <v-parallax
-          :height="$vuetify.breakpoint.smAndDown ? 700 : 500"
-          src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+          :height="900"
+          src="../assets/cover2.png"
       >
-        <v-container fill-height>
-          <v-row class="mx-auto">
-            <v-col
-                v-for="[value, title] of stats"
-                :key="title"
-                cols="12"
-                md="3"
-            >
-              <div class="text-center">
-                <div
-                    class="display-3 font-weight-black mb-4"
-                    v-text="value"
-                ></div>
+        <v-container fill-height class="text-dark">
+          <div class="py-12"></div>
 
-                <div
-                    class="title font-weight-regular text-uppercase"
-                    v-text="title"
-                ></div>
-              </div>
-            </v-col>
-          </v-row>
+          <v-container class="text-center">
+            <h2 class="display-2 font-weight-bold mb-3">ABOUT BADHAN</h2>
+
+            <v-responsive
+                class="mx-auto mb-8"
+                width="56"
+            >
+              <v-divider class="mb-1"></v-divider>
+
+              <v-divider></v-divider>
+            </v-responsive>
+            <v-avatar
+                class="elevation-12 mb-12"
+                size="128"
+            >
+              <v-img src="../assets/images/badhanlogo.png"></v-img>
+            </v-avatar>
+            <v-responsive
+                class="mx-auto title font-weight-light mb-8"
+                max-width="720"
+            >
+              <b>
+                BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal,
+                non-regional, non-racial, secular and voluntary social organization.
+                <span v-if="!$vuetify.breakpoint.smAndDown">
+              It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
+          <br>
+
+          BADHAN, BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit- Ahsan Ullah Hall Unit, Chattri Hall Unit, Nazrul Hall Unit, Suhrawardy Hall Unit, Sher-e-Bangla Hall Unit, Rashid Hall Unit, Titumir Hall Unit.
+          </span>
+              </b>
+            </v-responsive>
+
+
+            <div></div>
+
+            <v-btn
+                class="align-self-end ma-1"
+                outlined
+                style="text-decoration: none"
+                :to="'/credits'"
+            >
+              Know the Developers
+            </v-btn>
+            <br>
+            <v-btn
+                class="align-self-end ma-1"
+                outlined
+                style="text-decoration: none"
+                v-if="!isMobile"
+                href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
+            >
+              Download App
+              <v-icon right>mdi-google-play</v-icon>
+            </v-btn>
+            <v-btn
+                class="align-self-end ma-1"
+                outlined
+                style="text-decoration: none"
+                v-else
+                href="https://badhan-buet.web.app"
+            >
+              Web Version
+              <v-icon right>mdi-web</v-icon>
+            </v-btn>
+            <br>
+            <v-btn class="align-self-end ma-1"
+                   outlined
+                   style="text-decoration: none"
+                   href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
+              Don't have an account?
+            </v-btn>
+          </v-container>
+
+          <div class="py-12"></div>
         </v-container>
       </v-parallax>
     </section>
 
-    <section id="blog">
-      <div class="py-12"></div>
-
-      <v-container>
-        <h2 class="display-2 font-weight-bold mb-3 text-uppercase text-center">Blog</h2>
-
-        <v-responsive
-            class="mx-auto mb-12"
-            width="56"
-        >
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
-
-        <v-row>
-          <v-col
-              v-for="({ src, text, title }, i) in articles"
-              :key="i"
-              cols="12"
-              md="4"
-          >
-            <v-img
-                :src="src"
-                class="mb-4"
-                height="275"
-                max-width="100%"
-            ></v-img>
-
-            <h3
-                class="font-weight-black mb-4 text-uppercase"
-                v-text="title"
-            ></h3>
-
-            <div
-                class="title font-weight-light mb-5"
-                v-text="text"
-            ></div>
-
-            <v-btn
-                class="ml-n4 font-weight-black"
-                text
-            >
-              Continue Reading
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <div class="py-12"></div>
-    </section>
-
-    <v-sheet
-        id="contact"
-        color="#333333"
-        dark
-        tag="section"
-        tile
-    >
-      <div class="py-12"></div>
-
-      <v-container>
-        <h2 class="display-2 font-weight-bold mb-3 text-uppercase text-center">Contact Me</h2>
-
-        <v-responsive
-            class="mx-auto mb-12"
-            width="56"
-        >
-          <v-divider class="mb-1"></v-divider>
-
-          <v-divider></v-divider>
-        </v-responsive>
-
-        <v-theme-provider light>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field
-                  flat
-                  label="Name*"
-                  solo
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12">
-              <v-text-field
-                  flat
-                  label="Email*"
-                  solo
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12">
-              <v-text-field
-                  flat
-                  label="Subject*"
-                  solo
-              ></v-text-field>
-            </v-col>
-
-            <v-col cols="12">
-              <v-textarea
-                  flat
-                  label="Message*"
-                  solo
-              ></v-textarea>
-            </v-col>
-
-            <v-col
-                class="mx-auto"
-                cols="auto"
-            >
-              <v-btn
-                  color="accent"
-                  x-large
-              >
-                Submit
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-theme-provider>
-      </v-container>
-
-      <div class="py-12"></div>
-    </v-sheet>
-
-</div>
+  </div>
 </template>
 
 <script>
+import SignInDialog from "@/components/SignInDialog";
+import {Capacitor} from "@capacitor/core";
+import {Plugins} from '@capacitor/core';
+
+const {Device} = Plugins;
+import {mapActions, mapGetters, mapMutations} from 'vuex';
+import {required, minLength,maxLength} from 'vuelidate/lib/validators'
 export default {
-name: "SignInCover",
-  data () {
+  name: "SignInCover",
+  data() {
     return {
-      articles: [
-        {
-          src: 'https://images.unsplash.com/photo-1423784346385-c1d4dac9893a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-          title: 'Mobile first & Responsive',
-          text: 'Phasellus lorem enim, luctus ut velit eget, convallis egestas eros. Sed ornare ligula eget tortor tempor, quis porta tellus dictum.',
-        },
-        {
-          src: 'https://images.unsplash.com/photo-1475938476802-32a7e851dad1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-          title: 'Think outside the box',
-          text: 'Nam ut leo ipsum. Maecenas pretium aliquam feugiat. Aenean vel tempor est, vitae tincidunt risus. Sed sodales vestibulum nibh.',
-        },
-        {
-          src: 'https://images.unsplash.com/photo-1416339442236-8ceb164046f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1892&q=80',
-          title: 'Small changes, big difference',
-          text: 'Vestibulum in dictum velit, in rhoncus nibh. Maecenas neque libero, interdum a dignissim in, aliquet vitae lectus. Phasellus lorem enim, luctus ut velit eget.',
-        },
-      ],
-      features: [
-        {
-          icon: 'mdi-account-group-outline',
-          title: 'Vibrant Community',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-        },
-        {
-          icon: 'mdi-update',
-          title: 'Frequent Updates',
-          text: 'Sed ut elementum justo. Suspendisse non justo enim. Vestibulum cursus mauris dui, a luctus ex blandit. Lorem ipsum dolor sit amet consectetur adipisicing elit. qui ipsum eveniet facilis obcaecati corrupti consectetur adipisicing elit.',
-        },
-        {
-          icon: 'mdi-shield-outline',
-          title: 'Long-term Support',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto cupiditate sint possimus quidem atque harum excepturi nemo velit tempora! Enim inventore fuga, qui ipsum eveniet facilis obcaecati corrupti asperiores nam',
-        },
-      ],
-      stats: [
-        ['24k', 'Github Stars'],
-        ['330+', 'Releases'],
-        ['1m', 'Downloads/mo'],
-        ['5m', 'Total Downloads'],
-      ],
+      detailsFlag: false,
+      phone: "",
+      password: "",
+      rememberFlag: localStorage.getItem("rememberFlag") == "true",
+
+      passwordFlag: false,
     }
-  }
+  },
+  validations: {
+    phone: {
+      required,
+      minLength: minLength(11),
+      maxLength: maxLength(11)
+    },
+    password: {
+      required
+    }
+  },
+  watch: {
+    rememberFlag(to, from) {
+      localStorage.setItem("rememberFlag", to);
+    },
+  },
+  computed: {
+    ...mapGetters(['getSignInLoaderFlag']),
+    isMobile() {
+      return Capacitor.isNative;
+    },
+
+    phoneErrors(){
+      const errors = []
+      if (!this.$v.phone.$dirty) return errors
+      !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.maxLength && errors.push('Phone must be at least 11 digits long')
+      !this.$v.phone.required && errors.push('Phone is required.')
+      return errors
+    },
+    passwordErrors(){
+      const errors = []
+      if (!this.$v.password.$dirty) return errors
+      !this.$v.password.required && errors.push('Password is required.')
+      return errors
+    }
+
+  },
+  methods: {
+    ...mapActions('notification', ['notifySuccess', 'notifyError']),
+    ...mapActions(['login']),
+    ...mapMutations(['clearSignInError']),
+    async signInClicked() {
+      await this.$v.$touch();
+      if(this.$v.$anyError){
+        return;
+      }
+
+      let isSignInOk = await this.login({
+        phone: this.phone,
+        password: this.password,
+        rememberFlag: this.rememberFlag,
+      });
+
+      if (isSignInOk) {
+        await this.$router.push("/home");
+        this.notifySuccess('Sign in successful');
+      }
+    },
+
+    clearClicked() {
+      this.$v.$reset()
+      this.phone = "";
+      this.password = "";
+      this.clearSignInError();
+    },
+  },
+  async mounted() {
+    const info = await Device.getInfo();
+    this.version = info.appVersion;
+  },
+
+  components: {
+    SignInDialog,
+  },
 }
 </script>
 
