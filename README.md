@@ -56,6 +56,7 @@ In each donor card,these informations are shown,
 - Name
 - Phone Number
 - Blood Group <br/>
+<br/>
 In the dropdown,
 - Department
 - Room/Address (if Any)
@@ -63,10 +64,10 @@ In the dropdown,
 - Add a donation Date
 
 ![Donor Profile](https://user-images.githubusercontent.com/38842742/118790492-a1eb2400-b8b7-11eb-8339-eedde397d340.gif)
-One can get into the donor profile after selecting the ‘See Profile’ button from the donor card.
-There is a ‘toggle to edit details’ option as a solution to accidental edit.One has to toggle this option in order to edit the details.
-One can find all the details of a donor from ‘personal details’ option and also donors’ blood donation history
-Super Admin and Hall Admins can promote a donor using the ‘Settings’ option
+One can get into the donor profile after selecting the ‘See Profile’ button from the donor card.<br/>
+There is a ‘toggle to edit details’ option as a solution to accidental edit.One has to toggle this option in order to edit the details.<br/>
+One can find the details of a donor from ‘personal details’ option.<br/>
+Super Admin and Hall Admins can promote and delete a donor using the ‘Settings’ option.
 
 ![Side Bar](https://user-images.githubusercontent.com/38842742/118790565-b5968a80-b8b7-11eb-97a1-daa3606fe7a5.gif)
 Using the three horizontal bar shown on the upper left corner,One can find
