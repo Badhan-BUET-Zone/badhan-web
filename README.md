@@ -34,6 +34,7 @@ There are 3 types of user in this app.
 ## Features
 
 ![Sign In](https://user-images.githubusercontent.com/38842742/118790600-c0e9b600-b8b7-11eb-857e-25bba44a4226.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118790600-c0e9b600-b8b7-11eb-857e-25bba44a4226.gif" alt="drawing" style="width:300px;"/>
 Only assigned members can sign in.
 
 There is no automatic sign up button in the login page.A donor has  to be promoted to at least Volunteer by respective Hall Admin to sign in.However,one can request by clicking [Don’t Have an Account](https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/) and fill up the google doc form.
