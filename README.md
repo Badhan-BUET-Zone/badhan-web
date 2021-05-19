@@ -77,7 +77,7 @@ Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app
 **Contributor from CSE Department**: 
 [Mir Mahathir Mohammad](https://www.facebook.com/MirMahathirMohammad?_rdc=1&_rdr),
 [Aniruddha GS](https://www.facebook.com/aniruddhags3927),
-[Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367r),
+[Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367),
 [Anisha Islam](https://www.facebook.com/anisha.islam.1690),
 [Atiqur Rahman Shuvo](https://www.facebook.com/Shiroe041),
 
