@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card max-width="500" class="pa-4">
+    <v-card max-width="500" class="pa-4 rounded-xl">
         <v-progress-circular indeterminate color="primary" v-if="getVolunteerLoader">
 
         </v-progress-circular>

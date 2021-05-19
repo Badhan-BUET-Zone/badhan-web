@@ -2,12 +2,16 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <div>
-      <div class="row">
+    <v-row>
+      <v-col cols="12" sm="4">
         <filters></filters>
+      </v-col>
+      <v-col cols="12" sm="8">
         <search-results></search-results>
-        <router-view></router-view>
+      </v-col>
         <!--        <person-details></person-details>-->
-      </div>
+    </v-row>
+    <router-view></router-view>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <section id="hero">
       <v-row no-gutters>
         <v-img
-            min-height="100vh"
+            min-height="90vh"
             src="../assets/cover.png"
         >
           <v-theme-provider>
@@ -20,8 +20,12 @@
                     sm="8"
                     tag="h1"
                 >
+                  <img
+                      src="../assets/images/badhanlogo.png"
+                      style="width: 100px; height: 100px"
+                  />
+                  <br>
                     <span
-                        :class="[$vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2']"
                         class="font-weight-light"
                     >
                       WELCOME TO
@@ -30,7 +34,6 @@
                   <br>
 
                   <span
-                      :class="[$vuetify.breakpoint.smAndDown ? 'display-3': 'display-4']"
                       class="font-weight-black"
                   >
                       Badhan

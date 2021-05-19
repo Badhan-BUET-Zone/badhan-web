@@ -1,6 +1,6 @@
 <template>
   <div
-      class="mb-3 col-lg-4 col-md-12 col-sm-12"
+      class="mb-3"
       style="height: fit-content"
   >
     <div class="ml-5">
@@ -23,6 +23,7 @@
       <v-container>
         <!--        Input field for name-->
         <v-text-field
+            rounded
             v-model="name"
             outlined
             label="Name of Donor"
@@ -31,6 +32,7 @@
         ></v-text-field>
 
         <v-select
+            rounded
             v-model="bloodGroup"
             :items="bloodGroups"
             label="Blood Group"
@@ -40,6 +42,7 @@
 
         <!--        Input field for batch-->
         <v-text-field
+            rounded
             v-model="batch"
             outlined
             label="Batch"
@@ -51,6 +54,7 @@
 
         <!--        Input field for hall-->
         <v-select
+            rounded
             v-model="hall"
             :items="availableHalls"
             label="Select Hall"
@@ -59,6 +63,7 @@
         ></v-select>
 
         <v-text-field
+            rounded
             outlined
             label="Address"
             clearable

@@ -73,7 +73,7 @@
                         {{ getName }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                        <v-chip color="primary" class="ma-1">
+                        <v-chip color="secondary" class="ma-1">
                             <span v-if="getDesignation===2">Hall admin</span>
                             <span v-else-if="getDesignation===3">Super admin</span>
                             <span v-else-if="getDesignation===1">Volunteer</span>

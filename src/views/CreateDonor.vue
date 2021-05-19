@@ -1,36 +1,36 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-  <v-card max-width="500px">
+  <v-card class="rounded-xl" max-width="500px">
     <v-container>
-      <v-text-field outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
+      <v-text-field rounded outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
-      <v-text-field outlined label="Phone Number (11 Digits)" dense v-model="phone" @blur="$v.phone.$touch()"
+      <v-text-field rounded outlined label="Phone Number (11 Digits)" dense v-model="phone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-      <v-select v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
+      <v-select rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
-      <v-text-field outlined label="Batch Number (2 Digits)" dense v-model="batch" @blur="$v.batch.$touch()"
+      <v-text-field rounded outlined label="Batch Number (2 Digits)" dense v-model="batch" @blur="$v.batch.$touch()"
                     :error-messages="batchErrors"></v-text-field>
-      <v-select outlined dense label="Department" v-model="department"
+      <v-select rounded outlined dense label="Department" v-model="department"
                 :items="departments.filter(word => word!=='NULL')" @blur="$v.department.$touch()"
                 :error-messages="departmentErrors"></v-select>
-      <v-text-field outlined label="Roll (3 Digits)" v-model="roll" dense @blur="$v.roll.$touch()"
+      <v-text-field rounded outlined label="Roll (3 Digits)" v-model="roll" dense @blur="$v.roll.$touch()"
                     :error-messages="rollErrors"></v-text-field>
-      <v-select :items="availableHalls" label="Select Hall" outlined dense v-model="hall"></v-select>
-      <v-text-field outlined label="Room" dense v-model="roomNumber"></v-text-field>
-      <v-text-field outlined label="Address" dense v-model="address"></v-text-field>
-      <v-text-field outlined label="Comment" dense v-model="comment"></v-text-field>
+      <v-select rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"></v-select>
+      <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
+      <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
+      <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
       <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="newDonationDate"
               transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field v-model="newDonationDate" label="Pick Last Donation Date" prepend-icon="mdi-calendar" readonly
+          <v-text-field rounded v-model="newDonationDate" label="Pick Last Donation Date" prepend-icon="mdi-calendar" readonly
                         v-bind="attrs" v-on="on"></v-text-field>
         </template>
         <v-date-picker v-model="newDonationDate" no-title scrollable>
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
+          <v-btn rounded text color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn rounded text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-container>

@@ -1,13 +1,15 @@
 <template>
     <div
-        class="col-lg-8 col-md-12 col-sm-12 p-3"
-
+        class="p-3"
         style="height: fit-content"
     >
         <div v-if="isSearchResultShown">
-            <div class="alert alert-secondary">
+            <v-alert dense class="rounded-xl" color="accent lighten-4">
+              <div>
                 Found {{ getNumberOfDonors }} donors
-            </div>
+              </div>
+
+            </v-alert>
         </div>
 
         <div v-if="isSearchResultShown">
@@ -38,7 +40,7 @@
                     donationCount: 'donationCount'
                 }"
                 >
-                    <v-btn color="primary" rounded class="mb-4" style="width: 100%">
+                    <v-btn color="secondary" rounded class="mb-4" style="width: 100%">
                         Download Data
                     </v-btn>
                 </json-excel>
@@ -47,9 +49,12 @@
                 </v-btn>
             </div>
             <div v-for="(obj, index) in getPersonGroups" :key="index">
-                <div class="alert alert-primary card" role="alert">
+              <v-alert dense class="rounded-xl" color="accent lighten-4">
+                <div>
                     Batch {{ obj.batch }}:
                 </div>
+              </v-alert>
+
                 <person-card
                     v-for="(person, personIndex) in obj.people"
                     :phone="person.phone"

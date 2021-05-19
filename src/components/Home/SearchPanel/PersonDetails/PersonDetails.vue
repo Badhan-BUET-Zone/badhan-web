@@ -58,22 +58,22 @@
                   </div>
                   <div v-if="personDetailCollapseFlag">
                     <div class="card-body" v-on:click="promptForEdit($event)">
-                      <v-text-field dense type="'text'" outlined label="Name" v-model="name"
+                      <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
                                     :disabled="!enableEditing" @blur="$v.name.$touch()"
                                     :error-messages="nameErrors"></v-text-field>
-                      <v-text-field dense type="'text'" outlined label="Phone" v-model="phone"
+                      <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
                                     :disabled="!enableEditing" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
-                      <v-select dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
+                      <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!enableEditing"></v-select>
-                      <v-text-field dense type="'text'" outlined label="Student ID: " v-model="studentID"
+                      <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentID"
                                     :disabled="!enableEditing" @blur="$v.studentID.$touch()"
                                     :error-messages="studentIDErrors"></v-text-field>
-                      <v-select dense v-model="hall" :items="availableHalls" label="Hall" outlined
+                      <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
                                 :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                      <v-text-field dense type="'text'" outlined label="Room" v-model="room"
+                      <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
                                     :disabled="!enableEditing"></v-text-field>
-                      <v-text-field dense type="'text'" outlined label="Address" v-model="address"
+                      <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
                                     :disabled="!enableEditing"></v-text-field>
                       <div v-if="getDesignation > designation ||getPhone == oldPhone">
                         <v-btn color="secondary" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
@@ -82,7 +82,7 @@
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">Save
                         </v-btn>
                       </div>
-                      <v-textarea dense class="mt-5" name="comment" outlined v-model="comment"
+                      <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                   label="Comment" auto-grow
                                   :disabled="!enableEditing" :rows="1"></v-textarea>
 
@@ -114,7 +114,7 @@
                       </div>
                       <div
                           v-if="(designation !== 0 || getPhone == oldPhone) || (getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8)">
-                        <v-text-field dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                        <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="newPasswordFlag ? 'text' : 'password'" outlined
                                       label="New Password" v-model="newPassword"
                                       class="input-group--focused"
@@ -122,7 +122,7 @@
                                       :disabled="!enableEditing"
                                       @blur="$v.newPassword.$touch()"
                                       :error-messages="newPasswordErrors"></v-text-field>
-                        <v-text-field dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                        <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="confirmPasswordFlag ? 'text' : 'password'" outlined
                                       label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
                                       @click:append="confirmPasswordFlag = !confirmPasswordFlag"
