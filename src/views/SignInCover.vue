@@ -207,6 +207,7 @@ export default {
       rememberFlag: localStorage.getItem("rememberFlag") == "true",
 
       passwordFlag: false,
+      version: ""
     }
   },
   validations: {
