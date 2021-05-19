@@ -8,7 +8,7 @@
         @click="showExtensionFlag = !showExtensionFlag"
     >
       <v-row no-gutters>
-        <v-col align-self="center" cols="12" sm="6">
+        <v-col align-self="center">
           <v-chip
               large
               v-if="availableInRendered > 0"
@@ -37,9 +37,8 @@
 
         </v-col>
         <v-col
-            align-self="center" cols="12" sm="6"
+            align-self="center"
             class="d-flex align-content-center"
-            style="width: 200px"
         >
           <div style="font-size: small; width: 100%" class="text-wrap pa-4">
             <b style="width: 100%">{{ name }}</b>
@@ -57,7 +56,7 @@
     </v-card>
 
     <!--    Person card extension-->
-    <v-card class="rounded-xl" v-if="showExtensionFlag">
+    <v-card color="grey lighten-3" class="rounded-xl" v-if="showExtensionFlag">
         <v-card-text>
         <p><b>Department: </b>{{ studentID | idToDept }}</p>
         <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
