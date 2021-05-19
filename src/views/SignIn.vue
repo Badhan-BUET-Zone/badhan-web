@@ -42,7 +42,7 @@
                     <v-checkbox dense v-model="rememberFlag" label="Remember me"></v-checkbox>
                     <v-btn color="warning" rounded @click="clearClicked()">Clear</v-btn>
                     <v-btn
-                        color="primary"
+                        color="secondary"
                         rounded
                         class="ml-2"
                         @click="signInClicked()"

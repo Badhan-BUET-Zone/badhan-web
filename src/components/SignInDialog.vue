@@ -7,14 +7,14 @@
                     justify="center"
                 >
                     <v-col
-                        class="text-center red--text"
+                        class="text-center primary--text"
                         cols="12"
                     >
                         Loading... Please wait...
                     </v-col>
                     <v-col cols="6">
                         <v-progress-linear
-                            color="red"
+                            color="primary"
                             indeterminate
                             rounded
                             height="6"

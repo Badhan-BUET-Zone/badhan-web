@@ -35,7 +35,7 @@
       </v-menu>
     </v-container>
     <v-card-actions>
-      <v-btn rounded :loading="getNewDonorLoader" color="info" @click="clearFields">Reset</v-btn>
+      <v-btn rounded :loading="getNewDonorLoader" color="secondary" @click="clearFields">Reset</v-btn>
       <v-btn :disabled="getNewDonorLoader|| $v.$anyError" rounded :loading="getNewDonorLoader" color="primary"
              @click="createDonorClicked">Save Donor
       </v-btn>

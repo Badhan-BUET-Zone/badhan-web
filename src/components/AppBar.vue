@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-app-bar
-            color="red"
+            color="primary"
             dark
             app
             clipped-left
@@ -89,7 +89,7 @@
                 dense
             >
                 <v-list-item-group
-                    active-class="red--text text--accent-4"
+                    active-class="primary--text text--accent-4"
                 >
                     <v-list-item link to="/home" style="text-decoration: none">
                         <v-list-item-icon>

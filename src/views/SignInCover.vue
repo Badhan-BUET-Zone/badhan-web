@@ -48,6 +48,7 @@
                     <v-text-field
                         :type="'text'"
                         outlined
+                        rounded
                         label="Phone"
                         class="input-group--focused"
                         dense
@@ -58,6 +59,7 @@
                     ></v-text-field>
 
                     <v-text-field
+                        rounded
                         outlined
                         label="Password"
                         class="input-group--focused"
@@ -87,13 +89,53 @@
 
                 </v-col>
 
-                <v-btn
-                    class="align-self-end"
 
+                <br>
+                <v-btn
+                    small
+                    color="primary"
+                    rounded
+                    class="align-self-end ma-1"
                     outlined
-                    @click="$vuetify.goTo('#about-me')"
+                    style="text-decoration: none"
+                    v-if="!isMobile"
+                    href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
                 >
-                  See More
+                  Download App
+                  <v-icon right>mdi-google-play</v-icon>
+                </v-btn>
+                <v-btn
+                    small
+                    color="primary"
+                    rounded
+                    class="align-self-end ma-1"
+                    outlined
+                    style="text-decoration: none"
+                    v-else
+                    href="https://badhan-buet.web.app"
+                >
+                  Web Version
+                  <v-icon right>mdi-web</v-icon>
+                </v-btn>
+                <v-btn
+                    small
+                    color="primary"
+                    class="align-self-end ma-1"
+                    outlined
+                    rounded
+                    style="text-decoration: none"
+                    :to="'/credits'"
+                >
+                  Know the Developers
+                </v-btn>
+                <v-btn class="align-self-end ma-1"
+                       small
+                       color="primary"
+                       rounded
+                       outlined
+                       style="text-decoration: none"
+                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
+                  Don't have an account?
                 </v-btn>
               </v-row>
             </v-container>
@@ -101,97 +143,6 @@
         </v-img>
       </v-row>
     </section>
-
-    <section id="about-me">
-      <v-parallax
-          :height="900"
-          src="../assets/cover2.png"
-      >
-        <v-container fill-height class="text-dark">
-
-
-          <div class="py-12"></div>
-
-          <v-container class="text-center">
-            <v-btn
-                class="align-self-end ma-1"
-                outlined
-                style="text-decoration: none"
-                :to="'/credits'"
-            >
-              Know the Developers
-            </v-btn>
-            <br>
-            <v-btn
-                class="align-self-end ma-1"
-                outlined
-                style="text-decoration: none"
-                v-if="!isMobile"
-                href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
-            >
-              Download App
-              <v-icon right>mdi-google-play</v-icon>
-            </v-btn>
-            <v-btn
-                class="align-self-end ma-1"
-                outlined
-                style="text-decoration: none"
-                v-else
-                href="https://badhan-buet.web.app"
-            >
-              Web Version
-              <v-icon right>mdi-web</v-icon>
-            </v-btn>
-            <br>
-            <v-btn class="align-self-end ma-1"
-                   outlined
-                   style="text-decoration: none"
-                   href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
-              Don't have an account?
-            </v-btn>
-            <h2 class="display-2 font-weight-bold mt-5">ABOUT BADHAN</h2>
-
-            <v-responsive
-                class="mx-auto"
-                width="56"
-            >
-              <v-divider class="mb-1"></v-divider>
-
-              <v-divider></v-divider>
-            </v-responsive>
-            <v-avatar
-                class="elevation-12 mb-12"
-                size="128"
-            >
-              <v-img src="../assets/images/badhanlogo.png"></v-img>
-            </v-avatar>
-            <v-responsive
-                class="mx-auto title font-weight-light mb-8"
-                max-width="720"
-            >
-              <b>
-                BADHAN is a Voluntary Blood Donors’ Orgnanization.It is totally a non-political, non-communal,
-                non-regional, non-racial, secular and voluntary social organization.
-                <span v-if="!$vuetify.breakpoint.smAndDown">
-              It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country with 8 Zones,124 Units and 22,380 Volunteers.It was established on 24 October, 1997.
-          <br>
-
-          BADHAN, BUET Zone was officially inaugerated  on 18 September,2005 as a Zone of BADHAN.It has seven unit- Ahsan Ullah Hall Unit, Chattri Hall Unit, Nazrul Hall Unit, Suhrawardy Hall Unit, Sher-e-Bangla Hall Unit, Rashid Hall Unit, Titumir Hall Unit.
-          </span>
-              </b>
-            </v-responsive>
-
-
-            <div></div>
-
-
-          </v-container>
-
-          <div class="py-12"></div>
-        </v-container>
-      </v-parallax>
-    </section>
-
   </div>
 </template>
 

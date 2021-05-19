@@ -3,7 +3,7 @@
     <v-card v-if="getDonorLoaderFlag"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 20vh;width: 100vw;overflow-y: scroll;"
             class="d-flex justify-center">
-      <v-app-bar color="red" dark>
+      <v-app-bar color="primary" dark>
         <v-btn icon @click="$router.push('/home')">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
@@ -16,7 +16,7 @@
     </v-card>
     <v-card v-else
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
-      <v-app-bar color="red" dark>
+      <v-app-bar color="primary" dark>
         <v-btn icon @click="$router.push('/home')">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
@@ -25,7 +25,7 @@
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
         <v-card-text class="mb-5">
-          <v-chip color="primary" class="ma-1">
+          <v-chip color="secondary" class="ma-1">
             <span v-if="designation === 0">Donor</span>
             <span v-else-if="designation === 1">Volunteer</span>
             <span v-else-if="designation === 2">Hall Admin</span>
@@ -34,7 +34,7 @@
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
           <br>
-          <v-btn rounded color="blue lighten-3" class="ma-1" @click="callFromDialer">
+          <v-btn rounded color="secondary" class="ma-1" @click="callFromDialer">
             <v-icon left>
               mdi-phone
             </v-icon>
@@ -76,7 +76,7 @@
                       <v-text-field dense type="'text'" outlined label="Address" v-model="address"
                                     :disabled="!enableEditing"></v-text-field>
                       <div v-if="getDesignation > designation ||getPhone == oldPhone">
-                        <v-btn color="warning" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
+                        <v-btn color="secondary" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
                         <v-btn color="primary" rounded class="white--text ml-2"
                                :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentID.$error"
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">Save
@@ -153,7 +153,7 @@
 
                       <div
                           v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
-                        <v-btn color="warning" style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
+                        <v-btn color="secondary" style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
                         <v-btn color="primary" class="white--text ml-2" rounded
                                :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag || $v.newPassword.$error || $v.confirmPassword.$error"
                                :loading="getPasswordLoader ||getPromoteFlag"

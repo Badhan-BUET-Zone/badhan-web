@@ -9,7 +9,7 @@
         <v-col><h5>Filters</h5></v-col>
 
         <v-col>
-          <v-btn small @click="toggleFilterClicked()" rounded>
+          <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>
             <span v-if="!isFilterShown">Show Filters</span>
             <span v-else>Hide Filters</span>
           </v-btn>
@@ -84,7 +84,7 @@
         </v-row>
 
         <!--        A button to reset the form fields-->
-        <v-btn rounded color="warning" @click="clearFields"> Reset</v-btn>
+        <v-btn rounded color="secondary" @click="clearFields"> Reset</v-btn>
 
         <!--        The button for executing search-->
         <v-btn
