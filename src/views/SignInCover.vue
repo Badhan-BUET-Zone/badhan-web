@@ -24,6 +24,7 @@
                       src="../assets/images/badhanlogo.png"
                       style="width: 100px; height: 100px"
                   />
+                  <br>
                   <span
                       class="font-weight-black"
                   >
