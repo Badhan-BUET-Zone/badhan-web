@@ -31,3 +31,4 @@ package-lock.json
 signature.jks
 upload.sh
 capacitor.config.json
+src/plugins/android_support.js

@@ -131,7 +131,7 @@
 
 <script>
 import {departments, bloodGroups} from "@/mixins/constants";
-import Datepicker from "vuejs-datepicker";
+
 import {mapActions, mapGetters} from "vuex";
 
 export default {
@@ -149,7 +149,7 @@ export default {
     "id"
   ],
   components: {
-    Datepicker,
+
   },
   filters: {
     idToDept(studentID) {

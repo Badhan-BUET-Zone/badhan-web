@@ -59,12 +59,11 @@
 </template>
 
 <script>
-import carousel from "vue-owl-carousel";
 import ContributorCard from "@/components/Credits/ContributorCard";
 import PageTitle from "../components/PageTitle";
 export default {
     name: "Credits",
-    components: {PageTitle, carousel, ContributorCard},
+    components: {PageTitle, ContributorCard},
     data() {
         return {
             contributors: [

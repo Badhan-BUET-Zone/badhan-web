@@ -183,7 +183,6 @@
 
 <script>
 
-import {Plugins} from "@capacitor/core";
 import {mapActions, mapGetters} from 'vuex';
 
 export default {

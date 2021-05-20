@@ -154,10 +154,8 @@
 
 <script>
 import SignInDialog from "@/components/SignInDialog";
-import {Capacitor} from "@capacitor/core";
-import {Plugins} from '@capacitor/core';
 
-const {Device} = Plugins;
+import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
 import {required, minLength,maxLength} from 'vuelidate/lib/validators'
 export default {
@@ -191,7 +189,7 @@ export default {
   computed: {
     ...mapGetters(['getSignInLoaderFlag']),
     isMobile() {
-      return Capacitor.isNative;
+      return isNative();
     },
 
     phoneErrors(){
@@ -240,7 +238,7 @@ export default {
     },
   },
   async mounted() {
-    const info = await Device.getInfo();
+    const info = await getDeviceInfo();
     this.version = info.appVersion;
   },
 

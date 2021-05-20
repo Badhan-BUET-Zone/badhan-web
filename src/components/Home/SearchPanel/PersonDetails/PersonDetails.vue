@@ -131,26 +131,6 @@
                                       :error-messages="confirmPasswordErrors"></v-text-field>
                       </div>
 
-                      <!--                      <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">-->
-                      <!--                        <label>Promote this member to volunteer</label>-->
-                      <!--                        <div class="form-group row">-->
-                      <!--                          <label class="col-sm-4 col-form-label">New Password:</label>-->
-                      <!--                          <div class="col-sm-8">-->
-                      <!--                            <input type="password" class="form-control"-->
-                      <!--                                   :disabled="!enableEditing"-->
-                      <!--                                   v-model="newPassword"/>-->
-                      <!--                          </div>-->
-                      <!--                        </div>-->
-                      <!--                        <div class="form-group row">-->
-                      <!--                          <label class="col-sm-4 col-form-label">Confirm Password:</label>-->
-                      <!--                          <div class="col-sm-8">-->
-                      <!--                            <input type="password" class="form-control"-->
-                      <!--                                   :disabled="!enableEditing"-->
-                      <!--                                   v-model="confirmPassword"/>-->
-                      <!--                          </div>-->
-                      <!--                        </div>-->
-                      <!--                      </div>-->
-
                       <div
                           v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
                         <v-btn color="secondary" style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
@@ -217,7 +197,6 @@
 
 <script>
 import {halls, bloodGroups} from "@/mixins/constants";
-import {Plugins} from "@capacitor/core";
 import {mapActions, mapGetters} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 
