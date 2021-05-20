@@ -34,13 +34,13 @@ There are 3 types of user in this app.
 
 ## Features
 
-<img src="https://user-images.githubusercontent.com/36355905/118931119-6a888000-b968-11eb-860d-e9acc60b5201.gif" alt="drawing" width="300"/><br>
+<img src="https://user-images.githubusercontent.com/36355905/118931119-6a888000-b968-11eb-860d-e9acc60b5201.gif" alt="Sign In" width="300"/><br>
 
 Only assigned members can sign in.
 
 There is no automatic sign up button in the login page.A donor has  to be promoted to at least Volunteer by respective Hall Admin to sign in.However,one can request by clicking [Don’t Have an Account](https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/) and fill up the google doc form.
 
-![Filters](https://user-images.githubusercontent.com/38842742/118790528-a9aac880-b8b7-11eb-9135-eb49c1f67459.gif)
+<img src="https://https://user-images.githubusercontent.com/38842742/118943009-1041ec00-b975-11eb-9ba6-dd1d57856945.gif" alt="Filters" width="300"/><br>
 One can search for donors using 5 different filters-
 
 - Name of the donor
@@ -49,14 +49,16 @@ One can search for donors using 5 different filters-
 - Hall
 - Address
 
-![Searching](https://user-images.githubusercontent.com/38842742/118790546-afa0a980-b8b7-11eb-831f-bb06b312ea66.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118943034-1506a000-b975-11eb-8986-fb4e1240579f.gif" alt="Searching" width="300"/><br>
+
 Search results are sorted in a descending manner based on batch.
 Only Super Admin can select every hall.Hall Admins and Volunteers can search using,
 - Own respective hall
 - Attached Data
 - Covid Data
 
-![Donor card](https://user-images.githubusercontent.com/38842742/118790462-9ac41600-b8b7-11eb-935a-72596e7a1b1a.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118942988-0c15ce80-b975-11eb-831a-dcea48030e72.gif" alt="Donor card" width="300"/><br>
+
 In each donor card,these informations are shown,
 - Availability
 - Name
@@ -69,13 +71,15 @@ In the dropdown,
 - Comment (if Any)
 - Add a donation Date
 
-![Donor Profile](https://user-images.githubusercontent.com/38842742/118790492-a1eb2400-b8b7-11eb-8339-eedde397d340.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118943021-120baf80-b975-11eb-8612-caf3132faa4d.gif" alt="Donor Profile" width="300"/><br>
+
 One can get into the donor profile after selecting the ‘See Profile’ button from the donor card.<br/>
 There is a ‘toggle to edit details’ option as a solution to accidental edit.One has to toggle this option in order to edit the details.<br/>
 One can find the details of a donor from ‘personal details’ option.<br/>
 Super Admin and Hall Admins can promote and delete a donor using the ‘Settings’ option.
 
-![Side Bar](https://user-images.githubusercontent.com/38842742/118790565-b5968a80-b8b7-11eb-97a1-daa3606fe7a5.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118943048-16d06380-b975-11eb-9bdc-db31db3510f4.gif" alt="Side Bar" width="300"/><br>
+
 Using the three horizontal bar shown on the upper left corner,One can find
 - Create New Donor
 - List of Volunteers
@@ -85,8 +89,8 @@ Using the three horizontal bar shown on the upper left corner,One can find
 - Credits
 - About
 
+<img src="https://user-images.githubusercontent.com/38842742/118943202-38c9e600-b975-11eb-83cf-e711efdfedef.gif" alt="Credits" width="300"/><br>
 
-![Credits](https://user-images.githubusercontent.com/38842742/118790416-8e3fbd80-b8b7-11eb-82d2-52340315cf7e.gif)
 Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app for badhan community to help searching and managing blood donors.
 
 **Developers**: 
@@ -101,7 +105,7 @@ Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app
 [MH Rahat](https://www.facebook.com/mhrahat01),
 [Shadman Sakib Showrov](https://www.facebook.com/Showrov1996)
 
-![Sign Out](https://user-images.githubusercontent.com/38842742/118790614-c3e4a680-b8b7-11eb-9e24-3bd1d9c1b756.gif)
+<img src="https://user-images.githubusercontent.com/38842742/118943080-1df77180-b975-11eb-8db2-b560c07f4a30.gif" alt="Sign Out" width="300"/><br>
 
 By selecting, the top left 'three dots' one can sign out of his/her account. He/she can also sign out from all the logged in devices by one click.
 
