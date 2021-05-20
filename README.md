@@ -40,7 +40,7 @@ Only assigned members can sign in.
 
 There is no automatic sign up button in the login page.A donor has  to be promoted to at least Volunteer by respective Hall Admin to sign in.However,one can request by clicking [Don’t Have an Account](https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/) and fill up the google doc form.
 
-<img src="https://https://user-images.githubusercontent.com/38842742/118943009-1041ec00-b975-11eb-9ba6-dd1d57856945.gif" alt="Filters" width="300"/><br>
+<img src="https://user-images.githubusercontent.com/38842742/118943009-1041ec00-b975-11eb-9ba6-dd1d57856945.gif" alt="Filters" width="300"/><br>
 One can search for donors using 5 different filters-
 
 - Name of the donor
