@@ -33,13 +33,14 @@ There are 3 types of user in this app.
 **Donors** : Every User in the database is a donor
 
 ## Features
-
+#### # Sign In
 <img src="https://user-images.githubusercontent.com/36355905/118931119-6a888000-b968-11eb-860d-e9acc60b5201.gif" alt="Sign In" width="300"/><br>
 
 Only assigned members can sign in.
 
 There is no automatic sign up button in the login page.A donor has  to be promoted to at least Volunteer by respective Hall Admin to sign in.However,one can request by clicking [Don’t Have an Account](https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/) and fill up the google doc form.
 
+#### # Filters
 <img src="https://user-images.githubusercontent.com/38842742/118943009-1041ec00-b975-11eb-9ba6-dd1d57856945.gif" alt="Filters" width="300"/><br>
 One can search for donors using 5 different filters-
 
@@ -49,6 +50,7 @@ One can search for donors using 5 different filters-
 - Hall
 - Address
 
+#### # Searching
 <img src="https://user-images.githubusercontent.com/38842742/118943034-1506a000-b975-11eb-8986-fb4e1240579f.gif" alt="Searching" width="300"/><br>
 
 Search results are sorted in a descending manner based on batch.
@@ -57,6 +59,7 @@ Only Super Admin can select every hall.Hall Admins and Volunteers can search usi
 - Attached Data
 - Covid Data
 
+#### # Donor Card
 <img src="https://user-images.githubusercontent.com/38842742/118942988-0c15ce80-b975-11eb-831a-dcea48030e72.gif" alt="Donor card" width="300"/><br>
 
 In each donor card,these informations are shown,
@@ -71,6 +74,7 @@ In the dropdown,
 - Comment (if Any)
 - Add a donation Date
 
+#### # Donor Profile
 <img src="https://user-images.githubusercontent.com/38842742/118943021-120baf80-b975-11eb-8612-caf3132faa4d.gif" alt="Donor Profile" width="300"/><br>
 
 One can get into the donor profile after selecting the ‘See Profile’ button from the donor card.<br/>
@@ -78,6 +82,7 @@ There is a ‘toggle to edit details’ option as a solution to accidental edit.
 One can find the details of a donor from ‘personal details’ option.<br/>
 Super Admin and Hall Admins can promote and delete a donor using the ‘Settings’ option.
 
+#### # Side Bar
 <img src="https://user-images.githubusercontent.com/38842742/118943048-16d06380-b975-11eb-9bdc-db31db3510f4.gif" alt="Side Bar" width="300"/><br>
 
 Using the three horizontal bar shown on the upper left corner,One can find
@@ -89,6 +94,7 @@ Using the three horizontal bar shown on the upper left corner,One can find
 - Credits
 - About
 
+#### # Credits
 <img src="https://user-images.githubusercontent.com/38842742/118943202-38c9e600-b975-11eb-83cf-e711efdfedef.gif" alt="Credits" width="300"/><br>
 
 Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app for badhan community to help searching and managing blood donors.
@@ -105,6 +111,7 @@ Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app
 [MH Rahat](https://www.facebook.com/mhrahat01),
 [Shadman Sakib Showrov](https://www.facebook.com/Showrov1996)
 
+#### # Sign Out
 <img src="https://user-images.githubusercontent.com/38842742/118943080-1df77180-b975-11eb-8db2-b560c07f4a30.gif" alt="Sign Out" width="300"/><br>
 
 By selecting, the top left 'three dots' one can sign out of his/her account. He/she can also sign out from all the logged in devices by one click.
