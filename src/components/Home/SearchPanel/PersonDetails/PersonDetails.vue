@@ -484,18 +484,12 @@ export default {
       }
     },
     async savePasswordClicked() {
-      // if (this.newPassword !== this.confirmPassword) {
-      //   this.notifyError("Passwords didn't match");
-      //   return;
-      // }
-      // if (this.newPassword.length === 0) {
-      //   this.notifyError("Passwords can't be of length zero");
-      //   return;
-      // }
-      await this.savePassword({
+      if(await this.savePassword({
         donorId: this.$route.query.id,
         newPassword: this.newPassword,
-      })
+      })){
+        this.$router.push('/');
+      }
     },
     async saveDetailsClicked() {
       await this.$v.name.$touch();
