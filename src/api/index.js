@@ -3,8 +3,8 @@ import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
 const badhanAxios = axios.create({
-    // baseURL:'https://badhan-web.herokuapp.com'
-    baseURL:'http://localhost:3000'
+    baseURL:'https://badhan-web.herokuapp.com'
+    // baseURL:'http://localhost:3000'
 });
 const firebaseAxios = axios.create({
     baseURL:'https://badhan-buet-default-rtdb.firebaseio.com'
