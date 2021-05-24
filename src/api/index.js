@@ -3,9 +3,8 @@ import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
 const badhanAxios = axios.create({
-    // baseURL:'https://badhan-backend.herokuapp.com'
-    baseURL:'https://badhan-web.herokuapp.com'
-    // baseURL:'http://localhost:3000'
+    // baseURL:'https://badhan-web.herokuapp.com'
+    baseURL:'http://localhost:3000'
 });
 const firebaseAxios = axios.create({
     baseURL:'https://badhan-buet-default-rtdb.firebaseio.com'
@@ -35,7 +34,10 @@ badhanAxios.interceptors.response.use( (response)=>{
 },  (error)=>{
     // Do something with request error
     store.dispatch('notification/notifyError',processError(error))
-    console.log(error)
+    if(error.response && error.response.data){
+        console.log(error.response.data)
+    }
+
     return Promise.reject(error);
 });
 

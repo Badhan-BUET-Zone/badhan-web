@@ -27,12 +27,9 @@ const mutations = {
 };
 const actions = {
     async fetchtAppDetails({commit,getters,rootState,rootGetters, dispatch}){
-        // if(getters.getAppDetails===null && getters.getAppDetailsLoader){
-        //     return;
-        // }
         commit('setAppDetailsLoader');
         try{
-            return await badhanAxios('/v2/version');
+            return await badhanAxios('/v3/log/version');
         }catch (e){
 
         }finally {

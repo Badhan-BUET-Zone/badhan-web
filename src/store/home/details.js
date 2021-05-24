@@ -55,7 +55,7 @@ const mutations={
         state.comment = payload.comment;
         state.designation = payload.designation;
         state.roomNumber = payload.roomNumber;
-    
+
       },
 
       donorLoaderFlagOn(state){
@@ -71,16 +71,16 @@ const mutations={
       clearDonorDetailsError(state){
           state.donorDetailsError = null;
       }
-    
+
 };
 const actions={
     async getDetails({ commit, getters,rootState, rootGetters,dispatch}, payload) {
-        let sendData = {
+        let params = {
             donorId: payload
         };
         commit('donorLoaderFlagOn');
         try {
-            let response = await badhanAxios.post('v2/donor/details', sendData);
+            let response = await badhanAxios.get('v3/donor/details', {params});
 
             commit('setProfile',response.data.donor)
         } catch (error) {
