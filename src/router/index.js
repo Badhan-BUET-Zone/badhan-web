@@ -112,6 +112,16 @@ const routes = [
     },
     {
         name: 'NotFound',
+        path: '/notfound',
+        component: () => import('@/views/NotFound.vue'),
+        meta: {
+            requiresAuth: false,
+            title: "404 Not Found",
+            designation: 0
+        }
+    },
+    {
+        name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),
         meta: {
@@ -133,8 +143,10 @@ router.beforeEach((to, from, next) => {
         next('/');
     } else if (store.getters.isLoggedIn && to.name == 'SignIn') {
         next('/home');
-    } else {
-        next()
+    } else /*if(store.getters.getDesignation < to.meta.designation){
+        next('/notfound');
+    } else*/{
+        next();
     }
 })
 export default router

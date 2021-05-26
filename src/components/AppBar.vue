@@ -148,7 +148,7 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                  <v-list-item link to="/statistics" style="text-decoration: none">
+                  <v-list-item link to="/statistics" v-if="getDesignation===3"  style="text-decoration: none">
                     <v-list-item-icon>
                       <v-icon>mdi-chart-bar</v-icon>
                     </v-list-item-icon>

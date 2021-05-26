@@ -3,8 +3,10 @@ const state = {
     statistics: null,
     statisticsLoaderFlag: false,
 
-    logs: null,
+    logs: [],
     logsLoaderFlag: false,
+
+    logDeleteFlag: false
 };
 
 const getters = {
@@ -20,6 +22,10 @@ const getters = {
     },
     getLogsLoaderFlag: state=>{
         return state.logsLoaderFlag
+    },
+
+    getLogDeleteFLag: state=>{
+        return state.logDeleteFlag
     }
 };
 const mutations = {
@@ -40,13 +46,19 @@ const mutations = {
         state.logs = payload;
     },
     unsetLogs(state){
-        state.logs = null;
+        state.logs = [];
     },
     setLogsLoaderFlag(state){
         state.logsLoaderFlag = true;
     },
     unsetLogsLoaderFlag(state){
         state.logsLoaderFlag = false;
+    },
+    setLogDeleteFlag(state){
+        state.logDeleteFlag = true;
+    },
+    unsetLogDeleteFlag(state){
+        state.logDeleteFlag = false;
     }
 };
 const actions = {
@@ -72,6 +84,17 @@ const actions = {
 
         }finally {
             commit('unsetLogsLoaderFlag');
+        }
+    },
+    async removeAllLogs({commit,dispatch}){
+        commit('setLogDeleteFlag');
+        try{
+            let response = await badhanAxios.delete('/v1/log');
+            dispatch('fetchLogs');
+        }catch(e){
+
+        }finally {
+            commit('unsetLogDeleteFlag');
         }
     }
 
