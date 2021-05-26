@@ -240,14 +240,12 @@ export default {
 
       if (isSignInOk) {
         await this.$router.push("/home");
-        this.notifySuccess('Sign in successful');
       }
     },
 
     async guestSignInClicked(){
         await this.guestLogin();
         await this.$router.push("/home");
-        this.notifySuccess('Sign in successful');
     },
 
     clearClicked() {
