@@ -2,6 +2,9 @@ import {badhanAxios} from '@/api';
 const state = {
     statistics: null,
     statisticsLoaderFlag: false,
+
+    logs: null,
+    logsLoaderFlag: false,
 };
 
 const getters = {
@@ -11,6 +14,13 @@ const getters = {
     getStatisticsLoaderFlag: state => {
         return state.statisticsLoaderFlag;
     },
+
+    getLogs: state=>{
+        return state.logs;
+    },
+    getLogsLoaderFlag: state=>{
+        return state.logsLoaderFlag
+    }
 };
 const mutations = {
     setStatistics(state, payload) {
@@ -25,6 +35,19 @@ const mutations = {
     unsetStatisticsLoaderFlag(state){
         state.statisticsLoaderFlag = false;
     },
+
+    setLogs(state,payload){
+        state.logs = payload;
+    },
+    unsetLogs(state){
+        state.logs = null;
+    },
+    setLogsLoaderFlag(state){
+        state.logsLoaderFlag = true;
+    },
+    unsetLogsLoaderFlag(state){
+        state.logsLoaderFlag = false;
+    }
 };
 const actions = {
     async fetchStatistics({ commit, getters }) {
@@ -39,6 +62,18 @@ const actions = {
             commit('unsetStatisticsLoaderFlag');
         }
     },
+    async fetchLogs({commit,getters}){
+        commit('unsetLogs');
+        commit('setLogsLoaderFlag');
+        try{
+            let response = await badhanAxios.get('/v1/log');
+            commit('setLogs',response.data.logs);
+        }catch(e){
+
+        }finally {
+            commit('unsetLogsLoaderFlag');
+        }
+    }
 
 };
 

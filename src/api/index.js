@@ -2,8 +2,7 @@ import axios from "axios";
 import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
-const baseURL = 'https://badhan-web.herokuapp.com';
-// const baseURL = 'http://localhost:3000';
+const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;
 
 const badhanAxios = axios.create({
     baseURL
