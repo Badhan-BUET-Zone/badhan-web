@@ -1,4 +1,4 @@
-import {badhanAxios} from '../../api';
+import {badhanAxios,resetBaseURL,enableGuestAPI} from '../../api';
 const state = {
     token: null,
     signInLoaderFlag: false,
@@ -75,6 +75,7 @@ const actions = {
             commit('setLoadingFalse');
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
+            resetBaseURL()
         }
     },
     async logoutAll({getters, commit, dispatch}) {
@@ -88,6 +89,7 @@ const actions = {
             commit('setLoadingFalse');
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
+            resetBaseURL()
         }
     },
     async autoLogin({getters, commit, dispatch}) {
@@ -114,6 +116,16 @@ const actions = {
 
 
     },
+
+    async guestLogin({dispatch}){
+        enableGuestAPI();
+        await dispatch('login',{phone:"123465",password:"oseihgfweoisng",rememberFlag: false})
+    },
+
+    async resetBaseURLOfAPI(){
+        resetBaseURL()
+    },
+
     async login({getters, commit, dispatch}, payload) {
         commit('signInLoaderFlagOn');
         try {

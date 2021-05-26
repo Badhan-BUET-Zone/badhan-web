@@ -1,4 +1,4 @@
-import {badhanAxios} from '@/api';
+import {badhanAxios, resetBaseURL} from '@/api';
 const state = {
     passwordLoader: false,
     passwordError: null,
@@ -50,6 +50,7 @@ const actions = {
             return false;
         } finally {
             commit('passwordLoaderOff');
+            resetBaseURL();
         }
     }
 };

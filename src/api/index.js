@@ -2,10 +2,21 @@ import axios from "axios";
 import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
+const baseURL = 'https://badhan-web.herokuapp.com';
+// const baseURL = 'http://localhost:3000';
+
 const badhanAxios = axios.create({
-    baseURL:'https://badhan-web.herokuapp.com'
-    // baseURL:'http://localhost:3000'
+    baseURL
 });
+
+const enableGuestAPI = ()=>{
+    badhanAxios.defaults.baseURL += '/guest';
+}
+
+const resetBaseURL = ()=>{
+    badhanAxios.defaults.baseURL = baseURL
+}
+
 const firebaseAxios = axios.create({
     baseURL:'https://badhan-buet-default-rtdb.firebaseio.com'
 });
@@ -42,5 +53,5 @@ badhanAxios.interceptors.response.use( (response)=>{
 });
 
 export{
-    badhanAxios,firebaseAxios
+    badhanAxios,firebaseAxios,enableGuestAPI, resetBaseURL
 }

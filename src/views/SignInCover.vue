@@ -79,6 +79,16 @@
                     >
                       Sign In
                     </v-btn>
+                    <v-btn
+                        color="primary"
+                        rounded
+                        class="ml-2"
+                        @click="guestSignInClicked()"
+                        :disabled="getSignInLoaderFlag"
+                        :loading="getSignInLoaderFlag"
+                    >
+                      Sign In as Guest
+                    </v-btn>
                   </div>
 
                 </v-col>
@@ -158,6 +168,7 @@ import SignInDialog from "@/components/SignInDialog";
 import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
 import {required, minLength,maxLength} from 'vuelidate/lib/validators'
+import {badhanAxios} from "../api";
 export default {
   name: "SignInCover",
   data() {
@@ -210,7 +221,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
-    ...mapActions(['login']),
+    ...mapActions(['login','guestLogin']),
     ...mapMutations(['clearSignInError']),
     async signInClicked() {
       await this.$v.$touch();
@@ -228,6 +239,12 @@ export default {
         await this.$router.push("/home");
         this.notifySuccess('Sign in successful');
       }
+    },
+
+    async guestSignInClicked(){
+        await this.guestLogin();
+        await this.$router.push("/home");
+        this.notifySuccess('Sign in successful');
     },
 
     clearClicked() {
