@@ -72,22 +72,25 @@
                     <v-btn
                         color="primary"
                         rounded
-                        class="ml-2"
+                        class="ma-1"
                         @click="signInClicked()"
                         :disabled="getSignInLoaderFlag || $v.$anyError"
                         :loading="getSignInLoaderFlag"
                     >
                       Sign In
                     </v-btn>
+                    <br>
                     <v-btn
+                        small
+                        text
                         color="primary"
                         rounded
-                        class="ml-2"
+                        class="ma-1"
                         @click="guestSignInClicked()"
                         :disabled="getSignInLoaderFlag"
                         :loading="getSignInLoaderFlag"
                     >
-                      Sign In as Guest
+                      Or, login as guest
                     </v-btn>
                   </div>
 
@@ -96,7 +99,7 @@
 
                 <br>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -107,7 +110,7 @@
                   About the App
                 </v-btn>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -120,7 +123,7 @@
                   <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -134,7 +137,7 @@
                 </v-btn>
 
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -145,7 +148,7 @@
                   Know the Developers
                 </v-btn>
                 <v-btn class="align-self-end ma-1"
-                       small
+                       x-small
                        color="primary"
                        rounded
                        outlined
