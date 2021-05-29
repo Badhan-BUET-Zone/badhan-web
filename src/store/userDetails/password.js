@@ -42,9 +42,14 @@ const actions = {
 
         try {
             let response = await badhanAxios.post("v2/donor/password/change", payload);
-            commit('removeToken',{},{root:true});
-            commit('removeTokenFromLocalStorage',{},{root:true});
-            dispatch('notification/notifySuccess',"Successfully changed password. Login again to continue",{root:true});
+            if(payload.logoutFlag){
+                commit('removeToken',{},{root:true});
+                commit('removeTokenFromLocalStorage',{},{root:true});
+                dispatch('notification/notifySuccess',"Successfully changed password. Login again to continue",{root:true});
+            }else{
+                dispatch('notification/notifySuccess',"Successfully changed password.",{root:true});
+            }
+
             return true;
         } catch (error) {
             return false;

@@ -487,6 +487,7 @@ export default {
       if(await this.savePassword({
         donorId: this.$route.query.id,
         newPassword: this.newPassword,
+        logoutFlag: this.$route.query.id=== this.getID
       })){
         this.$router.push('/');
       }
