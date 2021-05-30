@@ -6,7 +6,10 @@ const state = {
     logs: [],
     logsLoaderFlag: false,
 
-    logDeleteFlag: false
+    logDeleteFlag: false,
+
+    volunteers: [],
+    volunteerLoaderFlag: false,
 };
 
 const getters = {
@@ -24,11 +27,18 @@ const getters = {
 
 
     getLogsLoaderFlag: state=>{
-        return state.logsLoaderFlag
+        return state.logsLoaderFlag;
     },
 
     getLogDeleteFLag: state=>{
-        return state.logDeleteFlag
+        return state.logDeleteFlag;
+    },
+
+    getVolunteers: state=>{
+        return state.volunteers;
+    },
+    getVolunteerLoaderFlag: state=>{
+        return state.volunteerLoaderFlag
     }
 };
 const mutations = {
@@ -62,7 +72,21 @@ const mutations = {
     },
     unsetLogDeleteFlag(state){
         state.logDeleteFlag = false;
+    },
+
+    setVolunteers(state,payload){
+        state.volunteers = payload;
+    },
+    unsetVolunteers(state){
+        state.volunteers = [];
+    },
+    setVolunteerLoaderFlag(state){
+        state.volunteerLoaderFlag = true;
+    },
+    unsetVolunteerLoaderFlag(state){
+        state.volunteerLoaderFlag = false;
     }
+
 };
 const actions = {
     async fetchStatistics({ commit, getters }) {
@@ -100,10 +124,19 @@ const actions = {
             commit('unsetLogDeleteFlag');
         }
     },
-    async getFilteredLogs({commit,dispatch,getters},date){
-        console.log(date);
-        return getters.getLogs;
-    },
+
+    async fetchAllVolunteers({commit}){
+        commit('setVolunteerLoaderFlag');
+        commit('unsetVolunteers');
+        try{
+            let response = await badhanAxios.get('/v1/admin/volunteers/all')
+            commit('setVolunteers',response.data.data);
+        }catch(e){
+
+        }finally{
+            commit('unsetVolunteerLoaderFlag');
+        }
+    }
 
 };
 

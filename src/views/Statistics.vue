@@ -80,38 +80,61 @@
           </v-col>
         </v-row>
       </v-card-text>
-    </v-card>
-
-    <v-card class="mt-4 rounded-xl" v-if="selectedDate===null">
-      <v-card-text>
+      <v-card-text v-if="selectedDate===null">
         Please choose a date to see the logs
       </v-card-text>
+      <div v-else>
+        <v-card-title>Logs of {{ selectedDate.toDateString() }}</v-card-title>
+        <v-data-table
+            dense
+            :headers="headers"
+            :items="getLogsByDate"
+            :items-per-page="10"
+            class="elevation-1 mt-2"
+            sort-by="date"
+            sort-desc
+        >
+          <template v-slot:item.editedObject="{ item }">
+            <LogObject :object="item.editedObject"></LogObject>
+          </template>
+          <template v-slot:item.date="{ item }">
+            {{ new Date(item.date).toLocaleString() }}
+          </template>
+          <template v-slot:item.hall="{ item }">
+            {{ halls[item.hall] }}
+          </template>
+        </v-data-table>
+      </div>
+      <v-card-actions>
+        <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
+               @click="removeAllLogsClicked">
+          Delete All Logs
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+
+    <v-card max-width="500" class="mt-4 pa-2 rounded-xl" v-if="getVolunteerLoaderFlag">
+      <v-progress-circular
+          indeterminate
+          color="primary"
+      ></v-progress-circular>
     </v-card>
     <v-card v-else class="mt-4 rounded-xl">
-      <v-card-title>Logs of {{selectedDate.toDateString()}}</v-card-title>
-    <v-data-table
-        dense
-        :headers="headers"
-        :items="getLogsByDate"
-        :items-per-page="10"
-        class="elevation-1 mt-2"
-        sort-by="date"
-        sort-desc
-    >
-      <template v-slot:item.editedObject="{ item }">
-        <LogObject :object="item.editedObject"></LogObject>
-      </template>
-      <template v-slot:item.date="{ item }">
-        {{ new Date(item.date).toLocaleString() }}
-      </template>
-      <template v-slot:item.hall="{ item }">
-        {{ halls[item.hall] }}
-      </template>
-    </v-data-table>
+      <v-card-title>List of all volunteers</v-card-title>
+      <v-data-table
+          dense
+          :headers="volunteerListHeaders"
+          :items="getVolunteers"
+          :items-per-page="10"
+          class="elevation-1 mt-2"
+          sort-by="hall"
+          sort-desc
+      >
+        <template v-slot:item.hall="{ item }">
+          {{ halls[item.hall] }}
+        </template>
+      </v-data-table>
     </v-card>
-    <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag" @click="removeAllLogsClicked">
-      Delete All Logs
-    </v-btn>
   </div>
 </template>
 
@@ -125,7 +148,7 @@ export default {
   name: "Statistics",
   components: {PageTitle, LogObject},
   computed: {
-    ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag']),
+    ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),
     getLogsByDate() {
       if (this.selectedDate === null) {
@@ -139,7 +162,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
-    ...mapActions('statistics', ['fetchStatistics', 'fetchLogs', 'removeAllLogs', 'getFilteredLogs']),
+    ...mapActions('statistics', ['fetchStatistics', 'fetchLogs', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
     async removeAllLogsClicked() {
       let value = await this.$bvModal.msgBoxConfirm('Confirm deletion of all logs?', {
         centered: true
@@ -193,8 +216,10 @@ export default {
       return;
     }
     this.fetchStatistics();
+    this.fetchAllVolunteers();
     await this.fetchLogs();
     this.updateRange();
+
 
   },
   data() {
@@ -206,6 +231,11 @@ export default {
         {text: 'Hall', value: 'hall'},
         {text: "Update", value: 'editedObject'},
         {text: "Operation", value: 'operation'}
+      ],
+      volunteerListHeaders: [
+        {text: 'Name', value: 'name'},
+        {text: 'Hall', value: 'hall'},
+        {text: 'Student ID', value: 'studentId'}
       ],
 
       ////////////////////////////////////////////////////////////// CALENDER
