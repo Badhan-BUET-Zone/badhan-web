@@ -20,6 +20,9 @@ const getters = {
     getLogs: state=>{
         return state.logs;
     },
+
+
+
     getLogsLoaderFlag: state=>{
         return state.logsLoaderFlag
     },
@@ -96,7 +99,11 @@ const actions = {
         }finally {
             commit('unsetLogDeleteFlag');
         }
-    }
+    },
+    async getFilteredLogs({commit,dispatch,getters},date){
+        console.log(date);
+        return getters.getLogs;
+    },
 
 };
 

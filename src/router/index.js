@@ -112,16 +112,6 @@ const routes = [
     },
     {
         name: 'NotFound',
-        path: '/notfound',
-        component: () => import('@/views/NotFound.vue'),
-        meta: {
-            requiresAuth: false,
-            title: "404 Not Found",
-            designation: 0
-        }
-    },
-    {
-        name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),
         meta: {
