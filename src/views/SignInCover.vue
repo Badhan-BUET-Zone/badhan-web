@@ -30,8 +30,14 @@
                   >
                       Badhan
                     </span>
-                  <p class="subtitle-1">BUET Zone</p>
-                  <p class="subtitle-1" v-if="isMobile">Version: {{ version }}</p>
+                  <p class="subtitle-2">BUET Zone
+                    (<span class="subtitle-2">
+                    <span v-if="!isMobile">Web Version</span>
+                    <span v-else>Version: {{ version }}</span>
+                  </span>)
+                  </p>
+
+
 
                 </v-col>
                 <v-col class="text-center"
