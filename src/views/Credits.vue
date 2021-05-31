@@ -10,22 +10,22 @@
                     Feedback
                 </v-card-title>
                 <v-card-text>
-                    <div>If you love using this app, give a review in Google play store and put a star on the open-source github repository of this platform :D It would really inspire us to keep this app alive.</div>
+                    <div>If you love using this app, give a review in Google play store :D It would really inspire us to keep this app alive.</div>
                     <div>Note: contact mirmahathir1@gmail.com for any further assistance</div>
                 </v-card-text>
-                <v-card-actions class="pa-5">
-                    <v-btn
-                        rounded
-                        class="white--text"
-                        color="red"
-                        @click="goTo('https://github.com/mirmahathir1/badhan-web/issues')"
-                    >
-                        <v-icon left>
-                            mdi-github
-                        </v-icon>
-                        Github
-                    </v-btn>
-                </v-card-actions>
+<!--                <v-card-actions class="pa-5">-->
+<!--                    <v-btn-->
+<!--                        rounded-->
+<!--                        class="white&#45;&#45;text"-->
+<!--                        color="red"-->
+<!--                        @click="goTo('https://github.com/mirmahathir1/badhan-web/issues')"-->
+<!--                    >-->
+<!--                        <v-icon left>-->
+<!--                            mdi-github-->
+<!--                        </v-icon>-->
+<!--                        Github-->
+<!--                    </v-btn>-->
+<!--                </v-card-actions>-->
             </v-card>
 
             <h5 class="mt-5 mb-5">Developers</h5>
