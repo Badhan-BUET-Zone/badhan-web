@@ -16,6 +16,8 @@
     </v-card>
     <v-card class="mt-4 rounded-xl">
       <v-card-title>Activity Logs of Badhan BUET Zone</v-card-title>
+      <v-row>
+        <v-col cols="12" sm="5">
       <v-progress-circular
           v-if="getLogsLoaderFlag"
           indeterminate
@@ -29,14 +31,14 @@
               <v-toolbar
                   flat
               >
-                <v-btn
-                    outlined
-                    class="mr-4"
-                    color="grey darken-2"
-                    @click="setToday"
-                >
-                  Today
-                </v-btn>
+<!--                <v-btn-->
+<!--                    outlined-->
+<!--                    class="mr-4"-->
+<!--                    color="grey darken-2"-->
+<!--                    @click="setToday"-->
+<!--                >-->
+<!--                  Today-->
+<!--                </v-btn>-->
                 <v-btn
                     fab
                     text
@@ -65,21 +67,30 @@
 
               </v-toolbar>
             </v-sheet>
-            <v-sheet height="600">
+            <v-sheet height="500">
               <v-calendar
                   ref="calendar"
                   v-model="focus"
                   color="primary"
-                  :events="events"
                   :event-color="getEventColor"
                   :type="'month'"
                   @click:date="viewDay"
-              ></v-calendar>
+              >
+                <template v-slot:day="{ past, date }">
+                  <v-chip class="mx-auto" style="width: 100%">
+                    {{getCountOfLogsOfDate(date)}}
+                  </v-chip>
+
+                </template>
+              </v-calendar>
 
             </v-sheet>
           </v-col>
         </v-row>
       </v-card-text>
+        </v-col>
+
+          <v-col cols="12" sm="7">
       <v-card-text v-if="selectedDate===null">
         Please choose a date to see the logs
       </v-card-text>
@@ -105,6 +116,8 @@
           </template>
         </v-data-table>
       </div>
+          </v-col>
+      </v-row>
       <v-card-actions>
         <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
                @click="removeAllLogsClicked">
@@ -158,11 +171,17 @@ export default {
         return new Date(log.date).toDateString() === this.selectedDate.toDateString();
       })
       return filteredLogs
-    }
+    },
+
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions('statistics', ['fetchStatistics', 'fetchLogs', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
+    getCountOfLogsOfDate(date){
+      return this.getLogs.filter((log)=>{
+        return new Date(log.date).toDateString() === new Date(date).toDateString();
+      }).length
+    },
     async removeAllLogsClicked() {
       let value = await this.$bvModal.msgBoxConfirm('Confirm deletion of all logs?', {
         centered: true
@@ -180,9 +199,9 @@ export default {
     getEventColor(event) {
       return event.color
     },
-    setToday() {
-      this.focus = ''
-    },
+    // setToday() {
+    //   this.focus = ''
+    // },
     prev() {
       this.$refs.calendar.prev()
     },
@@ -195,7 +214,6 @@ export default {
 
       this.getLogs.forEach((log) => {
         events.push({
-          name: log.operation,
           start: new Date(log.date),
           color: 'secondary',
           timed: true,
