@@ -1,5 +1,6 @@
 import {badhanAxios} from '/src/api'
-const state={
+
+const state = {
     //SEE DONOR DETAILS
     name: null,
     studentId: null,
@@ -11,6 +12,7 @@ const state={
     comment: null,
     designation: null,
     roomNumber: null,
+    donationCount: 0,
 
     //
     donorLoaderFlag: true,
@@ -18,31 +20,32 @@ const state={
 
 
 };
-const getters={
+const getters = {
     //SEE DETAILS
     getProfile: state => {
         return {
-          name: state.name,
-          studentId: state.studentId,
-          lastDonation: state.lastDonation,
-          bloodGroup: state.bloodGroup,
-          hall: state.hall,
-          phone: state.phone,
-          address: state.address,
-          comment: state.comment,
-          designation: state.designation,
-          roomNumber: state.roomNumber
+            name: state.name,
+            studentId: state.studentId,
+            lastDonation: state.lastDonation,
+            bloodGroup: state.bloodGroup,
+            hall: state.hall,
+            phone: state.phone,
+            address: state.address,
+            comment: state.comment,
+            designation: state.designation,
+            roomNumber: state.roomNumber,
+            donationCount: state.donationCount
         }
-      }
+    }
     ,
-    getDonorLoaderFlag: state=>{
+    getDonorLoaderFlag: state => {
         return state.donorLoaderFlag;
     },
-    getDonorDetailsError: state=>{
+    getDonorDetailsError: state => {
         return state.donorDetailsError;
     }
 };
-const mutations={
+const mutations = {
     //SEE DETAILS
     setProfile(state, payload) {
         state.name = payload.name;
@@ -55,26 +58,27 @@ const mutations={
         state.comment = payload.comment;
         state.designation = payload.designation;
         state.roomNumber = payload.roomNumber;
+        state.donationCount = payload.donationCount;
 
-      },
+    },
 
-      donorLoaderFlagOn(state){
-        state.donorLoaderFlag=true;
-      },
-      donorLoaderFlagOff(state){
-        state.donorLoaderFlag=false;
-      },
+    donorLoaderFlagOn(state) {
+        state.donorLoaderFlag = true;
+    },
+    donorLoaderFlagOff(state) {
+        state.donorLoaderFlag = false;
+    },
 
-      setDonorDetailsError(state,payload){
-          state.donorDetailsError=payload;
-      },
-      clearDonorDetailsError(state){
-          state.donorDetailsError = null;
-      }
+    setDonorDetailsError(state, payload) {
+        state.donorDetailsError = payload;
+    },
+    clearDonorDetailsError(state) {
+        state.donorDetailsError = null;
+    }
 
 };
-const actions={
-    async getDetails({ commit, getters,rootState, rootGetters,dispatch}, payload) {
+const actions = {
+    async getDetails({commit, getters, rootState, rootGetters, dispatch}, payload) {
         let params = {
             donorId: payload
         };
@@ -82,7 +86,7 @@ const actions={
         try {
             let response = await badhanAxios.get('v3/donor/details', {params});
 
-            commit('setProfile',response.data.donor)
+            commit('setProfile', response.data.donor)
         } catch (error) {
 
         } finally {

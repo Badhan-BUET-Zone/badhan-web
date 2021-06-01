@@ -31,8 +31,10 @@
             <span v-else-if="designation === 2">Hall Admin</span>
             <span v-else>Super Admin</span>
           </v-chip>
+          <v-chip class="ma-1" color="secondary">{{donationCount}} Donations</v-chip>
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
+
           <br>
           <v-btn rounded color="secondary" class="ma-1" @click="callFromDialer">
             <v-icon left>
@@ -217,6 +219,7 @@ export default {
       room: "",
       address: "",
       lastDonation: "",
+      donationCount: 0,
 
       dateToBeDeleted: "",
 
@@ -290,6 +293,7 @@ export default {
         this.address = profile.address;
         this.comment = profile.comment;
         this.designation = profile.designation;
+        this.donationCount = profile.donationCount;
 
         let date = new Date(profile.lastDonation);
         this.lastDonation =
