@@ -177,7 +177,8 @@
                 <br/>
                 <div v-if="getDonationList.length!==0">
                   <div class="input-group mb-3" v-for="date in getDonationList">
-                    <input type="text" readonly class="form-control" :value="datePrint(date)"/>
+                    <input type="text" readonly class="form-control" :value="date===0?'Unknown date':datePrint(date)"/>
+
                     <div class="input-group-append">
                       <button class="btn btn-success" type="button"
                               @click="deleteDonationClicked(date)">
