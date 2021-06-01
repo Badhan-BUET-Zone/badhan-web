@@ -21,6 +21,8 @@
       <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
       <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
       <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
+      <v-text-field rounded outlined label="Donation Count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
+                    :error-messages="donationCountErrors"></v-text-field>
       <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="newDonationDate"
               transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ on, attrs }">
@@ -35,7 +37,7 @@
       </v-menu>
     </v-container>
     <v-card-actions>
-      <v-btn rounded :loading="getNewDonorLoader" color="secondary" @click="clearFields">Reset</v-btn>
+      <v-btn rounded :disabled="getNewDonorLoader" color="secondary" @click="clearFields">Reset</v-btn>
       <v-btn :disabled="getNewDonorLoader|| $v.$anyError" rounded :loading="getNewDonorLoader" color="primary"
              @click="createDonorClicked">Save Donor
       </v-btn>
@@ -64,6 +66,7 @@ export default {
       batch: null,
       roll: null,
       department: null,
+      donationCount:0,
 
       comment: null,
       newDonationDate: "",
@@ -105,6 +108,11 @@ export default {
     roll: {
       minLength: minLength(3),
       maxLength: maxLength(3),
+      numeric,
+      required
+    },
+    donationCount:{
+      maxLength: maxLength(2),
       numeric,
       required
     }
@@ -169,6 +177,19 @@ export default {
       !this.$v.roll.numeric && errors.push('Roll number must be numeric')
       !this.$v.roll.required && errors.push('Roll number is required')
       return errors
+    },
+    donationCountErrors() {
+      const errors = []
+      if (!this.$v.donationCount.$dirty) return errors
+      !this.$v.donationCount.maxLength && errors.push('Maximum donation count can be 99')
+      !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
+      !this.$v.donationCount.required && errors.push('Donation count is required')
+
+      if(this.newDonationDate!=="" && this.donationCount===0){
+        errors.push('Donation count must be non-zero if last donation is specified')
+      }
+
+      return errors
     }
   },
   filters: {
@@ -207,41 +228,18 @@ export default {
       if (this.$v.$anyError) {
         return;
       }
-      if (isNaN(this.batch) || this.batch.length !== 2) {
-        this.notifyError("Please enter valid batch number for creating a donor")
-        return;
-      }
-      if (this.department === "") {
-        this.notifyError("Please enter department of new donor")
-        return;
-      }
-      if (this.roll === "") {
-        this.roll = "000";
-      }
-      if (this.bloodGroup === -1) {
-        this.notifyError("Blood group can't be left blank for new donor")
-        return;
-      }
-      if (this.name.length === 0) {
-        this.notifyError("Please enter the name of donor")
-        return;
-      }
-      if (this.phone.toString().length === 0) {
-        this.notifyError("Please enter the phone number of donor");
-        return;
-      }
-      if (isNaN(this.phone)) {
-        this.notifyError("Please enter a valid phone number");
-        return;
-      }
-      if (this.phone.toString().length !== 11) {
-        this.notifyError("Please enter an 11 digit phone number for new donor")
+
+      if(this.newDonationDate!=="" && this.donationCount===0){
         return;
       }
 
       let newDonationDate;
       if (this.newDonationDate === "") {
         newDonationDate = new Date(0);
+        if(this.donationCount!==0){
+          this.notifyError('You have to include last donation if donation count is non-zero');
+          return;
+        }
       } else {
         newDonationDate = new Date(this.newDonationDate);
       }
@@ -258,6 +256,7 @@ export default {
         roomNumber: this.roomNumber,
         comment: this.comment,
         lastDonation: newDonationDate.getTime(),
+        extraDonationCount: newDonationDate.getTime()===0?0:this.donationCount-1,
       };
       let ok = await this.saveDonor(sendData);
       if (ok) {
