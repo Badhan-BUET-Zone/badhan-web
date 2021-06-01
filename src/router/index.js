@@ -101,6 +101,16 @@ const routes = [
         }
     },
     {
+        name: 'BatchInsertion',
+        path: '/batchInsertion',
+        component: () => import('@/views/BatchInsertion.vue'),
+        meta:{
+            requiresAuth: true,
+            title: 'Batch Insertion',
+            designation: 1
+        }
+    },
+    {
         name: 'Archive',
         path: '/archive',
         component: () => import('@/views/Archive.vue'),
@@ -133,9 +143,7 @@ router.beforeEach((to, from, next) => {
         next('/');
     } else if (store.getters.isLoggedIn && to.name == 'SignIn') {
         next('/home');
-    } else /*if(store.getters.getDesignation < to.meta.designation){
-        next('/notfound');
-    } else*/{
+    } else {
         next();
     }
 })
