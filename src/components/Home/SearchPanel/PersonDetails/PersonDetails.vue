@@ -429,6 +429,8 @@ export default {
         donorId: this.$route.query.id,
         date: date,
       });
+      this.donationCount =  this.donationCount - 1;
+
       let newDate = new Date(lastDonation);
       this.availableIn =
           120 -
@@ -446,6 +448,8 @@ export default {
           (newDate.getMonth() + 1) +
           "/" +
           newDate.getFullYear();
+
+
     },
     async saveSettingsClicked() {
       await this.$v.newPassword.$touch();

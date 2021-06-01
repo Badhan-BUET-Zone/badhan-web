@@ -217,6 +217,7 @@ export default {
       this.batch = null;
       this.newDonationDate = "";
       this.comment = null;
+      this.donationCount = 0;
     },
     pad(n, width, z) {
       z = z || '0';
