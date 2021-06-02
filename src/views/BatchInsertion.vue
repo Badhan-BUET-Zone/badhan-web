@@ -20,30 +20,7 @@
     </v-card>
     <v-row no-gutters>
       <v-col v-for="(donor, index) in listOfDonors" :key="index" cols="12" sm="3">
-        <v-card rounded class="ma-1">
-          <v-card-text>
-            <p><b>Name: </b>{{donor.name}}</p>
-            <p><b>Phone: </b>{{donor.phone}}</p>
-            <p><b>Student ID: </b>{{donor.studentId}}</p>
-            <p><b>Blood Group: </b>{{bloodGroups[donor.bloodGroup]}}</p>
-            <p><b>Hall: </b>{{halls[donor.hall]}}</p>
-            <p><b>Address: </b>{{donor.address}}</p>
-            <p><b>Room Number: </b>{{donor.roomNumber}}</p>
-            <p><b>Comment: </b>{{donor.comment}}</p>
-            <p><b>Donation Count: </b>{{donor.donationCount}}</p>
-            <p>
-              <b>Last Donation: </b>
-              <span v-if="donor.lastDonation!==0">
-                {{new Date(donor.lastDonation).toDateString()}}
-              </span>
-              <span v-else>None</span>
-            </p>
-          </v-card-text>
-          <v-card-actions>
-              <v-btn small color="secondary" rounded>Discard</v-btn>
-              <v-btn small color="primary" rounded>Create</v-btn>
-          </v-card-actions>
-        </v-card>
+        <NewPersonCard :donor="donor"></NewPersonCard>
       </v-col>
     </v-row>
 
@@ -55,16 +32,15 @@
 import PageTitle from "../components/PageTitle";
 import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 import {mapActions} from "vuex";
-import {halls,bloodGroups} from "../mixins/constants";
 
+import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
 export default {
   name: "BatchInsertion",
   data: () => {
     return {
       jsonFile: null,
       listOfDonors: [],
-      halls,
-      bloodGroups
+
     }
   },
   validations: {
@@ -103,6 +79,7 @@ export default {
     this.notifyInfo('Page under construction');
   },
   components: {
+    NewPersonCard,
     PageTitle
   }
 }

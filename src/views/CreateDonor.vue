@@ -50,7 +50,7 @@
 import {bloodGroups, halls, departments} from "@/mixins/constants";
 import {mapGetters, mapActions} from "vuex";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
-import PageTitle from "../components/PageTitle";
+import PageTitle from "@/components/PageTitle";
 
 export default {
   name: "CreateDonor",
