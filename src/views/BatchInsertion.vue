@@ -112,7 +112,7 @@ export default {
         donationCount : null,
         lastDonation: null,
 
-        key: 0,
+        key: new Date().getTime(),
       }];
     }
   },
