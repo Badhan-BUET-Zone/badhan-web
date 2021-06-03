@@ -234,6 +234,7 @@ export default {
         return;
       }
 
+
       let newDonationDate;
       if (this.newDonationDate === "") {
         newDonationDate = new Date(0);

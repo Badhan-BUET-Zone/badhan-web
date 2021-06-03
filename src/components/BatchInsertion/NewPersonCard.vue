@@ -8,25 +8,54 @@
                     :error-messages="phoneErrors"></v-text-field>
       <v-text-field rounded outlined label="Student ID" dense v-model="studentId" @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"></v-text-field>
+      <div v-if="!$v.studentId.departmentCheck">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                color="error"
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                text
+                class="mb-3"
+            >
+              Click to see the departments
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+                v-for="(item, index) in departments.filter((department)=>department!=='NULL')"
+                :key="index"
+            >
+              <v-list-item-title>{{ item }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
       <v-select rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
-      <v-select rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
+      <v-select rounded :items="halls" label="Select Hall" outlined dense v-model="hall"
                 @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
       <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
       <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
-      <v-text-field rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
+      <v-text-field type="number" rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
                     :error-messages="donationCountErrors"></v-text-field>
-      <p>
-        <b>Last Donation: </b>
-        <span v-if="donor.lastDonation!==0">
-                {{ new Date(donor.lastDonation).toDateString() }}
-              </span>
-        <span v-else>None</span>
-      </p>
+      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="lastDonation"
+              transition="scale-transition" offset-y min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field rounded v-model="lastDonation" label="Pick Last Donation Date" prepend-icon="mdi-calendar" readonly
+                        v-bind="attrs" v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="lastDonation" no-title scrollable>
+          <v-spacer></v-spacer>
+          <v-btn rounded text color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn rounded text color="primary" @click="$refs.menu.save(lastDonation)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
     </v-card-text>
     <v-card-actions>
-      <v-btn small color="secondary" rounded>Discard</v-btn>
+      <v-btn small color="secondary" rounded @click="discardClicked">Discard</v-btn>
       <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError"
              :loading="donorCreationLoader">Create
       </v-btn>
@@ -35,14 +64,14 @@
 </template>
 
 <script>
-import {halls, bloodGroups} from "@/mixins/constants";
+import {halls, bloodGroups,departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapGetters} from "vuex";
 
 export default {
   name: "NewPersonCard",
-  props: ['donor'],
-  validations: {
+  props: ['donor','discardDonor'],
+  validations:()=>{return{
     phone: {
       required,
       minLength: minLength(13),
@@ -59,30 +88,37 @@ export default {
       minLength: minLength(7),
       maxLength: maxLength(7),
       numeric,
-      required
+      required,
+      departmentCheck(studentId){
+        let indexOfDepartment = parseInt(String(studentId).substr(2,2));
+        if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
+          return false;
+        }
+        return true;
+      }
     },
     hall: {
-      required
+      required,
+      permission(hall){
+        //COVID DATABASE
+        return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation!==3);
+      }
     },
     donationCount:{
       maxLength: maxLength(2),
       numeric,
-      required
+      required,
+      lastDonationCheck(value){
+        return !(this.lastDonation === null && parseInt(value) !== 0);
+      },
+      lastDonationCheck2(value){
+        return !(this.lastDonation !== null && parseInt(value) === 0);
+
+      }
     }
-  },
+  }},
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
-    availableHalls() {
-      if (this.getDesignation !== null) {
-        if (this.getDesignation === 3) {
-          return halls;
-        } else {
-          //covid support
-          //return [halls[this.getHall], halls[7]];
-          return [halls[this.getHall], halls[7], halls[8]];
-        }
-      }
-    },
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -105,6 +141,7 @@ export default {
       !this.$v.studentId.maxLength && errors.push('Student ID must be 7 digits long')
       !this.$v.studentId.required && errors.push('Student ID is required')
       !this.$v.studentId.numeric && errors.push('Student ID must be numeric')
+      !this.$v.studentId.departmentCheck && errors.push('Invalid department ID')
       return errors
     },
     bloodGroupErrors() {
@@ -116,7 +153,8 @@ export default {
     hallErrors() {
       const errors = []
       if (!this.$v.hall.$dirty) return errors
-      !this.$v.hall.required && errors.push('Hall is required')
+      !this.$v.hall.required && errors.push('Hall is required');
+      !this.$v.hall.permission && errors.push('You are not allowed to create donor for this hall')
       return errors
     },
     donationCountErrors() {
@@ -125,6 +163,8 @@ export default {
       !this.$v.donationCount.maxLength && errors.push('Max donation count can be 99')
       !this.$v.donationCount.required && errors.push('Donation count is required')
       !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
+      !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
+      !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
       return errors
     },
   },
@@ -132,6 +172,7 @@ export default {
     return {
       halls,
       bloodGroups,
+      departments,
 
       name: null,
       phone: null,
@@ -145,6 +186,7 @@ export default {
       lastDonation: null,
 
       donorCreationLoader: false,
+      menu: false,
     }
   },
 
@@ -154,14 +196,18 @@ export default {
     this.studentId = this.$props.donor.studentId;
     this.bloodGroup = this.bloodGroups[this.$props.donor.bloodGroup];
 
-    if(this.getDesignation===3 || this.getHall===this.$props.donor.hall){
-      this.hall = this.halls[this.$props.donor.hall];
-    }
+    this.hall = this.halls[this.$props.donor.hall];
+
     this.address = this.$props.donor.address;
     this.roomNumber = this.$props.donor.roomNumber;
     this.comment = this.$props.donor.comment;
     this.donationCount = this.$props.donor.donationCount;
-    this.lastDonation = this.$props.donor.lastDonation;
+
+    // this.lastDonation = this.$props.donor.lastDonation;
+    if(this.$props.donor.lastDonation!==0){
+      this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0,10)
+    }
+
   },
   methods: {
     async createDonorClicked() {
@@ -170,9 +216,12 @@ export default {
         return;
       }
       console.log("Donor creation request sent");
-      //can't create donor of other halls
       //can't input invalid bullshit data
       // use pagination
+      // prevent returning the duplicate user in case if the duplicate user is of another hall
+    },
+    discardClicked(){
+      this.discardDonor(this.$props.donor.key);
     }
   }
 }

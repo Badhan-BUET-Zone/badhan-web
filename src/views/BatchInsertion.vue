@@ -18,9 +18,20 @@
         <v-btn :disabled="$v.$anyError" color="primary" rounded @click="fileUploadClicked">Upload JSON data</v-btn>
       </v-card-actions>
     </v-card>
+    <v-card flat class="mt-1">
+      <v-pagination
+          color="secondary"
+          circle
+          v-if="listOfDonors.length!==0"
+          v-model="donorPage"
+          class="mx-auto"
+          :length="Math.ceil(listOfDonors.length/4) "
+      ></v-pagination>
+    </v-card>
+
     <v-row no-gutters>
-      <v-col v-for="(donor, index) in listOfDonors" :key="index" cols="12" sm="3">
-        <NewPersonCard :donor="donor"></NewPersonCard>
+      <v-col v-for="(donor) in listOfDonors.slice(4 * (donorPage - 1), 4 * donorPage)" :key="donor.key" cols="12" sm="3">
+        <NewPersonCard :donor="donor" :discard-donor="discardDonor"></NewPersonCard>
       </v-col>
     </v-row>
 
@@ -34,48 +45,57 @@ import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 import {mapActions} from "vuex";
 
 import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
+
 export default {
   name: "BatchInsertion",
   data: () => {
     return {
       jsonFile: null,
       listOfDonors: [],
-
+      donorPage: 1,
     }
   },
+
   validations: {
     jsonFile: {
       required
     }
   },
-  computed:{
-    jsonFileErrors(){
+  computed: {
+    jsonFileErrors() {
       const errors = []
       if (!this.$v.jsonFile.$dirty) return errors
       !this.$v.jsonFile.required && errors.push('JSON file is required.')
       return errors
-    }
+    },
   },
-  methods:{
+  methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
-    async fileUploadClicked(){
+    async fileUploadClicked() {
       await this.$v.$touch();
-      if(this.$v.$anyError){
+      if (this.$v.$anyError) {
         return;
       }
       const reader = new FileReader();
       reader.readAsText(this.jsonFile);
-      reader.onload =  evt => {
+      this.donorPage = 1;
+      reader.onload = evt => {
         this.listOfDonors = JSON.parse(evt.target.result);
+        for (let i = 0; i < this.listOfDonors.length; i++) {
+          this.listOfDonors[i].key = i;
+        }
       }
-      },
-    resetClicked(){
+    },
+    discardDonor(key){
+      this.listOfDonors = this.listOfDonors.filter((donor)=>donor.key!==key);
+    },
+    resetClicked() {
       this.$v.$reset();
-      this.jsonFile=null;
-          this.listOfDonors=[];
+      this.jsonFile = null;
+      this.listOfDonors = [];
     }
   },
-  mounted(){
+  mounted() {
     this.notifyInfo('Page under construction');
   },
   components: {
