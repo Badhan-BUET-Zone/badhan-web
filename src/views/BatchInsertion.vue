@@ -18,22 +18,24 @@
         <v-btn :disabled="$v.$anyError" color="primary" rounded @click="fileUploadClicked">Upload JSON data</v-btn>
       </v-card-actions>
     </v-card>
-    <v-card flat class="mt-1">
-      <v-pagination
-          color="secondary"
-          circle
-          v-if="listOfDonors.length!==0"
-          v-model="donorPage"
-          class="mx-auto"
-          :length="Math.ceil(listOfDonors.length/4) "
-      ></v-pagination>
-    </v-card>
 
     <v-row no-gutters>
       <v-col v-for="(donor) in listOfDonors.slice(4 * (donorPage - 1), 4 * donorPage)" :key="donor.key" cols="12" sm="3">
         <NewPersonCard :donor="donor" :discard-donor="discardDonor"></NewPersonCard>
       </v-col>
     </v-row>
+
+
+    <v-card flat class="mt-1">
+      <v-pagination
+          color="secondary"
+          circle
+          v-if="listOfDonors.length>1"
+          v-model="donorPage"
+          class="mx-auto"
+          :length="Math.ceil(listOfDonors.length/4) "
+      ></v-pagination>
+    </v-card>
 
   </div>
 
@@ -42,7 +44,7 @@
 <script>
 import PageTitle from "../components/PageTitle";
 import {maxLength, minLength, required} from 'vuelidate/lib/validators'
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
 
@@ -62,6 +64,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getHall', 'getDesignation']),
     jsonFileErrors() {
       const errors = []
       if (!this.$v.jsonFile.$dirty) return errors
@@ -92,11 +95,30 @@ export default {
     resetClicked() {
       this.$v.$reset();
       this.jsonFile = null;
-      this.listOfDonors = [];
+      this.resetForms();
+    },
+    resetForms(){
+      this.listOfDonors = [{
+        name:null,
+        phone:null,
+        studentId:null,
+        bloodGroup : null,
+
+        hall : this.getHall,
+
+        address : null,
+        roomNumber : null,
+        comment : null,
+        donationCount : null,
+        lastDonation: null,
+
+        key: 0,
+      }];
     }
   },
   mounted() {
     this.notifyInfo('Page under construction');
+    this.resetForms();
   },
   components: {
     NewPersonCard,

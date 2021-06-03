@@ -204,7 +204,7 @@ export default {
     this.donationCount = this.$props.donor.donationCount;
 
     // this.lastDonation = this.$props.donor.lastDonation;
-    if(this.$props.donor.lastDonation!==0){
+    if(this.$props.donor.lastDonation!==0 && this.$props.donor.lastDonation!==null){
       this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0,10)
     }
 
@@ -217,7 +217,6 @@ export default {
       }
       console.log("Donor creation request sent");
       //can't input invalid bullshit data
-      // use pagination
       // prevent returning the duplicate user in case if the duplicate user is of another hall
     },
     discardClicked(){
