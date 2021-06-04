@@ -74,7 +74,7 @@
 import {halls, bloodGroups,departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
-import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
+import {isNative} from '@/plugins/android_support';
 export default {
   name: "NewPersonCard",
   props: ['donor','discardDonor'],

@@ -1,25 +1,25 @@
 <template>
-    <div
-        class="p-3"
-        style="height: fit-content"
-    >
-        <div v-if="isSearchResultShown">
-            <v-alert dense class="rounded-xl" color="accent lighten-4">
-              <div>
-                Found {{ getNumberOfDonors }} donors
-              </div>
-
-            </v-alert>
+  <div
+      class="p-3"
+      style="height: fit-content"
+  >
+    <div v-if="isSearchResultShown">
+      <v-alert dense class="rounded-xl" color="accent lighten-4">
+        <div>
+          Found {{ getNumberOfDonors }} donors
         </div>
 
-        <div v-if="isSearchResultShown">
-            <div>
-                <json-excel
-                    v-if="!isSmallWindow"
-                    :data="getPersons"
-                    :name="'badhan_'+getSearchedHall+'.xls'"
-                    worksheet="Badhan"
-                    :fields="{
+      </v-alert>
+    </div>
+
+    <div v-if="isSearchResultShown">
+      <div>
+        <json-excel
+            v-if="!isNative"
+            :data="getPersons"
+            :name="'badhan_'+getSearchedHall+'.xls'"
+            worksheet="Badhan"
+            :fields="{
                     name:'name',
                     studentId:'studentId',
                     lastDonation:{
@@ -39,73 +39,72 @@
                     roomNumber: 'roomNumber',
                     donationCount: 'donationCount'
                 }"
-                >
-                    <v-btn color="secondary" rounded class="mb-4" style="width: 100%">
-                        Download Data
-                    </v-btn>
-                </json-excel>
-                <v-btn v-else color="primary" rounded class="mb-4" style="width: 100%" disabled>
-                    Download available on PC
-                </v-btn>
-            </div>
-            <div v-for="(obj, index) in getPersonGroups" :key="index">
-              <v-alert dense class="rounded-xl" color="accent lighten-4">
-                <div>
-                    Batch {{ obj.batch }}:
-                </div>
-              </v-alert>
+        >
+          <v-btn color="secondary" rounded class="mb-4" style="width: 100%">
+            Download Data
+          </v-btn>
+        </json-excel>
+        <v-btn v-else color="primary" rounded class="mb-4" style="width: 100%" disabled>
+          Download available on Web
+        </v-btn>
+      </div>
+      <div v-for="(obj, index) in getPersonGroups" :key="index">
+        <v-alert dense class="rounded-xl" color="accent lighten-4">
+          <div>
+            Batch {{ obj.batch }}:
+          </div>
+        </v-alert>
 
-                <person-card
-                    v-for="(person, personIndex) in obj.people"
-                    :phone="person.phone"
-                    :name="person.name"
-                    :availableIn="person.availableIn"
-                    :bloodGroup="person.bloodGroup"
-                    :studentID="person.studentID"
-                    :lastDonation="person.lastDonation"
-                    :comment="person.comment"
-                    :address="person.address"
-                    :key="personIndex"
-                    :roomNumber="person.roomNumber"
-                    :id="person._id"
-                ></person-card>
-            </div>
-            <v-btn x-small rounded disabled v-if="getDesignation ===3 || getDesignation ===2">Archive these donors</v-btn>
-        </div>
+        <person-card
+            v-for="(person, personIndex) in obj.people"
+            :phone="person.phone"
+            :name="person.name"
+            :availableIn="person.availableIn"
+            :bloodGroup="person.bloodGroup"
+            :studentID="person.studentID"
+            :lastDonation="person.lastDonation"
+            :comment="person.comment"
+            :address="person.address"
+            :key="personIndex"
+            :roomNumber="person.roomNumber"
+            :id="person._id"
+        ></person-card>
+      </div>
+      <v-btn x-small rounded disabled v-if="getDesignation ===3 || getDesignation ===2">Archive these donors</v-btn>
     </div>
+  </div>
 </template>
 <script>
 import PersonCard from "./PersonCard";
 import JsonExcel from "vue-json-excel";
 import {bloodGroups} from "@/mixins/constants";
-import {mapGetters,mapActions} from "vuex";
+import {mapGetters, mapActions} from "vuex";
+import {isNative} from '@/plugins/android_support';
 
 export default {
-    name: "SearchResults",
-    data: function () {
-        return {
-            searchResultShown: false,
-            personGroups: {},
-            numOfDonor: 0,
-            bloodGroups
-        };
-    },
-    methods: {
+  name: "SearchResults",
+  data: function () {
+    return {
+      searchResultShown: false,
+      personGroups: {},
+      numOfDonor: 0,
+      bloodGroups
+    };
+  },
+  methods: {},
+  computed: {
+    ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation']),
+    isNative() {
+      return isNative();
+    }
+  },
 
-    },
-    computed: {
-        ...mapGetters(['getPersonGroups','isSearchResultShown','getNumberOfDonors','getPersons','getSearchedHall','getDesignation']),
-        isSmallWindow() {
-            return window.innerWidth < 500;
-        }
-    },
-
-    created() {
-    },
-    components: {
-        "person-card": PersonCard,
-        "json-excel": JsonExcel
-    },
+  created() {
+  },
+  components: {
+    "person-card": PersonCard,
+    "json-excel": JsonExcel
+  },
 };
 </script>
 
