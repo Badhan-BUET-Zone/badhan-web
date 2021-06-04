@@ -15,8 +15,9 @@
       </v-card-text>
       <v-card-actions>
         <v-btn color="secondary" rounded @click="resetClicked">Reset</v-btn>
-        <v-btn :disabled="$v.$anyError" color="primary" rounded @click="fileUploadClicked">Upload JSON data</v-btn>
+        <v-btn :disabled="$v.$anyError" color="primary" rounded  @click="fileUploadClicked">Upload JSON data</v-btn>
       </v-card-actions>
+      <v-alert type="error" dense v-if="invalidJSONError!==null">{{invalidJSONError}}</v-alert>
     </v-card>
 
     <v-row no-gutters>
@@ -30,7 +31,7 @@
       <v-pagination
           color="secondary"
           circle
-          v-if="listOfDonors.length>1"
+          v-if="listOfDonors.length>4"
           v-model="donorPage"
           class="mx-auto"
           :length="Math.ceil(listOfDonors.length/4) "
@@ -53,6 +54,7 @@ export default {
   data: () => {
     return {
       jsonFile: null,
+      invalidJSONError: null,
       listOfDonors: [],
       donorPage: 1,
     }
@@ -83,9 +85,16 @@ export default {
       reader.readAsText(this.jsonFile);
       this.donorPage = 1;
       reader.onload = evt => {
-        this.listOfDonors = JSON.parse(evt.target.result);
-        for (let i = 0; i < this.listOfDonors.length; i++) {
-          this.listOfDonors[i].key = i;
+        try {
+          this.listOfDonors = JSON.parse(evt.target.result);
+
+
+
+          for (let i = 0; i < this.listOfDonors.length; i++) {
+            this.listOfDonors[i].key = i;
+          }
+        }catch (e){
+          this.invalidJSONError = e;
         }
       }
     },
@@ -96,6 +105,7 @@ export default {
       this.$v.$reset();
       this.jsonFile = null;
       this.resetForms();
+      this.invalidJSONError=null;
     },
     resetForms(){
       this.listOfDonors = [{

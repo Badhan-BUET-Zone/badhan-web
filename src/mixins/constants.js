@@ -11,12 +11,3 @@ export const departments = [
 export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir','Attached','COVID'];
 export const designations=['Donor', 'Volunteer', 'Hall Admin', 'Super Admin'];
 export const bloodGroups=['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-
-/*
-
-ds141524.mlab.com
-41524
-heroku_g7fls047
-heroku_g7fls047
-da7mmvcq7i7l86mbpeskv8am26
- */

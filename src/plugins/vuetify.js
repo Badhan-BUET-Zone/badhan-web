@@ -11,8 +11,8 @@ export default new Vuetify({
                 secondary: colors.pink.darken3,
                 accent: colors.red,
                 error: colors.purple,
-                warning: colors.orange.darken2
-            },
+                warning: colors.orange.lighten3
+            }
         },
     },
 });

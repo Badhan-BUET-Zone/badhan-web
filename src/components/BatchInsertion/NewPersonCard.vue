@@ -57,10 +57,11 @@
     </v-card-text>
     <v-card-actions>
       <v-btn small color="secondary" rounded @click="discardClicked">Discard</v-btn>
-      <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError"
+      <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0"
              :loading="donorCreationLoader">Create
       </v-btn>
     </v-card-actions>
+    <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{warning}} </v-alert>
   </v-card>
 </template>
 
@@ -188,10 +189,18 @@ export default {
 
       donorCreationLoader: false,
       menu: false,
+      warnings:[],
     }
   },
 
   mounted() {
+    const keysExpected = ["name","phone","studentId","bloodGroup","hall","address","roomNumber","comment","donationCount","lastDonation","key"]
+    Object.keys(this.$props.donor).forEach((key)=>{
+      if(!keysExpected.includes(key)){
+        this.warnings.push("Unwanted key found: "+key);
+      }
+    })
+
     this.name = this.$props.donor.name;
     this.phone = this.$props.donor.phone;
     this.studentId = this.$props.donor.studentId;
@@ -217,12 +226,26 @@ export default {
         return;
       }
       console.log("Donor creation request sent");
+
+      let newDonor = {
+        name: this.name,
+        phone: this.phone,
+        studentId: this.studentId,
+        bloodGroup: this.bloodGroups.indexOf(this.bloodGroup),
+        hall: this.halls.indexOf(this.hall),
+        address: this.address,
+        roomNumber: this.roomNumber,
+        comment: this.comment,
+        donationCount: this.donationCount,
+        lastDonation: this.lastDonation,
+      }
+      console.log("New Donor: ",newDonor);
       //can't input invalid bullshit data
       // prevent returning the duplicate user in case if the duplicate user is of another hall
     },
     discardClicked(){
       this.discardDonor(this.$props.donor.key);
-    }
+    },
   }
 }
 </script>
