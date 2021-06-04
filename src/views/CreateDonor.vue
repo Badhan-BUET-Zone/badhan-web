@@ -249,10 +249,10 @@ export default {
       let newStudentId = this.batch + this.pad(this.departments.indexOf(this.department), 2, '0') + this.pad(this.roll, 3, '0')
 
       let sendData = {
+        name: this.name,
         phone: parseInt("88" + this.phone),
         bloodGroup: this.bloodGroups.indexOf(this.bloodGroup),
         hall: this.halls.indexOf(this.hall),
-        name: this.name,
         studentId: parseInt(newStudentId),
         address: this.address,
         roomNumber: this.roomNumber,

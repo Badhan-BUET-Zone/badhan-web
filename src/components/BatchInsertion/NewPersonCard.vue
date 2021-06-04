@@ -68,7 +68,7 @@
 <script>
 import {halls, bloodGroups,departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "NewPersonCard",
@@ -220,24 +220,31 @@ export default {
 
   },
   methods: {
+    ...mapActions('halladmin', ['saveDonor']),
     async createDonorClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {
         return;
       }
-      console.log("Donor creation request sent");
+
+      let lastDonation;
+      if (this.lastDonation === null) {
+        lastDonation = 0;
+      } else {
+        lastDonation = new Date(this.lastDonation).getTime();
+      }
 
       let newDonor = {
-        name: this.name,
-        phone: this.phone,
-        studentId: this.studentId,
-        bloodGroup: this.bloodGroups.indexOf(this.bloodGroup),
-        hall: this.halls.indexOf(this.hall),
+        name: String(this.name),
+        phone: Number(this.phone),
+        bloodGroup: Number(this.bloodGroups.indexOf(this.bloodGroup)),
+        hall: Number(this.halls.indexOf(this.hall)),
+        studentId: Number(this.studentId),
         address: this.address,
         roomNumber: this.roomNumber,
         comment: this.comment,
-        donationCount: this.donationCount,
-        lastDonation: this.lastDonation,
+        lastDonation: lastDonation,
+        extraDonationCount: lastDonation===0?0:this.donationCount-1
       }
       console.log("New Donor: ",newDonor);
       //can't input invalid bullshit data
