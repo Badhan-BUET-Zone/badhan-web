@@ -105,9 +105,9 @@ const actions={
                 await badhanAxios.post("v2/donation/insert", donationData);
             }
             dispatch('notification/notifySuccess',"Donor added successfully",{root: true});
-            return true;
+            return {success: true, payload: response};
         } catch (error) {
-            return false;
+            return {success: false, payload: error.response};
         } finally {
             commit('newDonorLoaderOff')
         }

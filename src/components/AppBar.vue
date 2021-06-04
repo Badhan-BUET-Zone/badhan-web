@@ -102,22 +102,22 @@
           </v-list-item>
 
 
-          <v-list-item link to="/createdonor"
-                       style="text-decoration: none">
+<!--          <v-list-item link to="/createdonor"-->
+<!--                       style="text-decoration: none">-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>mdi-plus</v-icon>-->
+<!--            </v-list-item-icon>-->
+<!--            <v-list-item-content>-->
+<!--              <v-list-item-title>Create New Donor</v-list-item-title>-->
+<!--            </v-list-item-content>-->
+<!--          </v-list-item>-->
+
+          <v-list-item link to="/donorCreation" style="text-decoration: none">
             <v-list-item-icon>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>Create New Donor</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item link to="/batchInsertion" style="text-decoration: none">
-            <v-list-item-icon>
-              <v-icon>mdi-account-group</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Batch Insertion</v-list-item-title>
+              <v-list-item-title>Donor Creation</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 

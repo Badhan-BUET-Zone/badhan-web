@@ -101,12 +101,12 @@ const routes = [
         }
     },
     {
-        name: 'BatchInsertion',
-        path: '/batchInsertion',
-        component: () => import('@/views/BatchInsertion.vue'),
+        name: 'Donor Creation',
+        path: '/donorCreation',
+        component: () => import('@/views/DonorCreation.vue'),
         meta:{
             requiresAuth: true,
-            title: 'Batch Insertion',
+            title: 'Donor Creation',
             designation: 1
         }
     },

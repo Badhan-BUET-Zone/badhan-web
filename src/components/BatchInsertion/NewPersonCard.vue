@@ -60,7 +60,12 @@
       <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0"
              :loading="donorCreationLoader">Create
       </v-btn>
+
     </v-card-actions>
+    <v-card-actions v-if="duplicateDonorId!==null">
+      <v-btn small color="primary" rounded @click="goToDuplicateProfile">See Duplicate</v-btn>
+    </v-card-actions>
+
     <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{warning}} </v-alert>
   </v-card>
 </template>
@@ -190,6 +195,7 @@ export default {
       donorCreationLoader: false,
       menu: false,
       warnings:[],
+      duplicateDonorId: null,
     }
   },
 
@@ -200,6 +206,12 @@ export default {
         this.warnings.push("Unwanted key found: "+key);
       }
     })
+
+    keysExpected.forEach((expectedKey)=>{
+      if(!Object.keys(this.$props.donor).includes(expectedKey)){
+        this.warnings.push("Missing key: "+expectedKey);
+      }
+    });
 
     this.name = this.$props.donor.name;
     this.phone = this.$props.donor.phone;
@@ -247,8 +259,19 @@ export default {
         extraDonationCount: lastDonation===0?0:this.donationCount-1
       }
       console.log("New Donor: ",newDonor);
-      //can't input invalid bullshit data
+
+      this.donorCreationLoader = true;
+      let newDonorResult = await this.saveDonor(newDonor);
+      if(newDonorResult.payload.status===409){
+        this.duplicateDonorId = newDonorResult.payload.data.donor._id;
+      }
+      this.donorCreationLoader = false;
+
       // prevent returning the duplicate user in case if the duplicate user is of another hall
+    },
+    goToDuplicateProfile(){
+      console.log("Duplicate donor id: ",this.duplicateDonorId)
+      window.open("/#/home/details?id="+this.duplicateDonorId);
     },
     discardClicked(){
       this.discardDonor(this.$props.donor.key);

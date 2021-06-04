@@ -260,8 +260,8 @@ export default {
         lastDonation: newDonationDate.getTime(),
         extraDonationCount: newDonationDate.getTime()===0?0:this.donationCount-1,
       };
-      let ok = await this.saveDonor(sendData);
-      if (ok) {
+      let result = await this.saveDonor(sendData);
+      if (result.success) {
         this.clearFields();
       }
     },
