@@ -62,7 +62,7 @@
       </v-btn>
 
     </v-card-actions>
-    <v-card-actions v-if="duplicateDonorId!==null">
+    <v-card-actions v-if="duplicateDonorId!==null && !isNative">
       <v-btn small color="primary" rounded @click="goToDuplicateProfile">See Duplicate</v-btn>
     </v-card-actions>
 
@@ -74,7 +74,7 @@
 import {halls, bloodGroups,departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
-
+import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
 export default {
   name: "NewPersonCard",
   props: ['donor','discardDonor'],
@@ -126,6 +126,9 @@ export default {
   }},
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
+    isNative(){
+      return isNative();
+    },
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
