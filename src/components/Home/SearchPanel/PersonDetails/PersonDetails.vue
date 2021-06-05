@@ -47,54 +47,6 @@
           <div class="row" v-if="!getLoadingFlag">
             <div class="col-lg-8 col-md-12 col-sm-12" id="firstColumn">
 
-<!--              NEW DONATION SECTION-->
-              <div class="mt-2">
-                <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :return-value.sync="newDonationDate"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        rounded
-                        v-model="newDonationDate"
-                        label="Add a donation date"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        outlined
-                        v-bind="attrs"
-                        v-on="on"
-                        dense
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="newDonationDate" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                    <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menu.save(newDonationDate)"
-                    >OK
-                    </v-btn
-                    >
-                  </v-date-picker>
-                </v-menu>
-              </div>
-              <v-btn
-                  color="primary"
-                  rounded
-                  small
-                  style="width: 100%"
-                  @click="donateClicked()"
-                  :loading="getDonationLoaderFlag"
-                  :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
-              >Done
-              </v-btn>
-<!--              NEW DONATION SECTION END-->
 
               <v-switch
                   v-if="getDesignation === 3 ||getPhone == oldPhone ||(getHall === halls.indexOf(hall) &&getDesignation > designation) ||halls.indexOf(hall) === 7 ||halls.indexOf(hall) === 8"
@@ -222,7 +174,57 @@
 
             </div>
             <div class="col-lg-4 col-md-12 col-md-12" style="height: fit-content">
-              <p>Last Donation:</p>
+
+              <!--              NEW DONATION SECTION-->
+              <div>
+                <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="newDonationDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        rounded
+                        v-model="newDonationDate"
+                        label="Add a donation date"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        outlined
+                        v-bind="attrs"
+                        v-on="on"
+                        dense
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="newDonationDate" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(newDonationDate)"
+                    >OK
+                    </v-btn
+                    >
+                  </v-date-picker>
+                </v-menu>
+              </div>
+              <v-btn
+                  color="primary"
+                  rounded
+                  small
+                  style="width: 100%"
+                  @click="donateClicked()"
+                  :loading="getDonationLoaderFlag"
+                  :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
+              >Done
+              </v-btn>
+              <!--              NEW DONATION SECTION END-->
+
+              <p class="mt-2">Last Donation:</p>
               <template v-if="lastDonation !== 0">
                 <p class="text-dark">{{ lastDonation }}</p>
                 <br/>
@@ -594,6 +596,7 @@ export default {
             );
         if (newAvailableIn > this.availableIn) {
           this.availableIn = newAvailableIn;
+          this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime());
         }
 
         this.newDonationDate = "";
