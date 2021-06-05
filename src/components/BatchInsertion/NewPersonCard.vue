@@ -57,7 +57,7 @@
     </v-card-text>
     <v-card-actions>
       <v-btn small color="secondary" rounded @click="discardClicked">Discard</v-btn>
-      <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0"
+      <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
              :loading="donorCreationLoader">Create
       </v-btn>
 
@@ -126,6 +126,7 @@ export default {
   }},
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
+    ...mapGetters('halladmin', ['getNewDonorLoader']),
     isNative(){
       return isNative();
     },
