@@ -29,12 +29,11 @@
 <script>
 import {halls} from '@/mixins/constants';
 import {mapActions, mapGetters} from "vuex";
-import Card from "../components/Credits/ContributorCard";
 import PageTitle from "../components/PageTitle";
 
 export default {
     name: "SuperAdminPanel",
-  components: {Card,PageTitle},
+  components: {PageTitle},
   data: function () {
         return {
             hallAdmins: [],

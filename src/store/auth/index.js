@@ -92,11 +92,29 @@ const actions = {
             resetBaseURL()
         }
     },
+    async redirectionLogin({getters,commit, dispatch},payload){
+        commit('setToken',payload);
+        try {
+            commit('signInLoaderFlagOn');
+            let sendData = {};
+
+            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
+
+            // dispatch('notification/notifySuccess', "Successfully Logged In");
+            commit('setMyProfile', profileInfo.data.donor);
+            return true;
+        } catch (error) {
+            commit('removeToken');
+            commit('removeTokenFromLocalStorage');
+            return false;
+        } finally {
+            commit('signInLoaderFlagOff');
+        }
+    },
     async autoLogin({getters, commit, dispatch}) {
         commit('loadTokenFromLocalStorage');
         if (getters.getToken === null)
             return true;
-        console.log(getters.getToken);
         try {
             commit('signInLoaderFlagOn');
             let sendData = {};

@@ -121,6 +121,16 @@ const routes = [
         }
     },
     {
+        name: 'Redirection',
+        path: '/redirection',
+        component: () => import('@/views/Redirection.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Redirection',
+            designation: 0,
+        }
+    },
+    {
         name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),

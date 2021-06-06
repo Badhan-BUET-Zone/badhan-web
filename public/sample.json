@@ -17,7 +17,7 @@
                 "name":"Sumaiya Azad",
                 "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Ftaaha.png?alt=media",
                 "contributions":[
-                    "API Development"
+                    "API Development","Backend Documentation"
                 ],
                 "calender":"June 2021 - Present",
                 "links":[
@@ -39,9 +39,7 @@
             {
                 "name":"Shadman Sakib Showrav",
                 "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fsadman.jpg?alt=media",
-                "contributions":[
-                    "Full Stack Developement"
-                ],
+                "contributions":[],
                 "calender":"January 2020 - Present",
                 "links":[
                     {"icon":"facebook","color":"primary","link":"https://www.facebook.com/Showrov1996"},
@@ -63,7 +61,7 @@
                     {"icon":"github","color":"grey","link":"https://github.com/ags3927"}
                 ]
             },
-            
+
             {
                 "name":"Priyeta Saha",
                 "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fpriyeta.jpg?alt=media",

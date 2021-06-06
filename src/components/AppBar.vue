@@ -15,12 +15,6 @@
       <v-toolbar-title>Badhan BUET Zone</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <!--            <v-progress-circular-->
-      <!--                indeterminate-->
-      <!--                color="white"-->
-      <!--                v-if="getLoadingFlag"-->
-      <!--            ></v-progress-circular>-->
-
       <v-menu
           right
       >
@@ -36,6 +30,16 @@
         </template>
 
         <v-list>
+          <v-list-item @click="goToWebClicked">
+            <v-list-item-icon>
+              <v-icon>
+                mdi-web
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Go to Web</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item @click="signOutClicked">
             <v-list-item-icon>
               <v-icon>
@@ -100,17 +104,6 @@
               <v-list-item-title>Home</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-
-<!--          <v-list-item link to="/createdonor"-->
-<!--                       style="text-decoration: none">-->
-<!--            <v-list-item-icon>-->
-<!--              <v-icon>mdi-plus</v-icon>-->
-<!--            </v-list-item-icon>-->
-<!--            <v-list-item-content>-->
-<!--              <v-list-item-title>Create New Donor</v-list-item-title>-->
-<!--            </v-list-item-content>-->
-<!--          </v-list-item>-->
 
           <v-list-item link to="/donorCreation" style="text-decoration: none">
             <v-list-item-icon>
@@ -199,7 +192,7 @@ export default {
     drawer: false,
   }),
   computed: {
-    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID']),
+    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID','getToken']),
     isMobile() {
       let check = false;
       (function (a) {
@@ -237,6 +230,15 @@ export default {
         await this.logoutAll();
         this.$router.push('/');
       }
+    },
+    async goToWebClicked(){
+      console.log(this.$route.fullPath)
+      let routeData;
+      routeData = this.$router.resolve({
+        name: 'Redirection',
+        query: {token: this.getToken,payload: this.$route.fullPath}
+      });
+      window.open("https://badhan-buet.web.app/"+routeData.href, '_blank');
     }
   },
   watch: {
