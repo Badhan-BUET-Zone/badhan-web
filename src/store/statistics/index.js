@@ -1,4 +1,4 @@
-import {badhanAxios} from '@/api';
+import {badhanAxios,firebaseAxios} from '@/api';
 const state = {
     statistics: null,
     statisticsLoaderFlag: false,
@@ -10,6 +10,9 @@ const state = {
 
     volunteers: [],
     volunteerLoaderFlag: false,
+
+    credits: null,
+    creditsLoaderFlag: false,
 };
 
 const getters = {
@@ -39,6 +42,13 @@ const getters = {
     },
     getVolunteerLoaderFlag: state=>{
         return state.volunteerLoaderFlag
+    },
+
+    getCredits: state=>{
+        return state.credits;
+    },
+    getCreditsLoaderFlag: state=>{
+        return state.creditsLoaderFlag;
     }
 };
 const mutations = {
@@ -85,6 +95,16 @@ const mutations = {
     },
     unsetVolunteerLoaderFlag(state){
         state.volunteerLoaderFlag = false;
+    },
+
+    setCredits(state,payload){
+        state.credits = payload;
+    },
+    setCreditsLoader(state){
+        state.creditsLoaderFlag = true;
+    },
+    unsetCreditsLoader(state){
+        state.creditsLoaderFlag = false;
     }
 
 };
@@ -135,6 +155,18 @@ const actions = {
 
         }finally{
             commit('unsetVolunteerLoaderFlag');
+        }
+    },
+
+    async fetchCredits({commit}){
+        commit('setCreditsLoader');
+        try{
+            let response = await firebaseAxios.get('/contributors.json')
+            commit('setCredits',response.data);
+        }catch (e){
+
+        }finally{
+            commit('unsetCreditsLoader');
         }
     }
 

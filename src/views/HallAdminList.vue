@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card max-width="500" class="pa-4 rounded-xl">
+    <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
         <v-progress-circular
             v-if="getHallAdminsLoaderFlag"
             indeterminate
