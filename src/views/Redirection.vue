@@ -18,7 +18,7 @@ import {mapActions, mapGetters} from "vuex";
 export default {
   name: "Redirection",
   computed: {
-    ...mapGetters(['isLoggedIn', 'getSignInLoaderFlag']),
+    ...mapGetters(['isLoggedIn', 'getSignInLoaderFlag','getToken']),
   },
   components: {
     PageTitle
@@ -27,9 +27,10 @@ export default {
     ...mapActions(['redirectionLogin'])
   },
   async mounted() {
-    console.log(this.$route.query)
     if(!this.isLoggedIn){
-      await this.redirectionLogin(this.$route.query.token);
+      if(!await this.redirectionLogin(this.$route.query.token)){
+        await this.$router.replace('/')
+      }
     }else {
       await this.$router.replace(this.$route.query.payload);
     }

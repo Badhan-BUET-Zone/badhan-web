@@ -4,6 +4,8 @@ const state = {
     signInLoaderFlag: false,
     error: "",
 
+    redirectionRequestMade: false,
+
 };
 
 const getters = {
@@ -19,6 +21,9 @@ const getters = {
     },
     isLoggedIn: state => {
         return state.token !== null;
+    },
+    getRedirectionRequestMade: state =>{
+        return state.redirectionRequestMade
     }
 };
 const mutations = {
@@ -105,7 +110,7 @@ const actions = {
     },
     async redirectionLogin({getters,commit, dispatch},payload){
         try {
-            commit('signInLoaderFlagOn');
+            // commit('signInLoaderFlagOn');
             let sendData = {
                 token: payload
             };
@@ -123,11 +128,9 @@ const actions = {
             commit('setMyProfile', profileInfo.data.donor);
             return true;
         } catch (error) {
-            commit('removeToken');
-            commit('removeTokenFromLocalStorage');
             return false;
         } finally {
-            commit('signInLoaderFlagOff');
+            // commit('signInLoaderFlagOff');
         }
     },
     async autoLogin({getters, commit, dispatch}) {
