@@ -29,10 +29,12 @@ export default {
   async mounted() {
     if(!this.isLoggedIn){
       if(!await this.redirectionLogin(this.$route.query.token)){
-        await this.$router.replace('/')
+        await this.$router.push('/')
+      }else{
+        await this.$router.push(this.$route.query.payload);
       }
     }else {
-      await this.$router.replace(this.$route.query.payload);
+      await this.$router.push(this.$route.query.payload);
     }
   }
 }
