@@ -21,34 +21,6 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <v-toolbar-title> Person Details</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-menu
-            right
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                icon
-                v-bind="attrs"
-                v-on="on"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item @click="goToWebClicked">
-              <v-list-item-icon>
-                <v-icon>
-                  mdi-web
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Go to Web</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-          </v-list>
-        </v-menu>
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
@@ -633,15 +605,6 @@ export default {
       }
 
     },
-    async goToWebClicked(){
-      console.log(this.$route.fullPath)
-      let routeData;
-      routeData = this.$router.resolve({
-        name: 'Redirection',
-        query: {token: this.getToken,payload: this.$route.fullPath}
-      });
-      window.open(routeData.href, '_blank');
-    }
   },
   async mounted() {
     await this.getDetails(this.$route.query.id);

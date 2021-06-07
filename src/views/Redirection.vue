@@ -27,10 +27,11 @@ export default {
     ...mapActions(['redirectionLogin'])
   },
   async mounted() {
+    console.log(this.$route.query)
     if(!this.isLoggedIn){
       await this.redirectionLogin(this.$route.query.token);
     }else {
-      await this.$router.push(this.$route.query.payload);
+      await this.$router.replace(this.$route.query.payload);
     }
   }
 }

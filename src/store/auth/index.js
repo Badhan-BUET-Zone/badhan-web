@@ -92,15 +92,34 @@ const actions = {
             resetBaseURL()
         }
     },
+    async requestRedirectionToken({commit}){
+        commit('setLoadingTrue');
+        try{
+            let response = await badhanAxios.post('/users/requestRedirection');
+            return response.data.token;
+        }catch (e){
+            return null;
+        }finally {
+            commit('setLoadingFalse');
+        }
+    },
     async redirectionLogin({getters,commit, dispatch},payload){
-        commit('setToken',payload);
         try {
             commit('signInLoaderFlagOn');
-            let sendData = {};
+            let sendData = {
+                token: payload
+            };
+
+            let response = await badhanAxios.post('/users/redirectionSignIn', sendData);
+
+            commit('setToken', response.data.token);
+
+            sendData = {};
 
             let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
 
-            // dispatch('notification/notifySuccess', "Successfully Logged In");
+            dispatch('notification/notifySuccess', response.data.message);
+
             commit('setMyProfile', profileInfo.data.donor);
             return true;
         } catch (error) {
