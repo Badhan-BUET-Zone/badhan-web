@@ -1,19 +1,13 @@
 <template>
   <div>
-    <PageTitle :title="$route.meta.title"></PageTitle>
-
-    <v-card max-width="500" class="pa-2 rounded-xl">
-      <v-card-text>
-        Please wait...
-      </v-card-text>
-
-    </v-card>
+    <SignInDialog></SignInDialog>
   </div>
 </template>
 
 <script>
 import PageTitle from "../components/PageTitle";
 import {mapActions, mapGetters} from "vuex";
+import SignInDialog from "../components/SignInDialog";
 
 export default {
   name: "Redirection",
@@ -21,10 +15,11 @@ export default {
     ...mapGetters(['isLoggedIn', 'getSignInLoaderFlag','getToken']),
   },
   components: {
-    PageTitle
+    PageTitle,SignInDialog
   },
   methods:{
-    ...mapActions(['redirectionLogin'])
+    ...mapActions(['redirectionLogin']),
+    ...mapActions('notification',['notifyInfo'])
   },
   async mounted() {
     if(!this.isLoggedIn){

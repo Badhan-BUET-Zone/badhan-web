@@ -123,7 +123,7 @@ const actions = {
 
             let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
 
-            dispatch('notification/notifySuccess', response.data.message);
+            // dispatch('notification/notifySuccess', response.data.message);
 
             commit('setMyProfile', profileInfo.data.donor);
             return true;
