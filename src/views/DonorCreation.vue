@@ -12,12 +12,21 @@
             label="Donor Data Input"
             @blur="$v.jsonFile.$touch()"
             :error-messages="jsonFileErrors"
+            id="fileUpload"
         ></v-file-input>
       </v-card-text>
       <v-card-actions>
         <v-btn :disabled="$v.$anyError" color="primary" rounded  @click="fileUploadClicked">Upload JSON data</v-btn>
       </v-card-actions>
       <v-alert type="error" dense v-if="invalidJSONError!==null">{{invalidJSONError}}</v-alert>
+    </v-card>
+    <v-card max-width="500" class="pa-2 rounded-xl" v-if="isNative || $isDevelopmentEnv()">
+      <v-card-text>
+        Select a JSON file
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" rounded @click="redirectFileUpload">Upload JSON data from web</v-btn>
+      </v-card-actions>
     </v-card>
 
     <v-btn class="ma-2" color="secondary" rounded @click="resetClicked">Reset</v-btn>
@@ -83,6 +92,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
+    ...mapActions(['requestRedirectionToken']),
     async fileUploadClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {
@@ -131,10 +141,32 @@ export default {
 
         key: new Date().getTime(),
       }];
+    },
+    async redirectFileUpload(){
+      let redirectionToken = await this.requestRedirectionToken();
+      let searchRouteData = this.$router.resolve({
+        name: 'Donor Creation',
+        query: {
+          prompt: true
+        }
+      });
+      let redirectionURL = searchRouteData.href.substr(1,searchRouteData.href.length-1)
+      let routeData;
+      routeData = this.$router.resolve({
+        name: 'Redirection',
+        query: {token: redirectionToken, payload: redirectionURL}
+      });
+      window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
     }
   },
   mounted() {
     this.resetForms();
+
+    if(this.$route.query.prompt ==='true'){
+      console.log("hello")
+      document.getElementById("fileUpload").click()
+
+    }
   },
   components: {
     NewPersonCard,
