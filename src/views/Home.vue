@@ -5,7 +5,6 @@
       <v-row>
         <v-col cols="12" sm="4">
           <div
-              class="mb-3"
               style="height: fit-content"
           >
             <div class="ml-5">
@@ -114,7 +113,6 @@
         </v-col>
         <v-col cols="12" sm="8">
           <div
-              class="p-3"
               style="height: fit-content"
           >
             <div v-if="isSearchResultShown">
@@ -373,9 +371,7 @@ export default {
         this.showTooltip=true;
         setTimeout(()=>{this.showTooltip=false},2000);
       },(e)=>{
-
       })
-
     },
 
     async downloadInMobileClicked(){
