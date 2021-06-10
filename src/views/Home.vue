@@ -366,9 +366,13 @@ export default {
           notAvailability: this.notAvailability
         }
       });
-      navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.showTooltip=true;
-      setTimeout(()=>{this.showTooltip=false},2000);
+      // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE+routeData.href).then((e)=>{
+        this.showTooltip=true;
+        setTimeout(()=>{this.showTooltip=false},2000);
+      },(e)=>{
+
+      })
 
     },
 
