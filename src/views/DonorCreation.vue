@@ -20,7 +20,7 @@
       </v-card-actions>
       <v-alert type="error" dense v-if="invalidJSONError!==null">{{invalidJSONError}}</v-alert>
     </v-card>
-    <v-card max-width="500" class="pa-2 rounded-xl" v-if="isNative || $isDevelopmentEnv()">
+    <v-card max-width="500" class="pa-2 rounded-xl" v-if="(isNative || $isDevelopmentEnv()) && !isGuestEnabled">
       <v-card-text>
         Select a JSON file
       </v-card-text>
@@ -61,6 +61,7 @@ import {isNative} from '@/plugins/android_support';
 
 
 import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
+import {isGuestEnabled} from "../api";
 
 export default {
   name: "BatchInsertion",
@@ -80,6 +81,9 @@ export default {
   },
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
+    isGuestEnabled(){
+      return isGuestEnabled();
+    },
     jsonFileErrors() {
       const errors = []
       if (!this.$v.jsonFile.$dirty) return errors
@@ -144,29 +148,17 @@ export default {
     },
     async redirectFileUpload(){
       let redirectionToken = await this.requestRedirectionToken();
-      let searchRouteData = this.$router.resolve({
-        name: 'Donor Creation',
-        query: {
-          prompt: true
-        }
-      });
-      let redirectionURL = searchRouteData.href.substr(1,searchRouteData.href.length-1)
       let routeData;
       routeData = this.$router.resolve({
         name: 'Redirection',
-        query: {token: redirectionToken, payload: redirectionURL}
+        query: {token: redirectionToken, payload: this.$route.fullPath}
       });
+      // console.log("redirection link: ",routeData.href);
       window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
     }
   },
   mounted() {
     this.resetForms();
-
-    if(this.$route.query.prompt ==='true'){
-      console.log("hello")
-      document.getElementById("fileUpload").click()
-
-    }
   },
   components: {
     NewPersonCard,

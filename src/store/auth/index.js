@@ -6,6 +6,7 @@ const state = {
 
     redirectionRequestMade: false,
     isLoggedIn: false,
+    isGuest: false,
 
 };
 
@@ -20,14 +21,14 @@ const getters = {
     getSignInLoaderFlag: state => {
         return state.signInLoaderFlag
     },
-    // isLoggedIn: state => {
-    //     return state.token !== null;
-    // },
     getRedirectionRequestMade: state =>{
         return state.redirectionRequestMade
     },
     getIsLoggedIn: state =>{
         return state.isLoggedIn;
+    },
+    getIsGuest: state=>{
+        return state.isGuest;
     }
 };
 const mutations = {
@@ -77,7 +78,9 @@ const mutations = {
     },
     unsetLoginFlag(state){
         state.isLoggedIn = false;
-    }
+    },
+
+
 
 };
 const actions = {

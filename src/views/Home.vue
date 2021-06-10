@@ -158,7 +158,7 @@
                     Download Data
                   </v-btn>
                 </json-excel>
-                <v-btn v-if="isNative || $isDevelopmentEnv()" @click="downloadInMobileClicked" small color="secondary" rounded class="mb-4" style="width: 100%">
+                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small color="secondary" rounded class="mb-4" style="width: 100%">
                   Download From Web
                 </v-btn>
                 <v-tooltip
@@ -217,11 +217,15 @@ import {isNative} from '@/plugins/android_support';
 import {bloodGroups, halls} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
+import {isGuestEnabled} from "../api";
 
 export default {
   name: "ActiveSearch",
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading', 'isFilterShown']),
+    isGuestEnabled(){
+      return isGuestEnabled();
+    },
     isNative() {
       return isNative();
     },

@@ -16,6 +16,10 @@ const resetBaseURL = ()=>{
     badhanAxios.defaults.baseURL = baseURL
 }
 
+const isGuestEnabled = ()=>{
+    return badhanAxios.defaults.baseURL.includes("/guest");
+}
+
 const firebaseAxios = axios.create({
     baseURL:'https://badhan-buet-default-rtdb.firebaseio.com'
 });
@@ -74,5 +78,5 @@ firebaseAxios.interceptors.response.use( (response)=>{
 });
 
 export{
-    badhanAxios,firebaseAxios,enableGuestAPI, resetBaseURL
+    badhanAxios,firebaseAxios,enableGuestAPI, resetBaseURL, isGuestEnabled
 }
