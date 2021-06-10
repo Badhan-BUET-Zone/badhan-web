@@ -5,6 +5,7 @@ const state = {
     error: "",
 
     redirectionRequestMade: false,
+    isLoggedIn: false,
 
 };
 
@@ -19,11 +20,14 @@ const getters = {
     getSignInLoaderFlag: state => {
         return state.signInLoaderFlag
     },
-    isLoggedIn: state => {
-        return state.token !== null;
-    },
+    // isLoggedIn: state => {
+    //     return state.token !== null;
+    // },
     getRedirectionRequestMade: state =>{
         return state.redirectionRequestMade
+    },
+    getIsLoggedIn: state =>{
+        return state.isLoggedIn;
     }
 };
 const mutations = {
@@ -68,6 +72,13 @@ const mutations = {
         state.error = "";
     },
 
+    setLoginFlag(state){
+        state.isLoggedIn = true;
+    },
+    unsetLoginFlag(state){
+        state.isLoggedIn = false;
+    }
+
 };
 const actions = {
     async logout({getters, commit, dispatch}) {
@@ -78,6 +89,7 @@ const actions = {
         } catch (e) {
         } finally {
             commit('setLoadingFalse');
+            commit('unsetLoginFlag')
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
             resetBaseURL()
@@ -92,6 +104,7 @@ const actions = {
 
         } finally {
             commit('setLoadingFalse');
+            commit('unsetLoginFlag');
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
             resetBaseURL()
@@ -110,7 +123,7 @@ const actions = {
     },
     async redirectionLogin({getters,commit, dispatch},payload){
         try {
-            // commit('signInLoaderFlagOn');
+            commit('signInLoaderFlagOn');
             let sendData = {
                 token: payload
             };
@@ -119,18 +132,15 @@ const actions = {
 
             commit('setToken', response.data.token);
 
-            sendData = {};
-
-            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
-
-            // dispatch('notification/notifySuccess', response.data.message);
+            let profileInfo = await badhanAxios.post('v2/donor/details/self', {});
 
             commit('setMyProfile', profileInfo.data.donor);
+            commit('setLoginFlag');
             return true;
         } catch (error) {
             return false;
         } finally {
-            // commit('signInLoaderFlagOff');
+            commit('signInLoaderFlagOff');
         }
     },
     async autoLogin({getters, commit, dispatch}) {
@@ -145,6 +155,7 @@ const actions = {
 
             // dispatch('notification/notifySuccess', "Successfully Logged In");
             commit('setMyProfile', profileInfo.data.donor);
+            commit('setLoginFlag');
             return true;
         } catch (error) {
             commit('removeToken');
@@ -198,6 +209,7 @@ const actions = {
                 commit('removeTokenFromLocalStorage');
                 // commit('removeProfileFromLocalStorage');
             }
+            commit('setLoginFlag');
             return true;
         } catch (error) {
             return false;

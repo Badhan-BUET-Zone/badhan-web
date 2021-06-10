@@ -48,7 +48,7 @@
 import PageTitle from "../components/PageTitle";
 import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
-import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
+import {isNative} from '@/plugins/android_support';
 
 
 import NewPersonCard from "../components/BatchInsertion/NewPersonCard";

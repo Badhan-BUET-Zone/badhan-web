@@ -24,7 +24,7 @@
             class="mx-2"
             icon
             small
-            @click="$router.push(isLoggedIn?'/home':'/')"
+            @click="$router.push(getIsLoggedIn?'/home':'/')"
         >
             <v-icon>
                 mdi-arrow-left
@@ -43,7 +43,7 @@ export default {
     name: "PageTitle",
     props: ["title"],
     computed:{
-        ...mapGetters(['isLoggedIn']),
+        ...mapGetters(['getIsLoggedIn']),
     }
 }
 </script>

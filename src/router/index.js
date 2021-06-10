@@ -80,16 +80,7 @@ const routes = [
             designation: 0
         }
     },
-    {
-        name: 'CreateDonor',
-        path: '/createdonor',
-        component: () => import('@/views/CreateDonor.vue'),
-        meta: {
-            requiresAuth: true,
-            title: 'Create a Donor',
-            designation: 1
-        }
-    },
+
     {
         name: 'VolunteerList',
         path: '/volunteerlist',
@@ -146,12 +137,18 @@ const routes = [
 const router = new VueRouter({
     routes
 })
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     if (!to.meta.requiresAuth && to.name != 'SignIn') {
         next();
-    } else if (!store.getters.isLoggedIn && to.meta.requiresAuth) {
+    }
+
+    if(!store.getters.getIsLoggedIn){
+        await store.dispatch('autoLogin');
+    }
+
+    if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
         next('/');
-    } else if (store.getters.isLoggedIn && to.name == 'SignIn') {
+    } else if (store.getters.getIsLoggedIn && to.name == 'SignIn') {
         next('/home');
     } else {
         next();

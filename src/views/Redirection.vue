@@ -1,6 +1,9 @@
 <template>
   <div>
-    <SignInDialog></SignInDialog>
+    <PageTitle :title="$route.meta.title"></PageTitle>
+    <v-card max-width="500" class="pa-2 rounded-xl">
+      <v-card-text>Redirecting...</v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -12,7 +15,7 @@ import SignInDialog from "../components/SignInDialog";
 export default {
   name: "Redirection",
   computed: {
-    ...mapGetters(['isLoggedIn', 'getSignInLoaderFlag','getToken']),
+    ...mapGetters(['getIsLoggedIn', 'getSignInLoaderFlag','getToken']),
   },
   components: {
     PageTitle,SignInDialog
@@ -22,13 +25,9 @@ export default {
     ...mapActions('notification',['notifyInfo'])
   },
   async mounted() {
-    if(!this.isLoggedIn){
-      if(!await this.redirectionLogin(this.$route.query.token)){
-        await this.$router.push('/')
-      }else{
-        await this.$router.push(this.$route.query.payload);
-      }
-    }else {
+    if(!this.getIsLoggedIn && !await this.redirectionLogin(this.$route.query.token)){
+      await this.$router.push('/')
+    }else{
       await this.$router.push(this.$route.query.payload);
     }
   }

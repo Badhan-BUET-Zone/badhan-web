@@ -30,7 +30,8 @@
         </template>
 
         <v-list>
-          <v-list-item @click="goToWebClicked" v-if="isNative">
+<!--          <v-list-item @click="goToWebClicked" v-if="isNative">-->
+          <v-list-item @click="goToWebClicked">
             <v-list-item-icon>
               <v-icon>
                 mdi-web
@@ -243,11 +244,9 @@ export default {
         query: {token: redirectionToken, payload: this.$route.fullPath}
       });
       console.log("redirection link: ",routeData.href);
-      if(this.isNative){
-        window.open("https://badhan-buet.web.app/"+routeData.href, '_blank');
-      }else{
-        window.open(routeData.href, '_blank');
-      }
+
+      window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
+
     }
   },
   watch: {
