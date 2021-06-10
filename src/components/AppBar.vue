@@ -30,7 +30,7 @@
         </template>
 
         <v-list>
-          <v-list-item @click="goToWebClicked">
+          <v-list-item @click="goToWebClicked" v-if="isNative">
             <v-list-item-icon>
               <v-icon>
                 mdi-web
