@@ -131,7 +131,8 @@
                 <json-excel
                     v-if="!isNative"
                     :data="getPersons"
-                    :name="'badhan_'+getSearchedHall+'.xls'"
+                    type="csv"
+                    :name="'badhan_'+getSearchedHall+'.csv'"
                     worksheet="Badhan"
                     :fields="{
                     name:'name',
@@ -152,7 +153,7 @@
                     address:'address',
                     roomNumber: 'roomNumber',
                     donationCount: 'donationCount'
-                }" ref="jsonDownload"
+                }" ref="jsonDownload" :escapeCsv="false"
 
                 >
                   <v-btn small color="secondary" rounded class="mb-4" style="width: 100%">
