@@ -160,8 +160,8 @@
                     Download Data
                   </v-btn>
                 </json-excel>
-                <v-btn v-else small color="secondary" rounded class="mb-4" disabled style="width: 100%">
-                  Download available on Web
+                <v-btn v-if="isNative || $isDevelopmentEnv()" @click="downloadInMobileClicked" small color="secondary" rounded class="mb-4" style="width: 100%">
+                  Download From Web
                 </v-btn>
                 <v-tooltip
                     v-model="showTooltip"
@@ -314,6 +314,7 @@ export default {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter']),
+    ...mapActions(['logout', 'logoutAll','requestRedirectionToken']),
     async searchClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {
@@ -375,6 +376,29 @@ export default {
 
       })
 
+    },
+
+    async downloadInMobileClicked(){
+      let redirectionToken = await this.requestRedirectionToken();
+      let searchRouteData = this.$router.resolve({
+        name: 'Home',
+        query: {
+          name: this.name,
+          bloodGroup: this.bloodGroup,
+          batch: this.batch,
+          address: this.address,
+          hall: this.hall,
+          availability: this.availability,
+          notAvailability: this.notAvailability
+        }
+      });
+      let redirectionURL = searchRouteData.href.substr(1,searchRouteData.href.length-1)
+      let routeData;
+      routeData = this.$router.resolve({
+        name: 'Redirection',
+        query: {token: redirectionToken, payload: redirectionURL}
+      });
+      window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
     },
 
     clearFields() {

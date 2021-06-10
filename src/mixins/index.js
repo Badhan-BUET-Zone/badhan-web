@@ -7,5 +7,8 @@ export default {
             })(navigator.userAgent || navigator.vendor || window.opera);
             return check;
         },
+        $isDevelopmentEnv(){
+            return process.env.NODE_ENV==='development'
+        }
     }
 }
