@@ -16,20 +16,38 @@
         ></v-file-input>
       </v-card-text>
       <v-card-actions>
-        <v-btn :disabled="$v.$anyError" color="primary" rounded  @click="fileUploadClicked">Upload JSON data</v-btn>
+        <v-btn :disabled="$v.$anyError" color="primary" rounded  @click="fileUploadClicked">
+          <v-icon left>
+            mdi-upload
+          </v-icon>
+          Upload JSON data
+        </v-btn>
       </v-card-actions>
       <v-alert type="error" dense v-if="invalidJSONError!==null">{{invalidJSONError}}</v-alert>
     </v-card>
     <v-card max-width="500" class="pa-2 rounded-xl" v-if="(isNative || $isDevelopmentEnv()) && !isGuestEnabled">
       <v-card-text>
+        <v-icon left>
+          mdi-upload
+        </v-icon>
         Select a JSON file
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" rounded @click="redirectFileUpload">Upload JSON data from web</v-btn>
+        <v-btn color="primary" rounded @click="redirectFileUpload">
+          <v-icon left>
+            mdi-upload
+          </v-icon>
+          Upload JSON data from web
+        </v-btn>
       </v-card-actions>
     </v-card>
 
-    <v-btn class="ma-2" color="secondary" rounded @click="resetClicked">Reset</v-btn>
+    <v-btn class="ma-2" color="secondary" rounded @click="resetClicked">
+      <v-icon left>
+        mdi-refresh
+      </v-icon>
+      Reset
+    </v-btn>
 
     <v-row no-gutters>
       <v-col v-for="(donor) in listOfDonors.slice(4 * (donorPage - 1), 4 * donorPage)" :key="donor.key" cols="12" sm="3">

@@ -31,14 +31,7 @@
               <v-toolbar
                   flat
               >
-<!--                <v-btn-->
-<!--                    outlined-->
-<!--                    class="mr-4"-->
-<!--                    color="grey darken-2"-->
-<!--                    @click="setToday"-->
-<!--                >-->
-<!--                  Today-->
-<!--                </v-btn>-->
+
                 <v-btn
                     fab
                     text
@@ -121,6 +114,9 @@
       <v-card-actions>
         <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
                @click="removeAllLogsClicked">
+          <v-icon left>
+            mdi-delete
+          </v-icon>
           Delete All Logs
         </v-btn>
       </v-card-actions>

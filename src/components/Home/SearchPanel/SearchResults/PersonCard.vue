@@ -54,7 +54,7 @@
     </v-card>
 
     <!--    Person card extension-->
-    <v-card color="grey lighten-3" class="rounded-xl" v-if="showExtensionFlag">
+    <v-card color="grey lighten-3" class="mt-2" v-if="showExtensionFlag">
       <v-card-text>
         <p><b>Department: </b>{{ studentID | idToDept }}</p>
         <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
@@ -71,10 +71,17 @@
               :disabled="seeDetailsLoaderFlag"
               :loading="seeDetailsLoaderFlag"
           >
+            <v-icon left>
+              mdi-account-details
+            </v-icon>
             See profile
           </v-btn>
           <v-btn small rounded color="secondary" class="ml-2" @click="callFromDialer"
-          >Direct call
+          >
+            <v-icon left>
+              mdi-phone
+            </v-icon>
+            Direct call
           </v-btn
           >
         </div>

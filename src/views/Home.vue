@@ -14,6 +14,9 @@
 
                 <v-col>
                   <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>
+                    <v-icon left>
+                      mdi-filter
+                    </v-icon>
                     <span v-if="!isFilterShown">Show Filters</span>
                     <span v-else>Hide Filters</span>
                   </v-btn>
@@ -94,7 +97,12 @@
                 </v-row>
 
                 <!--        A button to reset the form fields-->
-                <v-btn rounded color="secondary" @click="clearFields"> Reset</v-btn>
+                <v-btn rounded color="secondary" @click="clearFields">
+                  <v-icon left>
+                    mdi-refresh
+                  </v-icon>
+                  Reset
+                </v-btn>
 
                 <!--        The button for executing search-->
                 <v-btn
@@ -105,6 +113,10 @@
                     @click="searchClicked()"
                     class="ml-2"
                 >
+                  <v-icon left>
+                    mdi-magnify
+                  </v-icon>
+
                   Search
                 </v-btn>
               </v-container>
@@ -155,10 +167,16 @@
 
                 >
                   <v-btn small color="secondary" rounded class="mb-4" style="width: 100%">
+                    <v-icon left>
+                      mdi-download
+                    </v-icon>
                     Download Data
                   </v-btn>
                 </json-excel>
                 <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small color="secondary" rounded class="mb-4" style="width: 100%">
+                  <v-icon left>
+                    mdi-web
+                  </v-icon>
                   Download From Web
                 </v-btn>
                 <v-tooltip
@@ -168,6 +186,9 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn small color="secondary" rounded class="mb-4" style="width: 100%" v-bind="attrs"
                            @click="shareClicked">
+                      <v-icon left>
+                        mdi-share
+                      </v-icon>
                       Share Search Results
                     </v-btn>
                   </template>

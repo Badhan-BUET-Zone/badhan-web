@@ -56,14 +56,28 @@
       </v-menu>
     </v-card-text>
     <v-card-actions>
-      <v-btn small color="secondary" rounded @click="discardClicked">Discard</v-btn>
+      <v-btn small color="secondary" rounded @click="discardClicked">
+        <v-icon left>
+          mdi-delete
+        </v-icon>
+        Discard
+      </v-btn>
       <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
-             :loading="donorCreationLoader">Create
+             :loading="donorCreationLoader">
+        <v-icon left>
+          mdi-account-plus
+        </v-icon>
+        Create
       </v-btn>
 
     </v-card-actions>
     <v-card-actions v-if="duplicateDonorId!==null && !isNative">
-      <v-btn small color="primary" rounded @click="goToDuplicateProfile">See Duplicate</v-btn>
+      <v-btn small color="primary" rounded @click="goToDuplicateProfile">
+        <v-icon left>
+          mdi-content-duplicate
+        </v-icon>
+        See Duplicate
+      </v-btn>
     </v-card-actions>
 
     <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{warning}} </v-alert>

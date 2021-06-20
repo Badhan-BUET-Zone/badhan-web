@@ -50,6 +50,9 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"
                      @click="shareClicked">
+                <v-icon left>
+                  mdi-share
+                </v-icon>
                 Share
               </v-btn>
             </template>
@@ -94,10 +97,19 @@
                     <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
                                   :disabled="!enableEditing"></v-text-field>
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
-                      <v-btn color="secondary" rounded style="text-decoration: none" to="/home">Cancel</v-btn>
+                      <v-btn color="secondary" rounded style="text-decoration: none" to="/home">
+                        <v-icon left>
+                          mdi-window-close
+                        </v-icon>
+                        Cancel
+                      </v-btn>
                       <v-btn color="primary" rounded class="white--text ml-2"
                              :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentID.$error"
-                             :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">Save
+                             :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
+                        <v-icon left>
+                          mdi-content-save
+                        </v-icon>
+                        Save
                       </v-btn>
                     </div>
                     <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
@@ -106,8 +118,11 @@
 
                     <v-btn color="primary" rounded
                            :disabled="getCommentLoaderFlag || !enableEditing"
-                           :loading="getCommentLoaderFlag" @click="saveCommentClicked()">Save
-                      Comment
+                           :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
+                      <v-icon left>
+                        mdi-content-save
+                      </v-icon>
+                      Save Comment
                     </v-btn>
                     <br/>
                   </div>
@@ -151,11 +166,20 @@
 
                     <div
                         v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
-                      <v-btn color="secondary" style="text-decoration: none" to="/home" rounded>Cancel</v-btn>
+                      <v-btn color="secondary" style="text-decoration: none" to="/home" rounded>
+                        <v-icon left>
+                          mdi-window-close
+                        </v-icon>
+                        Cancel
+                      </v-btn>
                       <v-btn color="primary" class="white--text ml-2" rounded
                              :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag || $v.newPassword.$error || $v.confirmPassword.$error"
                              :loading="getPasswordLoader ||getPromoteFlag"
-                             @click="saveSettingsClicked()">Save
+                             @click="saveSettingsClicked()">
+                        <v-icon left>
+                          mdi-content-save
+                        </v-icon>
+                        Save
                       </v-btn>
                     </div>
                     <v-btn v-if="designation == 1 && getPhone!== oldPhone" rounded color="red"
@@ -219,7 +243,8 @@
                         text
                         color="primary"
                         @click="$refs.menu.save(newDonationDate)"
-                    >OK
+                    >
+                      OK
                     </v-btn
                     >
                   </v-date-picker>
@@ -233,7 +258,11 @@
                   @click="donateClicked()"
                   :loading="getDonationLoaderFlag"
                   :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
-              >Done
+              >
+                <v-icon left>
+                  mdi-check
+                </v-icon>
+                Done
               </v-btn>
               <!--              NEW DONATION SECTION END-->
 
