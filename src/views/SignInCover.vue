@@ -83,6 +83,9 @@
                         :disabled="getSignInLoaderFlag || $v.$anyError"
                         :loading="getSignInLoaderFlag"
                     >
+                      <v-icon left>
+                        mdi-login
+                      </v-icon>
                       Sign In
                     </v-btn>
                     <br>
