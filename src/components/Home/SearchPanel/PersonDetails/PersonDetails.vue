@@ -14,7 +14,7 @@
       </v-app-bar>
 
     </v-card>
-    <v-card v-else
+    <v-card v-else-if="dataLoaded"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
       <v-app-bar color="primary" dark>
         <v-btn icon @click="$router.push('/home')">
@@ -36,12 +36,25 @@
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
 
           <br>
-          <v-btn rounded color="secondary" class="ma-1" @click="callFromDialer">
+          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer">
             <v-icon left>
               mdi-phone
             </v-icon>
             Call Now
           </v-btn>
+
+          <v-tooltip
+              v-model="showTooltip"
+              top
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"
+                     @click="shareClicked">
+                Share
+              </v-btn>
+            </template>
+            <span>Copied to clipboard</span>
+          </v-tooltip>
 
 
           <div class="row" v-if="!getLoadingFlag">
@@ -230,7 +243,8 @@
                 <br/>
                 <div v-if="getDonationList.length!==0">
                   <div class="input-group mb-3" v-for="date in getDonationList">
-                    <input type="text" readonly class="form-control" :value="date===0?'Unknown date':datePrint(date)"/>
+                    <input type="text" readonly class="form-control"
+                           :value="date===0?'Unknown date':datePrint(date)"/>
 
                     <div class="input-group-append">
                       <button class="btn btn-success" type="button"
@@ -248,17 +262,29 @@
         </v-card-text>
       </v-card>
     </v-card>
+    <v-card v-else
+            style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
+      <v-app-bar color="primary" dark>
+        <v-btn icon @click="$router.push('/home')">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        <v-toolbar-title> Person Details</v-toolbar-title>
+      </v-app-bar>
+      <v-card class="mx-auto mt-2" max-width="1000px">
+        <v-card-title>No donor found</v-card-title>
+      </v-card>
+    </v-card>
   </div>
 </template>
 
 <script>
 import {halls, bloodGroups} from "@/mixins/constants";
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 
 export default {
   name: "PersonDetails",
-  data: function () {
+  data: ()=>{
     return {
       //form fields
       _id: null,
@@ -304,6 +330,9 @@ export default {
 
       newDonationDate: "",
       menu: false,
+
+      dataLoaded: false,
+      showTooltip: false
     };
   },
   validations: {
@@ -336,45 +365,10 @@ export default {
         this.$router.push("/home");
       }
     },
-    donorLoaderFlag(to, from) {
-      if (to === false) {
-        let profile = this.getProfile;
-        this._id = profile._id;
-        this.name = profile.name;
-        this.phone = profile.phone.toString().substr(2);
-        this.oldPhone = profile.phone;
-        this.studentID = profile.studentId;
-        this.bloodGroup = bloodGroups[profile.bloodGroup];
-        this.hall = halls[profile.hall];
-        this.room = profile.roomNumber;
-        this.address = profile.address;
-        this.comment = profile.comment;
-        this.designation = profile.designation;
-        this.donationCount = profile.donationCount;
-
-        let date = new Date(profile.lastDonation);
-        this.lastDonation =
-            date.getDate() +
-            "/" +
-            (date.getMonth() + 1) +
-            "/" +
-            date.getFullYear();
-        if (profile.lastDonation === 0) {
-          this.lastDonation = "No donations found";
-        }
-
-        this.availableIn =
-            120 -
-            Math.round(
-                (Math.round(new Date().getTime()) - date.getTime()) /
-                (1000 * 3600 * 24)
-            );
-      }
-    },
   },
   computed: {
     ...mapGetters('details', ['getDonorLoaderFlag', 'getProfile']),
-    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getPhone', 'getHall', 'getID','getToken']),
+    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getPhone', 'getHall', 'getID', 'getToken']),
     ...mapGetters('userDetails', ['getDetailsLoaderFlag']),
     ...mapGetters('password', ['getPasswordLoader']),
     ...mapGetters('promote', ['getPromoteFlag']),
@@ -447,6 +441,21 @@ export default {
     ...mapActions('userDetails', ['saveUserDetails']),
     ...mapActions('details', ['getDetails']),
     ...mapActions('donate', ['donate']),
+    ...mapMutations('donation', ['addDonation']),
+    shareClicked() {
+      let routeData = this.$router.resolve({
+        name: 'Details',
+        query: {
+          id: this.$route.query.id,
+        }
+      });
+      // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE+routeData.href).then((e)=>{
+        this.showTooltip=true;
+        setTimeout(()=>{this.showTooltip=false},2000);
+      },(e)=>{
+      })
+    },
     async changeHallAdminClicked() {
       if (await this.changeHallAdmin({donorId: this.$route.query.id})) {
         this.designation = 2
@@ -594,6 +603,7 @@ export default {
                     new Date(this.newDonationDate).getTime()) /
                 (1000 * 3600 * 24)
             );
+        this.addDonation(new Date(this.newDonationDate).getTime());
         if (newAvailableIn > this.availableIn) {
           this.availableIn = newAvailableIn;
           this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime());
@@ -601,15 +611,58 @@ export default {
 
         this.newDonationDate = "";
         this.donationCount++;
-        await this.fetchDonationHistory({donorId: this.$route.query.id});
+
+
+        // await this.fetchDonationHistory({donorId: this.$route.query.id});
       }
 
     },
   },
   async mounted() {
-    await this.getDetails(this.$route.query.id);
+    this.dataLoaded = false;
+
+    let success = await this.getDetails(this.$route.query.id);
+
+    if (!success)
+      return;
+
+
+    let profile = this.getProfile;
+    this._id = profile._id;
+    this.name = profile.name;
+    this.phone = profile.phone.toString().substr(2);
+    this.oldPhone = profile.phone;
+    this.studentID = profile.studentId;
+    this.bloodGroup = bloodGroups[profile.bloodGroup];
+    this.hall = halls[profile.hall];
+    this.room = profile.roomNumber;
+    this.address = profile.address;
+    this.comment = profile.comment;
+    this.designation = profile.designation;
+    this.donationCount = profile.donationCount;
+
+    let date = new Date(profile.lastDonation);
+    this.lastDonation =
+        date.getDate() +
+        "/" +
+        (date.getMonth() + 1) +
+        "/" +
+        date.getFullYear();
+    if (profile.lastDonation === 0) {
+      this.lastDonation = "No donations found";
+    }
+
+    this.availableIn =
+        120 -
+        Math.round(
+            (Math.round(new Date().getTime()) - date.getTime()) /
+            (1000 * 3600 * 24)
+        );
+
+    this.dataLoaded = true;
     await this.fetchDonationHistory({donorId: this.$route.query.id});
     this.$forceUpdate();
+
   },
 };
 </script>

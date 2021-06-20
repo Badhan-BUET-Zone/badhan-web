@@ -61,12 +61,17 @@ const mutations = {
     clearDonationMessage(state){
         state.donationError = null;
         state.donationSuccess = null;
-
+    },
+    addDonation(state,payload){
+        console.log(payload)
+        console.log(state.donationList)
+        state.donationList.push(payload);
     }
 };
 const actions = {
     async fetchDonationHistory({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('donationLoaderOn');
+        commit('clearDonationList');
         try {
             let response = await badhanAxios.post("v2/donor/donations", payload);
             commit('setDonationList',response.data.donations);

@@ -85,10 +85,10 @@ const actions = {
         commit('donorLoaderFlagOn');
         try {
             let response = await badhanAxios.get('v3/donor/details', {params});
-
             commit('setProfile', response.data.donor)
+            return true;
         } catch (error) {
-
+            return false;
         } finally {
             commit('donorLoaderFlagOff');
         }
