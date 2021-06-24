@@ -189,8 +189,9 @@
                       Demote to donor
                     </v-btn>
                   </div>
+
                   <div class="card-body"
-                       v-if="(getID!==$route.query.id)&& (getDesignation===3|| (getDesignation===2&& hall===getHall))">
+                       v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
                     <v-btn @click="deleteDonorClicked" rounded color="error"
                            :disabled="getDeleteLoaderFlag || !enableEditing"
                            :loading="getDeleteLoaderFlag">
