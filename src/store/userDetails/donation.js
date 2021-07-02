@@ -83,7 +83,7 @@ const actions = {
         let dateToBeDeleted = payload.date;
 
         try {
-            let response = await badhanAxios.post("v2/donation/delete", payload);
+            let response = await badhanAxios.delete("/donations", {params: payload});
             let history = getters['getDonationList'];
             for (let i = 0; i < history.length; i++) {
                 if (history[i] == dateToBeDeleted) {
