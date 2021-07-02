@@ -149,7 +149,7 @@ const actions = {
         commit('setVolunteerLoaderFlag');
         commit('unsetVolunteers');
         try{
-            let response = await badhanAxios.get('/v1/admin/volunteers/all')
+            let response = await badhanAxios.get('/volunteers/all')
             commit('setVolunteers',response.data.data);
         }catch(e){
 

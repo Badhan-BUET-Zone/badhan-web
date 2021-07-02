@@ -38,7 +38,7 @@ const actions = {
     async promote({commit,getters,rootState,rootGetters,dispatch},payload){
         commit('promoteFlagOn');
         try {
-            let response = await badhanAxios.post("v2/admin/promote", payload);
+            let response = await badhanAxios.patch("/donors/designation", payload);
             dispatch('notification/notifySuccess',response.data.message,{root:true});
             return true;
 

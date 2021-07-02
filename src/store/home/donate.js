@@ -46,7 +46,7 @@ const actions = {
         };
 
         try {
-            let response = await badhanAxios.post("v2/donation/insert", sendData);
+            let response = await badhanAxios.post("/donations", sendData);
             dispatch('notification/notifySuccess',"Successfully added donation",{root: true});
             return true;
         } catch (error) {

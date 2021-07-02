@@ -87,7 +87,7 @@ const actions = {
     async logout({getters, commit, dispatch}) {
         try {
             commit('setLoadingTrue');
-            let response = await badhanAxios.post('/users/signout', {});
+            let response = await badhanAxios.delete('/users/signout', {});
             dispatch('notification/notifySuccess', response.data.message);
         } catch (e) {
         } finally {
@@ -98,10 +98,10 @@ const actions = {
             resetBaseURL()
         }
     },
-    async logoutAll({getters, commit, dispatch}) {
+    async logoutAll({commit, dispatch}) {
         try {
             commit('setLoadingTrue');
-            let response = await badhanAxios.post('/users/signoutall', {});
+            let response = await badhanAxios.delete('/users/signout/all');
             dispatch('notification/notifySuccess', response.data.message);
         } catch (e) {
 
@@ -116,7 +116,7 @@ const actions = {
     async requestRedirectionToken({commit}){
         commit('setLoadingTrue');
         try{
-            let response = await badhanAxios.post('/users/requestRedirection');
+            let response = await badhanAxios.post('/users/redirection');
             return response.data.token;
         }catch (e){
             return null;
@@ -131,11 +131,11 @@ const actions = {
                 token: payload
             };
 
-            let response = await badhanAxios.post('/users/redirectionSignIn', sendData);
+            let response = await badhanAxios.patch('/users/redirection', sendData);
 
             commit('setToken', response.data.token);
 
-            let profileInfo = await badhanAxios.post('v2/donor/details/self', {});
+            let profileInfo = await badhanAxios.get('/donors/me');
 
             commit('setMyProfile', profileInfo.data.donor);
             commit('setLoginFlag');
@@ -154,7 +154,7 @@ const actions = {
             commit('signInLoaderFlagOn');
             let sendData = {};
 
-            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
+            let profileInfo = await badhanAxios.get('/donors/me');
 
             // dispatch('notification/notifySuccess', "Successfully Logged In");
             commit('setMyProfile', profileInfo.data.donor);
@@ -197,9 +197,7 @@ const actions = {
 
             commit('setToken', response.data.token);
 
-            sendData = {};
-
-            let profileInfo = await badhanAxios.post('v2/donor/details/self', sendData);
+            let profileInfo = await badhanAxios.get('donors/me');
 
             dispatch('notification/notifySuccess', response.data.message);
 

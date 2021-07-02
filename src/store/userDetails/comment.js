@@ -49,7 +49,7 @@ const actions = {
 
         commit('commentLoaderFlagOn');
         try {
-            let response = await badhanAxios.post("v2/donor/comment", sendData);
+            let response = await badhanAxios.patch("/donors/comment", sendData);
 
             dispatch('notification/notifySuccess',"Successfully changed comment",{root: true})
 

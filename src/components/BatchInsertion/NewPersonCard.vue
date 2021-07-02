@@ -276,7 +276,6 @@ export default {
         lastDonation: lastDonation,
         extraDonationCount: lastDonation===0?0:this.donationCount-1
       }
-      console.log("New Donor: ",newDonor);
 
       this.donorCreationLoader = true;
       let newDonorResult = await this.saveDonor(newDonor);
@@ -288,7 +287,6 @@ export default {
       // prevent returning the duplicate user in case if the duplicate user is of another hall
     },
     goToDuplicateProfile(){
-      console.log("Duplicate donor id: ",this.duplicateDonorId)
       window.open("/#/home/details?id="+this.duplicateDonorId);
     },
     discardClicked(){

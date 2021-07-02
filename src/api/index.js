@@ -26,7 +26,7 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use( (config)=>{
     // Do something before request is sent
-    console.log("%cREQUEST TO "+config.url+": ",'color: #ff00ff',config.data);
+    console.log("%cREQUEST TO "+config.method+" "+config.url+": ",'color: #ff00ff',config.data);
 
     store.dispatch('notification/clearNotification');
 
@@ -42,7 +42,7 @@ badhanAxios.interceptors.request.use( (config)=>{
 
 badhanAxios.interceptors.response.use( (response)=>{
     // Do something before request is sent
-    console.log("%cRESPONSE FROM "+response.config.url+": ",'color: #00ff00',response);
+    console.log("%cRESPONSE FROM "+response.config.method+" "+response.config.url+": ",'color: #00ff00',response);
 
     return response;
 },  (error)=>{

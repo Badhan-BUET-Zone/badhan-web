@@ -43,7 +43,7 @@ const actions = {
     async deleteDonor({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('deleteLoaderFlagOn');
         try {
-            let response = await badhanAxios.post("v2/admin/donor/delete", payload);
+            let response = await badhanAxios.delete("/donors", payload);
             dispatch('notification/notifySuccess',"Successfully deleted donor",{root: true});
             return true;
         } catch (error) {

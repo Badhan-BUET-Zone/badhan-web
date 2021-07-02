@@ -171,7 +171,6 @@ export default {
         name: 'Redirection',
         query: {token: redirectionToken, payload: this.$route.fullPath}
       });
-      // console.log("redirection link: ",routeData.href);
       window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
     }
   },

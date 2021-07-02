@@ -63,8 +63,6 @@ const mutations = {
         state.donationSuccess = null;
     },
     addDonation(state,payload){
-        console.log(payload)
-        console.log(state.donationList)
         state.donationList.push(payload);
     }
 };
@@ -73,7 +71,7 @@ const actions = {
         commit('donationLoaderOn');
         commit('clearDonationList');
         try {
-            let response = await badhanAxios.post("v2/donor/donations", payload);
+            let response = await badhanAxios.get("/donations", {params: payload});
             commit('setDonationList',response.data.donations);
         } catch (error) {
         } finally {

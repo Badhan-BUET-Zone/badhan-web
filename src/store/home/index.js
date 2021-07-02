@@ -161,7 +161,7 @@ const actions = {
 
         try {
             let response = await badhanAxios.post('v2/donor/search', sendData );
-
+            // let response = await badhanAxios.get('/search', {params: sendData} );
             commit('setPersonGroups', response.data.filteredDonors);
             commit('setSearchedHall',payload.hall);
             commit('hideFilter');

@@ -41,13 +41,14 @@ const actions = {
         commit('passwordLoaderOn');
 
         try {
-            let response = await badhanAxios.post("v2/donor/password/change", payload);
+            let response = await badhanAxios.patch("/donors/password", payload);
             if(payload.logoutFlag){
                 commit('removeToken',{},{root:true});
                 commit('removeTokenFromLocalStorage',{},{root:true});
+                commit('unsetLoginFlag',{},{root: true});
                 dispatch('notification/notifySuccess',"Successfully changed password. Login again to continue",{root:true});
             }else{
-                dispatch('notification/notifySuccess',"Successfully changed password.",{root:true});
+                dispatch('notification/notifySuccess',"Successfully changed password. User will be logged out",{root:true});
             }
 
             return true;

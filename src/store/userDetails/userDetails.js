@@ -38,7 +38,7 @@ const actions = {
     async saveUserDetails({commit,getters,rootState,rootGetters, dispatch},payload){
         commit('detailsLoaderFlagOn');
         try {
-            let response = await badhanAxios.post("v2/donor/edit", payload);
+            let response = await badhanAxios.patch("/donors", payload);
             dispatch('notification/notifySuccess',"Successfully saved details",{root:true})
             commit("setPhone", parseInt(payload.newPhone),{root:true});
         } catch (error) {

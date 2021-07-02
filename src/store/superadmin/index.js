@@ -68,12 +68,11 @@ const mutations = {
 
 };
 const actions = {
-    async fetchHallAdmins({ commit, getters }) {
+    async fetchHallAdmins({ commit }) {
         commit('hallAdminsLoaderFlagOn');
-        let sendData = {};
 
         try {
-            let response = await badhanAxios.post('v2/admin/hall/show', sendData);
+            let response = await badhanAxios.get('/admins');
             commit('setHallAdmins',response.data.admins)
         } catch (error) {
         } finally {
@@ -84,7 +83,7 @@ const actions = {
     async changeHallAdmin({commit,getters,dispatch},payload){
             commit('changeAdminLoaderFlagOn');
             try {
-                let response = await badhanAxios.post('v2/admin/hall/change', payload);
+                let response = await badhanAxios.patch('/admins', payload);
                 dispatch('notification/notifySuccess',"Successfully changed hall admin");
 
                 return true;

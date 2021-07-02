@@ -582,12 +582,14 @@ export default {
       }
     },
     async savePasswordClicked() {
-      if (await this.savePassword({
+      await this.savePassword({
         donorId: this.$route.query.id,
         newPassword: this.newPassword,
         logoutFlag: this.$route.query.id === this.getID
-      })) {
-        this.$router.push('/');
+      });
+
+      if(this.$route.query.id === this.getID){
+        await this.$router.push({name: 'SignIn'});
       }
     },
     async saveDetailsClicked() {
@@ -623,9 +625,6 @@ export default {
       });
 
       if (success) {
-        // await this.getDetails(this.$route.query.id);
-        // await this.fetchDonationHistory({donorId: this.$route.query.id});
-        // this.$forceUpdate();
         let newAvailableIn =
             120 -
             Math.round(
@@ -638,12 +637,8 @@ export default {
           this.availableIn = newAvailableIn;
           this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime());
         }
-
         this.newDonationDate = "";
         this.donationCount++;
-
-
-        // await this.fetchDonationHistory({donorId: this.$route.query.id});
       }
 
     },

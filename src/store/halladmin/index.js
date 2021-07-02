@@ -81,7 +81,7 @@ const actions={
         commit('volunteerLoaderOn');
 
         try {
-            let response = await badhanAxios.post('/v2/admin/volunteers', {});
+            let response = await badhanAxios.get('/volunteers');
             let volunteers = response.data.volunteerList;
             volunteers.sort((a, b) => (a.studentId > b.studentId) ? 1 : -1)
             commit('setVolunteers',response.data.volunteerList);
@@ -95,14 +95,14 @@ const actions={
     async saveDonor({commit, getters, dispatch },payload){
         commit('newDonorLoaderOn');
         try {
-            let response = await badhanAxios.post("/v2/donor/insert", payload);
+            let response = await badhanAxios.post("/donors", payload);
 
             if(payload.lastDonation!==0){
                 let donationData = {
                     donorId: response.data.newDonor._id,
                     date: payload.lastDonation,
                 };
-                await badhanAxios.post("v2/donation/insert", donationData);
+                await badhanAxios.post("/donation", donationData);
             }
             dispatch('notification/notifySuccess',"Donor added successfully",{root: true});
             return {success: true, payload: response};
