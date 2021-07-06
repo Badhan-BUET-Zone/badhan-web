@@ -102,7 +102,7 @@ const actions={
                     donorId: response.data.newDonor._id,
                     date: payload.lastDonation,
                 };
-                await badhanAxios.post("/donation", donationData);
+                await badhanAxios.post("/donations", donationData);
             }
             dispatch('notification/notifySuccess',"Donor added successfully",{root: true});
             return {success: true, payload: response};
