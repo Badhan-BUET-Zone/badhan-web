@@ -57,7 +57,7 @@
     <v-card color="grey lighten-3" class="mt-2" v-if="showExtensionFlag">
       <v-card-text>
         <p><b>Department: </b>{{ studentID | idToDept }}</p>
-        <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }}</p>
+        <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )</p>
         <p v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }}</p>
         <p v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
           {{ roomNumber }}</p>
@@ -153,7 +153,8 @@ export default {
     "comment",
     "address",
     "roomNumber",
-    "id"
+    "id",
+    "commentTime"
   ],
   components: {
 

@@ -114,7 +114,9 @@
                     </div>
                     <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                 label="Comment" auto-grow
-                                :disabled="!enableEditing" :rows="1"></v-textarea>
+                                :disabled="!enableEditing" :rows="1" :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toLocaleString())">
+
+                    </v-textarea>
 
                     <v-btn color="primary" rounded
                            :disabled="getCommentLoaderFlag || !enableEditing"
@@ -330,6 +332,7 @@ export default {
       address: "",
       lastDonation: "",
       donationCount: 0,
+      commentTime: 0,
 
       dateToBeDeleted: "",
 
@@ -521,6 +524,7 @@ export default {
         donorId: this.$route.query.id,
         comment: this.comment
       })
+      this.commentTime = new Date().getTime();
 
     },
     async deleteDonationClicked(date) {
@@ -665,6 +669,7 @@ export default {
     this.comment = profile.comment;
     this.designation = profile.designation;
     this.donationCount = profile.donationCount;
+    this.commentTime = profile.commentTime;
 
     let date = new Date(profile.lastDonation);
     this.lastDonation =

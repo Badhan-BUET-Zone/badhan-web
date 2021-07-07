@@ -13,6 +13,7 @@ const state = {
     designation: null,
     roomNumber: null,
     donationCount: 0,
+    commentTime: 0,
 
     //
     donorLoaderFlag: true,
@@ -34,7 +35,8 @@ const getters = {
             comment: state.comment,
             designation: state.designation,
             roomNumber: state.roomNumber,
-            donationCount: state.donationCount
+            donationCount: state.donationCount,
+            commentTime: state.commentTime,
         }
     }
     ,
@@ -59,6 +61,7 @@ const mutations = {
         state.designation = payload.designation;
         state.roomNumber = payload.roomNumber;
         state.donationCount = payload.donationCount;
+        state.commentTime = payload.commentTime;
 
     },
 
