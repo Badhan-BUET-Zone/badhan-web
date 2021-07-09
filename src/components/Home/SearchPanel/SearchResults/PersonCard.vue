@@ -5,7 +5,7 @@
         rounded
         style="width: 100%; height: 100%"
         class="pa-1"
-        @click="showExtensionFlag = !showExtensionFlag"
+        @click="expansionClicked"
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
@@ -56,12 +56,24 @@
     <!--    Person card extension-->
     <v-card color="grey lighten-3" class="mt-2" v-if="showExtensionFlag">
       <v-card-text>
-        <p><b>Department: </b>{{ studentID | idToDept }}</p>
-        <p v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )</p>
-        <p v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }}</p>
-        <p v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
-          {{ roomNumber }}</p>
-        <div>
+        <v-row no-gutters>
+          <v-col cols="12" sm="6">
+            <span><b>Department: </b>{{ studentID | idToDept }} </span><br>
+            <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }} </span><br>
+            <span v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
+              {{ roomNumber }}</span>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )</span><br>
+            <span><b>Last called: </b>
+              <v-progress-circular color="primary" indeterminate v-if="callRecordFetchLoader"></v-progress-circular>
+              <span v-else-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
+              <span v-else>Unknown</span>
+            </span><br>
+            <span v-if="!callRecordFetchLoader">Called {{getCallCountInRange}} times in last 3 days</span>
+          </v-col>
+        </v-row>
+        <div class="mt-1">
           <v-btn
               small
               rounded
@@ -181,22 +193,46 @@ export default {
       donateLoaderFlag: false,
       availableInRendered: 0,
 
-      newCallRecordLoader:false
+      newCallRecordLoader:false,
+      callRecordFetchLoader: false,
+      callRecordFetchCalled: false,
+
+      callRecords: [],
     };
   },
   computed: {
     ...mapGetters('donate', ['getDonationLoaderFlag']),
+    getLastCallRecordDate(){
+      let lastDate = 0;
+      this.callRecords.forEach((callRecord)=>{
+        if(callRecord.date> lastDate){
+          lastDate = callRecord.date;
+        }
+      });
+      return lastDate;
+    },
+    getCallCountInRange(){
+      let count = 0;
+      let todayDate = new Date().getTime();
+      this.callRecords.forEach((callRecord)=>{
+        if(callRecord.date> todayDate-3*24*3600*1000){
+          count++;
+        }
+      });
+      return count;
+    }
   },
   mounted() {
     this.availableInRendered = this.$props.availableIn;
   },
   methods: {
     ...mapActions('donate', ['donate']),
-    ...mapActions('callrecord',['postCallRecordFromCard']),
+    ...mapActions('callrecord',['postCallRecordFromCard','fetchCallRecordsForHome']),
     async callFromDialer() {
       this.newCallRecordLoader=true;
       await this.postCallRecordFromCard({donorId: this.$props.id});
       this.newCallRecordLoader = false;
+      this.callRecords.push({date:new Date().getTime()})
       document.location.href = "tel:+" + this.phone;
     },
     async loadPersonDetails() {
@@ -229,6 +265,15 @@ export default {
       }
 
     },
+    async expansionClicked(){
+      this.showExtensionFlag = !this.showExtensionFlag;
+      if(!this.callRecordFetchCalled){
+        this.callRecordFetchCalled = true;
+        this.callRecordFetchLoader = true;
+        this.callRecords = await this.fetchCallRecordsForHome({donorId: this.$props.id});
+        this.callRecordFetchLoader = false;
+      }
+    }
   },
 };
 </script>

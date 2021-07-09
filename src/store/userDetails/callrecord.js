@@ -60,6 +60,15 @@ const actions = {
             commit('callRecordsLoaderOff');
         }
     },
+    async fetchCallRecordsForHome({commit},payload){
+        try{
+            let response = await badhanAxios.get("/callrecords", {params:payload});
+            return response.data.callRecords;
+        }catch(e){
+            return null;
+        }finally {
+        }
+    },
     async deleteCallRecord({commit,dispatch,getters},payload){
         commit('setDeleteCallRecordLoaderFlag');
         try{
