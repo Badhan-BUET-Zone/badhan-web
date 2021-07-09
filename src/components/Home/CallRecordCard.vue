@@ -7,9 +7,10 @@
       <v-row>
         <v-col cols="9">
           <p>
-            {{callRecord.callerId.name}}
-            <br>
-            {{new Date(callRecord.date).toLocaleString()}}
+            {{callRecord.callerId.name}}<br>
+            <b>Hall: </b>{{halls[callRecord.callerId.hall]}}<br>
+            <b>Designation: </b>{{designations[callRecord.callerId.designation]}}<br>
+            <b>Time: </b>{{new Date(callRecord.date).toLocaleString()}}
           </p>
         </v-col>
         <v-col cols="3">
@@ -22,6 +23,7 @@
 
 <script>
 import {mapActions} from "vuex";
+import {halls,designations} from "../../mixins/constants";
 
 export default {
 name: "CallRecordCard",
@@ -29,6 +31,8 @@ name: "CallRecordCard",
   data:()=>{
     return{
       deleteLoaderFlag: false,
+      halls,
+      designations
     }
   },
   methods:{

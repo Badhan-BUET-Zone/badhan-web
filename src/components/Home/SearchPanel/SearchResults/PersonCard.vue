@@ -76,7 +76,7 @@
             </v-icon>
             See profile
           </v-btn>
-          <v-btn small rounded color="secondary" class="ml-2" @click="callFromDialer"
+          <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary" class="ml-2" @click="callFromDialer"
           >
             <v-icon left>
               mdi-phone
@@ -180,6 +180,8 @@ export default {
       seeDetailsLoaderFlag: false,
       donateLoaderFlag: false,
       availableInRendered: 0,
+
+      newCallRecordLoader:false
     };
   },
   computed: {
@@ -190,7 +192,11 @@ export default {
   },
   methods: {
     ...mapActions('donate', ['donate']),
-    callFromDialer() {
+    ...mapActions('callrecord',['postCallRecordFromCard']),
+    async callFromDialer() {
+      this.newCallRecordLoader=true;
+      await this.postCallRecordFromCard({donorId: this.$props.id});
+      this.newCallRecordLoader = false;
       document.location.href = "tel:+" + this.phone;
     },
     async loadPersonDetails() {

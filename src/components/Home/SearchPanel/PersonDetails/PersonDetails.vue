@@ -35,6 +35,9 @@
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
 
+          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>
+          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>
+
           <br>
           <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">
             <v-icon left>
@@ -292,29 +295,7 @@
 
               <p>Call History:</p>
               <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>
-              <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id">
-
-              </CallRecordCard>
-<!--              <v-card-->
-<!--                  class="mb-2"-->
-<!--                  dense-->
-<!--                  v-for="(callRecord) in getCallRecords" :key="callRecord._id"-->
-<!--              >-->
-<!--                <v-card-text>-->
-<!--                  <v-row>-->
-<!--                    <v-col cols="9">-->
-<!--                      <p>-->
-<!--                        {{callRecord.callerId.name}}-->
-<!--                        <br>-->
-<!--                        {{new Date(callRecord.date).toDateString()}}-->
-<!--                      </p>-->
-<!--                    </v-col>-->
-<!--                    <v-col cols="3">-->
-<!--                      <v-btn color="error" x-small fab depressed><v-icon>mdi-delete</v-icon></v-btn>-->
-<!--                    </v-col>-->
-<!--                  </v-row>-->
-<!--                </v-card-text>-->
-<!--              </v-card>-->
+              <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
             </div>
           </div>
         </v-card-text>
@@ -492,6 +473,15 @@ export default {
         }
       }
     },
+    getLastCallRecordDate(){
+      let lastDate = 0;
+      this.getCallRecords.forEach((callRecord)=>{
+        if(callRecord.date> lastDate){
+          lastDate = callRecord.date;
+        }
+      });
+      return lastDate;
+    }
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),

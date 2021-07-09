@@ -20,7 +20,7 @@ const getters = {
     },
     getDeleteCallRecordLoaderFlag(state){
         return state.deleteCallRecordLoaderFlag;
-    }
+    },
 
 };
 const mutations = {
@@ -89,6 +89,16 @@ const actions = {
 
         }finally {
             commit('unsetNewCallRecordLoaderFlag');
+        }
+    },
+    async postCallRecordFromCard({commit,dispatch},payload){
+        try{
+            let response = await badhanAxios.post("/callrecords",payload);
+            dispatch('notification/notifySuccess',"Added call record",{root: true})
+        }catch(e){
+
+        }finally{
+
         }
     }
 };
