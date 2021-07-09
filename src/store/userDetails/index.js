@@ -4,6 +4,7 @@ import promote from "@/store/userDetails/promote";
 import donation from "@/store/userDetails/donation";
 import password from "@/store/userDetails/password";
 import deleteDonor from '@/store/userDetails/deleteDonor';
+import callrecord from "@/store/userDetails/callrecord";
 
 export default {
     actions:{
@@ -18,6 +19,7 @@ export default {
         promote,
         donation,
         password,
-        deleteDonor
+        deleteDonor,
+        callrecord
     }
 }

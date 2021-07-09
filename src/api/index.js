@@ -26,7 +26,7 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use( (config)=>{
     // Do something before request is sent
-    console.log("%cREQUEST TO "+config.method+" "+config.url+": ",'color: #ff00ff',config.data);
+    console.log("%cREQUEST TO "+config.method+" "+config.url+": ",'color: #ff00ff',config.data,config.params);
 
     store.dispatch('notification/clearNotification');
 

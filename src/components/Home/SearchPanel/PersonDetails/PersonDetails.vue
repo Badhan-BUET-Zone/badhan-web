@@ -36,7 +36,7 @@
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
 
           <br>
-          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer">
+          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">
             <v-icon left>
               mdi-phone
             </v-icon>
@@ -289,6 +289,32 @@
                 </div>
               </template>
               <template v-else>No donation found</template>
+
+              <p>Call History:</p>
+              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>
+              <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id">
+
+              </CallRecordCard>
+<!--              <v-card-->
+<!--                  class="mb-2"-->
+<!--                  dense-->
+<!--                  v-for="(callRecord) in getCallRecords" :key="callRecord._id"-->
+<!--              >-->
+<!--                <v-card-text>-->
+<!--                  <v-row>-->
+<!--                    <v-col cols="9">-->
+<!--                      <p>-->
+<!--                        {{callRecord.callerId.name}}-->
+<!--                        <br>-->
+<!--                        {{new Date(callRecord.date).toDateString()}}-->
+<!--                      </p>-->
+<!--                    </v-col>-->
+<!--                    <v-col cols="3">-->
+<!--                      <v-btn color="error" x-small fab depressed><v-icon>mdi-delete</v-icon></v-btn>-->
+<!--                    </v-col>-->
+<!--                  </v-row>-->
+<!--                </v-card-text>-->
+<!--              </v-card>-->
             </div>
           </div>
         </v-card-text>
@@ -313,9 +339,12 @@
 import {halls, bloodGroups} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
-
+import CallRecordCard from "../../CallRecordCard";
 export default {
   name: "PersonDetails",
+  components:{
+    CallRecordCard
+  },
   data: ()=>{
     return {
       //form fields
@@ -410,6 +439,7 @@ export default {
     ...mapGetters('comment', ['getCommentLoaderFlag']),
     ...mapGetters('donation', ['getDonationList']),
     ...mapGetters('donate', ['getDonationLoaderFlag']),
+    ...mapGetters('callrecord',['getNewCallRecordLoaderFlag','getCallRecords','getCallRecordsLoader','getDeleteCallRecordLoaderFlag']),
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -475,6 +505,8 @@ export default {
     ...mapActions('details', ['getDetails']),
     ...mapActions('donate', ['donate']),
     ...mapMutations('donation', ['addDonation']),
+    ...mapActions('callrecord',['postCallRecord','deleteCallRecord','fetchCallRecords']),
+
     shareClicked() {
       let routeData = this.$router.resolve({
         name: 'Details',
@@ -502,8 +534,10 @@ export default {
         await this.$router.push('/home');
       }
     },
-    callFromDialer() {
+    async callFromDialer() {
+      await this.postCallRecord({donorId: this.$route.query.id});
       document.location.href = "tel:+88" + this.phone;
+      this.$forceUpdate();
     },
     datePrint(date) {
       let dateObj = new Date(date);
@@ -691,6 +725,7 @@ export default {
 
     this.dataLoaded = true;
     await this.fetchDonationHistory({donorId: this.$route.query.id});
+    await this.fetchCallRecords({donorId: this.$route.query.id});
     this.$forceUpdate();
 
   },
