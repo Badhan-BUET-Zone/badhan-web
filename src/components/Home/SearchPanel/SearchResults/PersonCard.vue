@@ -58,18 +58,19 @@
       <v-card-text>
         <v-row no-gutters>
           <v-col cols="12" sm="6">
-            <span><b>Department: </b>{{ studentID | idToDept }} </span><br>
-            <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }} </span><br>
+            <span><b>Department: </b>{{ studentID | idToDept }} <br></span>
+            <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }} <br></span>
             <span v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
               {{ roomNumber }}</span>
           </v-col>
           <v-col cols="12" sm="6">
-            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )</span><br>
+            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )<br></span>
             <span><b>Last called: </b>
               <v-progress-circular color="primary" indeterminate v-if="callRecordFetchLoader"></v-progress-circular>
               <span v-else-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
               <span v-else>Unknown</span>
-            </span><br>
+              <br>
+            </span>
             <span v-if="!callRecordFetchLoader">Called {{getCallCountInRange}} times in last 3 days</span>
           </v-col>
         </v-row>
@@ -229,11 +230,11 @@ export default {
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord',['postCallRecordFromCard','fetchCallRecordsForHome']),
     async callFromDialer() {
+      document.location.href = "tel:+" + this.phone;
       this.newCallRecordLoader=true;
       await this.postCallRecordFromCard({donorId: this.$props.id});
       this.newCallRecordLoader = false;
       this.callRecords.push({date:new Date().getTime()})
-      document.location.href = "tel:+" + this.phone;
     },
     async loadPersonDetails() {
       //   await this.$router.push("/home/details");
