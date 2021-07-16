@@ -36,14 +36,10 @@
                     <span v-else>Version: {{ version }}</span>
                   </span>)
                   </p>
-
-
-
                 </v-col>
                 <v-col class="text-center"
                        cols="12"
                        sm="4">
-
                   <div style="max-width: 300px">
                     <v-text-field
                         :type="'text'"
@@ -55,9 +51,7 @@
                         v-model="phone"
                         @blur="$v.phone.$touch()"
                         :error-messages="phoneErrors"
-
                     ></v-text-field>
-
                     <v-text-field
                         rounded
                         outlined
