@@ -334,8 +334,6 @@ export default {
     if(Object.keys(this.$route.query).length===7){
       this.searchClicked();
     }
-
-    hello = hello;
   },
   methods: {
     ...mapActions(['search']),
