@@ -233,8 +233,6 @@ export default {
     this.fetchAllVolunteers();
     await this.fetchLogs();
     this.updateRange();
-
-
   },
   data() {
     return {

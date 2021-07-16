@@ -160,6 +160,15 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item link to="/devconsole" v-if="getDesignation===3" style="text-decoration: none">
+            <v-list-item-icon>
+              <v-icon>mdi-developer-board</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Dev Console</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
           <v-list-item link to="/credits" style="text-decoration: none">
             <v-list-item-icon>
               <v-icon>mdi-hand-heart</v-icon>

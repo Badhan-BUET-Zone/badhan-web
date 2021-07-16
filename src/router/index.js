@@ -122,6 +122,16 @@ const routes = [
         }
     },
     {
+        name: 'DevConsole',
+        path: '/devconsole',
+        component: () => import('@/views/DevConsole.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'Developer Console',
+            designation: 3,
+        }
+    },
+    {
         name: 'NotFound',
         path: '/*',
         component: () => import('@/views/NotFound.vue'),

@@ -10,23 +10,26 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuelidate from 'vuelidate'
 import VueClipboard from 'vue-clipboard2'
+import Mixins from '@/mixins/index';
+import vuetify from './plugins/vuetify';
 
 Vue.use(VueClipboard);
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-// import 'aos/dist/aos.css'
+Vue.config.errorHandler = (err, vm, info) => {
+  // err: error trace
+  // vm: component in which error occured
+  // info: Vue specific error information such as lifecycle hooks, events etc.
+  console.log(err);
+  store.commit('errorStore/addError',err);
+};
 
-import Mixins from '@/mixins/index'
 Vue.mixin(Mixins);
-
-//previous badhan project
-import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 export const eventBus = new Vue();
-
 
 new Vue({
   router,
