@@ -54,7 +54,7 @@ const actions = {
         commit('callRecordsLoaderOn');
         try {
             let response = await badhanAxios.get("/callrecords", {params:payload});
-            commit('setCallRecords',response.data.callRecords);
+            commit('setCallRecords',response.data.callRecords,{root: true});
         } catch (error) {
         } finally {
             commit('callRecordsLoaderOff');

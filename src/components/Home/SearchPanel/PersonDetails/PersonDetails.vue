@@ -714,10 +714,8 @@ export default {
         );
 
     this.dataLoaded = true;
-    await this.fetchDonationHistory({donorId: this.$route.query.id});
-    await this.fetchCallRecords({donorId: this.$route.query.id});
-    this.$forceUpdate();
 
+    this.$forceUpdate();
   },
 };
 </script>

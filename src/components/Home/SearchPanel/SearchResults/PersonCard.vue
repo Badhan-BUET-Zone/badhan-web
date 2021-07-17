@@ -167,7 +167,8 @@ export default {
     "address",
     "roomNumber",
     "id",
-    "commentTime"
+    "commentTime",
+    "callRecords"
   ],
   components: {
 
@@ -198,7 +199,7 @@ export default {
       callRecordFetchLoader: false,
       callRecordFetchCalled: false,
 
-      callRecords: [],
+      // callRecords: [],
     };
   },
   computed: {
@@ -268,12 +269,6 @@ export default {
     },
     async expansionClicked(){
       this.showExtensionFlag = !this.showExtensionFlag;
-      if(!this.callRecordFetchCalled){
-        this.callRecordFetchCalled = true;
-        this.callRecordFetchLoader = true;
-        this.callRecords = await this.fetchCallRecordsForHome({donorId: this.$props.id});
-        this.callRecordFetchLoader = false;
-      }
     }
   },
 };

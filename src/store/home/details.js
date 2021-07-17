@@ -2,18 +2,8 @@ import {badhanAxios} from '/src/api'
 
 const state = {
     //SEE DONOR DETAILS
-    name: null,
-    studentId: null,
-    lastDonation: null,
-    bloodGroup: null,
-    hall: null,
-    phone: null,
-    address: null,
-    comment: null,
-    designation: null,
-    roomNumber: null,
-    donationCount: 0,
-    commentTime: 0,
+
+    profile: null,
 
     //
     donorLoaderFlag: true,
@@ -24,22 +14,8 @@ const state = {
 const getters = {
     //SEE DETAILS
     getProfile: state => {
-        return {
-            name: state.name,
-            studentId: state.studentId,
-            lastDonation: state.lastDonation,
-            bloodGroup: state.bloodGroup,
-            hall: state.hall,
-            phone: state.phone,
-            address: state.address,
-            comment: state.comment,
-            designation: state.designation,
-            roomNumber: state.roomNumber,
-            donationCount: state.donationCount,
-            commentTime: state.commentTime,
-        }
-    }
-    ,
+        return state.profile
+    },
     getDonorLoaderFlag: state => {
         return state.donorLoaderFlag;
     },
@@ -50,19 +26,7 @@ const getters = {
 const mutations = {
     //SEE DETAILS
     setProfile(state, payload) {
-        state.name = payload.name;
-        state.studentId = payload.studentId;
-        state.lastDonation = payload.lastDonation;
-        state.bloodGroup = payload.bloodGroup;
-        state.hall = payload.hall;
-        state.phone = payload.phone;
-        state.address = payload.address;
-        state.comment = payload.comment;
-        state.designation = payload.designation;
-        state.roomNumber = payload.roomNumber;
-        state.donationCount = payload.donationCount;
-        state.commentTime = payload.commentTime;
-
+        state.profile = payload;
     },
 
     donorLoaderFlagOn(state) {
@@ -88,7 +52,9 @@ const actions = {
         commit('donorLoaderFlagOn');
         try {
             let response = await badhanAxios.get('/donors', {params});
-            commit('setProfile', response.data.donor)
+            commit('setProfile', response.data.donor);
+            commit('callrecord/setCallRecords',response.data.donor.callRecords,{root: true});
+            commit('donation/setDonationList',response.data.donor.donations.map(a => a.date),{root:true});
             return true;
         } catch (error) {
             return false;
