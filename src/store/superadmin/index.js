@@ -70,7 +70,6 @@ const mutations = {
 const actions = {
     async fetchHallAdmins({ commit }) {
         commit('hallAdminsLoaderFlagOn');
-
         try {
             let response = await badhanAxios.get('/admins');
             commit('setHallAdmins',response.data.admins)

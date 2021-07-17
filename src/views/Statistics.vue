@@ -1,6 +1,7 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
+    <v-btn class="ma-2" color="primary" rounded @click="showStats">Show Stats</v-btn>
     <v-card max-width="500" class="pa-2 rounded-xl" v-if="getStatisticsLoaderFlag">
       <v-progress-circular
           indeterminate
@@ -18,13 +19,14 @@
       <v-card-title>Activity Logs of Badhan BUET Zone</v-card-title>
       <v-row>
         <v-col cols="12" sm="5">
+          <v-btn class="ma-2" color="primary" rounded @click="showLogs">Show Logs</v-btn>
       <v-progress-circular
           v-if="getLogsLoaderFlag"
           indeterminate
           color="primary"
           class="ma-4"
       ></v-progress-circular>
-      <v-card-text v-else>
+      <v-card-text v-else-if="logsShown">
         <v-row class="fill-height">
           <v-col>
             <v-sheet height="64">
@@ -98,8 +100,8 @@
             sort-by="date"
             sort-desc
         >
-          <template v-slot:item.editedObject="{ item }">
-            <LogObject :object="item.editedObject"></LogObject>
+          <template v-slot:item.details="{ item }">
+            <LogObject :object="item.details"></LogObject>
           </template>
           <template v-slot:item.date="{ item }">
             {{ new Date(item.date).toLocaleString() }}
@@ -112,7 +114,7 @@
           </v-col>
       </v-row>
       <v-card-actions>
-        <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
+        <v-btn v-if="logsShown" class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
                @click="removeAllLogsClicked">
           <v-icon left>
             mdi-delete
@@ -122,13 +124,15 @@
       </v-card-actions>
     </v-card>
 
+    <v-btn class="ma-2" color="primary" rounded @click="showVolunteers">Show Volunteers</v-btn>
+
     <v-card max-width="500" class="mt-4 pa-2 rounded-xl" v-if="getVolunteerLoaderFlag">
       <v-progress-circular
           indeterminate
           color="primary"
       ></v-progress-circular>
     </v-card>
-    <v-card v-else class="mt-4 rounded-xl">
+    <v-card v-else-if="volunteersShown" class="mt-4 rounded-xl">
       <v-card-title>List of all volunteers</v-card-title>
       <v-data-table
           dense
@@ -222,6 +226,20 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a
     },
 
+    async showStats(){
+      this.fetchStatistics();
+      this.statsShown = true;
+    },
+    async showLogs(){
+      await this.fetchLogs();
+      this.updateRange();
+      this.logsShown = true;
+    },
+    async showVolunteers(){
+
+      await this.fetchAllVolunteers();
+      this.volunteersShown = true;
+    }
   },
   async mounted() {
     // this.notifyInfo('Page under construction');
@@ -229,19 +247,15 @@ export default {
       this.$router.push({name: 'NotFound'});
       return;
     }
-    this.fetchStatistics();
-    this.fetchAllVolunteers();
-    await this.fetchLogs();
-    this.updateRange();
   },
   data() {
     return {
       halls,
       headers: [
         {text: 'Time', value: 'date'},
-        {text: 'Name', value: 'name'},
-        {text: 'Hall', value: 'hall'},
-        {text: "Update", value: 'editedObject'},
+        {text: 'Name', value: 'donorId.name'},
+        {text: 'Hall', value: 'donorId.hall'},
+        {text: "Details", value: 'details'},
         {text: "Operation", value: 'operation'}
       ],
       volunteerListHeaders: [
@@ -255,7 +269,10 @@ export default {
 
       selectedDate: null,
       events: [],
-      colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+
+      statsShown: false,
+      logsShown: false,
+      volunteersShown: false,
 
     }
   },

@@ -17,7 +17,7 @@
 
       <v-card>
         <v-card-text>
-          <VueJsonPretty style="overflow-x: scroll ;max-width: 500px;" :path="'res'" :data="object" :deep="1"> </VueJsonPretty>
+          <VueJsonPretty style="overflow-x: scroll ;max-width: 500px;" :path="'res'" :data="object"> </VueJsonPretty>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog=false">
@@ -33,7 +33,6 @@
 <script>
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
-import {mapGetters} from "vuex";
 export default {
   name: "LogObject",
   props:["object"],
@@ -51,6 +50,10 @@ export default {
   methods:{
 
   },
+  mounted(){
+    console.log("Hello")
+    console.log(this.object);
+  }
 
 
 }
