@@ -50,6 +50,7 @@ badhanAxios.interceptors.response.use( (response)=>{
     store.dispatch('notification/notifyError',processError(error))
     if(error.response && error.response.data){
         console.log(error.response.data)
+        store.commit('errorStore/addError',{name:"Backend error",message:error.response.data.message,stack:error.response.config.method+" "+error.response.config.url});
     }
 
     return Promise.reject(error);

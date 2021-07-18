@@ -106,8 +106,8 @@
           <template v-slot:item.date="{ item }">
             {{ new Date(item.date).toLocaleString() }}
           </template>
-          <template v-slot:item.hall="{ item }">
-            {{ halls[item.hall] }}
+          <template v-slot:item.donorId.hall="{ item }">
+            {{ halls[item.donorId.hall] }}
           </template>
         </v-data-table>
       </div>

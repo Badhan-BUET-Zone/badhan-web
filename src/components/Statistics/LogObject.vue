@@ -51,8 +51,6 @@ export default {
 
   },
   mounted(){
-    console.log("Hello")
-    console.log(this.object);
   }
 
 

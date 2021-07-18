@@ -1,7 +1,6 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-<!--    <Helloword></Helloword>-->
     <div>
       <v-row>
         <v-col cols="12" sm="4">
