@@ -35,13 +35,21 @@
       <v-select rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
-      <v-select rounded :items="halls" label="Select Hall" outlined dense v-model="hall"
-                @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
+
       <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
       <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
       <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
       <v-text-field type="number" rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
                     :error-messages="donationCountErrors"></v-text-field>
+      <v-card outlined class="rounded-xl">
+        <v-card-text>
+          <v-select rounded :items="halls" label="Select Hall" outlined dense v-model="hall"
+                    @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
+          <v-checkbox dense label="Available to all"></v-checkbox>
+        </v-card-text>
+      </v-card>
+
+
       <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="lastDonation"
               transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ on, attrs }">

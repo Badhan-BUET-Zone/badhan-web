@@ -93,19 +93,15 @@
                     <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentID"
                                   :disabled="!enableEditing" @blur="$v.studentID.$touch()"
                                   :error-messages="studentIDErrors"></v-text-field>
-                    <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
-                              :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                    <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
+                     <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
                                   :disabled="!enableEditing"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
                                   :disabled="!enableEditing"></v-text-field>
+                    <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
+                              :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
+                    <v-checkbox dense label="Available to all"></v-checkbox>
+
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
-                      <v-btn color="secondary" rounded style="text-decoration: none" to="/home">
-                        <v-icon left>
-                          mdi-window-close
-                        </v-icon>
-                        Cancel
-                      </v-btn>
                       <v-btn color="primary" rounded class="white--text ml-2"
                              :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentID.$error"
                              :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
@@ -115,10 +111,10 @@
                         Save
                       </v-btn>
                     </div>
+
                     <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                 label="Comment" auto-grow
                                 :disabled="!enableEditing" :rows="1" :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toLocaleString())">
-
                     </v-textarea>
 
                     <v-btn color="primary" rounded
