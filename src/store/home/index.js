@@ -156,12 +156,13 @@ const actions = {
             hall: halls.indexOf(payload.hall),
             isAvailable: payload.availability,
             isNotAvailable: payload.notAvailability,
-            address: payload.inputAddress
+            address: payload.inputAddress,
+            availableToAll: payload.availableToAll
         };
 
         try {
             // let response = await badhanAxios.post('v2/donor/search', sendData );
-            let response = await badhanAxios.get('/search', {params: sendData} );
+            let response = await badhanAxios.get('/search/v2', {params: sendData} );
             commit('setPersonGroups', response.data.filteredDonors);
             commit('setSearchedHall',payload.hall);
             commit('hideFilter');

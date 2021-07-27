@@ -59,8 +59,34 @@
                     :error-messages="batchErrors"
                 ></v-text-field>
 
+
+
                 <!--        Input field for hall-->
+
+
+                <v-text-field
+                    rounded
+                    outlined
+                    label="Address/ Comment"
+                    clearable
+                    v-model="address"
+                    dense
+                ></v-text-field>
+
+                <v-radio-group row v-model="radios" dense>
+                  <v-radio value="AvailableToAll">
+                    <template v-slot:label>
+                      Public Data
+                    </template>
+                  </v-radio>
+                  <v-radio value="SpecifyHall">
+                    <template v-slot:label>
+                      Specify hall
+                    </template>
+                  </v-radio>
+                </v-radio-group>
                 <v-select
+                    :disabled="radios!== 'SpecifyHall'"
                     rounded
                     v-model="hall"
                     :items="availableHalls"
@@ -69,16 +95,6 @@
                     dense
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"
                 ></v-select>
-
-                <v-text-field
-                    rounded
-                    outlined
-                    label="Address"
-                    clearable
-                    v-model="address"
-                    dense
-                ></v-text-field>
-
                 <v-row>
                   <v-col>
                     <v-checkbox
@@ -255,11 +271,11 @@ export default {
     availableHalls() {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return halls;
+          return halls.slice(0,7);
         } else {
           //covid support
           //return [halls[this.getHall], halls[7]];
-          return [halls[this.getHall], halls[7], halls[8]];
+          return [halls[this.getHall]];
         }
       }
     },
@@ -303,7 +319,9 @@ export default {
       halls,
       bloodGroups,
 
-      showTooltip: false
+      showTooltip: false,
+
+      radios: 'SpecifyHall',
     };
   },
   validations:()=>{return{
@@ -375,7 +393,8 @@ export default {
         hall: this.hall,
         availability: this.availability,
         notAvailability: this.notAvailability,
-        inputAddress: inputAddress
+        inputAddress: inputAddress,
+        availableToAll: this.radios==="AvailableToAll"
       });
 
     },
@@ -465,6 +484,7 @@ export default {
 
 }
 </script>
+
 
 <style scoped>
 
