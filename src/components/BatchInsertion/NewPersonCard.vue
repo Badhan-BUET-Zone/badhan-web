@@ -43,7 +43,7 @@
                     :error-messages="donationCountErrors"></v-text-field>
       <v-card outlined class="rounded-xl">
         <v-card-text>
-          <v-select rounded :items="halls" label="Select Hall" outlined dense v-model="hall"
+          <v-select rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
           <v-checkbox dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
         </v-card-text>
@@ -149,12 +149,19 @@ export default {
       isBoolean: (value) => {
         return typeof value == "boolean";
       }
-
     }
   }},
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
+
+    availableHalls() {
+
+      return [...halls.slice(0,7),halls[8]];
+
+
+    },
+
     isNative(){
       return isNative();
     },

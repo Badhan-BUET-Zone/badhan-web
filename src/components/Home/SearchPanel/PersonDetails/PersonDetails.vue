@@ -463,11 +463,11 @@ export default {
     availableHalls() {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return halls;
+          return [...halls.slice(0,7),halls[8]];
         } else {
           //covid support
           //return [halls[this.getHall], halls[7]];
-          return [halls[this.getHall], halls[7], halls[8]];
+          return [halls[this.getHall], halls[8]];
         }
       }
     },
