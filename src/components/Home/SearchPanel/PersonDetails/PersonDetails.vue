@@ -610,7 +610,7 @@ export default {
     async savePasswordClicked() {
       await this.savePassword({
         donorId: this.$route.query.id,
-        newPassword: this.newPassword,
+        password: this.newPassword,
         logoutFlag: this.$route.query.id === this.getID
       });
 
