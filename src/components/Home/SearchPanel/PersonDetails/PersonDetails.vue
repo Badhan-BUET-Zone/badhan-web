@@ -100,7 +100,7 @@
                                   :disabled="!enableEditing"></v-text-field>
                     <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
                               :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                    <v-checkbox :disabled="!enableEditing" v-model="availableToAll" dense label="Available to all"></v-checkbox>
+                    <v-checkbox :disabled="!enableEditing" v-model="availableToAll" dense label="Public Data"></v-checkbox>
 
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
                       <v-btn color="primary" rounded class="white--text ml-2"
