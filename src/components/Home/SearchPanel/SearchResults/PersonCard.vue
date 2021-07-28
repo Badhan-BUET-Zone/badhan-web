@@ -40,11 +40,14 @@
             align-self="center"
             class="d-flex align-content-center"
         >
-          <div style="font-size: small; width: 100%" class="text-wrap pa-4">
+          <div style="font-size: small; width: 100%" class="text-wrap pa-2">
             <b style="width: 100%">{{ name }}</b>
             <br/>
             <b>Phone: </b>
             <span v-if="phone">{{ phone.toString().substr(2) }}</span>
+            <br>
+            <b>Hall: </b>
+            <span>{{ halls[hall] }}</span>
           </div>
         </v-col>
 
@@ -64,14 +67,14 @@
               {{ roomNumber }}</span>
           </v-col>
           <v-col cols="12" sm="6">
-            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{commentTime==0?'Unknown':new Date(commentTime).toLocaleString()}} )<br></span>
+            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{ commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString() }} )<br></span>
             <span><b>Last called: </b>
               <v-progress-circular color="primary" indeterminate v-if="callRecordFetchLoader"></v-progress-circular>
               <span v-else-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
               <span v-else>Unknown</span>
               <br>
             </span>
-            <span v-if="!callRecordFetchLoader">Called {{getCallCountInRange}} times in last 3 days</span>
+            <span v-if="!callRecordFetchLoader">Called {{ getCallCountInRange }} times in last 3 days</span>
           </v-col>
         </v-row>
         <div class="mt-1">
@@ -89,7 +92,8 @@
             </v-icon>
             See profile
           </v-btn>
-          <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary" class="ml-2" @click="callFromDialer"
+          <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
+                 class="ml-2" @click="callFromDialer"
           >
             <v-icon left>
               mdi-phone
@@ -153,6 +157,7 @@
 import {departments, bloodGroups} from "@/mixins/constants";
 
 import {mapActions, mapGetters} from "vuex";
+import {halls} from "@/mixins/constants";
 
 export default {
   name: "PersonCard",
@@ -168,11 +173,10 @@ export default {
     "roomNumber",
     "id",
     "commentTime",
-    "callRecords"
+    "callRecords",
+    "hall"
   ],
-  components: {
-
-  },
+  components: {},
   filters: {
     idToDept(studentID) {
       return departments[Number(studentID.toString().substr(2, 2))];
@@ -195,29 +199,30 @@ export default {
       donateLoaderFlag: false,
       availableInRendered: 0,
 
-      newCallRecordLoader:false,
+      newCallRecordLoader: false,
       callRecordFetchLoader: false,
       callRecordFetchCalled: false,
 
       // callRecords: [],
+      halls
     };
   },
   computed: {
     ...mapGetters('donate', ['getDonationLoaderFlag']),
-    getLastCallRecordDate(){
+    getLastCallRecordDate() {
       let lastDate = 0;
-      this.callRecords.forEach((callRecord)=>{
-        if(callRecord.date> lastDate){
+      this.callRecords.forEach((callRecord) => {
+        if (callRecord.date > lastDate) {
           lastDate = callRecord.date;
         }
       });
       return lastDate;
     },
-    getCallCountInRange(){
+    getCallCountInRange() {
       let count = 0;
       let todayDate = new Date().getTime();
-      this.callRecords.forEach((callRecord)=>{
-        if(callRecord.date> todayDate-3*24*3600*1000){
+      this.callRecords.forEach((callRecord) => {
+        if (callRecord.date > todayDate - 3 * 24 * 3600 * 1000) {
           count++;
         }
       });
@@ -229,13 +234,13 @@ export default {
   },
   methods: {
     ...mapActions('donate', ['donate']),
-    ...mapActions('callrecord',['postCallRecordFromCard','fetchCallRecordsForHome']),
+    ...mapActions('callrecord', ['postCallRecordFromCard', 'fetchCallRecordsForHome']),
     async callFromDialer() {
       document.location.href = "tel:+" + this.phone;
-      this.newCallRecordLoader=true;
+      this.newCallRecordLoader = true;
       await this.postCallRecordFromCard({donorId: this.$props.id});
       this.newCallRecordLoader = false;
-      this.callRecords.push({date:new Date().getTime()})
+      this.callRecords.push({date: new Date().getTime()})
     },
     async loadPersonDetails() {
       //   await this.$router.push("/home/details");
@@ -267,7 +272,7 @@ export default {
       }
 
     },
-    async expansionClicked(){
+    async expansionClicked() {
       this.showExtensionFlag = !this.showExtensionFlag;
     }
   },

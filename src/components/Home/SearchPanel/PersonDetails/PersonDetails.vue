@@ -81,7 +81,8 @@
                   </h5>
                 </div>
                 <div v-if="personDetailCollapseFlag">
-                  <div class="card-body" v-on:click="promptForEdit($event)">
+                  <div class="card-body">
+                    <div v-on:click="promptForEdit($event)">
                     <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
                                   :disabled="!enableEditing" @blur="$v.name.$touch()"
                                   :error-messages="nameErrors"></v-text-field>
@@ -99,7 +100,7 @@
                                   :disabled="!enableEditing"></v-text-field>
                     <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
                               :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                    <v-checkbox dense label="Available to all"></v-checkbox>
+                    <v-checkbox :disabled="!enableEditing" v-model="availableToAll" dense label="Available to all"></v-checkbox>
 
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
                       <v-btn color="primary" rounded class="white--text ml-2"
@@ -111,21 +112,20 @@
                         Save
                       </v-btn>
                     </div>
-
+                    </div>
                     <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                 label="Comment" auto-grow
-                                :disabled="!enableEditing" :rows="1" :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toLocaleString())">
+                                :disabled="getCommentLoaderFlag" :rows="1" :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toLocaleString())">
                     </v-textarea>
 
                     <v-btn color="primary" rounded
-                           :disabled="getCommentLoaderFlag || !enableEditing"
+                           :disabled="getCommentLoaderFlag"
                            :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
                       <v-icon left>
                         mdi-content-save
                       </v-icon>
                       Save Comment
                     </v-btn>
-                    <br/>
                   </div>
                 </div>
               </div>
@@ -287,11 +287,12 @@
                   <br/>
                 </div>
               </template>
-              <template v-else>No donation found</template>
+              <span v-else>No donation found</span>
 
               <p>Call History:</p>
               <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>
               <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
+              <span v-if="getCallRecords.length===0">No call history found</span>
             </div>
           </div>
         </v-card-text>
@@ -349,6 +350,7 @@ export default {
       newPassword: null,
       confirmPassword: "",
       comment: "",
+      availableToAll:false,
 
       //history flag
       showHistory: false,
@@ -627,13 +629,14 @@ export default {
 
       let sendData = {
         donorId: this.$route.query.id,
-        newName: this.name,
-        newPhone: parseInt("88" + this.phone),
-        newStudentId: this.studentID,
-        newBloodGroup: bloodGroups.indexOf(this.bloodGroup),
-        newHall: halls.indexOf(this.hall),
-        newRoomNumber: this.room,
-        newAddress: this.address,
+        name: this.name,
+        phone: parseInt("88" + this.phone),
+        studentId: this.studentID,
+        bloodGroup: bloodGroups.indexOf(this.bloodGroup),
+        hall: halls.indexOf(this.hall),
+        roomNumber: this.room,
+        address: this.address,
+        availableToAll: this.availableToAll
       };
       await this.saveUserDetails(sendData);
     },
@@ -690,6 +693,7 @@ export default {
     this.designation = profile.designation;
     this.donationCount = profile.donationCount;
     this.commentTime = profile.commentTime;
+    this.availableToAll = profile.availableToAll;
 
     let date = new Date(profile.lastDonation);
     this.lastDonation =
