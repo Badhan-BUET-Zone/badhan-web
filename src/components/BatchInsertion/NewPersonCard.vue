@@ -45,7 +45,7 @@
         <v-card-text>
           <v-select rounded :items="halls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
-          <v-checkbox dense label="Available to all"></v-checkbox>
+          <v-checkbox dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
         </v-card-text>
       </v-card>
 
@@ -144,6 +144,12 @@ export default {
         return !(this.lastDonation !== null && parseInt(value) === 0);
 
       }
+    },
+    availableToAll:{
+      isBoolean: (value) => {
+        return typeof value == "boolean";
+      }
+
     }
   }},
   computed: {
@@ -200,6 +206,12 @@ export default {
       !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
       return errors
     },
+    availableToAllErrors(){
+      const errors = []
+      if (!this.$v.availableToAll.$dirty) return errors
+      !this.$v.availableToAll.isBoolean && errors.push('Max donation count can be 99')
+      return errors
+    }
   },
   data: () => {
     return {
@@ -217,6 +229,7 @@ export default {
       comment: null,
       donationCount: null,
       lastDonation: null,
+      availableToAll: false,
 
       donorCreationLoader: false,
       menu: false,
@@ -226,7 +239,7 @@ export default {
   },
 
   mounted() {
-    const keysExpected = ["name","phone","studentId","bloodGroup","hall","address","roomNumber","comment","donationCount","lastDonation","key"]
+    const keysExpected = ["name","phone","studentId","bloodGroup","hall","address","roomNumber","comment","donationCount","lastDonation","key","availableToAll"]
     Object.keys(this.$props.donor).forEach((key)=>{
       if(!keysExpected.includes(key)){
         this.warnings.push("Unwanted key found: "+key);
@@ -250,6 +263,7 @@ export default {
     this.roomNumber = this.$props.donor.roomNumber;
     this.comment = this.$props.donor.comment;
     this.donationCount = this.$props.donor.donationCount;
+    this.availableToAll = this.$props.donor.availableToAll;
 
     // this.lastDonation = this.$props.donor.lastDonation;
     if(this.$props.donor.lastDonation!==0 && this.$props.donor.lastDonation!==null){
@@ -282,7 +296,8 @@ export default {
         roomNumber: this.roomNumber,
         comment: this.comment,
         lastDonation: lastDonation,
-        extraDonationCount: lastDonation===0?0:this.donationCount-1
+        extraDonationCount: lastDonation===0?0:this.donationCount-1,
+        availableToAll: this.availableToAll
       }
 
       this.donorCreationLoader = true;

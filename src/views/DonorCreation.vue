@@ -127,8 +127,6 @@ export default {
         try {
           this.listOfDonors = JSON.parse(evt.target.result);
 
-
-
           for (let i = 0; i < this.listOfDonors.length; i++) {
             this.listOfDonors[i].key = i;
           }
@@ -160,6 +158,8 @@ export default {
         comment : null,
         donationCount : null,
         lastDonation: null,
+
+        availableToAll: false,
 
         key: new Date().getTime(),
       }];
