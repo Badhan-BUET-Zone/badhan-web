@@ -45,7 +45,7 @@
         <v-card-text>
           <v-select rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
-          <v-checkbox dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
+          <v-checkbox :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
         </v-card-text>
       </v-card>
 
@@ -156,10 +156,7 @@ export default {
     ...mapGetters('halladmin', ['getNewDonorLoader']),
 
     availableHalls() {
-
       return [...halls.slice(0,7),halls[8]];
-
-
     },
 
     isNative(){
