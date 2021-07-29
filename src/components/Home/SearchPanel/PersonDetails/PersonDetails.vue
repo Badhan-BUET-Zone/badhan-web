@@ -593,7 +593,7 @@ export default {
       if (await this.promote({
         donorId: this.$route.query.id,
         promoteFlag: true,
-        newPassword: this.newPassword
+        password: this.newPassword
       })) {
         this.designation = 1
       }
