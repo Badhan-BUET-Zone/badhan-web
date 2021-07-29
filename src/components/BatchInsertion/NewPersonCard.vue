@@ -204,7 +204,7 @@ export default {
       const errors = []
       if (!this.$v.donationCount.$dirty) return errors
       !this.$v.donationCount.maxLength && errors.push('Max donation count can be 99')
-      !this.$v.donationCount.required && errors.push('Donation count is required')
+      !this.$v.donationCount.required && errors.push('Minimum donation count must be zero')
       !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
       !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
       !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
