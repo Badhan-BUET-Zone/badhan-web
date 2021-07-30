@@ -120,9 +120,12 @@ export default {
       required,
       departmentCheck(studentId){
         let indexOfDepartment = parseInt(String(studentId).substr(2,2));
-        if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
+        if(indexOfDepartment > 18){
           return false;
         }
+        // if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
+        //   return false;
+        // }
         return true;
       }
     },
