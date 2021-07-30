@@ -12,7 +12,7 @@
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-                color="error"
+                color="info"
                 x-small
                 v-bind="attrs"
                 v-on="on"
@@ -77,7 +77,6 @@
         </v-icon>
         Create
       </v-btn>
-
     </v-card-actions>
     <v-card-actions v-if="duplicateDonorId!==null && !isNative">
       <v-btn small color="primary" rounded @click="goToDuplicateProfile">
@@ -103,8 +102,8 @@ export default {
   validations:()=>{return{
     phone: {
       required,
-      minLength: minLength(13),
-      maxLength: maxLength(13),
+      minLength: minLength(11),
+      maxLength: maxLength(11),
       numeric,
     },
     name: {
@@ -168,8 +167,8 @@ export default {
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
-      !this.$v.phone.minLength && errors.push('Phone must be 13 digits long')
-      !this.$v.phone.maxLength && errors.push('Phone must be 13 digits long')
+      !this.$v.phone.minLength && errors.push('Phone must be 11 digits long')
+      !this.$v.phone.maxLength && errors.push('Phone must be 11 digits long')
       !this.$v.phone.required && errors.push('Phone is required')
       !this.$v.phone.numeric && errors.push('Phone must be numeric')
       return errors
@@ -295,7 +294,7 @@ export default {
 
       let newDonor = {
         name: String(this.name),
-        phone: Number(this.phone),
+        phone: Number("88"+this.phone),
         bloodGroup: Number(this.bloodGroups.indexOf(this.bloodGroup)),
         hall: Number(this.halls.indexOf(this.hall)),
         studentId: Number(this.studentId),
