@@ -12,7 +12,7 @@
                 <!--      Filter title-->
                 <v-col><h5>Filters</h5></v-col>
 
-                <v-col>
+                <v-col v-if="!$isLargeScreen()">
                   <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>
                     <v-icon left>
                       mdi-filter
