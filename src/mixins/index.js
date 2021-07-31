@@ -7,6 +7,9 @@ export default {
             })(navigator.userAgent || navigator.vendor || window.opera);
             return check;
         },
+        $isLargeScreen(){
+            return window.innerWidth > 500;
+        },
         $isDevelopmentEnv(){
             return process.env.NODE_ENV==='development'
         }

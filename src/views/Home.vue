@@ -26,7 +26,7 @@
 
             <!--    Main Filters-->
 
-            <v-form v-if="isFilterShown">
+            <v-form v-if="isFilterShown || $isLargeScreen()">
               <v-container>
                 <!--        Input field for name-->
                 <v-text-field
