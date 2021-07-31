@@ -2,11 +2,11 @@
   <v-card rounded class="ma-1">
 
     <v-card-text>
-      <v-text-field rounded outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
+      <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
-      <v-text-field rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
+      <v-text-field class="required" rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-      <v-text-field rounded outlined label="Student ID" dense v-model="studentId" @blur="$v.studentId.$touch()"
+      <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId" @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"></v-text-field>
       <div v-if="!$v.studentId.departmentCheck">
         <v-menu offset-y>
@@ -32,18 +32,18 @@
           </v-list>
         </v-menu>
       </div>
-      <v-select rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
+      <v-select class="required" rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
 
       <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
       <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
       <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
-      <v-text-field type="number" rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
+      <v-text-field class="required"  type="number" rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
                     :error-messages="donationCountErrors"></v-text-field>
       <v-card outlined class="rounded-xl">
         <v-card-text>
-          <v-select rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
+          <v-select class="required"  rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
           <v-checkbox :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
         </v-card-text>
@@ -291,6 +291,10 @@ export default {
       } else {
         lastDonation = new Date(this.lastDonation).getTime();
       }
+
+      if(this.comment==="" || this.comment===null)this.comment="(Unknown)";
+      if(this.address==="" || this.address===null)this.address="(Unknown)";
+      if(this.roomNumber==="" || this.roomNumber===null)this.roomNumber="(Unknown)";
 
       let newDonor = {
         name: String(this.name),
