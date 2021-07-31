@@ -10,7 +10,39 @@
             <div class="ml-5">
               <v-row>
                 <!--      Filter title-->
-                <v-col><h5>Filters</h5></v-col>
+                <v-col>
+                  <span class="h5">Filters</span>
+                  <v-tooltip
+                      v-model="showFilterHelpTooltip"
+                      top
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                          icon
+                          v-bind="attrs"
+                          v-on="on"
+                      >
+                        <v-icon color="grey lighten-1">
+                          mdi-help-circle-outline
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <div>
+                      You may choose any one of the following options.
+                      <ul>
+                        <li><b>Name: </b>Search any donor by name</li>
+                        <li><b>Blood group: </b>Search any donor by blood group</li>
+                        <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
+                        <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
+                        <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched</li>
+                        <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
+                        <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
+                        <li><b>Not Available: </b>If you specify this option, donors who are have given blood in a span of 120 days will be shown</li>
+                      </ul>
+                    </div>
+
+                  </v-tooltip>
+                </v-col>
 
                 <v-col v-if="!$isLargeScreen()">
                   <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>
@@ -321,6 +353,7 @@ export default {
       bloodGroups,
 
       showTooltip: false,
+      showFilterHelpTooltip: false,
 
       radios: 'SpecifyHall',
     };
