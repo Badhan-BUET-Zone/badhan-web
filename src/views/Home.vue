@@ -12,6 +12,9 @@
                 <!--      Filter title-->
                 <v-col>
                   <span class="h5">Filters</span>
+
+
+
                   <v-tooltip
                       v-model="showFilterHelpTooltip"
                       top
@@ -21,10 +24,11 @@
                           icon
                           v-bind="attrs"
                           v-on="on"
+                          @click="showFilterHelpTooltip = !showFilterHelpTooltip"
                       >
-                        <v-icon color="grey lighten-1">
-                          mdi-help-circle-outline
-                        </v-icon>
+                          <v-icon color="grey lighten-1">
+                            mdi-help-circle-outline
+                          </v-icon>
                       </v-btn>
                     </template>
                     <div>
