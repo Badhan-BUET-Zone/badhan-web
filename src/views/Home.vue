@@ -13,23 +13,16 @@
                 <v-col>
                   <span class="h5">Filters</span>
 
-
-
-                  <v-tooltip
-                      v-model="showFilterHelpTooltip"
-                      top
-                  >
+                  <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                          icon
+                      <v-icon
+                          color="grey"
+                          dark
                           v-bind="attrs"
                           v-on="on"
-                          @click="showFilterHelpTooltip = !showFilterHelpTooltip"
                       >
-                          <v-icon color="grey lighten-1">
-                            mdi-help-circle-outline
-                          </v-icon>
-                      </v-btn>
+                        mdi-help-circle-outline
+                      </v-icon>
                     </template>
                     <div>
                       You may choose any one of the following options.
@@ -44,7 +37,6 @@
                         <li><b>Not Available: </b>If you specify this option, donors who are have given blood in a span of 120 days will be shown</li>
                       </ul>
                     </div>
-
                   </v-tooltip>
                 </v-col>
 
