@@ -1,0 +1,13 @@
+[debug] [2021-08-01T17:39:42.365Z] ----------------------------------------------------------------------
+[debug] [2021-08-01T17:39:42.368Z] Command:       /usr/bin/node /usr/local/bin/firebase login --reauth
+[debug] [2021-08-01T17:39:42.368Z] CLI Version:   9.7.0
+[debug] [2021-08-01T17:39:42.368Z] Platform:      linux
+[debug] [2021-08-01T17:39:42.369Z] Node Version:  v16.4.1
+[debug] [2021-08-01T17:39:42.369Z] Time:          Sun Aug 01 2021 23:39:42 GMT+0600 (Bangladesh Standard Time)
+[debug] [2021-08-01T17:39:42.369Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=144012875&redirect_uri=http%3A%2F%2Flocalhost%3A9005&login_hint=1605011%40ugrad.cse.buet.ac.bd
+[info] 
+[info] Waiting for authentication...
