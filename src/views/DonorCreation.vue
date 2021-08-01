@@ -9,7 +9,7 @@
         <HelpTooltip>
             <div style="max-width: 300px">
               Upload a JSON file from your device storage. The format of the JSON file should be an array of donor objects. A sample json file is shown below
-              <v-img max-width="300px" src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/misc%2Fsamplejson.png?alt=media">
+              <v-img max-width="300px" src="https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/misc%2Fsamplejson.png?alt=media" lazy-src="../assets/loadingimage.png">
                 <template v-slot:placeholder>
                   <v-row
                       class="fill-height ma-0"
