@@ -184,6 +184,10 @@ export default {
     },
     discardDonor(key){
       this.listOfDonors = this.listOfDonors.filter((donor)=>donor.key!==key);
+
+      if((this.donorPage-1)*4 === this.listOfDonors.length){
+        this.donorPage--;
+      }
     },
     resetClicked() {
       this.$v.$reset();
