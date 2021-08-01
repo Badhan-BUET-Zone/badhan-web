@@ -71,17 +71,17 @@
                   v-if="getDesignation === 3 ||getPhone == oldPhone ||(getHall === halls.indexOf(hall) &&getDesignation > designation) ||halls.indexOf(hall) === 7 ||halls.indexOf(hall) === 8"
                   v-model="enableEditing" inset :label="'Toggle to edit details'"></v-switch>
 
-              <div class="card">
-                <div class="card-header" id="headingOne">
-                  <h5 class="mb-0">
-                    <button class="btn btn-link"
-                            @click="personDetailCollapseFlag = !personDetailCollapseFlag">Person
-                      Details
-                    </button>
-                  </h5>
-                </div>
-                <div v-if="personDetailCollapseFlag">
-                  <div class="card-body">
+              <v-card>
+                <v-card-title>
+                  <v-btn rounded
+                         @click="personDetailCollapseFlag = !personDetailCollapseFlag">Person Details
+                  </v-btn>
+
+                </v-card-title>
+
+
+                <v-card-text v-if="personDetailCollapseFlag">
+
                     <div v-on:click="promptForEdit($event)">
                     <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
                                   :disabled="!enableEditing" @blur="$v.name.$touch()"
@@ -126,23 +126,18 @@
                       </v-icon>
                       Save Comment
                     </v-btn>
-                  </div>
-                </div>
-              </div>
-              <div
-                  class="card"
-                  v-if="getDesignation > designation ||getPhone== oldPhone"
-              >
-                <div class="card-header" id="headingTwo">
-                  <h5 class="mb-0">
-                    <button class="btn btn-link"
+                </v-card-text>
+              </v-card>
+
+              <v-card v-if="getDesignation > designation ||getPhone== oldPhone">
+                <v-card-title>
+                    <v-btn rounded
                             @click="settingsCollapseFlag = !settingsCollapseFlag">
                       Settings
-                    </button>
-                  </h5>
-                </div>
-                <div v-if="settingsCollapseFlag">
-                  <div class="card-body" v-on:click="promptForEdit($event)">
+                    </v-btn>
+                </v-card-title>
+                <v-card-text v-if="settingsCollapseFlag">
+                  <div v-on:click="promptForEdit($event)">
                     <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">
                       <label>Promote this member to volunteer</label>
                     </div>
@@ -191,8 +186,7 @@
                     </v-btn>
                   </div>
 
-                  <div class="card-body"
-                       v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
+                  <div v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
                     <v-btn @click="deleteDonorClicked" rounded color="error"
                            :disabled="getDeleteLoaderFlag || !enableEditing"
                            :loading="getDeleteLoaderFlag">
@@ -200,7 +194,7 @@
                       Delete this person
                     </v-btn>
                   </div>
-                  <div class="card-body" v-if="getDesignation===3 && designation===1">
+                  <div v-if="getDesignation===3 && designation===1">
                     <v-btn rounded color="primary"
                            :disabled="getChangeAdminLoaderFlag || !enableEditing"
                            :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
@@ -208,8 +202,8 @@
                       Promote to Hall admin
                     </v-btn>
                   </div>
-                </div>
-              </div>
+                </v-card-text>
+              </v-card>
 
             </div>
             <div class="col-lg-4 col-md-12 col-md-12" style="height: fit-content">
@@ -318,10 +312,12 @@ import {halls, bloodGroups} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 import CallRecordCard from "../../CallRecordCard";
+import HelpTooltip from "../../../UI Components/HelpTooltip";
 export default {
   name: "PersonDetails",
   components:{
-    CallRecordCard
+    CallRecordCard,
+    HelpTooltip
   },
   data: ()=>{
     return {
@@ -542,9 +538,13 @@ export default {
       this.enableEditing = false;
     },
     async saveCommentClicked() {
+      let comment = this.comment;
+      if(this.comment===""){
+        comment="(Unknown)"
+      }
       await this.saveComment({
         donorId: this.$route.query.id,
-        comment: this.comment
+        comment: comment
       })
       this.commentTime = new Date().getTime();
 
@@ -627,6 +627,15 @@ export default {
         return;
       }
 
+      let room = this.room;
+      let address = this.address;
+      if(room===""){
+        room = "(Unknown)";
+      }
+      if(address===""){
+        address="(Unknown)";
+      }
+
       let sendData = {
         donorId: this.$route.query.id,
         name: this.name,
@@ -634,8 +643,8 @@ export default {
         studentId: this.studentID,
         bloodGroup: bloodGroups.indexOf(this.bloodGroup),
         hall: halls.indexOf(this.hall),
-        roomNumber: this.room,
-        address: this.address,
+        roomNumber: room,
+        address: address,
         availableToAll: this.availableToAll
       };
       await this.saveUserDetails(sendData);

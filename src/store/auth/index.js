@@ -135,10 +135,12 @@ const actions = {
 
             commit('setToken', response.data.token);
 
+
             let profileInfo = await badhanAxios.get('/donors/me');
 
             commit('setMyProfile', profileInfo.data.donor);
             commit('setLoginFlag');
+            commit('saveTokenToLocalStorage');
             return true;
         } catch (error) {
             return false;

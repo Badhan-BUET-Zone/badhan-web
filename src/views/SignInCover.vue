@@ -68,7 +68,7 @@
                         @blur="$v.password.$touch()"
                         :error-messages="passwordErrors"
                     ></v-text-field>
-                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>
+<!--                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>-->
                     <v-btn
                         color="primary"
                         rounded
@@ -238,7 +238,7 @@ export default {
       let isSignInOk = await this.login({
         phone: this.phone,
         password: this.password,
-        rememberFlag: this.rememberFlag,
+        rememberFlag: true,
       });
 
       if (isSignInOk) {

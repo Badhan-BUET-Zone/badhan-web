@@ -12,32 +12,21 @@
                 <!--      Filter title-->
                 <v-col>
                   <span class="h5">Filters</span>
-
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-icon
-                          color="grey"
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                      >
-                        mdi-help-circle-outline
-                      </v-icon>
-                    </template>
-                    <div>
-                      You may choose any one of the following options.
-                      <ul>
-                        <li><b>Name: </b>Search any donor by name</li>
-                        <li><b>Blood group: </b>Search any donor by blood group</li>
-                        <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
-                        <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
-                        <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched</li>
-                        <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
-                        <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
-                        <li><b>Not Available: </b>If you specify this option, donors who are have given blood in a span of 120 days will be shown</li>
-                      </ul>
-                    </div>
-                  </v-tooltip>
+                  <HelpTooltip>
+                      <div>
+                        You may choose any one of the following options.
+                        <ul>
+                          <li><b>Name: </b>Search any donor by name</li>
+                          <li><b>Blood group: </b>Search any donor by blood group</li>
+                          <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
+                          <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
+                          <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched. Donors who were previously in "Attached/Covid" database are in this search criteria</li>
+                          <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
+                          <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
+                          <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will be shown</li>
+                        </ul>
+                      </div>
+                  </HelpTooltip>
                 </v-col>
 
                 <v-col v-if="!$isLargeScreen()">
@@ -88,10 +77,7 @@
                 ></v-text-field>
 
 
-
                 <!--        Input field for hall-->
-
-
                 <v-text-field
                     rounded
                     outlined
@@ -217,7 +203,8 @@
                     Download Data
                   </v-btn>
                 </json-excel>
-                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small color="secondary" rounded class="mb-4" style="width: 100%">
+                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small
+                       color="secondary" rounded class="mb-4" style="width: 100%">
                   <v-icon left>
                     mdi-web
                   </v-icon>
@@ -286,12 +273,13 @@ import {bloodGroups, halls} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
+import HelpTooltip from "../components/UI Components/HelpTooltip";
 
 export default {
   name: "ActiveSearch",
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading', 'isFilterShown']),
-    isGuestEnabled(){
+    isGuestEnabled() {
       return isGuestEnabled();
     },
     isNative() {
@@ -300,7 +288,7 @@ export default {
     availableHalls() {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return halls.slice(0,7);
+          return halls.slice(0, 7);
         } else {
           //covid support
           //return [halls[this.getHall], halls[7]];
@@ -329,7 +317,8 @@ export default {
     'person-details': PersonDetails,
     PageTitle,
     "person-card": PersonCard,
-    "json-excel": JsonExcel
+    "json-excel": JsonExcel,
+    HelpTooltip
   },
   data: function () {
     return {
@@ -354,32 +343,34 @@ export default {
       radios: 'SpecifyHall',
     };
   },
-  validations:()=>{return{
-    batch: {
-      minLength: minLength(2),
-      maxLength: maxLength(2),
-      numeric
-    },
-    hall: {
-      required,
-      permission(hall){
-        //COVID DATABASE
-        return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation!==3);
-      }
-    },
-  }},
+  validations: () => {
+    return {
+      batch: {
+        minLength: minLength(2),
+        maxLength: maxLength(2),
+        numeric
+      },
+      hall: {
+        required,
+        permission(hall) {
+          //COVID DATABASE
+          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3);
+        }
+      },
+    }
+  },
   mounted() {
     let query = this.$route.query;
 
-    this.name = query.name? query.name:"";
-    this.bloodGroup = query.bloodGroup? query.bloodGroup:-1;
-    this.batch = query.batch?query.batch:"";
-    this.address = query.address?query.address:"";
-    this.hall = query.hall?query.hall:halls[this.$store.getters.getHall];
-    this.availability = query.availability!=="false";
-    this.notAvailability = query.notAvailability==="true";
+    this.name = query.name ? query.name : "";
+    this.bloodGroup = query.bloodGroup ? query.bloodGroup : -1;
+    this.batch = query.batch ? query.batch : "";
+    this.address = query.address ? query.address : "";
+    this.hall = query.hall ? query.hall : halls[this.$store.getters.getHall];
+    this.availability = query.availability !== "false";
+    this.notAvailability = query.notAvailability === "true";
 
-    if(Object.keys(this.$route.query).length===7){
+    if (Object.keys(this.$route.query).length === 7) {
       this.searchClicked();
     }
   },
@@ -387,7 +378,7 @@ export default {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter']),
-    ...mapActions(['logout', 'logoutAll','requestRedirectionToken']),
+    ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     async searchClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {
@@ -424,7 +415,7 @@ export default {
         availability: this.availability,
         notAvailability: this.notAvailability,
         inputAddress: inputAddress,
-        availableToAll: this.radios==="AvailableToAll"
+        availableToAll: this.radios === "AvailableToAll"
       });
 
     },
@@ -443,14 +434,16 @@ export default {
         }
       });
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE+routeData.href).then((e)=>{
-        this.showTooltip=true;
-        setTimeout(()=>{this.showTooltip=false},2000);
-      },(e)=>{
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
+        this.showTooltip = true;
+        setTimeout(() => {
+          this.showTooltip = false
+        }, 2000);
+      }, (e) => {
       })
     },
 
-    async downloadInMobileClicked(){
+    async downloadInMobileClicked() {
       let redirectionToken = await this.requestRedirectionToken();
       let searchRouteData = this.$router.resolve({
         name: 'Home',
@@ -464,13 +457,13 @@ export default {
           notAvailability: this.notAvailability
         }
       });
-      let redirectionURL = searchRouteData.href.substr(1,searchRouteData.href.length-1)
+      let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
       let routeData;
       routeData = this.$router.resolve({
         name: 'Redirection',
         query: {token: redirectionToken, payload: redirectionURL}
       });
-      window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
+      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
     },
 
     clearFields() {
