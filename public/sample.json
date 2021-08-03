@@ -1,101 +1,264 @@
 {
-    "contributors":{
-        "Active Developers":[
+    "contributors": {
+        "Active Developers": [
             {
-                "name":"Mir Mahathir Mohammad",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media",
-                "contributions":["UX Design","Web Frontend Development","Hybrid Android App Development","API Development"],
-                "calender":"January 2020 - Present",
-                "links":[
-                    {"icon": "facebook","color":"primary","link": "https://web.facebook.com/MirMahathirMohammad"},
-                    {"icon": "gmail","color": "red","link": "mailto:mirmahathir1@gmail.com"},
-                    {"icon": "linkedin","color":"blue","link":"https://www.linkedin.com/in/mir-mahathir-59bb671a5/"},
-                    {"icon": "github","color":"grey","link":"https://github.com/mirmahathir1"}
-                ]
-            },
-            {
-                "name":"Sumaiya Azad",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Ftaaha.jpg?alt=media",
-                "contributions":[
-                    "API Development","Backend Documentation"
-                ],
-                "calender":"June 2021 - Present",
-                "links":[
-                    {"icon": "github","color":"grey","link":"https://github.com/sumaiyaazad"}
-                ]
-            }
-        ],
-        "Contributors of Badhan":[
-            {
-                "name":"MH Rahat",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media",
-                "contributions":["Initiator of Badhan Website and Android App", "Test and Bug Report"],
-                "calender":"January 2020 - Present",
-                "links": [
-                    {"icon": "facebook", "color": "primary", "link": "https://www.facebook.com/mhrahat01"},
-                    {"icon": "gmail", "color": "red", "link": "mailto:mahamudulrahat@gmail.com"}
-                ]
-            },
-            {
-                "name":"Shadman Sakib Showrav",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fsadman.jpg?alt=media",
-                "contributions":[],
-                "calender":"January 2020 - Present",
-                "links":[
-                    {"icon":"facebook","color":"primary","link":"https://www.facebook.com/Showrov1996"},
-                    {"icon":"linkedin","color":"blue","link":"https://www.linkedin.com/in/showrov1996/"},
-                    {"icon":"gmail", "color": "red", "link": "mailto:showrov.ndc16@gmail.com"}
-                ]
-            }
-        ],
-        "Legacy Developers":[
-            {
-                "name":"Aniruddha GS",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Faniruddha.jpg?alt=media",
-                "contributions":["API Development","Database Administration"],
-                "calender":"January 2020 - April 2021",
-                "links":[
-                    {"icon":"facebook","color":"primary","link":"https://www.facebook.com/aniruddhags3927"},
-                    {"icon":"gmail","color":"red","link":"mailto:aniruddhags3927@gmail.com"},
-                    {"icon":"linkedin","color":"blue","link": "https://www.linkedin.com/in/aniruddha-ganguly-91b707136/"},
-                    {"icon":"github","color":"grey","link":"https://github.com/ags3927"}
-                ]
-            },
-
-            {
-                "name":"Priyeta Saha",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fpriyeta.jpg?alt=media",
-                "contributions":["Flutter Android App Development"],
-                "calender":"January 2020 - May 2020",
-                "links": [
-                    {"icon":"facebook","color":"primary","link":"https://www.facebook.com/profile.php?id=100010509641367"},
-                    {"icon":"gmail","color":"red","link":"mailto:priyetasaha@gmail.com"},
-                    {"icon":"github","color":"grey","link":"https://github.com/prism97"},
-                    {"icon":"linkedin","color":"blue","link":"https://www.linkedin.com/in/priyeta-saha-929629151/"}
-                ]
-            },
-            {
-                "name":"Anisha Islam",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fanisha.jpg?alt=media",
-                "contributions":[
+                "name": "Mir Mahathir Mohammad",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fmahathir.jpg?alt=media",
+                "contributions": [
+                    "UX Design",
+                    "Web Frontend Development",
+                    "Hybrid Android App Development",
                     "API Development"
                 ],
-                "calender":"January 2020 - June 2020",
-                "links":[
-                    {"icon":"facebook","color":"primary","link":"https://www.facebook.com/anisha.islam.1690"},
-                    {"icon":"linkedin","color":"blue","link":"https://www.linkedin.com/in/anishaislam8/"}
+                "calender": "January 2020 - Present",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "blue",
+                        "link": "https://web.facebook.com/MirMahathirMohammad"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:mirmahathir1@gmail.com"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/mir-mahathir-59bb671a5/"
+                    },
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/mirmahathir1"
+                    }
                 ]
             },
             {
-                "name":"Atiqur Rahman Shuvo",
-                "image":"https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fatiq.jpg?alt=media",
-                "contributions":["Data Processing"],
-                "calender":"April 2021 - May 2021",
-                "links":[
-                    {"icon": "facebook","color": "primary", "link":"https://www.facebook.com/Shiroe041"},
-                    {"icon": "gmail","color": "red","link":"mailto:arshuvo2015@gmail.com"},
-                    {"icon": "linkedin","color":"blue","link":"https://www.linkedin.com/in/atiqur-rahman-shuvo-14173b1aa/"},
-                    {"icon": "github","color":"grey","link":"https://github.com/SchrodingersCat041"}
+                "name": "Sumaiya Azad",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Ftaaha.jpg?alt=media",
+                "contributions": [
+                    "API Development",
+                    "Backend Documentation"
+                ],
+                "calender": "June 2021 - Present",
+                "links": [
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/sumaiyaazad"
+                    }
+                ]
+            },
+            {
+                "name": "Hasan Masum",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fhasanmasum.jpg?alt=media",
+                "contributions": [
+                    "Database Management",
+                    "Testing and Bug Report"
+                ],
+                "calender": "July 2021 - Present",
+                "links": [
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/Hmasum18"
+                    },
+                    {
+                        "icon": "facebook",
+                        "color": "blue",
+                        "link": "https://www.facebook.com/h.masum.52"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:1805052@ugrad.cse.buet.ac.bd"
+                    }
+                ]
+            },
+            {
+                "name": "Sanju Basak",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fsanjubasak.jpg?alt=media",
+                "contributions": [
+                    "Database Management",
+                    "Testing and Bug Report"
+                ],
+                "calender": "July 2021 - Present",
+                "links": [
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/Sanju-Basak"
+                    },
+                    {
+                        "icon": "facebook",
+                        "color": "blue",
+                        "link": "https://www.facebook.com/sanju.basak.71"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:sanjubasakndc18@gmail.com"
+                    }
+                ]
+            }
+        ],
+        "Contributors of Badhan": [
+            {
+                "name": "MH Rahat",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Frahat.jpg?alt=media",
+                "contributions": [
+                    "Initiator of Badhan Website and Android App",
+                    "Test and Bug Report"
+                ],
+                "calender": "January 2020 - Present",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/mhrahat01"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:mahamudulrahat@gmail.com"
+                    }
+                ]
+            },
+            {
+                "name": "Shadman Sakib Showrav",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fsadman.jpg?alt=media",
+                "contributions": [],
+                "calender": "January 2020 - Present",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/Showrov1996"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/showrov1996/"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:showrov.ndc16@gmail.com"
+                    }
+                ]
+            }
+        ],
+        "Legacy Developers": [
+            {
+                "name": "Aniruddha GS",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Faniruddha.jpg?alt=media",
+                "contributions": [
+                    "API Development",
+                    "Database Administration"
+                ],
+                "calender": "January 2020 - April 2021",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/aniruddhags3927"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:aniruddhags3927@gmail.com"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/aniruddha-ganguly-91b707136/"
+                    },
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/ags3927"
+                    }
+                ]
+            },
+            {
+                "name": "Priyeta Saha",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fpriyeta.jpg?alt=media",
+                "contributions": [
+                    "Flutter Android App Development"
+                ],
+                "calender": "January 2020 - May 2020",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/profile.php?id=100010509641367"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:priyetasaha@gmail.com"
+                    },
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/prism97"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/priyeta-saha-929629151/"
+                    }
+                ]
+            },
+            {
+                "name": "Anisha Islam",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fanisha.jpg?alt=media",
+                "contributions": [
+                    "API Development"
+                ],
+                "calender": "January 2020 - June 2020",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/anisha.islam.1690"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/anishaislam8/"
+                    }
+                ]
+            },
+            {
+                "name": "Atiqur Rahman Shuvo",
+                "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fatiq.jpg?alt=media",
+                "contributions": [
+                    "Data Processing"
+                ],
+                "calender": "April 2021 - May 2021",
+                "links": [
+                    {
+                        "icon": "facebook",
+                        "color": "primary",
+                        "link": "https://www.facebook.com/Shiroe041"
+                    },
+                    {
+                        "icon": "gmail",
+                        "color": "red",
+                        "link": "mailto:arshuvo2015@gmail.com"
+                    },
+                    {
+                        "icon": "linkedin",
+                        "color": "blue",
+                        "link": "https://www.linkedin.com/in/atiqur-rahman-shuvo-14173b1aa/"
+                    },
+                    {
+                        "icon": "github",
+                        "color": "grey",
+                        "link": "https://github.com/SchrodingersCat041"
+                    }
                 ]
             }
         ]
