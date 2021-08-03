@@ -700,7 +700,7 @@ export default {
     this.address = profile.address;
     this.comment = profile.comment;
     this.designation = profile.designation;
-    this.donationCount = profile.donationCount;
+    this.donationCount = this.getDonationList.length;
     this.commentTime = profile.commentTime;
     this.availableToAll = profile.availableToAll;
 

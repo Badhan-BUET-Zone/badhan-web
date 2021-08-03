@@ -192,7 +192,7 @@
                     },
                     address:'address',
                     roomNumber: 'roomNumber',
-                    donationCount: 'donationCount'
+                    donationCount: 'donationCountOptimized'
                 }" ref="jsonDownload" :escapeCsv="false"
 
                 >
