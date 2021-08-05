@@ -281,7 +281,7 @@
                   <br/>
                 </div>
               </template>
-              <span v-else>No donation found</span>
+              <span v-else>(Unknown)</span>
 
               <p>Call History:</p>
               <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>
@@ -564,7 +564,7 @@ export default {
               (1000 * 3600 * 24)
           );
       if (lastDonation === 0) {
-        this.lastDonation = "No donation found";
+        this.lastDonation = "(Unknown)";
         return;
       }
       this.lastDonation =
@@ -712,7 +712,7 @@ export default {
         "/" +
         date.getFullYear();
     if (profile.lastDonation === 0) {
-      this.lastDonation = "No donations found";
+      this.lastDonation = "(Unknown)";
     }
 
     this.availableIn =
