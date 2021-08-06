@@ -15,6 +15,7 @@
       >
         <template v-slot:message>
           <span>{{studentIdErrors[0]}}</span>
+          <span>. If the department is unknown, give 00 as dept. code</span>
           <div v-if="$v.studentId.$invalid">
             <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
