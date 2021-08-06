@@ -7,10 +7,14 @@
                     :error-messages="nameErrors"></v-text-field>
       <v-text-field class="required" rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
+
       <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
-                    :error-messages="studentIdErrors"></v-text-field>
-      <div v-if="!$v.studentId.departmentCheck">
+                    :error-messages="studentIdErrors"
+                    hint="If the department is unknown, give 00 as dept. code"
+      >
+      </v-text-field>
+      <div>
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -23,6 +27,7 @@
             >
               Click to see the departments
             </v-btn>
+
           </template>
           <v-list>
             <v-list-item
@@ -103,10 +108,14 @@ import {halls, bloodGroups, departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
 import {isNative} from '@/plugins/android_support';
+import HelpTooltip from "../UI Components/HelpTooltip";
 
 export default {
   name: "NewPersonCard",
   props: ['donor', 'discardDonor'],
+  components:{
+    HelpTooltip
+  },
   validations: () => {
     return {
       phone: {
@@ -251,6 +260,8 @@ export default {
       menu: false,
       warnings: [],
       duplicateDonorId: null,
+
+      departmentListShown: false,
     }
   },
 
@@ -289,6 +300,8 @@ export default {
   },
   methods: {
     ...mapActions('halladmin', ['saveDonor']),
+
+
     async createDonorClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {

@@ -2,7 +2,7 @@
   <v-tooltip bottom>
     <template v-slot:activator="{ on, attrs }">
       <v-icon
-          color="grey"
+          color="info"
           dark
           v-bind="attrs"
           v-on="on"
