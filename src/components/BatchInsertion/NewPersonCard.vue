@@ -7,38 +7,41 @@
                     :error-messages="nameErrors"></v-text-field>
       <v-text-field class="required" rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-
+<!--      {{$v.studentId}}-->
       <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"
                     hint="If the department is unknown, give 00 as dept. code"
       >
-      </v-text-field>
-      <div>
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                color="info"
-                x-small
-                v-bind="attrs"
-                v-on="on"
-                text
-                class="mb-3"
-            >
-              Click to see the departments
-            </v-btn>
+        <template v-slot:message>
+          <span>{{studentIdErrors[0]}}</span>
+          <div v-if="$v.studentId.$invalid">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    color="info"
+                    x-small
+                    v-bind="attrs"
+                    v-on="on"
+                    text
+                >
+                  Click to see the departments
+                </v-btn>
 
-          </template>
-          <v-list>
-            <v-list-item
-                v-for="(item, index) in departments.filter((department)=>department!=='NULL')"
-                :key="index"
-            >
-              <v-list-item-title>{{ item }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
+              </template>
+              <v-list>
+                <v-list-item
+                    v-for="(item, index) in departments.filter((department)=>department!=='NULL')"
+                    :key="index"
+                >
+                  <v-list-item-title>{{ item }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </template>
+      </v-text-field>
+
       <v-select class="required" rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
