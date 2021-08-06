@@ -106,7 +106,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item link to="/donorCreation" style="text-decoration: none">
+          <v-list-item link to="/singleDonorCreation" style="text-decoration: none">
             <v-list-item-icon>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-icon>

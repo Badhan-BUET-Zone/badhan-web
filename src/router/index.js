@@ -102,6 +102,16 @@ const routes = [
         }
     },
     {
+        name: 'SingleDonorCreation',
+        path: '/singleDonorCreation',
+        component:()=> import('@/views/SingleDonorCreation.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'Single Donor Creation',
+            designation: 1
+        }
+    },
+    {
         name: 'Archive',
         path: '/archive',
         component: () => import('@/views/Archive.vue'),

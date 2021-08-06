@@ -2,11 +2,13 @@
   <v-card rounded class="ma-1">
 
     <v-card-text>
-      <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name" @blur="$v.name.$touch()"
+      <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name"
+                    @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
       <v-text-field class="required" rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-      <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId" @blur="$v.studentId.$touch()"
+      <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
+                    @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"></v-text-field>
       <div v-if="!$v.studentId.departmentCheck">
         <v-menu offset-y>
@@ -39,13 +41,16 @@
       <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
       <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
       <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
-      <v-text-field class="required"  type="number" rounded outlined label="Donation count" dense v-model="donationCount" @blur="$v.donationCount.$touch()"
+      <v-text-field class="required" type="number" rounded outlined label="Donation count" dense v-model="donationCount"
+                    @blur="$v.donationCount.$touch()"
                     :error-messages="donationCountErrors"></v-text-field>
       <v-card outlined class="rounded-xl">
         <v-card-text>
-          <v-select class="required"  rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
+          <v-select class="required" rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
-          <v-checkbox :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll" @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors" label="Public Data"></v-checkbox>
+          <v-checkbox :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll"
+                      @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors"
+                      label="Public Data"></v-checkbox>
         </v-card-text>
       </v-card>
 
@@ -53,7 +58,8 @@
       <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="lastDonation"
               transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field rounded v-model="lastDonation" label="Pick Last Donation Date" prepend-icon="mdi-calendar" readonly
+          <v-text-field rounded v-model="lastDonation" label="Pick Last Donation Date" prepend-icon="mdi-calendar"
+                        readonly
                         v-bind="attrs" v-on="on"></v-text-field>
         </template>
         <v-date-picker v-model="lastDonation" no-title scrollable>
@@ -70,7 +76,8 @@
         </v-icon>
         Discard
       </v-btn>
-      <v-btn small color="primary" rounded @click="createDonorClicked" :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
+      <v-btn small color="primary" rounded @click="createDonorClicked"
+             :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
              :loading="donorCreationLoader">
         <v-icon left>
           mdi-account-plus
@@ -87,81 +94,84 @@
       </v-btn>
     </v-card-actions>
 
-    <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{warning}} </v-alert>
+    <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{ warning }}</v-alert>
   </v-card>
 </template>
 
 <script>
-import {halls, bloodGroups,departments} from "@/mixins/constants";
+import {halls, bloodGroups, departments} from "@/mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
 import {isNative} from '@/plugins/android_support';
+
 export default {
   name: "NewPersonCard",
-  props: ['donor','discardDonor'],
-  validations:()=>{return{
-    phone: {
-      required,
-      minLength: minLength(11),
-      maxLength: maxLength(11),
-      numeric,
-    },
-    name: {
-      required
-    },
-    bloodGroup: {
-      required
-    },
-    studentId: {
-      minLength: minLength(7),
-      maxLength: maxLength(7),
-      numeric,
-      required,
-      departmentCheck(studentId){
-        let indexOfDepartment = parseInt(String(studentId).substr(2,2));
-        if(indexOfDepartment > 18){
-          return false;
-        }
-        // if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
-        //   return false;
-        // }
-        return true;
-      }
-    },
-    hall: {
-      required,
-      permission(hall){
-        //COVID DATABASE
-        return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation!==3);
-      }
-    },
-    donationCount:{
-      maxLength: maxLength(2),
-      numeric,
-      required,
-      lastDonationCheck(value){
-        return !(this.lastDonation === null && parseInt(value) !== 0);
+  props: ['donor', 'discardDonor'],
+  validations: () => {
+    return {
+      phone: {
+        required,
+        minLength: minLength(11),
+        maxLength: maxLength(11),
+        numeric,
       },
-      lastDonationCheck2(value){
-        return !(this.lastDonation !== null && parseInt(value) === 0);
+      name: {
+        required
+      },
+      bloodGroup: {
+        required
+      },
+      studentId: {
+        minLength: minLength(7),
+        maxLength: maxLength(7),
+        numeric,
+        required,
+        departmentCheck(studentId) {
+          let indexOfDepartment = parseInt(String(studentId).substr(2, 2));
+          if (indexOfDepartment > 18) {
+            return false;
+          }
+          // if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
+          //   return false;
+          // }
+          return true;
+        }
+      },
+      hall: {
+        required,
+        permission(hall) {
+          //COVID DATABASE
+          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3);
+        }
+      },
+      donationCount: {
+        maxLength: maxLength(2),
+        numeric,
+        required,
+        lastDonationCheck(value) {
+          return !(this.lastDonation === null && parseInt(value) !== 0);
+        },
+        lastDonationCheck2(value) {
+          return !(this.lastDonation !== null && parseInt(value) === 0);
 
-      }
-    },
-    availableToAll:{
-      isBoolean: (value) => {
-        return typeof value == "boolean";
+        }
+      },
+      availableToAll: {
+        isBoolean: (value) => {
+          return typeof value == "boolean";
+        }
       }
     }
-  }},
+  },
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
 
     availableHalls() {
-      return [...halls.slice(0,7),halls[8]];
+      return [...halls.slice(0, 7), halls[8]];
     },
 
-    isNative(){
+    isNative() {
       return isNative();
     },
     phoneErrors() {
@@ -212,7 +222,7 @@ export default {
       !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
       return errors
     },
-    availableToAllErrors(){
+    availableToAllErrors() {
       const errors = []
       if (!this.$v.availableToAll.$dirty) return errors
       !this.$v.availableToAll.isBoolean && errors.push('Max donation count can be 99')
@@ -239,22 +249,22 @@ export default {
 
       donorCreationLoader: false,
       menu: false,
-      warnings:[],
+      warnings: [],
       duplicateDonorId: null,
     }
   },
 
   mounted() {
-    const keysExpected = ["name","phone","studentId","bloodGroup","hall","address","roomNumber","comment","donationCount","lastDonation","key","availableToAll"]
-    Object.keys(this.$props.donor).forEach((key)=>{
-      if(!keysExpected.includes(key)){
-        this.warnings.push("Unwanted key found: "+key);
+    const keysExpected = ["name", "phone", "studentId", "bloodGroup", "hall", "address", "roomNumber", "comment", "donationCount", "lastDonation", "key", "availableToAll"]
+    Object.keys(this.$props.donor).forEach((key) => {
+      if (!keysExpected.includes(key)) {
+        this.warnings.push("Unwanted key found: " + key);
       }
     })
 
-    keysExpected.forEach((expectedKey)=>{
-      if(!Object.keys(this.$props.donor).includes(expectedKey)){
-        this.warnings.push("Missing key: "+expectedKey);
+    keysExpected.forEach((expectedKey) => {
+      if (!Object.keys(this.$props.donor).includes(expectedKey)) {
+        this.warnings.push("Missing key: " + expectedKey);
       }
     });
 
@@ -272,8 +282,8 @@ export default {
     this.availableToAll = this.$props.donor.availableToAll;
 
     // this.lastDonation = this.$props.donor.lastDonation;
-    if(this.$props.donor.lastDonation!==0 && this.$props.donor.lastDonation!==null){
-      this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0,10)
+    if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null) {
+      this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0, 10)
     }
 
   },
@@ -292,13 +302,13 @@ export default {
         lastDonation = new Date(this.lastDonation).getTime();
       }
 
-      if(this.comment==="" || this.comment===null)this.comment="(Unknown)";
-      if(this.address==="" || this.address===null)this.address="(Unknown)";
-      if(this.roomNumber==="" || this.roomNumber===null)this.roomNumber="(Unknown)";
+      if (this.comment === "" || this.comment === null) this.comment = "(Unknown)";
+      if (this.address === "" || this.address === null) this.address = "(Unknown)";
+      if (this.roomNumber === "" || this.roomNumber === null) this.roomNumber = "(Unknown)";
 
       let newDonor = {
         name: String(this.name),
-        phone: Number("88"+this.phone),
+        phone: Number("88" + this.phone),
         bloodGroup: Number(this.bloodGroups.indexOf(this.bloodGroup)),
         hall: Number(this.halls.indexOf(this.hall)),
         studentId: Number(this.studentId),
@@ -306,26 +316,51 @@ export default {
         roomNumber: this.roomNumber,
         comment: this.comment,
         lastDonation: lastDonation,
-        extraDonationCount: lastDonation===0?0:this.donationCount-1,
+        extraDonationCount: lastDonation === 0 ? 0 : this.donationCount - 1,
         availableToAll: this.availableToAll
       }
 
       this.donorCreationLoader = true;
       let newDonorResult = await this.saveDonor(newDonor);
-      if(newDonorResult.payload.status===409){
+      if (newDonorResult.payload.status === 409) {
         this.duplicateDonorId = newDonorResult.payload.data.donor._id;
       }
       this.donorCreationLoader = false;
 
-      // prevent returning the duplicate user in case if the duplicate user is of another hall
     },
-    goToDuplicateProfile(){
-      window.open("/#/home/details?id="+this.duplicateDonorId);
+    goToDuplicateProfile() {
+      window.open("/#/home/details?id=" + this.duplicateDonorId);
     },
-    discardClicked(){
-      this.discardDonor(this.$props.donor.key);
-    },
-  }
+    async discardClicked() {
+      if (this.discardDonor !== null) {
+        this.discardDonor(this.$props.donor.key);
+        return;
+      }
+      await this.$v.$reset();
+
+      this.name = null;
+      this.phone = null;
+      this.studentId = null;
+      this.bloodGroup = null;
+
+      this.hall = halls[this.getHall];
+
+      this.address = null;
+      this.roomNumber = null;
+      this.comment = null;
+      this.donationCount = null;
+      this.lastDonation = null;
+
+      this.availableToAll = false;
+
+      this.key = new Date().getTime();
+
+      this.duplicateDonorId = null;
+
+    }
+
+  },
+
 }
 </script>
 

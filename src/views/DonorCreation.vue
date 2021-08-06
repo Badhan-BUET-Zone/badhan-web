@@ -2,6 +2,13 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
 
+    <v-btn to="/singleDonorCreation" class="ma-3" color="secondary" style="text-decoration: none" text>
+      <v-icon left>
+        mdi-arrow-left
+      </v-icon>
+      Return to simple form
+    </v-btn>
+
     <v-card max-width="500" class="pa-2 rounded-xl" v-if="!isNative">
       <v-card-text>
         Select a JSON file
@@ -75,6 +82,7 @@
     </v-btn>
 
     <br>
+    <div v-if="listOfDonors.length!==0">
     <span class="ma-5 h5">Donor Information</span>
     <HelpTooltip>
         <div>
@@ -94,6 +102,7 @@
           </ul>
         </div>
     </HelpTooltip>
+    </div>
 
     <v-container>
       <v-row no-gutters>
@@ -196,24 +205,7 @@ export default {
       this.invalidJSONError=null;
     },
     resetForms(){
-      this.listOfDonors = [{
-        name:null,
-        phone:null,
-        studentId:null,
-        bloodGroup : null,
-
-        hall : this.getHall,
-
-        address : null,
-        roomNumber : null,
-        comment : null,
-        donationCount : null,
-        lastDonation: null,
-
-        availableToAll: false,
-
-        key: new Date().getTime(),
-      }];
+      this.listOfDonors = [];
     },
     async redirectFileUpload(){
       let redirectionToken = await this.requestRedirectionToken();
