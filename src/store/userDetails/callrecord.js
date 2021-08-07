@@ -91,7 +91,7 @@ const actions = {
 
             let callRecords = getters['getCallRecords'];
             let name = rootGetters['getName'];
-            callRecords.push({...response.data.callRecord,callerId: {name,hall:rootGetters['getHall'],designation:rootGetters['getDesignation']}});
+            callRecords.unshift({...response.data.callRecord,callerId: {name,hall:rootGetters['getHall'],designation:rootGetters['getDesignation']}});
             commit('setCallRecords',callRecords);
             dispatch('notification/notifySuccess',"Added call record",{root: true})
         }catch(error){

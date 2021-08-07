@@ -63,7 +63,7 @@ const mutations = {
         state.donationSuccess = null;
     },
     addDonation(state,payload){
-        state.donationList.push(payload);
+        state.donationList.unshift(payload);
     }
 };
 const actions = {
