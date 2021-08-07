@@ -1,6 +1,20 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
+    <v-fab-transition>
+      <v-btn
+          color="secondary"
+          v-show="showFab"
+          dark
+          fixed
+          bottom
+          right
+          fab
+          @click="fabClicked"
+      >
+        <v-icon>mdi-arrow-up</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <div>
       <v-row>
         <v-col cols="12" sm="4">
@@ -11,7 +25,7 @@
               <v-row>
                 <!--      Filter title-->
                 <v-col>
-                  <span class="h5">Filters</span>
+                  <span class="h5" id="filters">Filters</span>
                   <HelpTooltip>
                       <div>
                         You may choose any one of the following options.
@@ -29,21 +43,22 @@
                   </HelpTooltip>
                 </v-col>
 
-                <v-col v-if="!$isLargeScreen()">
-                  <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>
-                    <v-icon left>
-                      mdi-filter
-                    </v-icon>
-                    <span v-if="!isFilterShown">Show Filters</span>
-                    <span v-else>Hide Filters</span>
-                  </v-btn>
-                </v-col>
+<!--                <v-col v-if="!$isLargeScreen()">-->
+<!--                  <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>-->
+<!--                    <v-icon left>-->
+<!--                      mdi-filter-->
+<!--                    </v-icon>-->
+<!--                    <span v-if="!isFilterShown">Show Filters</span>-->
+<!--                    <span v-else>Hide Filters</span>-->
+<!--                  </v-btn>-->
+<!--                </v-col>-->
               </v-row>
             </div>
 
             <!--    Main Filters-->
 
-            <v-form v-if="isFilterShown || $isLargeScreen()">
+            <v-form>
+<!--              <v-form v-if="isFilterShown || $isLargeScreen()">-->
               <v-container>
                 <!--        Input field for name-->
                 <v-text-field
@@ -156,6 +171,7 @@
         <v-col cols="12" sm="8">
           <div
               style="height: fit-content"
+              id="results"
           >
             <div v-if="isSearchResultShown">
               <v-alert dense class="rounded-xl" color="accent lighten-4">
@@ -341,6 +357,7 @@ export default {
       showFilterHelpTooltip: false,
 
       radios: 'SpecifyHall',
+      showFab: false,
     };
   },
   validations: () => {
@@ -418,6 +435,9 @@ export default {
         availableToAll: this.radios === "AvailableToAll"
       });
 
+      this.$vuetify.goTo('#results');
+      this.showFab=true;
+
     },
 
     shareClicked() {
@@ -469,14 +489,13 @@ export default {
     clearFields() {
       this.$v.$reset();
       this.batch = "";
-      if (this.getDesignation === 3) {
-        this.hall = -1;
-      }
+      this.hall = halls[this.getHall];
       this.bloodGroup = -1;
       this.name = "";
       this.error = "";
       this.address = "";
       this.hideSearchResults();
+      this.showFab=false;
     },
     showFilterClicked() {
       this.showFilter();
@@ -486,6 +505,11 @@ export default {
     },
     toggleFilterClicked() {
       this.toggleFilter();
+    },
+
+    fabClicked(){
+      this.$vuetify.goTo("#filters");
+      this.showFab = false;
     },
 
     processName(name) {
