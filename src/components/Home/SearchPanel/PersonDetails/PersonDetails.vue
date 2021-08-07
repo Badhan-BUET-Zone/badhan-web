@@ -25,47 +25,39 @@
         <v-toolbar-title> Person Details</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-menu
-            right :close-on-content-click="false"
-            offset-x
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                icon
-                v-bind="attrs"
-                v-on="on"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
+<!--        <v-menu-->
+<!--            right :close-on-content-click="false"-->
+<!--            offset-x-->
+<!--        >-->
+<!--          <template v-slot:activator="{ on, attrs }">-->
+<!--            <v-btn-->
+<!--                icon-->
+<!--                v-bind="attrs"-->
+<!--                v-on="on"-->
+<!--            >-->
+<!--              <v-icon>mdi-dots-vertical</v-icon>-->
+<!--            </v-btn>-->
+<!--          </template>-->
 
-          <v-list>
-            <v-list-item>
-<!--              <v-list-item-icon>-->
-<!--                <v-icon>-->
-<!--                  mdi-share-->
-<!--                </v-icon>-->
-<!--              </v-list-item-icon>-->
-<!--              <v-list-item-content>-->
-<!--                <v-list-item-title>Share this Donor</v-list-item-title>-->
-<!--              </v-list-item-content>-->
+<!--          <v-list>-->
+<!--            <v-list-item>-->
               <v-tooltip
                   v-model="showTooltip"
-                  top
+                  bottom
               >
                 <template v-slot:activator="{ on, attrs }">
-              <v-btn text @click="shareClicked">
+              <v-btn text small @click="shareClicked">
                 <v-icon left>
                   mdi-share
                 </v-icon>
-                Share this donor
+                Share
               </v-btn>
                 </template>
-                <span>Copied to clipboard</span>
+                <span>Donor link copied to clipboard</span>
               </v-tooltip>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+<!--            </v-list-item>-->
+<!--          </v-list>-->
+<!--        </v-menu>-->
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
