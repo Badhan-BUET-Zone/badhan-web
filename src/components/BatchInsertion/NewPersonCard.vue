@@ -242,6 +242,15 @@ export default {
       return errors
     }
   },
+
+  watch:{
+    'hall'(to,from){
+      if(to==='(Unknown)'){
+        this.availableToAll=true;
+      }
+    }
+  },
+
   data: () => {
     return {
       halls,

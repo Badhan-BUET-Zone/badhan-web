@@ -187,7 +187,7 @@
                   </div>
 
                   <div v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
-                    <v-btn @click="deleteDonorClicked" rounded color="error"
+                    <v-btn class="mt-2" @click="deleteDonorClicked" rounded color="error"
                            :disabled="getDeleteLoaderFlag || !enableEditing"
                            :loading="getDeleteLoaderFlag">
                       <v-icon left dark>mdi-delete</v-icon>
