@@ -115,7 +115,8 @@
                     </div>
                     <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                 label="Comment" auto-grow
-                                :disabled="getCommentLoaderFlag" :rows="1" :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toLocaleString())">
+                                :disabled="getCommentLoaderFlag" :rows="1"
+                                :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
                     </v-textarea>
 
                     <v-btn color="primary" rounded
