@@ -1,10 +1,11 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-fab-transition>
+    <v-fab-transition >
       <v-btn
-          color="secondary"
+          v-scroll="onScroll"
           v-show="showFab"
+          color="secondary"
           dark
           fixed
           bottom
@@ -168,11 +169,22 @@
             </v-form>
           </div>
         </v-col>
-        <v-col cols="12" sm="8">
-          <div
-              style="height: fit-content"
-              id="results"
-          >
+        <v-col cols="12" sm="8" id="results">
+          <div v-if="isSearchLoading">
+            <v-skeleton-loader
+                class="pa-2"
+                type="text"
+            ></v-skeleton-loader>
+            <v-skeleton-loader
+                height="100px"
+                class="pa-2"
+                v-for="i in 5"
+                :key="i"
+                type="image"
+            ></v-skeleton-loader>
+          </div>
+
+          <div style="height: fit-content">
             <div v-if="isSearchResultShown">
               <v-alert dense class="rounded-xl" color="accent lighten-4">
                 <div>
@@ -295,6 +307,9 @@ export default {
   name: "ActiveSearch",
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading', 'isFilterShown']),
+    showScroll(){
+      return window.screenY>1000;
+    },
     isGuestEnabled() {
       return isGuestEnabled();
     },
@@ -396,6 +411,11 @@ export default {
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
+    onScroll (e) {
+      if (typeof window === 'undefined') return
+      const top = window.pageYOffset ||   e.target.scrollTop || 0
+      this.showFab = top > 20
+    },
     async searchClicked() {
       await this.$v.$touch();
       if (this.$v.$anyError) {
@@ -424,7 +444,10 @@ export default {
         inputAddress = "";
       }
 
-      await this.search({
+      this.$vuetify.goTo('#results');
+      this.showFab=true;
+
+      this.search({
         inputName: inputName,
         bloodGroup: this.bloodGroup,
         inputBatch: inputBatch,
@@ -435,8 +458,7 @@ export default {
         availableToAll: this.radios === "AvailableToAll"
       });
 
-      this.$vuetify.goTo('#results');
-      this.showFab=true;
+
 
     },
 
@@ -508,7 +530,7 @@ export default {
     },
 
     fabClicked(){
-      this.$vuetify.goTo("#filters");
+      this.$vuetify.goTo(0);
       this.showFab = false;
     },
 

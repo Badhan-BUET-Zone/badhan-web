@@ -25,39 +25,39 @@
         <v-toolbar-title> Person Details</v-toolbar-title>
         <v-spacer></v-spacer>
 
-<!--        <v-menu-->
-<!--            right :close-on-content-click="false"-->
-<!--            offset-x-->
-<!--        >-->
-<!--          <template v-slot:activator="{ on, attrs }">-->
-<!--            <v-btn-->
-<!--                icon-->
-<!--                v-bind="attrs"-->
-<!--                v-on="on"-->
-<!--            >-->
-<!--              <v-icon>mdi-dots-vertical</v-icon>-->
-<!--            </v-btn>-->
-<!--          </template>-->
+        <!--        <v-menu-->
+        <!--            right :close-on-content-click="false"-->
+        <!--            offset-x-->
+        <!--        >-->
+        <!--          <template v-slot:activator="{ on, attrs }">-->
+        <!--            <v-btn-->
+        <!--                icon-->
+        <!--                v-bind="attrs"-->
+        <!--                v-on="on"-->
+        <!--            >-->
+        <!--              <v-icon>mdi-dots-vertical</v-icon>-->
+        <!--            </v-btn>-->
+        <!--          </template>-->
 
-<!--          <v-list>-->
-<!--            <v-list-item>-->
-              <v-tooltip
-                  v-model="showTooltip"
-                  bottom
-              >
-                <template v-slot:activator="{ on, attrs }">
-              <v-btn text small @click="shareClicked">
-                <v-icon left>
-                  mdi-share
-                </v-icon>
-                Share
-              </v-btn>
-                </template>
-                <span>Donor link copied to clipboard</span>
-              </v-tooltip>
-<!--            </v-list-item>-->
-<!--          </v-list>-->
-<!--        </v-menu>-->
+        <!--          <v-list>-->
+        <!--            <v-list-item>-->
+        <v-tooltip
+            v-model="showTooltip"
+            bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text small @click="shareClicked">
+              <v-icon left>
+                mdi-share
+              </v-icon>
+              Share
+            </v-btn>
+          </template>
+          <span>Donor link copied to clipboard</span>
+        </v-tooltip>
+        <!--            </v-list-item>-->
+        <!--          </v-list>-->
+        <!--        </v-menu>-->
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
@@ -72,32 +72,32 @@
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
 
-<!--          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>-->
-<!--          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>-->
+          <!--          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>-->
+          <!--          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>-->
 
           <br>
-<!--          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">-->
-<!--            <v-icon left>-->
-<!--              mdi-phone-->
-<!--            </v-icon>-->
-<!--            Call Now-->
-<!--          </v-btn>-->
+          <!--          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">-->
+          <!--            <v-icon left>-->
+          <!--              mdi-phone-->
+          <!--            </v-icon>-->
+          <!--            Call Now-->
+          <!--          </v-btn>-->
 
-<!--          <v-tooltip-->
-<!--              v-model="showTooltip"-->
-<!--              top-->
-<!--          >-->
-<!--            <template v-slot:activator="{ on, attrs }">-->
-<!--              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"-->
-<!--                     @click="shareClicked">-->
-<!--                <v-icon left>-->
-<!--                  mdi-share-->
-<!--                </v-icon>-->
-<!--                Share-->
-<!--              </v-btn>-->
-<!--            </template>-->
-<!--            <span>Copied to clipboard</span>-->
-<!--          </v-tooltip>-->
+          <!--          <v-tooltip-->
+          <!--              v-model="showTooltip"-->
+          <!--              top-->
+          <!--          >-->
+          <!--            <template v-slot:activator="{ on, attrs }">-->
+          <!--              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"-->
+          <!--                     @click="shareClicked">-->
+          <!--                <v-icon left>-->
+          <!--                  mdi-share-->
+          <!--                </v-icon>-->
+          <!--                Share-->
+          <!--              </v-btn>-->
+          <!--            </template>-->
+          <!--            <span>Copied to clipboard</span>-->
+          <!--          </v-tooltip>-->
 
 
           <div class="row" v-if="!getLoadingFlag">
@@ -119,7 +119,7 @@
 
                 <v-card-text v-if="personDetailCollapseFlag">
 
-                    <div v-on:click="promptForEdit($event)">
+                  <div v-on:click="promptForEdit($event)">
                     <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
                                   :disabled="!enableEditing" @blur="$v.name.$touch()"
                                   :error-messages="nameErrors"></v-text-field>
@@ -131,13 +131,14 @@
                     <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentID"
                                   :disabled="!enableEditing" @blur="$v.studentID.$touch()"
                                   :error-messages="studentIDErrors"></v-text-field>
-                     <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
+                    <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
                                   :disabled="!enableEditing"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
                                   :disabled="!enableEditing"></v-text-field>
                     <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
                               :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                    <v-checkbox :disabled="!enableEditing || halls.indexOf(hall)===8" v-model="availableToAll" dense label="Public Data"></v-checkbox>
+                    <v-checkbox :disabled="!enableEditing || halls.indexOf(hall)===8" v-model="availableToAll" dense
+                                label="Public Data"></v-checkbox>
 
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
                       <v-btn color="primary" rounded class="white--text ml-2"
@@ -149,30 +150,30 @@
                         Save
                       </v-btn>
                     </div>
-                    </div>
-                    <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
-                                label="Comment" auto-grow
-                                :disabled="getCommentLoaderFlag" :rows="1"
-                                :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
-                    </v-textarea>
+                  </div>
+                  <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
+                              label="Comment" auto-grow
+                              :disabled="getCommentLoaderFlag" :rows="1"
+                              :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
+                  </v-textarea>
 
-                    <v-btn color="primary" rounded
-                           :disabled="getCommentLoaderFlag"
-                           :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
-                      <v-icon left>
-                        mdi-content-save
-                      </v-icon>
-                      Save Comment
-                    </v-btn>
+                  <v-btn color="primary" rounded
+                         :disabled="getCommentLoaderFlag"
+                         :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
+                    <v-icon left>
+                      mdi-content-save
+                    </v-icon>
+                    Save Comment
+                  </v-btn>
                 </v-card-text>
               </v-card>
 
               <v-card v-if="getDesignation > designation ||getPhone== oldPhone">
                 <v-card-title>
-                    <v-btn rounded
-                            @click="settingsCollapseFlag = !settingsCollapseFlag">
-                      Settings
-                    </v-btn>
+                  <v-btn rounded
+                         @click="settingsCollapseFlag = !settingsCollapseFlag">
+                    Settings
+                  </v-btn>
                 </v-card-title>
                 <v-card-text v-if="settingsCollapseFlag">
                   <div v-on:click="promptForEdit($event)">
@@ -224,7 +225,8 @@
                     </v-btn>
                   </div>
 
-                  <div v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
+                  <div
+                      v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
                     <v-btn class="mt-2" @click="deleteDonorClicked" rounded color="error"
                            :disabled="getDeleteLoaderFlag || !enableEditing"
                            :loading="getDeleteLoaderFlag">
@@ -323,9 +325,11 @@
 
               <p>Call History:</p>
 
-              <p>Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toDateString()+' on '+new Date(getLastCallRecordDate).toLocaleTimeString()}}</p>
-<!--              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>-->
-              <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
+              <p>Last called:
+                {{ getLastCallRecordDate === 0 ? 'Unknown' : new Date(getLastCallRecordDate).toDateString() + ' on ' + new Date(getLastCallRecordDate).toLocaleTimeString() }}</p>
+              <!--              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>-->
+              <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord"
+                              v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
               <span v-if="getCallRecords.length===0">No call history found</span>
             </div>
           </div>
@@ -353,13 +357,14 @@ import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 import CallRecordCard from "../../CallRecordCard";
 import HelpTooltip from "../../../UI Components/HelpTooltip";
+
 export default {
   name: "PersonDetails",
-  components:{
+  components: {
     CallRecordCard,
     HelpTooltip
   },
-  data: ()=>{
+  data: () => {
     return {
       //form fields
       _id: null,
@@ -386,7 +391,7 @@ export default {
       newPassword: null,
       confirmPassword: "",
       comment: "",
-      availableToAll:false,
+      availableToAll: false,
 
       //history flag
       showHistory: false,
@@ -454,7 +459,7 @@ export default {
     ...mapGetters('comment', ['getCommentLoaderFlag']),
     ...mapGetters('donation', ['getDonationList']),
     ...mapGetters('donate', ['getDonationLoaderFlag']),
-    ...mapGetters('callrecord',['getNewCallRecordLoaderFlag','getCallRecords','getCallRecordsLoader','getDeleteCallRecordLoaderFlag']),
+    ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -499,7 +504,7 @@ export default {
     availableHalls() {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return [...halls.slice(0,7),halls[8]];
+          return [...halls.slice(0, 7), halls[8]];
         } else {
           //covid support
           //return [halls[this.getHall], halls[7]];
@@ -507,10 +512,10 @@ export default {
         }
       }
     },
-    getLastCallRecordDate(){
+    getLastCallRecordDate() {
       let lastDate = 0;
-      this.getCallRecords.forEach((callRecord)=>{
-        if(callRecord.date> lastDate){
+      this.getCallRecords.forEach((callRecord) => {
+        if (callRecord.date > lastDate) {
           lastDate = callRecord.date;
         }
       });
@@ -529,7 +534,7 @@ export default {
     ...mapActions('details', ['getDetails']),
     ...mapActions('donate', ['donate']),
     ...mapMutations('donation', ['addDonation']),
-    ...mapActions('callrecord',['postCallRecord','deleteCallRecord','fetchCallRecords']),
+    ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord', 'fetchCallRecords']),
 
     shareClicked() {
       let routeData = this.$router.resolve({
@@ -539,10 +544,12 @@ export default {
         }
       });
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE+routeData.href).then((e)=>{
-        this.showTooltip=true;
-        setTimeout(()=>{this.showTooltip=false},2000);
-      },(e)=>{
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
+        this.showTooltip = true;
+        setTimeout(() => {
+          this.showTooltip = false
+        }, 2000);
+      }, (e) => {
       })
     },
     async changeHallAdminClicked() {
@@ -579,8 +586,8 @@ export default {
     },
     async saveCommentClicked() {
       let comment = this.comment;
-      if(this.comment===""){
-        comment="(Unknown)"
+      if (this.comment === "") {
+        comment = "(Unknown)"
       }
       await this.saveComment({
         donorId: this.$route.query.id,
@@ -654,7 +661,7 @@ export default {
         logoutFlag: this.$route.query.id === this.getID
       });
 
-      if(this.$route.query.id === this.getID){
+      if (this.$route.query.id === this.getID) {
         await this.$router.push({name: 'SignIn'});
       }
     },
@@ -669,11 +676,11 @@ export default {
 
       let room = this.room;
       let address = this.address;
-      if(room===""){
+      if (room === "") {
         room = "(Unknown)";
       }
-      if(address===""){
-        address="(Unknown)";
+      if (address === "") {
+        address = "(Unknown)";
       }
 
       let sendData = {
