@@ -10,7 +10,7 @@
             {{callRecord.callerId.name}}<br>
             <b>Hall: </b>{{halls[callRecord.callerId.hall]}}<br>
             <b>Designation: </b>{{designations[callRecord.callerId.designation]}}<br>
-            <b>Time: </b>{{new Date(callRecord.date).toLocaleString()}}
+            <b>Time: </b>{{dateString}} at {{time}}
           </p>
         </v-col>
         <v-col cols="3">
@@ -32,7 +32,12 @@ name: "CallRecordCard",
     return{
       deleteLoaderFlag: false,
       halls,
-      designations
+      designations,
+      date:0,
+      month:0,
+      year:0,
+      time:"0",
+      dateString: "0",
     }
   },
   methods:{
@@ -50,6 +55,11 @@ name: "CallRecordCard",
     }
   },
   mounted(){
+    let dateObject = new Date(this.callRecord.date);
+
+
+    this.dateString = dateObject.toDateString();
+    this.time = dateObject.toLocaleTimeString();
   }
 }
 </script>
