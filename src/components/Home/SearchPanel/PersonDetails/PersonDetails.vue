@@ -11,6 +11,8 @@
           <v-progress-circular indeterminate></v-progress-circular>
           Loading
         </v-toolbar-title>
+
+
       </v-app-bar>
 
     </v-card>
@@ -21,6 +23,49 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <v-toolbar-title> Person Details</v-toolbar-title>
+        <v-spacer></v-spacer>
+
+        <v-menu
+            right :close-on-content-click="false"
+            offset-x
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item>
+<!--              <v-list-item-icon>-->
+<!--                <v-icon>-->
+<!--                  mdi-share-->
+<!--                </v-icon>-->
+<!--              </v-list-item-icon>-->
+<!--              <v-list-item-content>-->
+<!--                <v-list-item-title>Share this Donor</v-list-item-title>-->
+<!--              </v-list-item-content>-->
+              <v-tooltip
+                  v-model="showTooltip"
+                  top
+              >
+                <template v-slot:activator="{ on, attrs }">
+              <v-btn text @click="shareClicked">
+                <v-icon left>
+                  mdi-share
+                </v-icon>
+                Share this donor
+              </v-btn>
+                </template>
+                <span>Copied to clipboard</span>
+              </v-tooltip>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
@@ -35,32 +80,32 @@
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
 
-          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>
-          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>
+<!--          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>-->
+<!--          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>-->
 
           <br>
-          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">
-            <v-icon left>
-              mdi-phone
-            </v-icon>
-            Call Now
-          </v-btn>
+<!--          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">-->
+<!--            <v-icon left>-->
+<!--              mdi-phone-->
+<!--            </v-icon>-->
+<!--            Call Now-->
+<!--          </v-btn>-->
 
-          <v-tooltip
-              v-model="showTooltip"
-              top
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"
-                     @click="shareClicked">
-                <v-icon left>
-                  mdi-share
-                </v-icon>
-                Share
-              </v-btn>
-            </template>
-            <span>Copied to clipboard</span>
-          </v-tooltip>
+<!--          <v-tooltip-->
+<!--              v-model="showTooltip"-->
+<!--              top-->
+<!--          >-->
+<!--            <template v-slot:activator="{ on, attrs }">-->
+<!--              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"-->
+<!--                     @click="shareClicked">-->
+<!--                <v-icon left>-->
+<!--                  mdi-share-->
+<!--                </v-icon>-->
+<!--                Share-->
+<!--              </v-btn>-->
+<!--            </template>-->
+<!--            <span>Copied to clipboard</span>-->
+<!--          </v-tooltip>-->
 
 
           <div class="row" v-if="!getLoadingFlag">
@@ -285,7 +330,9 @@
               <span v-else>(Unknown)</span>
 
               <p>Call History:</p>
-              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>
+
+              <p>Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toDateString()+' on '+new Date(getLastCallRecordDate).toLocaleTimeString()}}</p>
+<!--              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>-->
               <CallRecordCard :callee-id="$route.query.id" :call-record="callRecord" v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
               <span v-if="getCallRecords.length===0">No call history found</span>
             </div>

@@ -356,7 +356,7 @@ export default {
       showTooltip: false,
       showFilterHelpTooltip: false,
 
-      radios: 'SpecifyHall',
+      radios: 'AvailableToAll',
       showFab: false,
     };
   },
