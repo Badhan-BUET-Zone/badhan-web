@@ -1,23 +1,11 @@
 <template>
   <!--  Person card-->
   <div class="mb-2" style="width: 100%">
-    <v-btn absolute depressed right style="z-index: 80;" rounded
-        @click="fetchProfileDetails"
-        v-if="profileDetailsClicked && !profileDetailsLoading"
-    >
-<!--      <v-card-text>Click to reload information of {{name}}</v-card-text>-->
-      <v-icon>
-        mdi-reload
-      </v-icon>
-    </v-btn>
-    <v-skeleton-loader v-if="profileDetailsLoading" class="pa-1" type="image" height="100px">
-    </v-skeleton-loader>
     <v-card
         rounded
         style="width: 100%; height: 100%"
         class="pa-1"
         @click="expansionClicked"
-        v-if="!profileDetailsLoading"
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
@@ -258,7 +246,7 @@ export default {
     },
     async loadPersonDetails() {
       //   await this.$router.push("/home/details");
-      this.profileDetailsClicked = true;
+      // this.profileDetailsClicked = true;
 
 
       await this.$router.push({
@@ -274,16 +262,6 @@ export default {
       });
 
       if (success) {
-        // let newAvailableIn =
-        //     120 -
-        //     Math.round(
-        //         (Math.round(new Date().getTime()) -
-        //             new Date(this.newDonationDate).getTime()) /
-        //         (1000 * 3600 * 24)
-        //     );
-        // if (newAvailableIn > this.availableInRendered) {
-        //   this.availableInRendered = newAvailableIn;
-        // }
         this.setAvailableIn(this.newDonationDate);
 
         this.newDonationDate = "";
@@ -324,22 +302,22 @@ export default {
       this.callRecords =person.callRecords;
     },
 
-    async fetchProfileDetails() {
-      this.showExtensionFlag = false;
-      this.profileDetailsLoading = true;
-      let person = await this.getDetailsInPersonCard(this.id);
-      this.profileDetailsLoading = false;
-      if(!person){
-        return;
-      }
-
-      this.availableInRendered = 0;
-      this.setInformation(person);
-      this.profileDetailsClicked = false;
-
-
-
-    }
+    // async fetchProfileDetails() {
+    //   this.showExtensionFlag = false;
+    //   this.profileDetailsLoading = true;
+    //   let person = await this.getDetailsInPersonCard(this.id);
+    //   this.profileDetailsLoading = false;
+    //   if(!person){
+    //     return;
+    //   }
+    //
+    //   this.availableInRendered = 0;
+    //   this.setInformation(person);
+    //   this.profileDetailsClicked = false;
+    //
+    //
+    //
+    // }
   },
 };
 </script>
