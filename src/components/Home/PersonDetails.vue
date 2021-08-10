@@ -128,9 +128,9 @@
                                   :error-messages="phoneErrors"></v-text-field>
                     <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                               :disabled="!enableEditing"></v-select>
-                    <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentID"
-                                  :disabled="!enableEditing" @blur="$v.studentID.$touch()"
-                                  :error-messages="studentIDErrors"></v-text-field>
+                    <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
+                                  :disabled="!enableEditing" @blur="$v.studentId.$touch()"
+                                  :error-messages="studentIdErrors"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
                                   :disabled="!enableEditing"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
@@ -142,7 +142,7 @@
 
                     <div v-if="getDesignation > designation ||getPhone == oldPhone">
                       <v-btn color="primary" rounded class="white--text ml-2"
-                             :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentID.$error"
+                             :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentId.$error"
                              :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
                         <v-icon left>
                           mdi-content-save
@@ -371,7 +371,7 @@ export default {
       name: "",
       oldPhone: "",
       phone: "",
-      studentID: "",
+      studentId: "",
       bloodGroup: "",
       availableIn: "",
       designation: "",
@@ -424,7 +424,7 @@ export default {
       maxLength: maxLength(11),
       numeric,
     },
-    studentID: {
+    studentId: {
       minLength: minLength(7),
       maxLength: maxLength(7),
       numeric,
@@ -469,13 +469,13 @@ export default {
       !this.$v.phone.required && errors.push('Phone is required.')
       return errors
     },
-    studentIDErrors() {
+    studentIdErrors() {
       const errors = []
-      if (!this.$v.studentID.$dirty) return errors
-      !this.$v.studentID.minLength && errors.push('Student ID must be of 7 digits')
-      !this.$v.studentID.maxLength && errors.push('Student ID must be of 7 digits')
-      !this.$v.studentID.numeric && errors.push('Student ID must be numeric')
-      !this.$v.studentID.required && errors.push('Student ID is required')
+      if (!this.$v.studentId.$dirty) return errors
+      !this.$v.studentId.minLength && errors.push('Student ID must be of 7 digits')
+      !this.$v.studentId.maxLength && errors.push('Student ID must be of 7 digits')
+      !this.$v.studentId.numeric && errors.push('Student ID must be numeric')
+      !this.$v.studentId.required && errors.push('Student ID is required')
       return errors
     },
     nameErrors() {
@@ -534,6 +534,7 @@ export default {
     ...mapActions('details', ['getDetails']),
     ...mapActions('donate', ['donate']),
     ...mapMutations('donation', ['addDonation']),
+    ...mapMutations(['deletePerson']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord', 'fetchCallRecords']),
 
     shareClicked() {
@@ -561,7 +562,9 @@ export default {
       let confirmation = await this.$bvModal.msgBoxConfirm('CAUTION: Are you sure you want to delete this donor?', {
         centered: true
       })
+
       if (confirmation === true && await this.deleteDonor({donorId: this.$route.query.id})) {
+        this.deletePerson({_id: this.$route.query.id,studentId: this.studentId});
         await this.$router.push('/home');
       }
     },
@@ -668,9 +671,9 @@ export default {
     async saveDetailsClicked() {
       await this.$v.name.$touch();
       await this.$v.phone.$touch();
-      await this.$v.studentID.$touch();
+      await this.$v.studentId.$touch();
 
-      if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentID.$error) {
+      if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentId.$error) {
         return;
       }
 
@@ -687,7 +690,7 @@ export default {
         donorId: this.$route.query.id,
         name: this.name,
         phone: parseInt("88" + this.phone),
-        studentId: this.studentID,
+        studentId: this.studentId,
         bloodGroup: bloodGroups.indexOf(this.bloodGroup),
         hall: halls.indexOf(this.hall),
         roomNumber: room,
@@ -740,7 +743,7 @@ export default {
     this.name = profile.name;
     this.phone = profile.phone.toString().substr(2);
     this.oldPhone = profile.phone;
-    this.studentID = profile.studentId;
+    this.studentId = profile.studentId;
     this.bloodGroup = bloodGroups[profile.bloodGroup];
     this.hall = halls[profile.hall];
     this.room = profile.roomNumber;

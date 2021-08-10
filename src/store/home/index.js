@@ -96,22 +96,12 @@ const mutations = {
         state.personGroups=[];
         state.numOfDonor = payload.length;
 
-        payload.forEach((human, index) => {
-            human.availableIn = 120 - Math.round((Math.round((new Date()).getTime()) - human.lastDonation) / (1000 * 3600 * 24));
-            //REDUNTANT PROPERTY USED!! NEED TO OPTIMIZE IN FUTURE
-            human.studentID = Number(human.studentId);
-        });
-
-        payload.sort((a, b) => (a.lastDonation < b.lastDonation) ? 1 : -1)
-
         let persons = payload;
 
         state.persons = payload;
 
-
-        //persons.sort(this.compare);
         let groupedPersons = persons.reduce(function (obj, person) {
-            let batch = person.studentID.toString().substr(0, 2);
+            let batch = person.studentId.substr(0, 2);
             if (!obj.hasOwnProperty(batch)) {
                 obj[batch] = [];
             }
@@ -128,19 +118,27 @@ const mutations = {
             });
         });
         sortedBatches.sort(compareObject);
-
         state.personGroups = sortedBatches;
-
-
         state.searchResultShown = true;
     },
 
     setSearchedHall(state,payload){
         state.searchedHall = payload;
+    },
+
+    deletePerson(state,person){
+        let batch = person.studentId.substr(0,2);
+        for(let j = 0 ; j <state.personGroups.length; j++ ){
+            if(state.personGroups[j].batch===batch){
+                for(let i = 0 ; i < state.personGroups[j].people.length; i++){
+                    if(state.personGroups[j].people[i]._id===person._id){
+                        state.personGroups[j].people.splice(i, 1);
+                        return;
+                    }
+                }
+            }
+        }
     }
-
-
-
 };
 const actions = {
     async search({ getters, commit }, payload) {
@@ -161,12 +159,10 @@ const actions = {
         };
 
         try {
-            // let response = await badhanAxios.post('v2/donor/search', sendData );
             let response = await badhanAxios.get('/search/v2', {params: sendData} );
             commit('setPersonGroups', response.data.filteredDonors);
             commit('setSearchedHall',payload.hall);
             commit('hideFilter');
-
         } catch (error) {
         } finally {
             commit('searchLoaderFlagOff');

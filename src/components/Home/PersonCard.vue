@@ -245,10 +245,6 @@ export default {
       this.callRecords.push({date: new Date().getTime()})
     },
     async loadPersonDetails() {
-      //   await this.$router.push("/home/details");
-      // this.profileDetailsClicked = true;
-
-
       await this.$router.push({
         path: "/home/details",
         query: {id: this.id},
@@ -291,7 +287,6 @@ export default {
       this.name = person.name;
       this.hall  = person.hall;
       this.bloodGroup = person.bloodGroup;
-      this.availableIn = person.availableIn;
       this.studentId = person.studentId;
       this.lastDonation = person.lastDonation;
       this.comment = person.comment;

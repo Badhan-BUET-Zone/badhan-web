@@ -263,7 +263,7 @@
 
                 <person-card
                     v-for="(person, personIndex) in obj.people"
-                    :key="personIndex"
+                    :key="person._id"
                     :person="person"
                 ></person-card>
               </div>
