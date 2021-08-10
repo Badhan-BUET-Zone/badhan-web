@@ -1,15 +1,15 @@
 <template>
   <!--  Person card-->
   <div class="mb-2" style="width: 100%">
-    <v-card
-        rounded
-        height="100px"
-        class="pa-1"
+    <v-btn absolute depressed right style="z-index: 80;" rounded
         @click="fetchProfileDetails"
         v-if="profileDetailsClicked && !profileDetailsLoading"
     >
-      <v-card-text>Click to reload information of {{name}}</v-card-text>
-    </v-card>
+<!--      <v-card-text>Click to reload information of {{name}}</v-card-text>-->
+      <v-icon>
+        mdi-reload
+      </v-icon>
+    </v-btn>
     <v-skeleton-loader v-if="profileDetailsLoading" class="pa-1" type="image" height="100px">
     </v-skeleton-loader>
     <v-card
@@ -17,7 +17,7 @@
         style="width: 100%; height: 100%"
         class="pa-1"
         @click="expansionClicked"
-        v-if="!profileDetailsClicked && !profileDetailsLoading"
+        v-if="!profileDetailsLoading"
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
@@ -259,7 +259,7 @@ export default {
     async loadPersonDetails() {
       //   await this.$router.push("/home/details");
       this.profileDetailsClicked = true;
-      this.showExtensionFlag = false;
+
 
       await this.$router.push({
         path: "/home/details",
@@ -325,6 +325,7 @@ export default {
     },
 
     async fetchProfileDetails() {
+      this.showExtensionFlag = false;
       this.profileDetailsLoading = true;
       let person = await this.getDetailsInPersonCard(this.id);
       this.profileDetailsLoading = false;
