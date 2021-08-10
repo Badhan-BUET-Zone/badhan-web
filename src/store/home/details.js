@@ -61,6 +61,19 @@ const actions = {
         } finally {
             commit('donorLoaderFlagOff');
         }
+    },
+
+    async getDetailsInPersonCard({},payload){
+        let params = {
+            donorId: payload
+        };
+        try {
+            let response = await badhanAxios.get('/donors', {params});
+            return response.data.donor;
+        } catch (error) {
+            return null;
+        } finally {
+        }
     }
 };
 export default {

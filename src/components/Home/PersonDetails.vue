@@ -355,8 +355,8 @@
 import {halls, bloodGroups} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
-import CallRecordCard from "../../CallRecordCard";
-import HelpTooltip from "../../../UI Components/HelpTooltip";
+import CallRecordCard from "@/components/Home/CallRecordCard";
+import HelpTooltip from "@/components/UI Components/HelpTooltip";
 
 export default {
   name: "PersonDetails",
@@ -649,7 +649,7 @@ export default {
       if (await this.promote({
         donorId: this.$route.query.id,
         promoteFlag: false,
-        newPassword: this.newPassword
+        newPassword: "(Unknown)"
       })) {
         this.designation = 0
       }

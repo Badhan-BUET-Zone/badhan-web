@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from "@/views/Home";
 
 import SignInCover from "@/views/SignInCover";
-import PersonDetails from "@/components/Home/SearchPanel/PersonDetails/PersonDetails";
+import PersonDetails from "@/components/Home/PersonDetails";
 import {store} from "@/store/store";
 
 Vue.use(VueRouter)

@@ -263,20 +263,8 @@
 
                 <person-card
                     v-for="(person, personIndex) in obj.people"
-                    :phone="person.phone"
-                    :name="person.name"
-                    :availableIn="person.availableIn"
-                    :bloodGroup="person.bloodGroup"
-                    :studentID="person.studentID"
-                    :lastDonation="person.lastDonation"
-                    :comment="person.comment"
-                    :address="person.address"
                     :key="personIndex"
-                    :roomNumber="person.roomNumber"
-                    :id="person._id"
-                    :commentTime="person.commentTime"
-                    :callRecords="person.callRecords"
-                    :hall="person.hall"
+                    :person="person"
                 ></person-card>
               </div>
               <v-btn x-small rounded disabled v-if="getDesignation ===3 || getDesignation ===2">Archive these donors
@@ -292,16 +280,16 @@
 </template>
 
 <script>
-import PersonDetails from "@/components/Home/SearchPanel/PersonDetails/PersonDetails";
-import PageTitle from "../components/PageTitle";
-import PersonCard from "../components/Home/SearchPanel/SearchResults/PersonCard";
+import PersonDetails from "@/components/Home/PersonDetails";
+import PageTitle from "@/components/PageTitle";
+import PersonCard from "@/components/Home/PersonCard";
 import JsonExcel from "vue-json-excel";
 import {isNative} from '@/plugins/android_support';
 import {bloodGroups, halls} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
-import HelpTooltip from "../components/UI Components/HelpTooltip";
+import HelpTooltip from "@/components/UI Components/HelpTooltip";
 
 export default {
   name: "ActiveSearch",

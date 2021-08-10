@@ -23,7 +23,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import {halls,designations} from "../../mixins/constants";
+import {halls,designations} from "@/mixins/constants";
 
 export default {
 name: "CallRecordCard",

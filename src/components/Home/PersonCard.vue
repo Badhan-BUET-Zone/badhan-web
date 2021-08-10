@@ -3,9 +3,21 @@
   <div class="mb-2" style="width: 100%">
     <v-card
         rounded
+        height="100px"
+        class="pa-1"
+        @click="fetchProfileDetails"
+        v-if="profileDetailsClicked && !profileDetailsLoading"
+    >
+      <v-card-text>Click to reload information of {{name}}</v-card-text>
+    </v-card>
+    <v-skeleton-loader v-if="profileDetailsLoading" class="pa-1" type="image" height="100px">
+    </v-skeleton-loader>
+    <v-card
+        rounded
         style="width: 100%; height: 100%"
         class="pa-1"
         @click="expansionClicked"
+        v-if="!profileDetailsClicked && !profileDetailsLoading"
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
@@ -50,10 +62,7 @@
             <span>{{ halls[hall] }}</span>
           </div>
         </v-col>
-
-
       </v-row>
-
     </v-card>
 
     <!--    Person card extension-->
@@ -61,20 +70,21 @@
       <v-card-text>
         <v-row no-gutters>
           <v-col cols="12" sm="6">
-            <span><b>Department: </b>{{ studentID | idToDept }} <br></span>
+            <span><b>Department: </b>{{ studentId | idToDept }} <br></span>
             <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }} <br></span>
             <span v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
               {{ roomNumber }}</span>
           </v-col>
           <v-col cols="12" sm="6">
-            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{ commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString() }} )<br></span>
+            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{
+                commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString()
+              }} )<br></span>
             <span><b>Last called: </b>
-              <v-progress-circular color="primary" indeterminate v-if="callRecordFetchLoader"></v-progress-circular>
-              <span v-else-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
+              <span v-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
               <span v-else>Unknown</span>
               <br>
             </span>
-            <span v-if="!callRecordFetchLoader">Called {{ getCallCountInRange }} times in last 3 days</span>
+            <span>Called {{ getCallCountInRange }} times in last 3 days</span>
           </v-col>
         </v-row>
         <div class="mt-1">
@@ -162,24 +172,12 @@ import {halls} from "@/mixins/constants";
 export default {
   name: "PersonCard",
   props: [
-    "phone",
-    "name",
-    "bloodGroup",
-    "availableIn",
-    "studentID",
-    "lastDonation",
-    "comment",
-    "address",
-    "roomNumber",
-    "id",
-    "commentTime",
-    "callRecords",
-    "hall"
+    "person"
   ],
   components: {},
   filters: {
-    idToDept(studentID) {
-      return departments[Number(studentID.toString().substr(2, 2))];
+    idToDept(studentId) {
+      return departments[Number(studentId.toString().substr(2, 2))];
     },
     numToBloodGroup(num) {
       return bloodGroups[num];
@@ -200,11 +198,26 @@ export default {
       availableInRendered: 0,
 
       newCallRecordLoader: false,
-      callRecordFetchLoader: false,
-      callRecordFetchCalled: false,
 
-      // callRecords: [],
-      halls
+      halls,
+
+      profileDetailsClicked: false,
+      profileDetailsLoading: false,
+
+      phone: null,
+      name: null,
+      bloodGroup: null,
+      availableIn: null,
+      studentId: null,
+      lastDonation: 0,
+      comment: "(Unknown)",
+      address: "(Unknown)",
+      roomNumber: "(Unknown)",
+      id: null,
+      hall:null,
+      commentTime: 0,
+      callRecords: [],
+
     };
   },
   computed: {
@@ -230,43 +243,48 @@ export default {
     }
   },
   mounted() {
-    this.availableInRendered = this.$props.availableIn;
+    this.setInformation(this.person);
   },
   methods: {
+    ...mapActions('details',['getDetailsInPersonCard']),
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord', ['postCallRecordFromCard', 'fetchCallRecordsForHome']),
     async callFromDialer() {
       document.location.href = "tel:+" + this.phone;
       this.newCallRecordLoader = true;
-      await this.postCallRecordFromCard({donorId: this.$props.id});
+      await this.postCallRecordFromCard({donorId: this.id});
       this.newCallRecordLoader = false;
       this.callRecords.push({date: new Date().getTime()})
     },
     async loadPersonDetails() {
       //   await this.$router.push("/home/details");
+      this.profileDetailsClicked = true;
+      this.showExtensionFlag = false;
+
       await this.$router.push({
         path: "/home/details",
-        query: {id: this.$props.id},
+        query: {id: this.id},
       });
 
     },
     async donateClicked() {
       let success = await this.donate({
-        donorId: this.$props.id,
+        donorId: this.id,
         newDonationDate: this.newDonationDate
       });
 
       if (success) {
-        let newAvailableIn =
-            120 -
-            Math.round(
-                (Math.round(new Date().getTime()) -
-                    new Date(this.newDonationDate).getTime()) /
-                (1000 * 3600 * 24)
-            );
-        if (newAvailableIn > this.availableInRendered) {
-          this.availableInRendered = newAvailableIn;
-        }
+        // let newAvailableIn =
+        //     120 -
+        //     Math.round(
+        //         (Math.round(new Date().getTime()) -
+        //             new Date(this.newDonationDate).getTime()) /
+        //         (1000 * 3600 * 24)
+        //     );
+        // if (newAvailableIn > this.availableInRendered) {
+        //   this.availableInRendered = newAvailableIn;
+        // }
+        this.setAvailableIn(this.newDonationDate);
 
         this.newDonationDate = "";
       }
@@ -274,6 +292,52 @@ export default {
     },
     async expansionClicked() {
       this.showExtensionFlag = !this.showExtensionFlag;
+    },
+
+    setAvailableIn(donationDate){
+      let newAvailableIn =
+          120 -
+          Math.round(
+              (Math.round(new Date().getTime()) -
+                  new Date(donationDate).getTime()) /
+              (1000 * 3600 * 24)
+          );
+      if (newAvailableIn > this.availableInRendered) {
+        this.availableInRendered = newAvailableIn;
+      }
+    },
+
+    setInformation(person){
+      this.setAvailableIn(person.lastDonation);
+      this.phone = person.phone;
+      this.name = person.name;
+      this.hall  = person.hall;
+      this.bloodGroup = person.bloodGroup;
+      this.availableIn = person.availableIn;
+      this.studentId = person.studentId;
+      this.lastDonation = person.lastDonation;
+      this.comment = person.comment;
+      this.address = person.address;
+      this.roomNumber = person.roomNumber;
+      this.id = person._id;
+      this.commentTime = person.commentTime;
+      this.callRecords =person.callRecords;
+    },
+
+    async fetchProfileDetails() {
+      this.profileDetailsLoading = true;
+      let person = await this.getDetailsInPersonCard(this.id);
+      this.profileDetailsLoading = false;
+      if(!person){
+        return;
+      }
+
+      this.availableInRendered = 0;
+      this.setInformation(person);
+      this.profileDetailsClicked = false;
+
+
+
     }
   },
 };
