@@ -389,8 +389,9 @@ export default {
     this.hall = query.hall ? query.hall : halls[this.$store.getters.getHall];
     this.availability = query.availability !== "false";
     this.notAvailability = query.notAvailability === "true";
+    this.radios = query.radios==="AvailableToAll"?"AvailableToAll":"SpecifyHall";
 
-    if (Object.keys(this.$route.query).length === 7) {
+    if (Object.keys(this.$route.query).length === 8) {
       this.searchClicked();
     }
   },
@@ -460,7 +461,9 @@ export default {
           address: this.address,
           hall: this.hall,
           availability: this.availability,
-          notAvailability: this.notAvailability
+          notAvailability: this.notAvailability,
+          radios:this.radios,
+
         }
       });
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
