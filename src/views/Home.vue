@@ -487,7 +487,8 @@ export default {
           address: this.address,
           hall: this.hall,
           availability: this.availability,
-          notAvailability: this.notAvailability
+          notAvailability: this.notAvailability,
+          radios:this.radios,
         }
       });
       let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
