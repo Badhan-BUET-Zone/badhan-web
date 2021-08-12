@@ -5,16 +5,16 @@
       <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name"
                     @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
-      <v-text-field class="required" rounded outlined label="Phone" dense v-model="phone" @blur="$v.phone.$touch()"
+      <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-<!--      {{$v.studentId}}-->
+      <!--      {{$v.studentId}}-->
       <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"
                     hint="If the department is unknown, give 00 as dept. code"
       >
         <template v-slot:message>
-          <span>{{studentIdErrors[0]}}</span>
+          <span>{{ studentIdErrors[0] }}</span>
           <span>. If the department is unknown, give 00 as dept. code</span>
           <div v-if="$v.studentId.$invalid">
             <v-menu offset-y>
@@ -113,11 +113,13 @@ import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
 import {isNative} from '@/plugins/android_support';
 import HelpTooltip from "../UI Components/HelpTooltip";
+import {badhanAxios} from "../../api";
+import _ from 'lodash';
 
 export default {
   name: "NewPersonCard",
   props: ['donor', 'discardDonor'],
-  components:{
+  components: {
     HelpTooltip
   },
   validations: () => {
@@ -127,6 +129,19 @@ export default {
         minLength: minLength(11),
         maxLength: maxLength(11),
         numeric,
+        uniqueCheck(phone){
+          if(!phone || phone.length!==11 || isNaN(parseInt(phone)))return true;
+
+          this.phoneDuplicateCheckLoader = true;
+          return badhanAxios.get('/donors/checkDuplicate',{params: {phone: '88'+phone}})
+          .then((res)=>{
+            this.phoneDuplicateCheckLoader = false;
+            return !res.data.found;
+          })
+          .catch((e)=>{
+            return false;
+          })
+        }
       },
       name: {
         required
@@ -180,6 +195,18 @@ export default {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
 
+    computedPhone: {
+      get() {
+        return this.phone;
+      },
+      set(val) {
+        if (this.timeout) clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          this.phone = val;
+        }, 2000)
+      }
+    },
+
     availableHalls() {
       return [...halls.slice(0, 7), halls[8]];
     },
@@ -194,6 +221,7 @@ export default {
       !this.$v.phone.maxLength && errors.push('Phone must be 11 digits long')
       !this.$v.phone.required && errors.push('Phone is required')
       !this.$v.phone.numeric && errors.push('Phone must be numeric')
+      !this.$v.phone.uniqueCheck && errors.push('Phone number already exists in database')
       return errors
     },
     nameErrors() {
@@ -243,10 +271,10 @@ export default {
     }
   },
 
-  watch:{
-    'hall'(to,from){
-      if(to==='(Unknown)'){
-        this.availableToAll=true;
+  watch: {
+    'hall'(to, from) {
+      if (to === '(Unknown)') {
+        this.availableToAll = true;
       }
     }
   },
@@ -275,6 +303,8 @@ export default {
       duplicateDonorId: null,
 
       departmentListShown: false,
+      timeout:null,
+      phoneDuplicateCheckLoader: false,
     }
   },
 
@@ -313,7 +343,6 @@ export default {
   },
   methods: {
     ...mapActions('halladmin', ['saveDonor']),
-
 
     async createDonorClicked() {
       await this.$v.$touch();
