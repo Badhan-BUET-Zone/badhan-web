@@ -13,10 +13,14 @@ import VueClipboard from 'vue-clipboard2'
 import Mixins from '@/mixins/index';
 import vuetify from './plugins/vuetify';
 
+import filters from "./mixins/filters";
+
 Vue.use(VueClipboard);
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
+Vue.filter('getHallName',filters.getHallName);
 
 Vue.config.errorHandler = (err, vm, info) => {
   // err: error trace

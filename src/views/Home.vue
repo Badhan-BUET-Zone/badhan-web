@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageTitle :title="$route.meta.title"></PageTitle>
+<!--    <PageTitle :title="$route.meta.title"></PageTitle>-->
     <v-fab-transition >
       <v-btn
           v-scroll="onScroll"

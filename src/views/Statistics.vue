@@ -16,105 +16,25 @@
       </v-card-text>
     </v-card>
     <v-card class="mt-4 rounded-xl">
-      <v-card-title>Activity Logs of Badhan BUET Zone</v-card-title>
-      <v-row>
-        <v-col cols="12" sm="5">
-          <v-btn class="ma-2" color="primary" rounded @click="showLogs">Show Logs</v-btn>
-      <v-progress-circular
-          v-if="getLogsLoaderFlag"
-          indeterminate
-          color="primary"
-          class="ma-4"
-      ></v-progress-circular>
-      <v-card-text v-else-if="logsShown">
-        <v-row class="fill-height">
-          <v-col>
-            <v-sheet height="64">
-              <v-toolbar
-                  flat
-              >
-
-                <v-btn
-                    fab
-                    text
-                    small
-                    color="grey darken-2"
-                    @click="prev"
-                >
-                  <v-icon small>
-                    mdi-chevron-left
-                  </v-icon>
-                </v-btn>
-                <v-btn
-                    fab
-                    text
-                    small
-                    color="grey darken-2"
-                    @click="next"
-                >
-                  <v-icon small>
-                    mdi-chevron-right
-                  </v-icon>
-                </v-btn>
-                <v-toolbar-title v-if="$refs.calendar">
-                  {{ $refs.calendar.title }}
-                </v-toolbar-title>
-
-              </v-toolbar>
-            </v-sheet>
-            <v-sheet height="500">
-              <v-calendar
-                  ref="calendar"
-                  v-model="focus"
-                  color="primary"
-                  :event-color="getEventColor"
-                  :type="'month'"
-                  @click:date="viewDay"
-              >
-                <template v-slot:day="{ past, date }">
-                  <v-chip class="mx-auto" style="width: 100%">
-                    {{getCountOfLogsOfDate(date)}}
-                  </v-chip>
-
-                </template>
-              </v-calendar>
-
-            </v-sheet>
+      <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
+      <v-card-text v-if="logCountLoader">
+        <v-row>
+          <v-col cols="12" sm="4" v-for="i in 3" :key="i">
+            <v-skeleton-loader type="card"></v-skeleton-loader>
           </v-col>
         </v-row>
       </v-card-text>
-        </v-col>
-
-          <v-col cols="12" sm="7">
-      <v-card-text v-if="selectedDate===null">
-        Please choose a date to see the logs
-      </v-card-text>
-      <div v-else>
-        <v-card-title>Logs of {{ selectedDate.toDateString() }}</v-card-title>
-        <v-data-table
-            dense
-            :headers="headers"
-            :items="getLogsByDate"
-            :items-per-page="10"
-            class="elevation-1 mt-2"
-            sort-by="date"
-            sort-desc
-        >
-          <template v-slot:item.details="{ item }">
-            <LogObject :object="item.details"></LogObject>
-          </template>
-          <template v-slot:item.date="{ item }">
-            {{ new Date(item.date).toLocaleString() }}
-          </template>
-          <template v-slot:item.donorId.hall="{ item }">
-            {{ halls[item.donorId.hall] }}
-          </template>
-        </v-data-table>
-      </div>
+      <v-card-text v-else>
+        <v-row>
+          <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
+            <DateLog :log-count="logCount"></DateLog>
           </v-col>
-      </v-row>
+        </v-row>
+      </v-card-text>
+
       <v-card-actions>
-        <v-btn v-if="logsShown" class="mt-2" color="error" rounded :disabled="getLogDeleteFLag" :loading="getLogDeleteFLag"
+        <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag"
+               :loading="getLogDeleteFLag"
                @click="removeAllLogsClicked">
           <v-icon left>
             mdi-delete
@@ -156,10 +76,12 @@ import PageTitle from "@/components/PageTitle";
 import {mapActions, mapGetters} from "vuex";
 import LogObject from "../components/Statistics/LogObject";
 import {halls} from "../mixins/constants";
+import {badhanAxios} from "../api";
+import DateLog from "../components/Statistics/DateLog";
 
 export default {
   name: "Statistics",
-  components: {PageTitle, LogObject},
+  components: {PageTitle, LogObject,DateLog},
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),
@@ -177,8 +99,8 @@ export default {
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions('statistics', ['fetchStatistics', 'fetchLogs', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
-    getCountOfLogsOfDate(date){
-      return this.getLogs.filter((log)=>{
+    getCountOfLogsOfDate(date) {
+      return this.getLogs.filter((log) => {
         return new Date(log.date).toDateString() === new Date(date).toDateString();
       }).length
     },
@@ -226,16 +148,15 @@ export default {
       return Math.floor((b - a + 1) * Math.random()) + a
     },
 
-    async showStats(){
+    async showStats() {
       this.fetchStatistics();
       this.statsShown = true;
     },
-    async showLogs(){
+    async showLogs() {
       await this.fetchLogs();
       this.updateRange();
-      this.logsShown = true;
     },
-    async showVolunteers(){
+    async showVolunteers() {
 
       await this.fetchAllVolunteers();
       this.volunteersShown = true;
@@ -247,6 +168,17 @@ export default {
       this.$router.push({name: 'NotFound'});
       return;
     }
+
+    try{
+      this.logCountLoader = true;
+      let logCountPerDayResult = await badhanAxios.get('/log');
+      this.logCountPerDay = logCountPerDayResult.data.logs;
+    }catch (e) {
+
+    }finally {
+      this.logCountLoader = false;
+    }
+
   },
   data() {
     return {
@@ -273,6 +205,9 @@ export default {
       statsShown: false,
       logsShown: false,
       volunteersShown: false,
+
+      logCountLoader: false,
+      logCountPerDay: [],
 
     }
   },
