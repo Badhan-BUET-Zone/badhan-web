@@ -7,7 +7,12 @@
                     :error-messages="nameErrors"></v-text-field>
       <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-      <!--      {{$v.studentId}}-->
+      <v-btn small class="mb-2" color="primary" rounded @click="goToDuplicateProfile" v-if="duplicateDonorId!==null && !isNative">
+        <v-icon left>
+          mdi-content-duplicate
+        </v-icon>
+        See Duplicate
+      </v-btn>
       <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"
@@ -94,14 +99,6 @@
         Create
       </v-btn>
     </v-card-actions>
-    <v-card-actions v-if="duplicateDonorId!==null && !isNative">
-      <v-btn small color="primary" rounded @click="goToDuplicateProfile">
-        <v-icon left>
-          mdi-content-duplicate
-        </v-icon>
-        See Duplicate
-      </v-btn>
-    </v-card-actions>
 
     <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{ warning }}</v-alert>
   </v-card>
@@ -133,9 +130,14 @@ export default {
           if(!phone || phone.length!==11 || isNaN(parseInt(phone)))return true;
 
           this.phoneDuplicateCheckLoader = true;
+          this.duplicateDonorId = null;
+          this.duplicateDonorMessage = "Checking phone..."
           return badhanAxios.get('/donors/checkDuplicate',{params: {phone: '88'+phone}})
           .then((res)=>{
             this.phoneDuplicateCheckLoader = false;
+            this.duplicateDonorId = res.data.donor?res.data.donor._id:null;
+            this.duplicateDonorMessage = res.data.message;
+            // console.log(res.data.donor._id);
             return !res.data.found;
           })
           .catch((e)=>{
@@ -221,7 +223,7 @@ export default {
       !this.$v.phone.maxLength && errors.push('Phone must be 11 digits long')
       !this.$v.phone.required && errors.push('Phone is required')
       !this.$v.phone.numeric && errors.push('Phone must be numeric')
-      !this.$v.phone.uniqueCheck && errors.push('Phone number already exists in database')
+      !this.$v.phone.uniqueCheck && errors.push(this.duplicateDonorMessage)
       return errors
     },
     nameErrors() {
@@ -305,6 +307,7 @@ export default {
       departmentListShown: false,
       timeout:null,
       phoneDuplicateCheckLoader: false,
+      duplicateDonorMessage: ""
     }
   },
 
