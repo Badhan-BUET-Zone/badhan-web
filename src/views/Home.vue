@@ -176,13 +176,10 @@
                 class="pa-2"
                 type="text"
             ></v-skeleton-loader>
-            <v-skeleton-loader
-                height="100px"
-                class="pa-2"
+            <SkeletonPersonCard
                 v-for="i in 5"
                 :key="i"
-                type="image"
-            ></v-skeleton-loader>
+            ></SkeletonPersonCard>
           </div>
 
           <div style="height: fit-content">
@@ -291,6 +288,7 @@ import {mapActions, mapGetters, mapMutations} from "vuex";
 import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
+import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
 
 export default {
   name: "ActiveSearch",
@@ -338,7 +336,8 @@ export default {
     PageTitle,
     "person-card": PersonCard,
     "json-excel": JsonExcel,
-    HelpTooltip
+    HelpTooltip,
+    SkeletonPersonCard
   },
   data: function () {
     return {
