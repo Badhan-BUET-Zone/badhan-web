@@ -390,7 +390,7 @@ export default {
     this.hall = query.hall ? query.hall : halls[this.$store.getters.getHall];
     this.availability = query.availability !== "false";
     this.notAvailability = query.notAvailability === "true";
-    this.radios = query.radios==="AvailableToAll"?"AvailableToAll":"SpecifyHall";
+    this.radios = query.radios==="SpecifyHall"?"SpecifyHall":"AvailableToAll";
 
     if (Object.keys(this.$route.query).length === 8) {
       this.searchClicked();
