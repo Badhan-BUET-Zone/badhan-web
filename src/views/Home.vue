@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-aos="fade-right">
 <!--    <PageTitle :title="$route.meta.title"></PageTitle>-->
     <v-fab-transition >
       <v-btn

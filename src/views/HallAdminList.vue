@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div data-aos="fade-right">
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
       <table class="table table-hover" v-if="getHallAdminsLoaderFlag">
