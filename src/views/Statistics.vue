@@ -2,17 +2,20 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-btn class="ma-2" color="primary" rounded @click="showStats">Show Stats</v-btn>
-    <v-card max-width="500" class="pa-2 rounded-xl" v-if="getStatisticsLoaderFlag">
-      <v-progress-circular
-          indeterminate
-          color="primary"
-      ></v-progress-circular>
-    </v-card>
-    <v-card v-if="getStatistics!==null" max-width="500" class="pa-2 rounded-xl">
+
+    <v-card v-if="getStatisticsLoaderFlag" max-width="200" class="pa-2 rounded-xl">
       <v-card-text>
-        <p><b>Number of donors: </b>{{ getStatistics.donorCount }}</p>
-        <p><b>Number of donations: </b>{{ getStatistics.donationCount }}</p>
-        <p><b>Number of volunteers: </b>{{ getStatistics.volunteerCount }}</p>
+        <p><b>Number of donors: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
+        <p><b>Number of donations: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
+        <p><b>Number of volunteers: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
+      </v-card-text>
+    </v-card>
+
+    <v-card v-if="getStatistics!==null" max-width="200" class="pa-2 rounded-xl">
+      <v-card-text>
+        <p><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
+        <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
+        <p><b>Number of volunteers: </b><br>{{ getStatistics.volunteerCount }}</p>
       </v-card-text>
     </v-card>
     <v-card class="mt-4 rounded-xl">

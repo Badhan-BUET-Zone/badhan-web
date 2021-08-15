@@ -2,11 +2,20 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
-        <v-progress-circular
-            v-if="getHallAdminsLoaderFlag"
-            indeterminate
-            color="primary"
-        ></v-progress-circular>
+      <table class="table table-hover" v-if="getHallAdminsLoaderFlag">
+        <thead>
+        <tr>
+          <th scope="col">Hall Name</th>
+          <th scope="col">Hall Admin</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="index in 3" :key="index">
+          <th scope="row"><v-skeleton-loader type="text"></v-skeleton-loader></th>
+          <td><v-skeleton-loader type="text"></v-skeleton-loader></td>
+        </tr>
+        </tbody>
+      </table>
         <table class="table table-hover" v-if="getHallAdmins!==null && !getHallAdminsLoaderFlag">
             <thead>
             <tr>

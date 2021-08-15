@@ -48,6 +48,7 @@
                         label="Phone"
                         class="input-group--focused"
                         dense
+                        :hint="'Enter your 11 digit phone number'"
                         v-model="phone"
                         @blur="$v.phone.$touch()"
                         :error-messages="phoneErrors"
@@ -58,15 +59,13 @@
                         label="Password"
                         class="input-group--focused"
                         dense
-                        :append-icon="
-                            passwordFlag ? 'mdi-eye' : 'mdi-eye-off'
-                          "
+                        :append-icon="passwordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="passwordFlag ? 'text' : 'password'"
                         v-model="password"
                         @click:append="passwordFlag = !passwordFlag"
-                        dense
                         @blur="$v.password.$touch()"
                         :error-messages="passwordErrors"
+                        :hint="'Enter your password'"
                     ></v-text-field>
 <!--                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>-->
                     <v-btn
@@ -195,7 +194,8 @@ export default {
       maxLength: maxLength(11)
     },
     password: {
-      required
+      required,
+      minLength: minLength(4),
     }
   },
   watch: {
@@ -220,7 +220,8 @@ export default {
     passwordErrors(){
       const errors = []
       if (!this.$v.password.$dirty) return errors
-      !this.$v.password.required && errors.push('Password is required.')
+      !this.$v.password.required && errors.push('Password is required.')//minLength
+      !this.$v.password.minLength && errors.push('Password is must be more than 3 characters')
       return errors
     }
 

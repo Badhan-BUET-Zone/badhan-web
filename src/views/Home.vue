@@ -65,6 +65,7 @@
                 <v-text-field
                     rounded
                     v-model="name"
+                    :hint="'Search any donor by name'"
                     outlined
                     label="Name of Donor"
                     clearable
