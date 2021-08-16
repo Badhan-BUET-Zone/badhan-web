@@ -1,3 +1,5 @@
+import {store} from "../store/store";
+
 export default {
     methods: {
         $isMobile(){
@@ -12,6 +14,9 @@ export default {
         },
         $isDevelopmentEnv(){
             return process.env.NODE_ENV==='development'
+        },
+        $isMe(id){
+            return store.getters.getID === id;
         }
     }
 }

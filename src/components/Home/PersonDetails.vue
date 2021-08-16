@@ -24,23 +24,6 @@
         </v-btn>
         <v-toolbar-title> Person Details</v-toolbar-title>
         <v-spacer></v-spacer>
-
-        <!--        <v-menu-->
-        <!--            right :close-on-content-click="false"-->
-        <!--            offset-x-->
-        <!--        >-->
-        <!--          <template v-slot:activator="{ on, attrs }">-->
-        <!--            <v-btn-->
-        <!--                icon-->
-        <!--                v-bind="attrs"-->
-        <!--                v-on="on"-->
-        <!--            >-->
-        <!--              <v-icon>mdi-dots-vertical</v-icon>-->
-        <!--            </v-btn>-->
-        <!--          </template>-->
-
-        <!--          <v-list>-->
-        <!--            <v-list-item>-->
         <v-tooltip
             v-model="showTooltip"
             bottom
@@ -55,9 +38,6 @@
           </template>
           <span>Donor link copied to clipboard</span>
         </v-tooltip>
-        <!--            </v-list-item>-->
-        <!--          </v-list>-->
-        <!--        </v-menu>-->
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
@@ -71,78 +51,48 @@
           <v-chip class="ma-1" color="secondary">{{ donationCount }} Donations</v-chip>
           <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="ma-1" v-else color="success">Available</v-chip>
-
-          <!--          <v-chip v-if="getCallRecordsLoader" class="ma-1" color="secondary">Last called: Loading...</v-chip>-->
-          <!--          <v-chip v-else class="ma-1" color="secondary">Last called: {{getLastCallRecordDate===0?'Unknown':new Date(getLastCallRecordDate).toLocaleString()}}</v-chip>-->
-
           <br>
-          <!--          <v-btn small rounded color="secondary" class="ma-1" @click="callFromDialer" :disabled="getNewCallRecordLoaderFlag" :loading="getNewCallRecordLoaderFlag">-->
-          <!--            <v-icon left>-->
-          <!--              mdi-phone-->
-          <!--            </v-icon>-->
-          <!--            Call Now-->
-          <!--          </v-btn>-->
-
-          <!--          <v-tooltip-->
-          <!--              v-model="showTooltip"-->
-          <!--              top-->
-          <!--          >-->
-          <!--            <template v-slot:activator="{ on, attrs }">-->
-          <!--              <v-btn small color="secondary" rounded class="ma-1" v-bind="attrs"-->
-          <!--                     @click="shareClicked">-->
-          <!--                <v-icon left>-->
-          <!--                  mdi-share-->
-          <!--                </v-icon>-->
-          <!--                Share-->
-          <!--              </v-btn>-->
-          <!--            </template>-->
-          <!--            <span>Copied to clipboard</span>-->
-          <!--          </v-tooltip>-->
-
-
           <div class="row" v-if="!getLoadingFlag">
             <div class="col-lg-8 col-md-12 col-sm-12" id="firstColumn">
-
-
-              <v-switch
-                  v-if="getDesignation === 3 ||getPhone == oldPhone ||(getHall === halls.indexOf(hall) &&getDesignation > designation) ||halls.indexOf(hall) === 7 ||halls.indexOf(hall) === 8"
-                  v-model="enableEditing" inset :label="'Toggle to edit details'"></v-switch>
-
               <v-card>
                 <v-card-title>
-                  <v-btn rounded
-                         @click="personDetailCollapseFlag = !personDetailCollapseFlag">Person Details
+                  <v-btn rounded @click="personDetailCollapseFlag = !personDetailCollapseFlag">
+                    Person Details
                   </v-btn>
+                  <HelpTooltip>
+                    <div style="max-width: 200px">
+                      You can only edit donors of your own hall, editing donors of other halls is restricted.<br>You can still view details, update comments and manage donations of a donor of other halls if that donor is marked as public data.
+                    </div>
+                  </HelpTooltip>
 
                 </v-card-title>
 
-
                 <v-card-text v-if="personDetailCollapseFlag">
 
-                  <div v-on:click="promptForEdit($event)">
+                  <div>
                     <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
-                                  :disabled="!enableEditing" @blur="$v.name.$touch()"
+                                  :disabled="!isDetailsEditable" @blur="$v.name.$touch()"
                                   :error-messages="nameErrors"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
-                                  :disabled="!enableEditing" @blur="$v.phone.$touch()"
+                                  :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                   :error-messages="phoneErrors"></v-text-field>
                     <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
-                              :disabled="!enableEditing"></v-select>
+                              :disabled="!isDetailsEditable"></v-select>
                     <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
-                                  :disabled="!enableEditing" @blur="$v.studentId.$touch()"
+                                  :disabled="!isDetailsEditable" @blur="$v.studentId.$touch()"
                                   :error-messages="studentIdErrors"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
-                                  :disabled="!enableEditing"></v-text-field>
+                                  :disabled="!isDetailsEditable"></v-text-field>
                     <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
-                                  :disabled="!enableEditing"></v-text-field>
+                                  :disabled="!isDetailsEditable"></v-text-field>
                     <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
-                              :disabled="!enableEditing || designation === 2 || designation === 1"></v-select>
-                    <v-checkbox :disabled="!enableEditing || halls.indexOf(hall)===8" v-model="availableToAll" dense
+                              :disabled="!isDetailsEditable || designation === 2 || designation === 1"></v-select>
+                    <v-checkbox :disabled="!isDetailsEditable || halls.indexOf(hall)===8" v-model="availableToAll" dense
                                 label="Public Data"></v-checkbox>
 
-                    <div v-if="getDesignation > designation ||getPhone == oldPhone">
+                    <div v-if="getDesignation > designation || $isMe(_id)">
                       <v-btn color="primary" rounded class="white--text ml-2"
-                             :disabled="getDetailsLoaderFlag || !enableEditing || $v.name.$error || $v.phone.$error || $v.studentId.$error"
+                             :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error"
                              :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
                         <v-icon left>
                           mdi-content-save
@@ -168,7 +118,7 @@
                 </v-card-text>
               </v-card>
 
-              <v-card v-if="getDesignation > designation ||getPhone== oldPhone">
+              <v-card v-if="getDesignation > designation ||$isMe(_id)">
                 <v-card-title>
                   <v-btn rounded
                          @click="settingsCollapseFlag = !settingsCollapseFlag">
@@ -176,31 +126,31 @@
                   </v-btn>
                 </v-card-title>
                 <v-card-text v-if="settingsCollapseFlag">
-                  <div v-on:click="promptForEdit($event)">
-                    <div v-if="getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8">
+                  <div>
+                    <div v-if="getDesignation > 1 && designation === 0 &&hall !== 8">
                       <label>Promote this member to volunteer</label>
                     </div>
                     <div
-                        v-if="(designation !== 0 || getPhone == oldPhone) || (getDesignation > 1 && designation == 0 &&hall !== 7 &&hall !== 8)">
+                        v-if="(designation !== 0 || $isMe(_id)) || (getDesignation > 1 && designation === 0 &&hall !== 7 &&hall !== 8)">
                       <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="newPasswordFlag ? 'text' : 'password'" outlined
                                     label="New Password" v-model="newPassword"
                                     class="input-group--focused"
                                     @click:append="newPasswordFlag = !newPasswordFlag"
-                                    :disabled="!enableEditing"
+                                    :disabled="!isDetailsEditable"
                                     @blur="$v.newPassword.$touch()"
                                     :error-messages="newPasswordErrors"></v-text-field>
                       <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="confirmPasswordFlag ? 'text' : 'password'" outlined
                                     label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
                                     @click:append="confirmPasswordFlag = !confirmPasswordFlag"
-                                    :disabled="!enableEditing"
+                                    :disabled="!isDetailsEditable"
                                     @blur="$v.confirmPassword.$touch()"
                                     :error-messages="confirmPasswordErrors"></v-text-field>
                     </div>
 
                     <div
-                        v-if="getPhone === oldPhone || getDesignation > 1 ||(getDesignation === 1 && getPhone == oldPhone)">
+                        v-if="$isMe(_id) || getDesignation > 1 ||(getDesignation === 1 && $isMe(_id))">
                       <v-btn color="secondary" style="text-decoration: none" to="/home" rounded>
                         <v-icon left>
                           mdi-window-close
@@ -208,7 +158,7 @@
                         Cancel
                       </v-btn>
                       <v-btn color="primary" class="white--text ml-2" rounded
-                             :disabled="!enableEditing ||getPasswordLoader||getPromoteFlag || $v.newPassword.$error || $v.confirmPassword.$error"
+                             :disabled="!isDetailsEditable ||getPasswordLoader||getPromoteFlag || $v.newPassword.$error || $v.confirmPassword.$error"
                              :loading="getPasswordLoader ||getPromoteFlag"
                              @click="saveSettingsClicked()">
                         <v-icon left>
@@ -217,8 +167,8 @@
                         Save
                       </v-btn>
                     </div>
-                    <v-btn v-if="designation == 1 && getPhone!== oldPhone" rounded color="red"
-                           :disabled="!enableEditing || getPromoteFlag" :loading="getPromoteFlag"
+                    <v-btn v-if="designation == 1 && $isMe(_id)" rounded color="red"
+                           :disabled="!isDetailsEditable || getPromoteFlag" :loading="getPromoteFlag"
                            class="mt-2 white--text" @click="demote()">
                       <v-icon left dark>mdi-arrow-down</v-icon>
                       Demote to donor
@@ -228,7 +178,7 @@
                   <div
                       v-if="(getID!==$route.query.id) && (getDesignation===3|| (designation < getDesignation && (halls.indexOf(hall)===getHall || halls.indexOf(hall)>6)))">
                     <v-btn class="mt-2" @click="deleteDonorClicked" rounded color="error"
-                           :disabled="getDeleteLoaderFlag || !enableEditing"
+                           :disabled="getDeleteLoaderFlag || !isDetailsEditable"
                            :loading="getDeleteLoaderFlag">
                       <v-icon left dark>mdi-delete</v-icon>
                       Delete this person
@@ -236,7 +186,7 @@
                   </div>
                   <div v-if="getDesignation===3 && designation===1">
                     <v-btn rounded color="primary"
-                           :disabled="getChangeAdminLoaderFlag || !enableEditing"
+                           :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
                            :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
                       <v-icon left dark>mdi-arrow-up</v-icon>
                       Promote to Hall admin
@@ -343,6 +293,8 @@
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <v-toolbar-title> Person Details</v-toolbar-title>
+
+
       </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>No donor found</v-card-title>
@@ -397,7 +349,6 @@ export default {
       showHistory: false,
 
       //spinner controller flags
-      enableEditing: false,
 
       //vuetify modal
       dialog: false,
@@ -460,6 +411,11 @@ export default {
     ...mapGetters('donation', ['getDonationList']),
     ...mapGetters('donate', ['getDonationLoaderFlag']),
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
+
+    isDetailsEditable(){
+      return this.getDesignation === 3 || this.$isMe(this._id) ||(this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation) || halls.indexOf(this.hall) === 8
+    },
+
     phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -585,7 +541,6 @@ export default {
     },
     hideDetails() {
       this.showHistory = false;
-      this.enableEditing = false;
     },
     async saveCommentClicked() {
       let comment = this.comment;
@@ -699,11 +654,6 @@ export default {
       };
       await this.saveUserDetails(sendData);
     },
-    promptForEdit(event) {
-      if (!this.enableEditing) {
-        this.notifyInfo("Please enable toggle to edit ");
-      }
-    },
     async donateClicked() {
       let success = await this.donate({
         donorId: this.$route.query.id,
@@ -747,6 +697,7 @@ export default {
     this.bloodGroup = bloodGroups[profile.bloodGroup];
     this.hall = halls[profile.hall];
     this.room = profile.roomNumber;
+    this.address = profile.address;
     this.address = profile.address;
     this.comment = profile.comment;
     this.designation = profile.designation;

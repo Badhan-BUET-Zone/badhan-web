@@ -1,5 +1,5 @@
 <template>
-  <div data-aos="fade-right">
+  <div>
 <!--    <PageTitle :title="$route.meta.title"></PageTitle>-->
     <v-fab-transition >
       <v-btn
@@ -21,6 +21,7 @@
         <v-col cols="12" sm="4">
           <div
               style="height: fit-content"
+              data-aos="fade-right"
           >
             <div class="ml-5">
               <v-row>

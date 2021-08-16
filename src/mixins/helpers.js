@@ -4,5 +4,4 @@ export const processError = (error)=>{
     }else{
         return "Unknown error occured";
     }
-
 }
