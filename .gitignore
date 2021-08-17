@@ -23,12 +23,6 @@ pnpm-debug.log*
 *.sw?
 
 android
-backup
-src/App.vue
 .firebase
-package.json
 package-lock.json
 signature.jks
-upload.sh
-capacitor.config.json
-src/plugins/android_support.js

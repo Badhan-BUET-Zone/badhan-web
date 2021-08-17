@@ -1,0 +1,14 @@
+{
+  "appId": "com.mmmbadhan",
+  "appName": "Badhan",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "linuxAndroidStudioPath":"/home/mahathir/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/201.7042882/bin/studio.sh",
+  "cordova": {}
+}
