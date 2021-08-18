@@ -11,8 +11,10 @@
         </v-card-text>
       </v-card>
       <FrontendErrors v-for="(error, index) in getErrors" :key="index" :error="error"></FrontendErrors>
-
+      {{ getConsoleLogs }}
       <v-btn @click="fileWrite">Save File</v-btn>
+
+      <v-btn @click="fileDownloadWeb">Download in web</v-btn>
 
     </v-card>
   </div>
@@ -25,6 +27,7 @@ import PageTitle from "../components/PageTitle";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import FrontendErrors from "../components/DevConsole/FrontendErrors";
+import { saveAs } from 'file-saver';
 
 import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
 
@@ -35,6 +38,7 @@ export default {
   computed: {
     ...mapGetters('errorStore', ['getErrors']),
     ...mapGetters(['getDesignation']),
+    ...mapGetters('consoleStore', ['getConsoleLogs']),
   },
   components: {
     PageTitle,
@@ -43,25 +47,8 @@ export default {
   },
   methods: {
     ...mapMutations('errorStore', ['addError',]),
-    b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-      const byteCharacters = atob(b64Data);
-      const byteArrays = [];
+    ...mapMutations('consoleStore', ['addConsoleLog']),
 
-      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-      }
-
-      const blob = new Blob(byteArrays, {type: contentType});
-      return blob;
-    },
     async fileWrite() {
       try {
         const result = await Filesystem.writeFile({
@@ -71,11 +58,15 @@ export default {
           encoding: FilesystemEncoding.UTF8
         })
         console.log('Wrote file', result);
+        this.addConsoleLog(result)
 
-        // window.open(result.uri, '_blank');
       } catch (e) {
         console.error('Unable to write file', e);
       }
+    },
+    async fileDownloadWeb(){
+      let blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "hello world.txt");
     }
   },
   async mounted() {

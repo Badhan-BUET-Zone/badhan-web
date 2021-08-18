@@ -13,7 +13,7 @@ import notification from "./notification";
 import release from "@/store/release";
 import statistics from "@/store/statistics";
 import errorStore from "./errorStore";
-
+import consoleStore from "./consoleStore";
 
 export const store = new Vuex.Store({
 
@@ -45,7 +45,8 @@ export const store = new Vuex.Store({
     notification,
     release,
     statistics,
-    errorStore
+    errorStore,
+    consoleStore
   }
 });
 
