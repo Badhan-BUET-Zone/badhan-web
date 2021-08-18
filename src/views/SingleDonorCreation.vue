@@ -1,5 +1,5 @@
 <template>
-  <div data-aos="fade-right">
+  <div>
     <PageTitle class="mb-3" :title="$route.meta.title"></PageTitle>
     <span class="ma-5 h5">Donor Information</span>
     <HelpTooltip>

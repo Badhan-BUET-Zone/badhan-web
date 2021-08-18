@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="'donorCreation'">
     <PageTitle :title="$route.meta.title"></PageTitle>
 
     <v-btn to="/singleDonorCreation" class="ma-3" color="secondary" style="text-decoration: none" text>

@@ -11,11 +11,9 @@
           <v-progress-circular indeterminate></v-progress-circular>
           Loading
         </v-toolbar-title>
-
-
       </v-app-bar>
-
     </v-card>
+
     <v-card v-else-if="dataLoaded"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
       <v-app-bar color="primary" dark>

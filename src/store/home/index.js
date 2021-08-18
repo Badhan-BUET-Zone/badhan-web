@@ -92,6 +92,12 @@ const mutations = {
     hideSearchResults(state) {
         state.searchResultShown = false;
     },
+    resetSearchResults(state){
+        state.personGroups= {};
+        state.persons=[];
+        state.searchResultShown = false;
+    },
+
     setPersonGroups(state, payload) {
         state.personGroups=[];
         state.numOfDonor = payload.length;

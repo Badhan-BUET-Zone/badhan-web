@@ -2,7 +2,9 @@
     <v-app id="app" app>
         <app-bar v-if="getIsLoggedIn"></app-bar>
         <v-main>
+          <transition name="slide-fade" mode="out-in">
             <router-view app class="container" ></router-view>
+          </transition>
         </v-main>
         <SignInDialog v-if="getSignInLoaderFlag"></SignInDialog>
         <Notification></Notification>
@@ -108,13 +110,41 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
 }
-v-btn {
-    text-decoration: none;
-}
-
 .required label::after {
   content: " *";
 }
 
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+.slide-fade-down-enter-active {
+  transition: all .1s ease;
+}
+.slide-fade-down-leave-active {
+  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+/*.slide-fade-down-leave-to {*/
+/*  transform: translateY(-40px);*/
+/*  opacity: 0;*/
+/*}*/
+/*.slide-fade-down-enter {*/
+/*  transform: translateY(40px);*/
+/*  opacity: 0;*/
+/*}*/
+.slide-fade-down-enter, .slide-fade-down-leave-to {
+  transform: translateY(-40px);
+  opacity: 0;
+}
 
 </style>

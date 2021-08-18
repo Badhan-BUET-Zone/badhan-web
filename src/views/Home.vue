@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="'home'">
 <!--    <PageTitle :title="$route.meta.title"></PageTitle>-->
     <v-fab-transition >
       <v-btn
@@ -21,7 +21,6 @@
         <v-col cols="12" sm="4">
           <div
               style="height: fit-content"
-              data-aos="fade-right"
           >
             <div class="ml-5">
               <v-row>
@@ -44,23 +43,12 @@
                       </div>
                   </HelpTooltip>
                 </v-col>
-
-<!--                <v-col v-if="!$isLargeScreen()">-->
-<!--                  <v-btn color="secondary" small @click="toggleFilterClicked()" rounded>-->
-<!--                    <v-icon left>-->
-<!--                      mdi-filter-->
-<!--                    </v-icon>-->
-<!--                    <span v-if="!isFilterShown">Show Filters</span>-->
-<!--                    <span v-else>Hide Filters</span>-->
-<!--                  </v-btn>-->
-<!--                </v-col>-->
               </v-row>
             </div>
 
             <!--    Main Filters-->
 
             <v-form>
-<!--              <v-form v-if="isFilterShown || $isLargeScreen()">-->
               <v-container>
                 <!--        Input field for name-->
                 <v-text-field
@@ -172,7 +160,7 @@
           </div>
         </v-col>
         <v-col cols="12" sm="8" id="results">
-          <div v-if="isSearchLoading">
+          <div v-if="isSearchLoading" :key="'searchLoading'">
             <v-skeleton-loader
                 class="pa-2"
                 type="text"
@@ -182,18 +170,15 @@
                 :key="i"
             ></SkeletonPersonCard>
           </div>
-
-          <div style="height: fit-content">
-            <div v-if="isSearchResultShown">
+          <div style="height: fit-content" v-if="isSearchResultShown">
+            <div >
               <v-alert dense class="rounded-xl" color="accent lighten-4">
                 <div>
                   Found {{ getNumberOfDonors }} donors
                 </div>
-
               </v-alert>
             </div>
-
-            <div v-if="isSearchResultShown">
+            <div>
               <div>
                 <json-excel
                     v-if="!isNative"
@@ -396,10 +381,14 @@ export default {
       this.searchClicked();
     }
   },
+  beforeRouteLeave(to,from,next){
+    this.resetSearchResults();
+    next();
+  },
   methods: {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
-    ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter']),
+    ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     onScroll (e) {
       if (typeof window === 'undefined') return

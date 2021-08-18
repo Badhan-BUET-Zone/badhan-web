@@ -20,20 +20,25 @@
     </v-card>
     <v-card class="mt-4 rounded-xl">
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
+      <transition name="slide-fade-down">
       <v-card-text v-if="logCountLoader">
         <v-row>
           <v-col cols="12" sm="4" v-for="i in 3" :key="i">
-            <v-skeleton-loader type="card"></v-skeleton-loader>
+            <SkeletonDateLog></SkeletonDateLog>
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-text v-else>
+      </transition>
+      <transition name="slide-fade-down" >
+      <v-card-text v-if="!logCountLoader">
         <v-row>
           <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
             <DateLog :log-count="logCount"></DateLog>
           </v-col>
         </v-row>
       </v-card-text>
+      </transition>
+
 
       <v-card-actions>
         <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag"
@@ -81,10 +86,11 @@ import LogObject from "../components/Statistics/LogObject";
 import {halls} from "../mixins/constants";
 import {badhanAxios} from "../api";
 import DateLog from "../components/Statistics/DateLog";
+import SkeletonDateLog from "../components/Statistics/SkeletonDateLog";
 
 export default {
   name: "Statistics",
-  components: {PageTitle, LogObject,DateLog},
+  components: {PageTitle, LogObject,DateLog,SkeletonDateLog},
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),

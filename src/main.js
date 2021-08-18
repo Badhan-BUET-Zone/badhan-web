@@ -3,8 +3,8 @@ import App from './App.vue'
 
 import router from './router'
 import {store} from "./store/store";
-import AOS from 'aos'
-import 'aos/dist/aos.css'
+// import AOS from 'aos'
+// import 'aos/dist/aos.css'
 
 //Bootstrap
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -46,9 +46,9 @@ Vue.config.productionTip = false;
 export const eventBus = new Vue();
 
 new Vue({
-  created () {
-    AOS.init()
-  },
+  // created () {
+  //   AOS.init()
+  // },
   router,
   store,
   vuetify,

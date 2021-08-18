@@ -1,5 +1,5 @@
 <template>
-  <div data-aos="fade-right">
+  <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
       <v-simple-table v-if="getVolunteerLoader">
