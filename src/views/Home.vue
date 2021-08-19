@@ -377,6 +377,9 @@ export default {
       let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       try{
         await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
+        await this.$bvModal.msgBoxOk("CSV downloaded to Documents folder", {
+          centered:true
+        });
       }catch (e) {
         this.addError({name:"Download CSV Failure",message:"Count not save csv file to android storage",stack:e});
       }
