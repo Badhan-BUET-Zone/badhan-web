@@ -64,6 +64,9 @@ const mutations = {
     },
     clearChangeAdminSuccess(state){
         state.changeAdminSuccess = null;
+    },
+    clearHallAdmins(state){
+        state.hallAdmins=null;
     }
 
 };

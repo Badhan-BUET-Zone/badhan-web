@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-card v-if="getDonorLoaderFlag"
+    <transition name="slide-fade" mode="out-in">
+    <v-card v-if="getDonorLoaderFlag" :key="'donorLoading'"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 20vh;width: 100vw;overflow-y: scroll;"
             class="d-flex justify-center">
       <v-app-bar color="primary" dark>
@@ -14,7 +15,7 @@
       </v-app-bar>
     </v-card>
 
-    <v-card v-else-if="dataLoaded"
+    <v-card v-else-if="dataLoaded" :key="'donorLoaded'"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
       <v-app-bar color="primary" dark>
         <v-btn icon @click="$router.push('/home')">
@@ -64,7 +65,7 @@
                   </HelpTooltip>
 
                 </v-card-title>
-
+                <transition name="fade" mode="out-in">
                 <v-card-text v-if="personDetailCollapseFlag">
 
                   <div>
@@ -114,6 +115,7 @@
                     Save Comment
                   </v-btn>
                 </v-card-text>
+                </transition>
               </v-card>
 
               <v-card v-if="getDesignation > designation ||$isMe(_id)">
@@ -123,6 +125,7 @@
                     Settings
                   </v-btn>
                 </v-card-title>
+                <transition name="fade-snapout" mode="out-in">
                 <v-card-text v-if="settingsCollapseFlag">
                   <div>
                     <div v-if="getDesignation > 1 && designation === 0 &&hall !== 8">
@@ -191,6 +194,7 @@
                     </v-btn>
                   </div>
                 </v-card-text>
+                </transition>
               </v-card>
 
             </div>
@@ -284,7 +288,7 @@
         </v-card-text>
       </v-card>
     </v-card>
-    <v-card v-else
+    <v-card v-else-if="donorErrorHappened" :key="'donorError'"
             style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
       <v-app-bar color="primary" dark>
         <v-btn icon @click="$router.push('/home')">
@@ -298,6 +302,7 @@
         <v-card-title>No donor found</v-card-title>
       </v-card>
     </v-card>
+    </transition>
   </div>
 </template>
 
@@ -363,7 +368,9 @@ export default {
       menu: false,
 
       dataLoaded: false,
-      showTooltip: false
+      showTooltip: false,
+
+      donorErrorHappened: false,
     };
   },
   validations: {
@@ -678,12 +685,16 @@ export default {
     },
   },
   async mounted() {
+    this.donorErrorHappened = false;
     this.dataLoaded = false;
 
     let success = await this.getDetails(this.$route.query.id);
 
-    if (!success)
+    if (!success){
+      this.donorErrorHappened = true;
       return;
+    }
+
 
 
     let profile = this.getProfile;

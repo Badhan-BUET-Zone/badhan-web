@@ -71,8 +71,7 @@ const mutations={
     clearNewDonorMessage(state){
         state.newDonorError = null;
         state.newDonorSuccess = null;
-    }
-
+    },
 
 };
 const actions={

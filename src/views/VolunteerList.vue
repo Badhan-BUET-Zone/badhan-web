@@ -2,7 +2,8 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
-      <v-simple-table v-if="getVolunteerLoader">
+      <transition name="slide-fade-down" mode="out-in">
+      <v-simple-table v-if="getVolunteerLoader" :key="'volunteerLoading'">
         <template v-slot:default>
           <thead>
           <tr>
@@ -29,7 +30,7 @@
           </tbody>
         </template>
       </v-simple-table>
-      <v-simple-table v-if="getVolunteers.length!==0">
+      <v-simple-table v-if="getVolunteers.length!==0" :key="'volunteerLoaded'">
         <template v-slot:default>
           <thead>
           <tr>
@@ -56,13 +57,14 @@
           </tbody>
         </template>
       </v-simple-table>
+      </transition>
     </v-card>
   </div>
 </template>
 
 <script>
 import {bloodGroups, halls, departments} from "@/mixins/constants";
-import {mapGetters, mapActions} from "vuex";
+import {mapGetters, mapActions, mapMutations} from "vuex";
 import PageTitle from "../components/PageTitle";
 
 export default {
@@ -96,10 +98,15 @@ export default {
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions('halladmin', ['fetchVolunteers']),
+    ...mapMutations('halladmin',['clearVolunteers']),
   },
   mounted() {
     this.fetchVolunteers();
-  }
+  },
+  beforeRouteLeave(to,from,next){
+    this.clearVolunteers();
+    next();
+  },
 };
 </script>
 
