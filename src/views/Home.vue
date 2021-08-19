@@ -187,13 +187,22 @@
                   </v-icon>
                   Download From Web
                 </v-btn>
-                <v-btn @click="downloadInWeb" small
+                <v-btn @click="downloadInAndroid" small
+                       v-if="isNative"
                        color="secondary" rounded class="mb-4" style="width: 100%">
                   <v-icon left>
                     mdi-download
                   </v-icon>
                   Download Report
                 </v-btn>
+                <v-btn v-else @click="downloadInWeb" small
+                       color="secondary" rounded class="mb-4" style="width: 100%">
+                  <v-icon left>
+                    mdi-download
+                  </v-icon>
+                  Download Report
+                </v-btn>
+
                 <v-tooltip
                     v-model="showTooltip"
                     top
@@ -247,7 +256,7 @@ import {isGuestEnabled} from "../api";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
 import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
 import {convertObjectToCSV, textFileDownloadInWeb,processPersonsForReport} from "../mixins/helpers";
-
+import {downloadTextFile} from "../plugins/android_support";
 
 export default {
   name: "ActiveSearch",
@@ -362,12 +371,21 @@ export default {
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
+    ...mapMutations('errorStore', ['addError',]),
+    async downloadInAndroid(){
+      let processedPersons = processPersonsForReport(this.getPersons)
+      let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
+      try{
+        await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
+      }catch (e) {
+        this.addError({name:"Download CSV Failure",message:"Count not save csv file to android storage",stack:e});
+      }
+    },
     downloadInWeb(){
       // console.log(jsonToCSV(this.getPersons));
       let processedPersons = processPersonsForReport(this.getPersons)
       let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       textFileDownloadInWeb(csv,'badhan_'+this.getSearchedHall+'.csv');
-
     },
 
     onScroll (e) {
