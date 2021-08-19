@@ -202,7 +202,8 @@ export default {
       volunteerListHeaders: [
         {text: 'Name', value: 'name'},
         {text: 'Hall', value: 'hall'},
-        {text: 'Student ID', value: 'studentId'}
+        {text: 'Student ID', value: 'studentId'},
+        {text: 'Activity Count',value: 'logCount'}
       ],
 
       ////////////////////////////////////////////////////////////// CALENDER

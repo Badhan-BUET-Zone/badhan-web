@@ -180,13 +180,13 @@
             </div>
             <div>
               <div>
-                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small
-                       color="secondary" rounded class="mb-4" style="width: 100%">
-                  <v-icon left>
-                    mdi-web
-                  </v-icon>
-                  Download From Web
-                </v-btn>
+<!--                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small-->
+<!--                       color="secondary" rounded class="mb-4" style="width: 100%">-->
+<!--                  <v-icon left>-->
+<!--                    mdi-web-->
+<!--                  </v-icon>-->
+<!--                  Download From Web-->
+<!--                </v-btn>-->
                 <v-btn @click="downloadInAndroid" small
                        v-if="isNative"
                        color="secondary" rounded class="mb-4" style="width: 100%">
@@ -437,9 +437,6 @@ export default {
         inputAddress: inputAddress,
         availableToAll: this.radios === "AvailableToAll"
       });
-
-
-
     },
 
     shareClicked() {
@@ -467,29 +464,29 @@ export default {
       })
     },
 
-    async downloadInMobileClicked() {
-      let redirectionToken = await this.requestRedirectionToken();
-      let searchRouteData = this.$router.resolve({
-        name: 'Home',
-        query: {
-          name: this.name,
-          bloodGroup: this.bloodGroup,
-          batch: this.batch,
-          address: this.address,
-          hall: this.hall,
-          availability: this.availability,
-          notAvailability: this.notAvailability,
-          radios:this.radios,
-        }
-      });
-      let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
-      let routeData;
-      routeData = this.$router.resolve({
-        name: 'Redirection',
-        query: {token: redirectionToken, payload: redirectionURL}
-      });
-      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
-    },
+    // async downloadInMobileClicked() {
+    //   let redirectionToken = await this.requestRedirectionToken();
+    //   let searchRouteData = this.$router.resolve({
+    //     name: 'Home',
+    //     query: {
+    //       name: this.name,
+    //       bloodGroup: this.bloodGroup,
+    //       batch: this.batch,
+    //       address: this.address,
+    //       hall: this.hall,
+    //       availability: this.availability,
+    //       notAvailability: this.notAvailability,
+    //       radios:this.radios,
+    //     }
+    //   });
+    //   let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
+    //   let routeData;
+    //   routeData = this.$router.resolve({
+    //     name: 'Redirection',
+    //     query: {token: redirectionToken, payload: redirectionURL}
+    //   });
+    //   window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
+    // },
 
     clearFields() {
       this.$v.$reset();
