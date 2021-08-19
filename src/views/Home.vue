@@ -222,6 +222,7 @@
                   </v-icon>
                   Download From Web
                 </v-btn>
+                <v-btn @click="downloadInWeb">Download in web</v-btn>
                 <v-tooltip
                     v-model="showTooltip"
                     top
@@ -275,6 +276,8 @@ import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
 import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
+import {jsonToCSV, textFileDownloadInWeb} from "../mixins/helpers";
+
 
 export default {
   name: "ActiveSearch",
@@ -390,6 +393,12 @@ export default {
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
+    downloadInWeb(){
+      // console.log(jsonToCSV(this.getPersons));
+      textFileDownloadInWeb(jsonToCSV(this.getPersons),'badhan_'+this.getSearchedHall+'.csv');
+
+    },
+
     onScroll (e) {
       if (typeof window === 'undefined') return
       const top = window.pageYOffset ||   e.target.scrollTop || 0
