@@ -180,41 +180,6 @@
             </div>
             <div>
               <div>
-                <json-excel
-                    v-if="!isNative"
-                    :data="getPersons"
-                    type="csv"
-                    :name="'badhan_'+getSearchedHall+'.csv'"
-                    worksheet="Badhan"
-                    :fields="{
-                    name:'name',
-                    studentId:'studentId',
-                    lastDonation:{
-                        field: 'lastDonation',
-                        callback: (value) => {
-                            let date = new Date(value);
-                            return date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
-                        }
-                    },
-                    bloodGroup:{
-                        field: 'bloodGroup',
-                        callback: (value) => {
-                            return bloodGroups[parseInt(value)];
-                        },
-                    },
-                    address:'address',
-                    roomNumber: 'roomNumber',
-                    donationCount: 'donationCountOptimized'
-                }" ref="jsonDownload" :escapeCsv="false"
-
-                >
-                  <v-btn small color="secondary" rounded class="mb-4" style="width: 100%">
-                    <v-icon left>
-                      mdi-download
-                    </v-icon>
-                    Download Data
-                  </v-btn>
-                </json-excel>
                 <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small
                        color="secondary" rounded class="mb-4" style="width: 100%">
                   <v-icon left>
@@ -222,7 +187,13 @@
                   </v-icon>
                   Download From Web
                 </v-btn>
-                <v-btn @click="downloadInWeb">Download in web</v-btn>
+                <v-btn @click="downloadInWeb" small
+                       color="secondary" rounded class="mb-4" style="width: 100%">
+                  <v-icon left>
+                    mdi-download
+                  </v-icon>
+                  Download Report
+                </v-btn>
                 <v-tooltip
                     v-model="showTooltip"
                     top
@@ -268,7 +239,6 @@
 import PersonDetails from "@/components/Home/PersonDetails";
 import PageTitle from "@/components/PageTitle";
 import PersonCard from "@/components/Home/PersonCard";
-import JsonExcel from "vue-json-excel";
 import {isNative} from '@/plugins/android_support';
 import {bloodGroups, halls} from "@/mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
@@ -276,7 +246,7 @@ import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
 import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
-import {jsonToCSV, textFileDownloadInWeb} from "../mixins/helpers";
+import {convertObjectToCSV, textFileDownloadInWeb,processPersonsForReport} from "../mixins/helpers";
 
 
 export default {
@@ -324,7 +294,6 @@ export default {
     'person-details': PersonDetails,
     PageTitle,
     "person-card": PersonCard,
-    "json-excel": JsonExcel,
     HelpTooltip,
     SkeletonPersonCard
   },
@@ -395,7 +364,9 @@ export default {
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     downloadInWeb(){
       // console.log(jsonToCSV(this.getPersons));
-      textFileDownloadInWeb(jsonToCSV(this.getPersons),'badhan_'+this.getSearchedHall+'.csv');
+      let processedPersons = processPersonsForReport(this.getPersons)
+      let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
+      textFileDownloadInWeb(csv,'badhan_'+this.getSearchedHall+'.csv');
 
     },
 
