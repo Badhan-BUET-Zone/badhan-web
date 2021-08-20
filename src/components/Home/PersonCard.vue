@@ -54,7 +54,7 @@
     </v-card>
 
     <!--    Person card extension-->
-    <transition name="fade-snapout" mode="out-in">
+    <transition name="slide-fade-down-snapout" mode="out-in">
     <v-card color="grey lighten-3" class="mt-2" v-if="showExtensionFlag">
       <v-card-text>
         <v-row no-gutters>

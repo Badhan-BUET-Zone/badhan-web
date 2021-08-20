@@ -20,17 +20,15 @@
     </v-card>
     <v-card class="mt-4 rounded-xl">
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
-      <transition name="slide-fade-down">
-      <v-card-text v-if="logCountLoader">
+      <transition name="slide-fade-down" type="out-in">
+      <v-card-text v-if="logCountLoader" :key="'logLoader'">
         <v-row>
           <v-col cols="12" sm="4" v-for="i in 3" :key="i">
             <SkeletonDateLog></SkeletonDateLog>
           </v-col>
         </v-row>
       </v-card-text>
-      </transition>
-      <transition name="slide-fade-down" >
-      <v-card-text v-if="!logCountLoader">
+      <v-card-text v-else :key="'logLoaded'">
         <v-row>
           <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
             <DateLog :log-count="logCount"></DateLog>
@@ -38,7 +36,6 @@
         </v-row>
       </v-card-text>
       </transition>
-
 
       <v-card-actions>
         <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag"

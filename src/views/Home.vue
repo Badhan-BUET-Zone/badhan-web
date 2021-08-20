@@ -161,12 +161,34 @@
         </v-col>
         <v-col cols="12" sm="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
-            <v-skeleton-loader
-                class="pa-2"
-                type="text"
-            ></v-skeleton-loader>
+            <div>
+              <v-alert dense class="rounded-xl" color="grey lighten-3">
+                <div>
+                  <span class="grey--text">Found --- donors</span>
+                </div>
+              </v-alert>
+            </div>
+            <v-btn small
+                   color="secondary" disabled rounded class="mb-4" style="width: 100%">
+              <v-icon left>
+                mdi-download
+              </v-icon>
+              Download Report
+            </v-btn>
+            <v-btn small
+                   color="secondary" disabled rounded class="mb-4" style="width: 100%">
+              <v-icon left>
+                mdi-download
+              </v-icon>
+              Share Search Results
+            </v-btn>
+            <v-alert dense class="rounded-xl" color="grey lighten-4">
+              <div>
+                <span class="grey--text">Batch --:</span>
+              </div>
+            </v-alert>
             <SkeletonPersonCard
-                v-for="i in 5"
+                v-for="i in 4"
                 :key="i"
             ></SkeletonPersonCard>
           </div>
@@ -239,7 +261,9 @@
         </v-col>
         <!--        <person-details></person-details>-->
       </v-row>
+      <transition name="slide-fade" mode="out-in">
       <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>

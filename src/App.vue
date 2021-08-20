@@ -161,11 +161,18 @@ export default {
   transition: all .3s ease;
 }
 
-.fade-snapout-leave-active {
-  transition: all 0s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.fade-snapout-enter, .fade-snapout-leave-to {
+.fade-snapout-enter {
   opacity: 0;
 }
+
+.slide-fade-down-snapout-enter-active {
+  transition: all .3s ease;
+}
+
+.slide-fade-down-snapout-enter{
+  transform: translateY(-40px);
+  opacity: 0;
+}
+
 
 </style>
