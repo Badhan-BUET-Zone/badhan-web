@@ -142,7 +142,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item @click="myProfileclicked" style="text-decoration: none">
+          <v-list-item link to="/myProfile" style="text-decoration: none">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>

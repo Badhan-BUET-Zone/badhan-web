@@ -27,7 +27,7 @@ import {halls,designations} from "@/mixins/constants";
 
 export default {
 name: "CallRecordCard",
-  props:["callRecord","calleeId"],
+  props:["callRecord"],
   data:()=>{
     return{
       deleteLoaderFlag: false,
@@ -50,7 +50,7 @@ name: "CallRecordCard",
         return;
       }
       this.deleteLoaderFlag = true;
-      await this.deleteCallRecord({donorId: this.calleeId, callRecordId: this.callRecord._id});
+      await this.deleteCallRecord({donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id});
       this.deleteLoaderFlag = false;
     }
   },

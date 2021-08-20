@@ -4,6 +4,7 @@ import Home from "@/views/Home";
 
 import SignInCover from "@/views/SignInCover";
 import PersonDetails from "@/components/Home/PersonDetails";
+import Details from "../views/Home/Details";
 import {store} from "@/store/store";
 
 Vue.use(VueRouter)
@@ -32,13 +33,25 @@ const routes = [
             {
                 name: 'Details',
                 path: 'details',
-                component: PersonDetails,
+                // component: PersonDetails,
+                component: Details,
                 meta: {
                     requiresAuth: true,
                     designation: 1
                 }
             }
         ]
+    },
+    {
+        name: 'MyProfile',
+        path: '/myProfile',
+        // component: PersonDetails,
+        component: () => import('@/views/MyProfile.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'My Profile',
+            designation: 1,
+        },
     },
     {
         name: 'SignIn',
