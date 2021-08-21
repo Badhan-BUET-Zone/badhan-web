@@ -8,6 +8,7 @@ const state = {
     isLoggedIn: false,
     isGuest: false,
 
+    autoRedirectionPath: null,
 };
 
 const getters = {
@@ -29,11 +30,19 @@ const getters = {
     },
     getIsGuest: state=>{
         return state.isGuest;
-    }
+    },
+
+    getAutoRedirectionPath: state=>{
+        return state.autoRedirectionPath;
+    },
+
 };
 const mutations = {
-    autoLogin({getters, commit}) {
-
+    setAutoRedirectionPath (state,path){
+        state.autoRedirectionPath = path;
+    },
+    unsetAutoRedirectionPath(state){
+        state.autoRedirectionPath = null;
     },
 
     loadTokenFromLocalStorage(state) {

@@ -204,7 +204,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['getSignInLoaderFlag']),
+    ...mapGetters(['getSignInLoaderFlag','getAutoRedirectionPath']),
     isMobile() {
       return isNative();
     },
@@ -229,7 +229,7 @@ export default {
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['login','guestLogin']),
-    ...mapMutations(['clearSignInError']),
+    ...mapMutations(['clearSignInError','setAutoRedirectionPath','unsetAutoRedirectionPath']),
     async signInClicked() {
       await this.$v.$touch();
       if(this.$v.$anyError){
@@ -243,6 +243,11 @@ export default {
       });
 
       if (isSignInOk) {
+        if(this.getAutoRedirectionPath){
+          await this.$router.push(this.getAutoRedirectionPath);
+          this.unsetAutoRedirectionPath();
+          return;
+        }
         await this.$router.push("/home");
       }
     },

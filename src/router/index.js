@@ -180,6 +180,8 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
+        store.commit('setAutoRedirectionPath',to.fullPath);
+        // console.log(to.fullPath);
         next('/');
     } else if (store.getters.getIsLoggedIn && to.name == 'SignIn') {
         next('/home');

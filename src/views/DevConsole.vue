@@ -13,6 +13,8 @@
       <FrontendErrors v-for="(error, index) in getErrors" :key="index" :error="error"></FrontendErrors>
       {{ getConsoleLogs }}
 
+<!--      <v-btn @click="fileSelect">File select</v-btn>-->
+
     </v-card>
   </div>
 </template>
@@ -24,11 +26,6 @@ import PageTitle from "../components/PageTitle";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import FrontendErrors from "../components/DevConsole/FrontendErrors";
-import { saveAs } from 'file-saver';
-
-import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
-
-const {Filesystem} = Plugins;
 
 export default {
   name: "DevConsole",
@@ -45,6 +42,16 @@ export default {
   methods: {
     ...mapMutations('errorStore', ['addError',]),
     ...mapMutations('consoleStore', ['addConsoleLog']),
+    // async fileSelect() {
+    //   let multiple_selection = true;
+    //   let ext = ["*"];
+    //   ext = ext.map(v => v.toLowerCase());
+    //   let selectedFile = await FileSelector.fileSelector({
+    //     multiple_selection: multiple_selection,
+    //     ext: ext
+    //   });
+    //   this.addConsoleLog(selectedFile);
+    // }
   },
   async mounted() {
     if (this.getDesignation !== 3) {
