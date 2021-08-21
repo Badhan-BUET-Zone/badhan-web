@@ -187,4 +187,16 @@ router.beforeEach(async (to, from, next) => {
         next();
     }
 })
-export default router
+export default router;
+
+// export const authenticatedRedirectionToURL = async (to)=>{
+//       let redirectionToken = await store.dispatch('requestRedirectionToken');
+//       let searchRouteData = router.resolve(to);
+//       let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
+//       let routeData;
+//       routeData = router.resolve({
+//         name: 'Redirection',
+//         query: {token: redirectionToken, payload: redirectionURL}
+//       });
+//       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
+// }

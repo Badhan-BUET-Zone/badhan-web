@@ -5,14 +5,19 @@
       <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name"
                     @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
-      <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
+      <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded
+                    outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-      <v-btn small class="mb-2" color="primary" rounded @click="goToDuplicateProfile" v-if="duplicateDonorId!==null && !isNative">
-        <v-icon left>
-          mdi-content-duplicate
-        </v-icon>
-        See Duplicate
-      </v-btn>
+
+      <transition name="slide-fade-down">
+        <v-btn v-if="duplicateDonorId!==null" small class="mb-2" color="primary" rounded @click="goToDuplicateProfile">
+          <v-icon left>
+            mdi-content-duplicate
+          </v-icon>
+          See Duplicate
+        </v-btn>
+      </transition>
+
       <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"
@@ -126,23 +131,23 @@ export default {
         minLength: minLength(11),
         maxLength: maxLength(11),
         numeric,
-        uniqueCheck(phone){
-          if(!phone || phone.length!==11 || isNaN(parseInt(phone)))return true;
+        uniqueCheck(phone) {
+          if (!phone || phone.length !== 11 || isNaN(parseInt(phone))) return true;
 
           this.phoneDuplicateCheckLoader = true;
           this.duplicateDonorId = null;
           this.duplicateDonorMessage = "Checking phone..."
-          return badhanAxios.get('/donors/checkDuplicate',{params: {phone: '88'+phone}})
-          .then((res)=>{
-            this.phoneDuplicateCheckLoader = false;
-            this.duplicateDonorId = res.data.donor?res.data.donor._id:null;
-            this.duplicateDonorMessage = res.data.message;
-            // console.log(res.data.donor._id);
-            return !res.data.found;
-          })
-          .catch((e)=>{
-            return false;
-          })
+          return badhanAxios.get('/donors/checkDuplicate', {params: {phone: '88' + phone}})
+              .then((res) => {
+                this.phoneDuplicateCheckLoader = false;
+                this.duplicateDonorId = res.data.donor ? res.data.donor._id : null;
+                this.duplicateDonorMessage = res.data.message;
+                // console.log(res.data.donor._id);
+                return !res.data.found;
+              })
+              .catch((e) => {
+                return false;
+              })
         }
       },
       name: {
@@ -196,6 +201,9 @@ export default {
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
+    frontendBaseURL() {
+      return process.env.VUE_APP_FRONTEND_BASE;
+    },
 
     computedPhone: {
       get() {
@@ -305,7 +313,7 @@ export default {
       duplicateDonorId: null,
 
       departmentListShown: false,
-      timeout:null,
+      timeout: null,
       phoneDuplicateCheckLoader: false,
       duplicateDonorMessage: ""
     }
@@ -387,7 +395,7 @@ export default {
 
     },
     goToDuplicateProfile() {
-      window.open("/#/home/details?id=" + this.duplicateDonorId);
+      window.open(this.frontendBaseURL + "/#/home/details?id=" + this.duplicateDonorId);
     },
     async discardClicked() {
       if (this.discardDonor !== null) {

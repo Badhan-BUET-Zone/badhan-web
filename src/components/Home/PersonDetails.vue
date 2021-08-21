@@ -48,15 +48,15 @@
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
         <v-card-text class="mb-5">
-          <v-chip color="secondary" class="ma-1">
+          <v-chip color="secondary" class="mr-1 mb-1">
             <span v-if="designation === 0">Donor</span>
             <span v-else-if="designation === 1">Volunteer</span>
             <span v-else-if="designation === 2">Hall Admin</span>
             <span v-else>Super Admin</span>
           </v-chip>
-          <v-chip class="ma-1" color="secondary">{{ donationCount }} Donations</v-chip>
-          <v-chip class="ma-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
-          <v-chip class="ma-1" v-else color="success">Available</v-chip>
+          <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
+          <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
+          <v-chip class="mr-1 mb-1" v-else color="success">Available</v-chip>
           <br>
           <div class="row" v-if="!getLoadingFlag">
             <div class="col-lg-8 col-md-12 col-sm-12" id="firstColumn">
