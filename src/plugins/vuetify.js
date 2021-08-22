@@ -19,11 +19,11 @@ export default new Vuetify({
             dark: {
                 primary: colors.red.darken3,
                 secondary: colors.pink.darken3,
-                accent: colors.red.lighten3,
-                tertiary: colors.red.lighten4,
+                accent: colors.red.darken3,
+                tertiary: colors.red.darken4,
                 error: colors.purple,
-                warning: colors.orange.lighten3,
-                success: colors.green.lighten4,
+                warning: colors.orange.darken3,
+                success: colors.green.darken4,
             }
         },
     },
