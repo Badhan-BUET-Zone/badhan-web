@@ -11,31 +11,30 @@
     </v-card>
 
     <v-card flat v-else-if="donorErrorHappened" :key="'donorError'" style="height: 100vh;width: 100vw;">
-      <v-app-bar dark>
-        <v-btn icon @click="$router.push('/home')">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <v-toolbar-title> Person Details</v-toolbar-title>
+<!--      <v-app-bar dark>-->
+<!--        <v-btn icon @click="$router.push('/home')">-->
+<!--          <v-icon>mdi-arrow-left</v-icon>-->
+<!--        </v-btn>-->
+<!--        <v-toolbar-title> Person Details</v-toolbar-title>-->
+<!--      </v-app-bar>-->
+      <PageTitle :title="$route.meta.title"></PageTitle>
 
-      </v-app-bar>
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>No donor found</v-card-title>
       </v-card>
     </v-card>
 
     <v-card flat v-else :key="'donorLoaded'">
-      <v-app-bar>
-        <v-btn icon @click="$router.push('/home')">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <v-toolbar-title> Person Details</v-toolbar-title>
+      <PageTitle :title="$route.meta.title">
         <v-spacer></v-spacer>
         <v-tooltip
             v-model="showTooltip"
             bottom
         >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn text small @click="shareClicked">
+
+
+            <v-btn class="ml-3" text x-small @click="shareClicked">
               <v-icon left>
                 mdi-share
               </v-icon>
@@ -44,7 +43,14 @@
           </template>
           <span>Donor link copied to clipboard</span>
         </v-tooltip>
-      </v-app-bar>
+      </PageTitle>
+<!--      <v-app-bar>-->
+<!--        <v-btn icon @click="$router.push('/home')">-->
+<!--          <v-icon>mdi-arrow-left</v-icon>-->
+<!--        </v-btn>-->
+<!--        <v-toolbar-title> Person Details</v-toolbar-title>-->
+<!--        -->
+<!--      </v-app-bar>-->
       <v-card class="mx-auto mt-2" max-width="1000px">
         <v-card-title>{{ name }}</v-card-title>
         <v-card-text class="mb-5">
@@ -287,11 +293,6 @@
 
               <p>Call History:</p>
 
-              <p>Last called:
-                {{
-                  getLastCallRecordDate === 0 ? 'Unknown' : new Date(getLastCallRecordDate).toDateString() + ' on ' + new Date(getLastCallRecordDate).toLocaleTimeString()
-                }}</p>
-              <!--              <v-progress-circular class="ma-2" color="primary" indeterminate v-if="getCallRecordsLoader"></v-progress-circular>-->
               <CallRecordCard :call-record="callRecord"
                               v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
               <span v-if="getCallRecords.length===0">No call history found</span>
@@ -311,13 +312,15 @@ import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
 import CallRecordCard from "@/components/Home/CallRecordCard";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
+import PageTitle from "../PageTitle";
 
 export default {
   name: "PersonDetails",
   props: ["donorId"],
   components: {
     CallRecordCard,
-    HelpTooltip
+    HelpTooltip,
+    PageTitle
   },
   data: () => {
     return {
@@ -473,15 +476,6 @@ export default {
         }
       }
     },
-    getLastCallRecordDate() {
-      let lastDate = 0;
-      this.getCallRecords.forEach((callRecord) => {
-        if (callRecord.date > lastDate) {
-          lastDate = callRecord.date;
-        }
-      });
-      return lastDate;
-    }
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),

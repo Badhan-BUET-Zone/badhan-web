@@ -3,10 +3,8 @@ import VueRouter from 'vue-router'
 import Home from "@/views/Home";
 
 import SignInCover from "@/views/SignInCover";
-import PersonDetails from "@/components/Home/PersonDetails";
 import Details from "../views/Home/Details";
 import {store} from "@/store/store";
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +34,7 @@ const routes = [
                 // component: PersonDetails,
                 component: Details,
                 meta: {
+                    title: 'Donor Details',
                     requiresAuth: true,
                     designation: 1
                 }
@@ -189,16 +188,6 @@ router.beforeEach(async (to, from, next) => {
         next();
     }
 })
-export default router;
 
-// export const authenticatedRedirectionToURL = async (to)=>{
-//       let redirectionToken = await store.dispatch('requestRedirectionToken');
-//       let searchRouteData = router.resolve(to);
-//       let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
-//       let routeData;
-//       routeData = router.resolve({
-//         name: 'Redirection',
-//         query: {token: redirectionToken, payload: redirectionURL}
-//       });
-//       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
-// }
+
+export default router;

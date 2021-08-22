@@ -24,5 +24,7 @@ pnpm-debug.log*
 
 android
 .firebase
+.firebaserc
+firebase.json
 package-lock.json
 signature.jks
