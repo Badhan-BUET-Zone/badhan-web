@@ -62,7 +62,7 @@
           </v-chip>
           <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
           <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
-          <v-chip class="mr-1 mb-1" v-else color="success">Available</v-chip>
+          <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
           <br>
           <div class="row" v-if="!getLoadingFlag">
             <div class="col-lg-8 col-md-12 col-sm-12" id="firstColumn">

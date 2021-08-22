@@ -15,6 +15,8 @@ import VueClipboard from 'vue-clipboard2'
 import Mixins from '@/mixins/index';
 import vuetify from './plugins/vuetify';
 
+
+
 import filters from "./mixins/filters";
 
 Vue.use(VueClipboard);
@@ -54,3 +56,5 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
+// vm.$vuetify.theme.dark=true;

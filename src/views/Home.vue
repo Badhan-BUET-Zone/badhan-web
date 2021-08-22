@@ -162,31 +162,40 @@
         <v-col cols="12" sm="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
             <div>
-              <v-alert dense class="rounded-xl" color="grey lighten-3">
+              <v-alert dense class="rounded-xl" color="grey">
                 <div>
-                  <span class="grey--text">Found --- donors</span>
+                  <v-skeleton-loader type="text"></v-skeleton-loader>
                 </div>
               </v-alert>
             </div>
-            <v-btn small
-                   color="secondary" disabled rounded class="mb-4" style="width: 100%">
-              <v-icon left>
-                mdi-download
-              </v-icon>
-              Download Report
-            </v-btn>
-            <v-btn small
-                   color="secondary" disabled rounded class="mb-4" style="width: 100%">
-              <v-icon left>
-                mdi-download
-              </v-icon>
-              Share Search Results
-            </v-btn>
-            <v-alert dense class="rounded-xl" color="grey lighten-4">
+            <v-row no-gutters>
+              <v-col>
+                <v-btn small
+                       color="secondary" disabled rounded class="mb-4" style="width: 100%">
+                  <v-icon left>
+                    mdi-download
+                  </v-icon>
+                  Download Report
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn small
+                       color="secondary" disabled rounded class="mb-4" style="width: 100%">
+                  <v-icon left>
+                    mdi-download
+                  </v-icon>
+                  Share Search Results
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <div>
+            <v-alert dense class="rounded-xl" color="grey">
               <div>
-                <span class="grey--text">Batch --:</span>
+                <v-skeleton-loader type="text"></v-skeleton-loader>
               </div>
             </v-alert>
+            </div>
             <SkeletonPersonCard
                 v-for="i in 4"
                 :key="i"
@@ -194,7 +203,7 @@
           </div>
           <div style="height: fit-content" v-if="isSearchResultShown">
             <div >
-              <v-alert dense class="rounded-xl" color="accent lighten-4">
+              <v-alert dense class="rounded-xl" color="tertiary">
                 <div>
                   Found {{ getNumberOfDonors }} donors
                 </div>
@@ -209,43 +218,46 @@
 <!--                  </v-icon>-->
 <!--                  Download From Web-->
 <!--                </v-btn>-->
-                <v-btn @click="downloadInAndroid" small
-                       v-if="isNative"
-                       color="secondary" rounded class="mb-4" style="width: 100%">
-                  <v-icon left>
-                    mdi-download
-                  </v-icon>
-                  Download Report
-                </v-btn>
-                <v-btn v-else @click="downloadInWeb" small
-                       color="secondary" rounded class="mb-4" style="width: 100%">
-                  <v-icon left>
-                    mdi-download
-                  </v-icon>
-                  Download Report
-                </v-btn>
-
-                <v-tooltip
-                    v-model="showTooltip"
-                    top
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn small color="secondary" rounded class="mb-4" style="width: 100%" v-bind="attrs"
-                           @click="shareClicked">
+                <v-row no-gutters>
+                  <v-col>
+                    <v-btn @click="downloadInAndroid" small
+                           v-if="isNative"
+                           color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
-                        mdi-share
+                        mdi-download
                       </v-icon>
-                      Share Search Results
+                      Download Report
                     </v-btn>
-                  </template>
-                  <span>Copied to clipboard</span>
-                </v-tooltip>
+                    <v-btn v-else @click="downloadInWeb" small
+                           color="secondary" rounded class="mb-4" style="width: 100%">
+                      <v-icon left>
+                        mdi-download
+                      </v-icon>
+                      Download Report
+                    </v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-tooltip
+                        v-model="showTooltip"
+                        top
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn small color="secondary" rounded class="mb-4" style="width: 100%" v-bind="attrs"
+                               @click="shareClicked">
+                          <v-icon left>
+                            mdi-share
+                          </v-icon>
+                          Share Search Results
+                        </v-btn>
+                      </template>
+                      <span>Copied to clipboard</span>
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
               </div>
               <div v-for="(obj, index) in getPersonGroups" :key="index">
-                <v-alert dense class="rounded-xl" color="accent lighten-4">
-                  <div>
+                <v-alert dense class="rounded-xl" color="tertiary">
                     Batch {{ obj.batch }}:
-                  </div>
                 </v-alert>
 
                 <person-card

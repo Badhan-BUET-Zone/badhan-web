@@ -12,7 +12,7 @@
           <v-card
               v-if="availableInRendered > 0"
               class="ma-1 text-center"
-              color="error lighten-4"
+              color="tertiary"
               flat
           >
             <v-card-text>
@@ -24,7 +24,7 @@
           <v-card
               v-else
               class="text-center"
-              color="success lighten-5"
+              color="success"
               flat
           >
             <v-card-text>
@@ -55,7 +55,7 @@
 
     <!--    Person card extension-->
     <transition name="slide-fade-down-snapout" mode="out-in">
-    <v-card color="grey lighten-3" class="mt-2" v-if="showExtensionFlag">
+    <v-card class="mt-2" v-if="showExtensionFlag">
       <v-card-text>
         <v-row no-gutters>
           <v-col cols="12" sm="6">

@@ -1,5 +1,5 @@
 <template>
-  <div style="background-image: url('../assets/cover.png')">
+  <div>
     <section id="hero">
       <v-row no-gutters>
         <v-img

@@ -12,7 +12,7 @@
         <v-col align-self="center" cols="4">
           <v-card
               class="ma-1 text-center"
-              color="grey lighten-4"
+              color="grey"
               flat
           >
             <v-card-text>

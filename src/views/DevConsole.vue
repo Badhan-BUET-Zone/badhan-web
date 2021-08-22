@@ -13,7 +13,7 @@
       <FrontendErrors v-for="(error, index) in getErrors" :key="index" :error="error"></FrontendErrors>
       {{ getConsoleLogs }}
 
-<!--      <v-btn @click="fileSelect">File select</v-btn>-->
+
 
     </v-card>
   </div>

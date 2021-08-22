@@ -3,42 +3,52 @@
     <PageTitle :title="$route.meta.title"></PageTitle>
     <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
       <transition name="slide-fade-down" mode="out-in">
-        <div :key="'hallAdminsLoading'" v-if="getHallAdminsLoaderFlag">
-        <table  class="table table-hover">
-          <thead>
-          <tr>
-            <th scope="col">Hall Name</th>
-            <th scope="col">Hall Admin</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="index in 3" :key="index">
-            <th scope="row">
-              <v-skeleton-loader type="text"></v-skeleton-loader>
-            </th>
-            <td>
-              <v-skeleton-loader type="text"></v-skeleton-loader>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        </div>
-        <div :key="'hallAdminsLoaded'" v-if="getHallAdmins!==null && !getHallAdminsLoaderFlag">
-        <table  class="table table-hover" >
-          <thead>
-          <tr>
-            <th scope="col">Hall Name</th>
-            <th scope="col">Hall Admin</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(hallAdmin,index) in getHallAdmins" :key="index">
-            <th scope="row">{{ halls[hallAdmin.hall] }}</th>
-            <td>{{ hallAdmin.name }}</td>
-          </tr>
-          </tbody>
-        </table>
-        </div>
+        <v-simple-table :key="'hallAdminsLoading'" v-if="getHallAdminsLoaderFlag">
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th class="text-left">
+                Hall Name
+              </th>
+              <th class="text-left">
+                Admin
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="index in 3"
+                :key="index"
+            >
+              <td><v-skeleton-loader type="text"></v-skeleton-loader></td>
+              <td><v-skeleton-loader type="text"></v-skeleton-loader></td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <v-simple-table v-if="getHallAdmins!==null && !getHallAdminsLoaderFlag" :key="'hallAdminsLoaded'">
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th class="text-left">
+                Hall Name
+              </th>
+              <th class="text-left">
+                Admin
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="(hallAdmin,index) in getHallAdmins"
+                :key="index"
+            >
+              <td>{{ halls[hallAdmin.hall] }}</td>
+              <td>{{ hallAdmin.name }}</td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </transition>
     </v-card>
   </div>
