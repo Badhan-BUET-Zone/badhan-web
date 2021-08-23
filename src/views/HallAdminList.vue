@@ -1,7 +1,13 @@
 <template>
   <div>
-    <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
+    <PageTitle>
+      <HelpTooltip>
+        <div>
+          Here you can view the hall admins
+        </div>
+      </HelpTooltip>
+    </PageTitle>
+    <Container>
       <transition name="slide-fade-down" mode="out-in">
         <v-simple-table :key="'hallAdminsLoading'" v-if="getHallAdminsLoaderFlag">
           <template v-slot:default>
@@ -50,7 +56,7 @@
           </template>
         </v-simple-table>
       </transition>
-    </v-card>
+    </Container>
   </div>
 </template>
 
@@ -58,10 +64,12 @@
 import {halls} from '@/mixins/constants';
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import PageTitle from "../components/PageTitle";
+import HelpTooltip from "../components/UI Components/HelpTooltip";
+import Container from "../components/Wrappers/Container";
 
 export default {
   name: "SuperAdminPanel",
-  components: {PageTitle},
+  components: {Container, PageTitle,HelpTooltip},
   data: function () {
     return {
       hallAdmins: [],

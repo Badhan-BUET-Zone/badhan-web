@@ -2,18 +2,17 @@
   <!--  Person card-->
   <div class="mb-2" style="width: 100%">
     <v-card
-        rounded
-        style="width: 100%; height: 100%"
+        style="width: 100%; height: 100%;"
         class="pa-1"
-        @click="expansionClicked"
+        @click="expansionClicked" rounded
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
           <v-card
               v-if="availableInRendered > 0"
               class="ma-1 text-center"
-              color="tertiary"
-              flat
+              color="error lighten-4"
+              flat rounded
           >
             <v-card-text>
               {{ bloodGroup | numToBloodGroup }}
@@ -24,8 +23,8 @@
           <v-card
               v-else
               class="text-center"
-              color="success"
-              flat
+              color="success lighten-4"
+              flat rounded
           >
             <v-card-text>
               {{ bloodGroup | numToBloodGroup }}
@@ -55,7 +54,7 @@
 
     <!--    Person card extension-->
     <transition name="slide-fade-down-snapout" mode="out-in">
-    <v-card class="mt-2" v-if="showExtensionFlag">
+    <v-card class="mt-2 rounded-xl" v-if="showExtensionFlag">
       <v-card-text>
         <v-row no-gutters>
           <v-col cols="12" sm="6">

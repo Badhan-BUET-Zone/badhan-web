@@ -119,7 +119,7 @@ const routes = [
         component:()=> import('@/views/SingleDonorCreation.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Single Donor Creation',
+            title: 'Create Donor',
             designation: 1
         }
     },

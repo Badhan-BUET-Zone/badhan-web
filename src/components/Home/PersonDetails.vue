@@ -1,57 +1,19 @@
 <template>
   <!--  <div style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">-->
   <transition name="slide-fade-down-snapout" mode="out-in">
-    <v-card flat v-if="getDonorLoaderFlag" :key="'donorLoading'" class="d-flex justify-center">
-      <v-card style="width: 100vw">
+    <Container v-if="getDonorLoaderFlag" :key="'donorLoading'">
         <v-card-title><span class="grey--text">Loading...</span></v-card-title>
-        <v-skeleton-loader type="article">
+        <v-skeleton-loader type="article"></v-skeleton-loader>
+    </Container>
 
-        </v-skeleton-loader>
-      </v-card>
-    </v-card>
-
-    <v-card flat v-else-if="donorErrorHappened" :key="'donorError'" style="height: 100vh;width: 100vw;">
-<!--      <v-app-bar dark>-->
-<!--        <v-btn icon @click="$router.push('/home')">-->
-<!--          <v-icon>mdi-arrow-left</v-icon>-->
-<!--        </v-btn>-->
-<!--        <v-toolbar-title> Person Details</v-toolbar-title>-->
-<!--      </v-app-bar>-->
-      <PageTitle :title="$route.meta.title"></PageTitle>
-
-      <v-card class="mx-auto mt-2" max-width="1000px">
+    <Container v-else-if="donorErrorHappened" :key="'donorError'">
+      <PageTitle></PageTitle>
+      <v-card class="mx-auto mt-2" max-width="700">
         <v-card-title>No donor found</v-card-title>
       </v-card>
-    </v-card>
+    </Container>
 
-    <v-card flat v-else :key="'donorLoaded'">
-      <PageTitle :title="$route.meta.title">
-        <v-spacer></v-spacer>
-        <v-tooltip
-            v-model="showTooltip"
-            bottom
-        >
-          <template v-slot:activator="{ on, attrs }">
-
-
-            <v-btn class="ml-3" text x-small @click="shareClicked">
-              <v-icon left>
-                mdi-share
-              </v-icon>
-              Share
-            </v-btn>
-          </template>
-          <span>Donor link copied to clipboard</span>
-        </v-tooltip>
-      </PageTitle>
-<!--      <v-app-bar>-->
-<!--        <v-btn icon @click="$router.push('/home')">-->
-<!--          <v-icon>mdi-arrow-left</v-icon>-->
-<!--        </v-btn>-->
-<!--        <v-toolbar-title> Person Details</v-toolbar-title>-->
-<!--        -->
-<!--      </v-app-bar>-->
-      <v-card class="mx-auto mt-2" max-width="1000px">
+    <Container v-else :key="'donorLoaded'">
         <v-card-title>{{ name }}</v-card-title>
         <v-card-text class="mb-5">
           <v-chip color="secondary" class="mr-1 mb-1">
@@ -65,8 +27,8 @@
           <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
           <br>
           <div class="row" v-if="!getLoadingFlag">
-            <div class="col-lg-8 col-md-12 col-sm-12" id="firstColumn">
-              <v-card>
+            <div class="col-lg-6 col-md-12 col-sm-12" id="firstColumn">
+              <ContainerOutlined>
                 <v-card-title>
                   <v-btn rounded @click="personDetailCollapseFlag = !personDetailCollapseFlag">
                     Person Details
@@ -78,11 +40,9 @@
                       donor is marked as public data.
                     </div>
                   </HelpTooltip>
-
                 </v-card-title>
                 <transition name="slide-fade-down-snapout" mode="out-in">
                   <v-card-text v-if="personDetailCollapseFlag">
-
                     <div>
                       <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
                                     :disabled="!isDetailsEditable" @blur="$v.name.$touch()"
@@ -132,9 +92,9 @@
                     </v-btn>
                   </v-card-text>
                 </transition>
-              </v-card>
+              </ContainerOutlined>
 
-              <v-card v-if="getDesignation > designation ||$isMe(_id)">
+              <ContainerOutlined v-if="getDesignation > designation ||$isMe(_id)">
                 <v-card-title>
                   <v-btn rounded
                          @click="settingsCollapseFlag = !settingsCollapseFlag">
@@ -211,10 +171,10 @@
                     </div>
                   </v-card-text>
                 </transition>
-              </v-card>
+              </ContainerOutlined>
 
             </div>
-            <div class="col-lg-4 col-md-12 col-md-12" style="height: fit-content">
+            <div class="col-lg-6 col-md-12 col-md-12" style="height: fit-content">
 
               <!--              NEW DONATION SECTION-->
               <div>
@@ -242,15 +202,15 @@
                   </template>
                   <v-date-picker v-model="newDonationDate" no-title scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn rounded text color="primary" @click="menu = false">Cancel</v-btn>
                     <v-btn
+                        rounded
                         text
                         color="primary"
                         @click="$refs.menu.save(newDonationDate)"
                     >
                       OK
-                    </v-btn
-                    >
+                    </v-btn>
                   </v-date-picker>
                 </v-menu>
               </div>
@@ -270,28 +230,37 @@
               </v-btn>
               <!--              NEW DONATION SECTION END-->
 
-              <p class="mt-2">Last Donation:</p>
+              <p class="mt-2 h6 font-weight-bold">Last Donation:</p>
               <template v-if="lastDonation !== 0">
-                <p class="text-dark">{{ lastDonation }}</p>
-                <br/>
+                <p>{{ lastDonation }}</p>
+                <p class="h6 font-weight-bold">Donation History:</p>
                 <div v-if="getDonationList.length!==0">
-                  <div class="input-group mb-3" v-for="date in getDonationList">
-                    <input type="text" readonly class="form-control"
-                           :value="date===0?'Unknown date':datePrint(date)"/>
-
-                    <div class="input-group-append">
-                      <button class="btn btn-success" type="button"
-                              @click="deleteDonationClicked(date)">
-                        Delete
-                      </button>
-                    </div>
-                  </div>
+                  <v-card
+                      class="mb-1 rounded-xl"
+                      outlined
+                      dense
+                      v-for="(date,index) in getDonationList"
+                      :key="index"
+                  >
+                    <v-card-text>
+                      <v-row>
+                        <v-col cols="9">
+                          <span>
+                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}
+                          </span>
+                        </v-col>
+                        <v-col cols="3">
+                          <v-btn @click="deleteDonationClicked(date)" color="error" x-small fab depressed><v-icon>mdi-delete</v-icon></v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
                   <br/>
                 </div>
               </template>
               <span v-else>(Unknown)</span>
 
-              <p>Call History:</p>
+              <p class="h6 font-weight-bold">Call History:</p>
 
               <CallRecordCard :call-record="callRecord"
                               v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
@@ -299,8 +268,7 @@
             </div>
           </div>
         </v-card-text>
-      </v-card>
-    </v-card>
+    </Container>
 
   </transition>
   <!--  </div>-->
@@ -313,11 +281,17 @@ import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/val
 import CallRecordCard from "@/components/Home/CallRecordCard";
 import HelpTooltip from "@/components/UI Components/HelpTooltip";
 import PageTitle from "../PageTitle";
+import ShareProfileButton from "../ShareProfileButton";
+import Container from "../Wrappers/Container";
+import ContainerOutlined from "../Wrappers/ContainerOutlined";
 
 export default {
   name: "PersonDetails",
   props: ["donorId"],
   components: {
+    ContainerOutlined,
+    Container,
+    ShareProfileButton,
     CallRecordCard,
     HelpTooltip,
     PageTitle

@@ -1,6 +1,7 @@
 <template>
   <v-card
-      class="mb-2"
+      class="mb-2 rounded-xl"
+      outlined
       dense
   >
     <v-card-text>

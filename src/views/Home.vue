@@ -19,32 +19,25 @@
     <div>
       <v-row>
         <v-col cols="12" sm="4">
-          <div
-              style="height: fit-content"
-          >
-            <div class="ml-5">
-              <v-row>
-                <!--      Filter title-->
-                <v-col>
-                  <span class="h5" id="filters">Filters</span>
-                  <HelpTooltip>
-                      <div>
-                        You may choose any one of the following options.
-                        <ul>
-                          <li><b>Name: </b>Search any donor by name</li>
-                          <li><b>Blood group: </b>Search any donor by blood group</li>
-                          <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
-                          <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
-                          <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched. Donors who were previously in "Attached/Covid" database are in this search criteria</li>
-                          <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
-                          <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
-                          <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will be shown</li>
-                        </ul>
-                      </div>
-                  </HelpTooltip>
-                </v-col>
-              </v-row>
-            </div>
+          <v-card class="rounded-xl">
+            <v-card-title>
+              Filters
+              <HelpTooltip>
+                <div>
+                  You may choose any one of the following options.
+                  <ul>
+                    <li><b>Name: </b>Search any donor by name</li>
+                    <li><b>Blood group: </b>Search any donor by blood group</li>
+                    <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
+                    <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
+                    <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched. Donors who were previously in "Attached/Covid" database are in this search criteria</li>
+                    <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
+                    <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
+                    <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will be shown</li>
+                  </ul>
+                </div>
+              </HelpTooltip>
+            </v-card-title>
 
             <!--    Main Filters-->
 
@@ -157,7 +150,7 @@
                 </v-btn>
               </v-container>
             </v-form>
-          </div>
+          </v-card>
         </v-col>
         <v-col cols="12" sm="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">

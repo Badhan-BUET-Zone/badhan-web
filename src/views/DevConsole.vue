@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card v-if="getErrors" max-width="500" class="pa-4 mx-auto rounded-xl">
+    <Container v-if="getErrors">
       <v-card-title>
         Frontend Errors
       </v-card-title>
@@ -12,10 +12,7 @@
       </v-card>
       <FrontendErrors v-for="(error, index) in getErrors" :key="index" :error="error"></FrontendErrors>
       {{ getConsoleLogs }}
-
-
-
-    </v-card>
+    </Container>
   </div>
 </template>
 
@@ -26,6 +23,7 @@ import PageTitle from "../components/PageTitle";
 import VueJsonPretty from 'vue-json-pretty';
 import 'vue-json-pretty/lib/styles.css';
 import FrontendErrors from "../components/DevConsole/FrontendErrors";
+import Container from "../components/Wrappers/Container";
 
 export default {
   name: "DevConsole",
@@ -35,6 +33,7 @@ export default {
     ...mapGetters('consoleStore', ['getConsoleLogs']),
   },
   components: {
+    Container,
     PageTitle,
     VueJsonPretty,
     FrontendErrors

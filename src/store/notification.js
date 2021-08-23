@@ -2,7 +2,7 @@ import {badhanAxios} from '@/api';
 const state = {
     notificationFlag: false,
     notification: null,
-    notificationColor: "green"
+    notificationColor: "success"
 };
 
 const getters = {

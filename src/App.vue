@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     ...mapActions('release', ['fetchtAppDetails']),
-    yourCallBackFunction() {
+    androidBackButtonHandler() {
       if (this.$route.name === "Details") {
         this.$router.push('/home');
         return;
@@ -78,29 +78,24 @@ export default {
       const deployedAppInfo = await this.fetchtAppDetails();
 
       if (isNative() && deployedAppInfo.data.version != info.appVersion) {
-        this.$bvModal.msgBoxConfirm('New version ' + deployedAppInfo.data.version + ' available. Please download the latest update.', {
-          centered: true
-        })
-            .then(value => {
-              if (value === true) {
-                window.open("https://play.google.com/store/apps/details?id=com.mmmbadhan");
-              }
-            })
-            .catch(err => {
-              // An error occurred
-            }).finally(() => {
-        })
+        try {
+          let value = await this.$bvModal.msgBoxConfirm('New version ' + deployedAppInfo.data.version + ' available. Please download the latest update.', {
+            centered: true
+          });
+          if (value) {
+            window.open("https://play.google.com/store/apps/details?id=com.mmmbadhan");
+          }
+        } catch (e) {}
       }
     }
   },
 
   async mounted() {
-
-    document.addEventListener("backbutton", this.yourCallBackFunction, false);
+    document.addEventListener("backbutton", this.androidBackButtonHandler, false);
     this.versionCheck();
   },
   beforeDestroy() {
-    document.removeEventListener("backbutton", this.yourCallBackFunction);
+    document.removeEventListener("backbutton", this.androidBackButtonHandler);
   },
 }
 </script>
@@ -141,6 +136,7 @@ export default {
 .slide-fade-down-leave-active {
   transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .slide-fade-down-enter, .slide-fade-down-leave-to {
   transform: translateY(-40px);
   opacity: 0;
@@ -153,6 +149,7 @@ export default {
 .fade-leave-active {
   transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
@@ -169,7 +166,7 @@ export default {
   transition: all .3s ease;
 }
 
-.slide-fade-down-snapout-enter{
+.slide-fade-down-snapout-enter {
   transform: translateY(-40px);
   opacity: 0;
 }

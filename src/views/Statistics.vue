@@ -1,24 +1,26 @@
 <template>
   <div>
-    <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-btn class="ma-2" color="primary" rounded @click="showStats">Show Stats</v-btn>
+    <PageTitle></PageTitle>
+    <ContainerFlat>
+      <v-btn class="ma-2" color="primary" rounded @click="showStats">Show Stats</v-btn>
+    </ContainerFlat>
 
-    <v-card v-if="getStatisticsLoaderFlag" max-width="200" class="pa-2 rounded-xl">
+    <Container v-if="getStatisticsLoaderFlag">
       <v-card-text>
         <p><b>Number of donors: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
         <p><b>Number of donations: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
         <p><b>Number of volunteers: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
       </v-card-text>
-    </v-card>
+    </Container>
 
-    <v-card v-if="getStatistics!==null" max-width="200" class="pa-2 rounded-xl">
+    <Container v-if="getStatistics!==null">
       <v-card-text>
         <p><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
         <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
         <p><b>Number of volunteers: </b><br>{{ getStatistics.volunteerCount }}</p>
       </v-card-text>
-    </v-card>
-    <v-card class="mt-4 rounded-xl">
+    </Container>
+    <Container>
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
       <transition name="slide-fade-down" type="out-in">
       <v-card-text v-if="logCountLoader" :key="'logLoader'">
@@ -47,17 +49,19 @@
           Delete All Logs
         </v-btn>
       </v-card-actions>
-    </v-card>
+    </Container>
 
-    <v-btn class="ma-2" color="primary" rounded @click="showVolunteers">Show Volunteers</v-btn>
+    <ContainerFlat>
+      <v-btn class="ma-2" color="primary" rounded @click="showVolunteers">Show Volunteers</v-btn>
+    </ContainerFlat>
 
-    <v-card max-width="500" class="mt-4 pa-2 rounded-xl" v-if="getVolunteerLoaderFlag">
+    <Container v-if="getVolunteerLoaderFlag">
       <v-progress-circular
           indeterminate
           color="primary"
       ></v-progress-circular>
-    </v-card>
-    <v-card v-else-if="volunteersShown" class="mt-4 rounded-xl">
+    </Container>
+    <Container v-else-if="volunteersShown">
       <v-card-title>List of all volunteers</v-card-title>
       <v-data-table
           dense
@@ -72,7 +76,7 @@
           {{ halls[item.hall] }}
         </template>
       </v-data-table>
-    </v-card>
+    </Container>
   </div>
 </template>
 
@@ -84,10 +88,12 @@ import {halls} from "../mixins/constants";
 import {badhanAxios} from "../api";
 import DateLog from "../components/Statistics/DateLog";
 import SkeletonDateLog from "../components/Statistics/SkeletonDateLog";
+import Container from "../components/Wrappers/Container";
+import ContainerFlat from "../components/Wrappers/ContainerFlat";
 
 export default {
   name: "Statistics",
-  components: {PageTitle, LogObject,DateLog,SkeletonDateLog},
+  components: {ContainerFlat, Container, PageTitle, LogObject,DateLog,SkeletonDateLog},
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),

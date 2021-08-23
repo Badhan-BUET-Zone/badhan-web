@@ -1,9 +1,9 @@
 <template>
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card max-width="500" class="pa-2 rounded-xl">
+    <Container>
       <v-card-text>Redirecting...</v-card-text>
-    </v-card>
+    </Container>
   </div>
 </template>
 
@@ -11,6 +11,7 @@
 import PageTitle from "../components/PageTitle";
 import {mapActions, mapGetters} from "vuex";
 import SignInDialog from "../components/SignInDialog";
+import Container from "../components/Wrappers/Container";
 
 export default {
   name: "Redirection",
@@ -18,6 +19,7 @@ export default {
     ...mapGetters(['getIsLoggedIn', 'getSignInLoaderFlag','getToken']),
   },
   components: {
+    Container,
     PageTitle,SignInDialog
   },
   methods:{

@@ -6,6 +6,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          class="ml-5"
       >
         mdi-help-circle-outline
       </v-icon>

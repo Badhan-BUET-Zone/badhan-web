@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar dense floating width="100%" rounded>
+  <v-app-bar dense floating width="100%" class="rounded-xl">
     <v-btn icon @click="$router.push(getIsLoggedIn?'/home':'/')">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>

@@ -1,6 +1,5 @@
 <template>
-  <v-card rounded class="ma-1">
-
+  <Container>
     <v-card-text>
       <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name"
                     @blur="$v.name.$touch()"
@@ -8,7 +7,6 @@
       <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded
                     outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
-
       <transition name="slide-fade-down">
         <v-btn v-if="duplicateDonorId!==null" small class="mb-2" color="primary" rounded @click="goToDuplicateProfile">
           <v-icon left>
@@ -106,7 +104,7 @@
     </v-card-actions>
 
     <v-alert color="warning" v-for="(warning, index) in warnings" :key="index">{{ warning }}</v-alert>
-  </v-card>
+  </Container>
 </template>
 
 <script>
@@ -117,11 +115,13 @@ import {isNative} from '@/plugins/android_support';
 import HelpTooltip from "../UI Components/HelpTooltip";
 import {badhanAxios} from "../../api";
 import _ from 'lodash';
+import Container from "../Wrappers/Container";
 
 export default {
   name: "NewPersonCard",
   props: ['donor', 'discardDonor'],
   components: {
+    Container,
     HelpTooltip
   },
   validations: () => {

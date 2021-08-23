@@ -1,7 +1,13 @@
 <template>
   <div>
-    <PageTitle :title="$route.meta.title"></PageTitle>
-    <v-card max-width="500" class="pa-4 mx-auto rounded-xl">
+    <PageTitle>
+      <HelpTooltip>
+        <div>
+          Here you can view all the volunteers of your own hall
+        </div>
+      </HelpTooltip>
+    </PageTitle>
+    <Container>
       <transition name="slide-fade-down" mode="out-in">
       <v-simple-table v-if="getVolunteerLoader" :key="'volunteerLoading'">
         <template v-slot:default>
@@ -58,7 +64,7 @@
         </template>
       </v-simple-table>
       </transition>
-    </v-card>
+    </Container>
   </div>
 </template>
 
@@ -66,11 +72,15 @@
 import {bloodGroups, halls, departments} from "@/mixins/constants";
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import PageTitle from "../components/PageTitle";
+import HelpTooltip from "../components/UI Components/HelpTooltip";
+import Container from "../components/Wrappers/Container";
 
 export default {
   name: "VolunteerList",
   components: {
-    PageTitle
+    Container,
+    PageTitle,
+    HelpTooltip
   },
   data: function () {
     return {

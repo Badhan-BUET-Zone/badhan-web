@@ -6,6 +6,7 @@
         app
         clipped-left
         collapse-on-scroll
+        class="rounded-b-xl"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
@@ -16,9 +17,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-menu
-          right
-      >
+      <v-menu right rounded>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
               icon
@@ -30,9 +29,8 @@
           </v-btn>
         </template>
 
-        <v-list>
+        <v-list rounded>
           <v-list-item @click="goToWebClicked" v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled ">
-<!--          <v-list-item @click="goToWebClicked">-->
             <v-list-item-icon>
               <v-icon>
                 mdi-web
@@ -72,6 +70,7 @@
         left
         app
         clipped
+        class="rounded-r-xl"
     >
       <v-list-item>
         <v-list-item-content>
@@ -93,9 +92,11 @@
       <v-list
           nav
           dense
+          rounded
       >
         <v-list-item-group
             active-class="primary--text text--accent-4"
+
         >
           <v-list-item link to="/home" style="text-decoration: none">
             <v-list-item-icon>
@@ -134,14 +135,14 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item link to="/archive" style="text-decoration: none">
-            <v-list-item-icon>
-              <v-icon>mdi-archive</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Archive</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <!--          <v-list-item link to="/archive" style="text-decoration: none">-->
+          <!--            <v-list-item-icon>-->
+          <!--              <v-icon>mdi-archive</v-icon>-->
+          <!--            </v-list-item-icon>-->
+          <!--            <v-list-item-content>-->
+          <!--              <v-list-item-title>Archive</v-list-item-title>-->
+          <!--            </v-list-item-content>-->
+          <!--          </v-list-item>-->
 
           <v-list-item link to="/myProfile" style="text-decoration: none">
             <v-list-item-icon>
@@ -205,11 +206,11 @@ export default {
     drawer: false,
   }),
   computed: {
-    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID','getToken']),
-    isNative(){
+    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
+    isNative() {
       return isNative();
     },
-    isGuestEnabled(){
+    isGuestEnabled() {
       return isGuestEnabled();
     }
   },
@@ -218,7 +219,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
-    ...mapActions(['logout', 'logoutAll','requestRedirectionToken']),
+    ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     async myProfileclicked() {
       await this.$router.push({path: '/home/details', query: {id: this.getID}});
     },
@@ -242,14 +243,14 @@ export default {
         this.$router.push('/');
       }
     },
-    async goToWebClicked(){
+    async goToWebClicked() {
       let redirectionToken = await this.requestRedirectionToken();
       let routeData;
       routeData = this.$router.resolve({
         name: 'Redirection',
         query: {token: redirectionToken, payload: this.$route.fullPath}
       });
-      window.open(process.env.VUE_APP_FRONTEND_BASE+routeData.href, '_blank');
+      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
 
     }
   },
