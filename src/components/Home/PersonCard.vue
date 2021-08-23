@@ -11,7 +11,7 @@
           <v-card
               v-if="availableInRendered > 0"
               class="ma-1 text-center"
-              color="error lighten-4"
+              color="errorLight"
               flat rounded
           >
             <v-card-text>
@@ -23,7 +23,7 @@
           <v-card
               v-else
               class="text-center"
-              color="success lighten-4"
+              color="successLight"
               flat rounded
           >
             <v-card-text>
