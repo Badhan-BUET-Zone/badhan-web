@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="700" class="pa-2 mx-auto ma-2 rounded-xl" outlined>
+  <v-card max-width="800" class="pa-1 mx-auto ma-1 rounded-xl" outlined>
     <slot></slot>
   </v-card>
 </template>

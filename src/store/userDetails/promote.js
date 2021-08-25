@@ -41,7 +41,6 @@ const actions = {
             let response = await badhanAxios.patch("/donors/designation", payload);
             dispatch('notification/notifySuccess',response.data.message,{root:true});
             return true;
-
         } catch (error) {
             return false;
         } finally {

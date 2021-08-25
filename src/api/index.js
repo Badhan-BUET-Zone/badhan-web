@@ -78,6 +78,48 @@ firebaseAxios.interceptors.response.use( (response)=>{
     return Promise.reject(error);
 });
 
+/////////////////////////ROUTES////////////////////////////////////////////////////
+const handlePATCHDonorsDesignation = async (payload)=>{
+    try {
+        let response = await badhanAxios.patch("/donors/designation", payload);
+        store.dispatch('notification/notifySuccess',response.data.message,{root:true});
+        return true;
+    } catch (error) {
+        return false;
+    } finally {
+    }
+}
+const handlePATCHUsersPassword = async(payload)=>{
+    try {
+        let response = await badhanAxios.patch("/users/password", payload);
+        store.dispatch('notification/notifySuccess', response.data.message);
+        return response.data;
+    } catch (error) {
+        return null;
+    } finally {
+
+    }
+}
+const handleDELETEDonors = async (payload)=>{
+    try {
+        let response = await badhanAxios.delete("/donors", {params:payload});
+        store.dispatch('notification/notifySuccess',"Successfully deleted donor",{root: true});
+        return true;
+    } catch (error) {
+        return false;
+    } finally {
+    }
+}
+
 export{
-    badhanAxios,firebaseAxios,enableGuestAPI, resetBaseURL, isGuestEnabled
+    badhanAxios,
+    firebaseAxios,
+    enableGuestAPI,
+    resetBaseURL,
+    isGuestEnabled,
+
+    ///////////////////ROUTES////////////
+    handlePATCHDonorsDesignation,
+    handlePATCHUsersPassword,
+    handleDELETEDonors
 }

@@ -60,11 +60,12 @@ const mutations = {
 
     setToken(state, token) {
         state.token = token;
-
+        localStorage.setItem('x-auth', state.token);
     },
 
     removeToken(state) {
         state.token = null;
+        localStorage.removeItem('x-auth');
     },
 
     signInLoaderFlagOn(state) {
