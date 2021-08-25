@@ -13,9 +13,9 @@ export default new Vuetify({
                 tertiary: colors.grey.lighten3,
                 error: colors.purple,
                 success: colors.green,
-                errorLight: colors.purple.lighten4,
+                errorLight: colors.deepOrange.lighten4,
                 successLight: colors.green.lighten4,
-                warning: colors.orange.lighten4
+                warning: colors.deepOrange.darken4
             },
             dark: {
                 primary: colors.red.darken4,
@@ -23,9 +23,9 @@ export default new Vuetify({
                 tertiary: colors.grey.darken4,
                 error: colors.purple.darken2,
                 success: colors.green.darken4,
-                errorLight: colors.purple.darken4,
+                errorLight: colors.deepOrange.darken4,
                 successLight: colors.green.darken4,
-                warning: colors.orange.darken4
+                warning: colors.deepOrange.darken4
             }
         },
     },

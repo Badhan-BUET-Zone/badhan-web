@@ -8,30 +8,30 @@ const badhanAxios = axios.create({
     baseURL
 });
 
-const enableGuestAPI = ()=>{
+const enableGuestAPI = () => {
     badhanAxios.defaults.baseURL += '/guest';
 }
 
-const resetBaseURL = ()=>{
+const resetBaseURL = () => {
     badhanAxios.defaults.baseURL = baseURL
 }
 
-const isGuestEnabled = ()=>{
+const isGuestEnabled = () => {
     return badhanAxios.defaults.baseURL.includes("/guest");
 }
 
 const firebaseAxios = axios.create({
-    baseURL:'https://badhan-buet-default-rtdb.firebaseio.com'
+    baseURL: 'https://badhan-buet-default-rtdb.firebaseio.com'
 });
 
-badhanAxios.interceptors.request.use( (config)=>{
+badhanAxios.interceptors.request.use((config) => {
     // Do something before request is sent
-    console.log("%cREQUEST TO "+config.method+" "+config.url+": ",'color: #ff00ff',config.data,config.params);
+    console.log("%cREQUEST TO " + config.method + " " + config.url + ": ", 'color: #ff00ff', config.data, config.params);
 
     store.dispatch('notification/clearNotification');
 
-    config.headers={
-        'x-auth':store.getters.getToken
+    config.headers = {
+        'x-auth': store.getters.getToken
     }
 
     return config;
@@ -40,25 +40,29 @@ badhanAxios.interceptors.request.use( (config)=>{
     return Promise.reject(error);
 });
 
-badhanAxios.interceptors.response.use( (response)=>{
+badhanAxios.interceptors.response.use((response) => {
     // Do something before request is sent
-    console.log("%cRESPONSE FROM "+response.config.method+" "+response.config.url+": ",'color: #00ff00',response);
+    console.log("%cRESPONSE FROM " + response.config.method + " " + response.config.url + ": ", 'color: #00ff00', response);
 
     return response;
-},  (error)=>{
+}, (error) => {
     // Do something with request error
-    store.dispatch('notification/notifyError',processError(error))
-    if(error.response && error.response.data){
+    store.dispatch('notification/notifyError', processError(error))
+    if (error.response && error.response.data) {
         console.log(error.response.data)
-        store.commit('errorStore/addError',{name:"Backend error",message:error.response.data.message,stack:error.response.config.method+" "+error.response.config.url});
+        store.commit('errorStore/addError', {
+            name: "Backend error",
+            message: error.response.data.message,
+            stack: error.response.config.method + " " + error.response.config.url
+        });
     }
 
     return Promise.reject(error);
 });
 
-firebaseAxios.interceptors.request.use( (config)=>{
+firebaseAxios.interceptors.request.use((config) => {
     // Do something before request is sent
-    console.log("%cREQUEST TO "+config.url+": ",'color: #ff00ff',config.data);
+    console.log("%cREQUEST TO " + config.url + ": ", 'color: #ff00ff', config.data);
 
     store.dispatch('notification/clearNotification');
 
@@ -68,28 +72,28 @@ firebaseAxios.interceptors.request.use( (config)=>{
     return Promise.reject(error);
 });
 
-firebaseAxios.interceptors.response.use( (response)=>{
+firebaseAxios.interceptors.response.use((response) => {
     // Do something before request is sent
-    console.log("%cRESPONSE FROM "+response.config.url+": ",'color: #00ff00',response);
+    console.log("%cRESPONSE FROM " + response.config.url + ": ", 'color: #00ff00', response);
     return response;
-},  (error)=>{
+}, (error) => {
     // Do something with request error
-    store.dispatch('notification/notifyError',processError(error))
+    store.dispatch('notification/notifyError', processError(error))
     return Promise.reject(error);
 });
 
 /////////////////////////ROUTES////////////////////////////////////////////////////
-const handlePATCHDonorsDesignation = async (payload)=>{
+const handlePATCHDonorsDesignation = async (payload) => {
     try {
         let response = await badhanAxios.patch("/donors/designation", payload);
-        store.dispatch('notification/notifySuccess',response.data.message,{root:true});
+        store.dispatch('notification/notifySuccess', response.data.message, {root: true});
         return true;
     } catch (error) {
         return false;
     } finally {
     }
 }
-const handlePATCHUsersPassword = async(payload)=>{
+const handlePATCHUsersPassword = async (payload) => {
     try {
         let response = await badhanAxios.patch("/users/password", payload);
         store.dispatch('notification/notifySuccess', response.data.message);
@@ -100,10 +104,10 @@ const handlePATCHUsersPassword = async(payload)=>{
 
     }
 }
-const handleDELETEDonors = async (payload)=>{
+const handleDELETEDonors = async (payload) => {
     try {
-        let response = await badhanAxios.delete("/donors", {params:payload});
-        store.dispatch('notification/notifySuccess',"Successfully deleted donor",{root: true});
+        let response = await badhanAxios.delete("/donors", {params: payload});
+        store.dispatch('notification/notifySuccess', "Successfully deleted donor", {root: true});
         return true;
     } catch (error) {
         return false;
@@ -111,7 +115,18 @@ const handleDELETEDonors = async (payload)=>{
     }
 }
 
-export{
+const handlePOSTDonorsPasswordRequest = async (payload) => {
+    try {
+        let response = await badhanAxios.post('/donors/password',payload);
+        store.dispatch('notification/notifySuccess', response.data.message);
+        return response.data.token;
+    }catch (error) {
+        return null;
+    } finally {
+    }
+}
+
+export {
     badhanAxios,
     firebaseAxios,
     enableGuestAPI,
@@ -121,5 +136,6 @@ export{
     ///////////////////ROUTES////////////
     handlePATCHDonorsDesignation,
     handlePATCHUsersPassword,
-    handleDELETEDonors
+    handleDELETEDonors,
+    handlePOSTDonorsPasswordRequest
 }

@@ -15,7 +15,7 @@
           </p>
         </v-col>
         <v-col cols="3">
-          <v-btn @click="deleteClicked" :loading="deleteLoaderFlag" :disabled="deleteLoaderFlag" color="error" x-small fab depressed><v-icon>mdi-delete</v-icon></v-btn>
+          <v-btn @click="deleteClicked" :loading="deleteLoaderFlag" :disabled="deleteLoaderFlag" color="warning" x-small fab depressed><v-icon>mdi-delete</v-icon></v-btn>
         </v-col>
       </v-row>
     </v-card-text>

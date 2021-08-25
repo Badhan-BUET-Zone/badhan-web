@@ -5,6 +5,7 @@ import Home from "@/views/Home";
 import SignInCover from "@/views/SignInCover";
 import Details from "../views/Home/Details";
 import {store} from "@/store/store";
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -15,7 +16,8 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'List of Hall Admins',
-            designation: 1
+            designation: 1,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -25,7 +27,8 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'Home',
-            designation: 1
+            designation: 1,
+            reRouteIfAuthorized: false,
         },
         children: [
             {
@@ -36,7 +39,8 @@ const routes = [
                 meta: {
                     title: 'Donor Details',
                     requiresAuth: true,
-                    designation: 1
+                    designation: 1,
+                    reRouteIfAuthorized: false,
                 }
             }
         ]
@@ -50,6 +54,7 @@ const routes = [
             requiresAuth: true,
             title: 'My Profile',
             designation: 1,
+            reRouteIfAuthorized: false,
         },
     },
     {
@@ -59,7 +64,8 @@ const routes = [
         meta: {
             requiresAuth: false,
             title: 'Sign In Page',
-            designation: 0
+            designation: 0,
+            reRouteIfAuthorized: true,
         }
     },
     {
@@ -69,7 +75,8 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'Statistics',
-            designation: 3
+            designation: 3,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -79,7 +86,8 @@ const routes = [
         meta: {
             requiresAuth: false,
             title: "Developers of Badhan",
-            designation: 0
+            designation: 0,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -89,7 +97,8 @@ const routes = [
         meta: {
             requiresAuth: false,
             title: "About Badhan",
-            designation: 0
+            designation: 0,
+            reRouteIfAuthorized: false,
         }
     },
 
@@ -100,27 +109,30 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'List of Volunteers',
-            designation: 1
+            designation: 1,
+            reRouteIfAuthorized: false,
         }
     },
     {
         name: 'Donor Creation',
         path: '/donorCreation',
         component: () => import('@/views/DonorCreation.vue'),
-        meta:{
+        meta: {
             requiresAuth: true,
             title: 'Donor Creation',
-            designation: 1
+            designation: 1,
+            reRouteIfAuthorized: false,
         }
     },
     {
         name: 'SingleDonorCreation',
         path: '/singleDonorCreation',
-        component:()=> import('@/views/SingleDonorCreation.vue'),
+        component: () => import('@/views/SingleDonorCreation.vue'),
         meta: {
             requiresAuth: true,
             title: 'Create Donor',
-            designation: 1
+            designation: 1,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -130,7 +142,19 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'Archived Donors',
-            designation: 2
+            designation: 2,
+            reRouteIfAuthorized: false,
+        }
+    },
+    {
+        name: 'PasswordReset',
+        path: '/passwordReset',
+        component: () => import('@/views/PasswordReset.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Set Your Password',
+            designation: 0,
+            reRouteIfAuthorized: true,
         }
     },
     {
@@ -141,6 +165,7 @@ const routes = [
             requiresAuth: false,
             title: 'Redirection',
             designation: 0,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -151,6 +176,7 @@ const routes = [
             requiresAuth: true,
             title: 'Developer Console',
             designation: 3,
+            reRouteIfAuthorized: false,
         }
     },
     {
@@ -160,7 +186,8 @@ const routes = [
         meta: {
             requiresAuth: false,
             title: "404 Not Found",
-            designation: 0
+            designation: 0,
+            reRouteIfAuthorized: false,
         }
     },
 
@@ -174,15 +201,15 @@ router.beforeEach(async (to, from, next) => {
         next();
     }
 
-    if(!store.getters.getIsLoggedIn){
+    if (!store.getters.getIsLoggedIn) {
         await store.dispatch('autoLogin');
     }
 
     if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
-        store.commit('setAutoRedirectionPath',to.fullPath);
+        store.commit('setAutoRedirectionPath', to.fullPath);
         // console.log(to.fullPath);
         next('/');
-    } else if (store.getters.getIsLoggedIn && to.name == 'SignIn') {
+    } else if (store.getters.getIsLoggedIn && (to.meta.reRouteIfAuthorized || to.meta.designation > store.getters.getDesignation)) {
         next('/home');
     } else {
         next();

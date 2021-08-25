@@ -23,7 +23,7 @@
           <span v-else>Super Admin</span>
         </v-chip>
         <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
-        <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="error">{{ availableIn }} Days remaining</v-chip>
+        <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="warning">{{ availableIn }} Days remaining</v-chip>
         <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
         <br>
         <div class="row" v-if="!getLoadingFlag">
@@ -66,7 +66,7 @@
                                 label="Public Data"></v-checkbox>
 
                     <div v-if="getDesignation > designation || $isMe(_id)">
-                      <v-btn color="primary" rounded class="white--text ml-2"
+                      <v-btn color="primary" rounded class="white--text ml-2" small
                              :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error"
                              :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
                         <v-icon left>
@@ -82,7 +82,7 @@
                               :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
                   </v-textarea>
 
-                  <v-btn color="primary" rounded
+                  <v-btn color="primary" rounded small
                          :disabled="getCommentLoaderFlag"
                          :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
                     <v-icon left>
@@ -103,7 +103,7 @@
               </v-card-title>
               <transition name="slide-fade-down-snapout" mode="out-in">
                 <v-card-text v-if="settingsCollapseFlag">
-                  <v-btn
+                  <v-btn small
                       class="ma-1"
                       color="primary"
                       :loading="promoteFlag"
@@ -113,11 +113,41 @@
                     <v-icon left>mdi-arrow-up</v-icon>
                     Promote To Volunteer
                   </v-btn>
-                  <v-btn class="ma-1" color="primary" rounded v-if="isPasswordLinkResetable">
+
+                  <v-btn small :loading="passwordRecoveryFlag" :disabled="passwordRecoveryFlag"
+                         @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
+                         v-if="isPasswordLinkResetable">
                     <v-icon left>mdi-lock-reset</v-icon>
                     Password Recovery Link
                   </v-btn>
-                  <v-btn class="ma-1" color="warning" rounded :loading="promoteFlag" :disabled="promoteFlag"
+
+                  <div class="mt-2" v-if="passwordRecoveryLink">
+                    <v-row no-gutters>
+                      <v-col cols="9">
+                        <v-text-field rounded dense outlined disabled
+                                      v-model="passwordRecoveryLink" label="Recovery link"></v-text-field>
+                      </v-col>
+                      <v-col cols="3">
+                        <v-tooltip
+                            v-model="passwordRecoveryTooltip"
+                            top
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
+                                   color="secondary">
+                              <v-icon>
+                                mdi-clipboard-outline
+                              </v-icon>
+                            </v-btn>
+                          </template>
+                          <span style="max-width: 300px">Password recovery link copied to clipboard.</span>
+                        </v-tooltip>
+                      </v-col>
+                    </v-row>
+                  </div>
+
+
+                  <v-btn small class="ma-1" color="warning" rounded :loading="promoteFlag" :disabled="promoteFlag"
                          v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
                     <v-icon left>mdi-arrow-down</v-icon>
                     Demote To Donor
@@ -139,11 +169,11 @@
                                   :disabled="!isDetailsEditable"
                                   @blur="$v.confirmPassword.$touch()"
                                   :error-messages="confirmPasswordErrors"></v-text-field>
-                    <v-btn class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
+                    <v-btn small class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
                       <v-icon left>mdi-window-close</v-icon>
                       Cancel
                     </v-btn>
-                    <v-btn class="ma-1" color="primary" rounded
+                    <v-btn class="ma-1" color="primary" rounded small
                            :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
                            :loading="passwordChangeFlag"
                            @click="savePasswordClicked"
@@ -152,12 +182,12 @@
                       Save
                     </v-btn>
                   </div>
-                  <v-btn class="ma-1" v-if="isDeletable" @click="deleteDonorClicked" rounded color="warning"
-                  :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
+                  <v-btn small class="ma-1" v-if="isDeletable" @click="deleteDonorClicked" rounded color="warning"
+                         :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
                     <v-icon left dark>mdi-delete</v-icon>
                     Delete this person
                   </v-btn>
-                  <v-btn class="ma-1" rounded color="primary" v-if="getDesignation===3 && designation===1"
+                  <v-btn small class="ma-1" rounded color="primary" v-if="getDesignation===3 && designation===1"
                          :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
                          :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
                     <v-icon left dark>mdi-arrow-up</v-icon>
@@ -195,8 +225,9 @@
                 </template>
                 <v-date-picker v-model="newDonationDate" no-title scrollable>
                   <v-spacer></v-spacer>
-                  <v-btn rounded text color="primary" @click="menu = false">Cancel</v-btn>
+                  <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
                   <v-btn
+                      small
                       rounded
                       text
                       color="primary"
@@ -243,7 +274,7 @@
                           </span>
                       </v-col>
                       <v-col cols="3">
-                        <v-btn @click="deleteDonationClicked(date)" color="error" x-small fab depressed>
+                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-col>
@@ -279,7 +310,12 @@ import PageTitle from "../PageTitle";
 import ShareProfileButton from "../ShareProfileButton";
 import Container from "../Wrappers/Container";
 import ContainerOutlined from "../Wrappers/ContainerOutlined";
-import {handlePATCHDonorsDesignation, handlePATCHUsersPassword, handleDELETEDonors} from "../../api";
+import {
+  handlePATCHDonorsDesignation,
+  handlePATCHUsersPassword,
+  handleDELETEDonors,
+  handlePOSTDonorsPasswordRequest
+} from "../../api";
 
 export default {
   name: "PersonDetails",
@@ -347,6 +383,9 @@ export default {
       promoteFlag: false,
       passwordChangeFlag: false,
       deleteDonorFlag: false,
+      passwordRecoveryFlag: false,
+      passwordRecoveryTooltip: false,
+      passwordRecoveryLink: null,
     };
   },
   validations: {
@@ -392,16 +431,16 @@ export default {
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
 
     isAllowedToPromoteToVolunteer() {
-      return this.designation === 0 && (this.getDesignation === 3 || (this.getHall === this.hall && this.getDesignation === 2))
+      return this.designation === 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isAllowedToDemoteToDonor() {
-      return this.designation === 1 && (this.getDesignation === 3 || (this.getHall === this.hall && this.getDesignation === 2))
+      return this.designation === 1 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isPasswordLinkResetable() {
-      return !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === this.hall && this.getDesignation > this.designation))
+      return !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
     },
     isDeletable() {
-      return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || (this.getDesignation === 2 && this.getHall === this.hall));
+      return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)));
     },
 
     isDetailsEditable() {
@@ -474,6 +513,24 @@ export default {
     ...mapMutations(['deletePerson']),
     ...mapMutations(['setToken']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord', 'fetchCallRecords']),
+
+    async createPasswordRecoveryLink() {
+      this.passwordRecoveryFlag = true;
+      let token = await handlePOSTDonorsPasswordRequest({donorId: this._id});
+      this.passwordRecoveryFlag = false;
+      if (!token) {
+        return;
+      }
+      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '#/passwordReset?token=' + token;
+    },
+    async passwordRecoveryLinkCopyClicked() {
+      await this.$copyText(this.passwordRecoveryLink);
+      this.passwordRecoveryTooltip = true;
+      setTimeout(() => {
+        this.passwordRecoveryTooltip = false
+      }, 2000);
+
+    },
     shareClicked() {
       let routeData = this.$router.resolve({
         name: 'Details',
@@ -524,6 +581,7 @@ export default {
     hideDetails() {
       this.showHistory = false;
     },
+
     async saveCommentClicked() {
       let comment = this.comment;
       if (this.comment === "") {
@@ -595,7 +653,7 @@ export default {
         donorId: this._id,
         password: this.newPassword,
       });
-      if(data){
+      if (data) {
         this.setToken(data.token);
       }
       this.passwordChangeFlag = false;
