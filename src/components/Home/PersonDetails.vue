@@ -103,96 +103,102 @@
               </v-card-title>
               <transition name="slide-fade-down-snapout" mode="out-in">
                 <v-card-text v-if="settingsCollapseFlag">
-                  <v-btn small
-                      class="ma-1"
-                      color="primary"
-                      :loading="promoteFlag"
-                      :disabled="promoteFlag"
-                      @click="promoteClicked"
-                      rounded v-if="isAllowedToPromoteToVolunteer">
-                    <v-icon left>mdi-arrow-up</v-icon>
-                    Promote To Volunteer
-                  </v-btn>
-
-                  <v-btn small :loading="passwordRecoveryFlag" :disabled="passwordRecoveryFlag"
-                         @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
-                         v-if="isPasswordLinkResetable">
-                    <v-icon left>mdi-lock-reset</v-icon>
-                    Password Recovery Link
-                  </v-btn>
-
-                  <div class="mt-2" v-if="passwordRecoveryLink">
-                    <v-row no-gutters>
-                      <v-col cols="9">
-                        <v-text-field rounded dense outlined disabled
-                                      v-model="passwordRecoveryLink" label="Recovery link"></v-text-field>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-tooltip
-                            v-model="passwordRecoveryTooltip"
-                            top
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
-                                   color="secondary">
-                              <v-icon>
-                                mdi-clipboard-outline
-                              </v-icon>
-                            </v-btn>
-                          </template>
-                          <span style="max-width: 300px">Password recovery link copied to clipboard.</span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </div>
-
-
-                  <v-btn small class="ma-1" color="warning" rounded :loading="promoteFlag" :disabled="promoteFlag"
-                         v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
-                    <v-icon left>mdi-arrow-down</v-icon>
-                    Demote To Donor
-                  </v-btn>
-
-                  <div v-if="$isMe(_id)">
-                    <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
-                                  :type="newPasswordFlag ? 'text' : 'password'" outlined
-                                  label="New Password" v-model="newPassword"
-                                  class="input-group--focused"
-                                  @click:append="newPasswordFlag = !newPasswordFlag"
-                                  :disabled="!isDetailsEditable"
-                                  @blur="$v.newPassword.$touch()"
-                                  :error-messages="newPasswordErrors"></v-text-field>
-                    <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
-                                  :type="confirmPasswordFlag ? 'text' : 'password'" outlined
-                                  label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
-                                  @click:append="confirmPasswordFlag = !confirmPasswordFlag"
-                                  :disabled="!isDetailsEditable"
-                                  @blur="$v.confirmPassword.$touch()"
-                                  :error-messages="confirmPasswordErrors"></v-text-field>
-                    <v-btn small class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
-                      <v-icon left>mdi-window-close</v-icon>
-                      Cancel
+                  <transition-group name="slide-fade-down" mode="out-in">
+                    <v-btn key="promoteToVolunteer"
+                           small
+                           class="ma-1"
+                           color="primary"
+                           :loading="promoteFlag"
+                           :disabled="promoteFlag"
+                           @click="promoteClicked"
+                           rounded v-if="isAllowedToPromoteToVolunteer">
+                      <v-icon left>mdi-arrow-up</v-icon>
+                      Promote To Volunteer
                     </v-btn>
-                    <v-btn class="ma-1" color="primary" rounded small
-                           :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
-                           :loading="passwordChangeFlag"
-                           @click="savePasswordClicked"
-                    >
-                      <v-icon left>mdi-content-save</v-icon>
-                      Save
+                    <v-btn key="passwordRecoveryLink" small :loading="passwordRecoveryFlag"
+                           :disabled="passwordRecoveryFlag"
+                           @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
+                           v-if="isPasswordLinkResetable">
+                      <v-icon left>mdi-lock-reset</v-icon>
+                      Password Recovery Link
                     </v-btn>
-                  </div>
-                  <v-btn small class="ma-1" v-if="isDeletable" @click="deleteDonorClicked" rounded color="warning"
-                         :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
-                    <v-icon left dark>mdi-delete</v-icon>
-                    Delete this person
-                  </v-btn>
-                  <v-btn small class="ma-1" rounded color="primary" v-if="getDesignation===3 && designation===1"
-                         :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
-                         :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
-                    <v-icon left dark>mdi-arrow-up</v-icon>
-                    Promote to Hall admin
-                  </v-btn>
+
+                    <div key="linkGenerated" class="mt-2" v-if="passwordRecoveryLink">
+                      <v-row no-gutters>
+                        <v-col cols="9">
+                          <v-text-field rounded dense outlined disabled
+                                        v-model="passwordRecoveryLink" label="Recovery link"></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                          <v-tooltip
+                              v-model="passwordRecoveryTooltip"
+                              top
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
+                                     color="secondary">
+                                <v-icon>
+                                  mdi-clipboard-outline
+                                </v-icon>
+                              </v-btn>
+                            </template>
+                            <span style="max-width: 300px">Password recovery link copied to clipboard.</span>
+                          </v-tooltip>
+                        </v-col>
+                      </v-row>
+                    </div>
+
+
+                    <v-btn key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
+                           :disabled="promoteFlag"
+                           v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
+                      <v-icon left>mdi-arrow-down</v-icon>
+                      Demote To Donor
+                    </v-btn>
+
+                    <div key="passwordChange" v-if="$isMe(_id)">
+                      <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                                    :type="newPasswordFlag ? 'text' : 'password'" outlined
+                                    label="New Password" v-model="newPassword"
+                                    class="input-group--focused"
+                                    @click:append="newPasswordFlag = !newPasswordFlag"
+                                    :disabled="!isDetailsEditable"
+                                    @blur="$v.newPassword.$touch()"
+                                    :error-messages="newPasswordErrors"></v-text-field>
+                      <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                                    :type="confirmPasswordFlag ? 'text' : 'password'" outlined
+                                    label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
+                                    @click:append="confirmPasswordFlag = !confirmPasswordFlag"
+                                    :disabled="!isDetailsEditable"
+                                    @blur="$v.confirmPassword.$touch()"
+                                    :error-messages="confirmPasswordErrors"></v-text-field>
+                      <v-btn small class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
+                        <v-icon left>mdi-window-close</v-icon>
+                        Cancel
+                      </v-btn>
+                      <v-btn class="ma-1" color="primary" rounded small
+                             :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
+                             :loading="passwordChangeFlag"
+                             @click="savePasswordClicked"
+                      >
+                        <v-icon left>mdi-content-save</v-icon>
+                        Save
+                      </v-btn>
+                    </div>
+                    <v-btn key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorClicked" rounded
+                           color="warning"
+                           :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
+                      <v-icon left dark>mdi-delete</v-icon>
+                      Delete this person
+                    </v-btn>
+                    <v-btn key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
+                           v-if="getDesignation===3 && designation===1"
+                           :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
+                           :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
+                      <v-icon left dark>mdi-arrow-up</v-icon>
+                      Promote to Hall admin
+                    </v-btn>
+                  </transition-group>
                 </v-card-text>
               </transition>
             </ContainerOutlined>
@@ -431,10 +437,10 @@ export default {
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
 
     isAllowedToPromoteToVolunteer() {
-      return this.designation === 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
+      return this.designation === 0 && halls.indexOf(this.hall)<=6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isAllowedToDemoteToDonor() {
-      return this.designation === 1 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
+      return this.designation === 1 && halls.indexOf(this.hall)<=6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isPasswordLinkResetable() {
       return !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
