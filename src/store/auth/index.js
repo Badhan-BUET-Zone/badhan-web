@@ -1,4 +1,15 @@
-import {badhanAxios,resetBaseURL,enableGuestAPI} from '../../api';
+import {
+    badhanAxios,
+    resetBaseURL,
+    enableGuestAPI,
+    handleDELETESignOut,
+    handleDELETESignOutAll,
+    handlePOSTRedirection,
+    handlePATCHRedirectedAuthentication,
+    handleGETDonorsMe,
+    handlePOSTSignIn
+} from '../../api';
+
 const state = {
     token: null,
     signInLoaderFlag: false,
@@ -22,26 +33,26 @@ const getters = {
     getSignInLoaderFlag: state => {
         return state.signInLoaderFlag
     },
-    getRedirectionRequestMade: state =>{
+    getRedirectionRequestMade: state => {
         return state.redirectionRequestMade
     },
-    getIsLoggedIn: state =>{
+    getIsLoggedIn: state => {
         return state.isLoggedIn;
     },
-    getIsGuest: state=>{
+    getIsGuest: state => {
         return state.isGuest;
     },
 
-    getAutoRedirectionPath: state=>{
+    getAutoRedirectionPath: state => {
         return state.autoRedirectionPath;
     },
 
 };
 const mutations = {
-    setAutoRedirectionPath (state,path){
+    setAutoRedirectionPath(state, path) {
         state.autoRedirectionPath = path;
     },
-    unsetAutoRedirectionPath(state){
+    unsetAutoRedirectionPath(state) {
         state.autoRedirectionPath = null;
     },
 
@@ -83,152 +94,131 @@ const mutations = {
         state.error = "";
     },
 
-    setLoginFlag(state){
+    setLoginFlag(state) {
         state.isLoggedIn = true;
     },
-    unsetLoginFlag(state){
+    unsetLoginFlag(state) {
         state.isLoggedIn = false;
     },
 
 
-
 };
 const actions = {
-    async logout({getters, commit, dispatch}) {
-        try {
-            commit('setLoadingTrue');
-            let response = await badhanAxios.delete('/users/signout', {});
-            dispatch('notification/notifySuccess', response.data.message);
-        } catch (e) {
-        } finally {
-            commit('setLoadingFalse');
-            commit('unsetLoginFlag')
-            commit('removeToken');
-            commit('removeTokenFromLocalStorage');
-            resetBaseURL()
+    async logout({commit, dispatch}) {
+        commit('setLoadingTrue');
+        let data = await handleDELETESignOut();
+        if (data) {
+            dispatch('notification/notifySuccess', data.message);
         }
+        commit('setLoadingFalse');
+        commit('unsetLoginFlag')
+        commit('removeToken');
+        commit('removeTokenFromLocalStorage');
+        resetBaseURL()
     },
     async logoutAll({commit, dispatch}) {
-        try {
-            commit('setLoadingTrue');
-            let response = await badhanAxios.delete('/users/signout/all');
-            dispatch('notification/notifySuccess', response.data.message);
-        } catch (e) {
-
-        } finally {
-            commit('setLoadingFalse');
-            commit('unsetLoginFlag');
-            commit('removeToken');
-            commit('removeTokenFromLocalStorage');
-            resetBaseURL()
-        }
-    },
-    async requestRedirectionToken({commit}){
         commit('setLoadingTrue');
-        try{
-            let response = await badhanAxios.post('/users/redirection');
-            return response.data.token;
-        }catch (e){
-            return null;
-        }finally {
-            commit('setLoadingFalse');
+        let data = await handleDELETESignOutAll();
+        if (data) {
+            dispatch('notification/notifySuccess', data.message);
         }
+
+        commit('setLoadingFalse');
+        commit('unsetLoginFlag');
+        commit('removeToken');
+        commit('removeTokenFromLocalStorage');
+        resetBaseURL()
+
     },
-    async redirectionLogin({getters,commit, dispatch},payload){
-        try {
-            commit('signInLoaderFlagOn');
-            let sendData = {
-                token: payload
-            };
+    async requestRedirectionToken({commit}) {
+        commit('setLoadingTrue');
+        let token = await handlePOSTRedirection();
+        commit('setLoadingFalse');
+        if (!token) return null;
+        return token;
+    },
+    async redirectionLogin({getters, commit, dispatch}, payload) {
+        commit('signInLoaderFlagOn');
+        let token = await handlePATCHRedirectedAuthentication({token: payload});
 
-            let response = await badhanAxios.patch('/users/redirection', sendData);
-
-            commit('setToken', response.data.token);
-
-
-            let profileInfo = await badhanAxios.get('/donors/me');
-
-            commit('setMyProfile', profileInfo.data.donor);
-            commit('setLoginFlag');
-            commit('saveTokenToLocalStorage');
-            return true;
-        } catch (error) {
-            return false;
-        } finally {
+        if (!token) {
             commit('signInLoaderFlagOff');
+            return false;
         }
+
+        commit('setToken', token);
+
+        let donor = await handleGETDonorsMe();
+        commit('signInLoaderFlagOff');
+
+        if (!donor) return false;
+
+        commit('setMyProfile', donor);
+        commit('setLoginFlag');
+        commit('saveTokenToLocalStorage');
+        return true;
+
     },
     async autoLogin({getters, commit, dispatch}) {
         commit('loadTokenFromLocalStorage');
-        if (getters.getToken === null)
-            return true;
-        try {
-            commit('signInLoaderFlagOn');
-            let sendData = {};
+        if (getters.getToken === null) return true;
 
-            let profileInfo = await badhanAxios.get('/donors/me');
+        commit('signInLoaderFlagOn');
+        let donor = await handleGETDonorsMe();
+        commit('signInLoaderFlagOff');
 
-            // dispatch('notification/notifySuccess', "Successfully Logged In");
-            commit('setMyProfile', profileInfo.data.donor);
-            commit('setLoginFlag');
-            return true;
-        } catch (error) {
+        if (!donor) {
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
             return false;
-        } finally {
-            commit('signInLoaderFlagOff');
         }
 
-
+        commit('setMyProfile', donor);
+        commit('setLoginFlag');
+        return true;
     },
 
-    async guestLogin({dispatch}){
+    async guestLogin({dispatch}) {
         enableGuestAPI();
-        await dispatch('login',{phone:"123465",password:"oseihgfweoisng",rememberFlag: false})
+        await dispatch('login', {phone: "123465", password: "oseihgfweoisng", rememberFlag: false})
     },
 
-    async resetBaseURLOfAPI(){
+    async resetBaseURLOfAPI() {
         resetBaseURL()
     },
 
     async login({getters, commit, dispatch}, payload) {
         commit('signInLoaderFlagOn');
-        try {
-            let sendData = {
-                phone: parseInt('88' + payload.phone),
-                password: payload.password,
-            };
-            let response = await badhanAxios.post('/users/signin', sendData);
+        let sendData = {
+            phone: parseInt('88' + payload.phone),
+            password: payload.password,
+        };
 
+        let data = await handlePOSTSignIn(sendData);
 
-            if (response.status !== 201) {
-                dispatch('notification/notifyError', "Status code not 201")
-                return;
-            }
-
-            commit('setToken', response.data.token);
-
-            let profileInfo = await badhanAxios.get('donors/me');
-
-            dispatch('notification/notifySuccess', response.data.message);
-
-            commit('setMyProfile', profileInfo.data.donor);
-
-            if (payload.rememberFlag) {
-                commit('saveTokenToLocalStorage');
-                // commit('saveMyProfileToLocalStorage');
-            } else {
-                commit('removeTokenFromLocalStorage');
-                // commit('removeProfileFromLocalStorage');
-            }
-            commit('setLoginFlag');
-            return true;
-        } catch (error) {
-            return false;
-        } finally {
+        if (!data) {
             commit('signInLoaderFlagOff');
+            return false;
         }
+        commit('setToken', data.token);
+
+        let donor = await handleGETDonorsMe();
+        commit('signInLoaderFlagOff');
+
+        if(!donor){
+            return false;
+        }
+
+        dispatch('notification/notifySuccess', data.message);
+        commit('setMyProfile', donor);
+
+        if (payload.rememberFlag) {
+            commit('saveTokenToLocalStorage');
+        } else {
+            commit('removeTokenFromLocalStorage');
+        }
+        commit('setLoginFlag');
+        return true;
     }
 };
 

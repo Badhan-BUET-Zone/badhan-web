@@ -7,7 +7,9 @@
       Activity count: {{ logCount.count }}
     </v-card-subtitle>
     <v-card-text>
-      <v-btn rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">Details</v-btn>
+      <v-btn rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
+        Details
+      </v-btn>
       <v-skeleton-loader type="text@3" v-if="dateLogsLoading"></v-skeleton-loader>
       <div v-for="dateLog in dateLogs">
         <PersonLog :date-log="dateLog" :date-string="logCount.dateString"></PersonLog>
@@ -17,7 +19,7 @@
 </template>
 
 <script>
-import {badhanAxios} from "../../api";
+import {handleGETLogsByDate} from "../../api";
 import PersonLog from "./PersonLog";
 
 export default {
@@ -26,26 +28,22 @@ export default {
 
   data: function () {
     return {
-      dateLogs:[],
-      dateLogsLoading:false,
+      dateLogs: [],
+      dateLogsLoading: false,
     }
   },
-  components:{
+  components: {
     PersonLog
   },
-  methods:{
-    async detailsClick(){
+  methods: {
+    async detailsClick() {
       let splitDate = this.logCount.dateString.split('-');
-      let timeStamp = new Date(parseInt(splitDate[0]),parseInt(splitDate[1])-1,parseInt(splitDate[2])).getTime();
-      try{
-        this.dateLogsLoading = true;
-        let response = await badhanAxios.get(`/log/date/${timeStamp}`);
-        this.dateLogs = response.data.logs;
-      }catch (e) {
-
-      }finally {
-        this.dateLogsLoading = false;
-      }
+      let timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime();
+      this.dateLogsLoading = true;
+      let logs = await handleGETLogsByDate({timeStamp});
+      this.dateLogsLoading = false;
+      if (!logs) return;
+      this.dateLogs = logs;
 
     }
   }

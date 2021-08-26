@@ -126,6 +126,90 @@ const handlePOSTDonorsPasswordRequest = async (payload) => {
     }
 }
 
+const handleGETDonorsDuplicate = async (payload)=>{
+    try{
+        let response = await badhanAxios.get('/donors/checkDuplicate', {params: payload});
+        return response.data;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handleGETLogsByDate = async(payload)=>{
+    try {
+        let response = await badhanAxios.get(`/log/date/${payload.timeStamp}`);
+        return response.data.logs;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handleGETLogs = async ()=>{
+    try{
+        let response = await badhanAxios.get('/log');
+        return response.data.logs;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handleDELETESignOut = async()=>{
+    try{
+        let response = await badhanAxios.delete('/users/signout', {});
+        return response.data;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handleDELETESignOutAll = async()=>{
+    try{
+        let response = await badhanAxios.delete('/users/signout/all');
+        return response.data;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handlePOSTRedirection = async()=>{
+    try{
+        let response = await badhanAxios.post('/users/redirection');
+        return response.data.token;
+    }catch (e) {
+        return null;
+    }finally {
+
+    }
+}
+const handlePATCHRedirectedAuthentication = async(payload)=>{
+    try{
+        let response = await badhanAxios.patch('/users/redirection', payload);
+        return response.data.token;
+    }catch (e) {
+        return null;
+    }finally {
+
+    }
+}
+const handleGETDonorsMe = async()=>{
+    try {
+        let response = await badhanAxios.get('/donors/me');
+        return response.data.donor;
+    }catch (e) {
+        return null;
+    }finally {
+    }
+}
+const handlePOSTSignIn = async(payload)=>{
+    try{
+        let response = await badhanAxios.post('/users/signin', payload);
+        return response.data;
+    }catch (e) {
+        return null;
+    }finally {
+
+    }
+}
 export {
     badhanAxios,
     firebaseAxios,
@@ -137,5 +221,14 @@ export {
     handlePATCHDonorsDesignation,
     handlePATCHUsersPassword,
     handleDELETEDonors,
-    handlePOSTDonorsPasswordRequest
+    handlePOSTDonorsPasswordRequest,
+    handleGETDonorsDuplicate,
+    handleGETLogsByDate,
+    handleGETLogs,
+    handleDELETESignOut,
+    handleDELETESignOutAll,
+    handlePOSTRedirection,
+    handlePATCHRedirectedAuthentication,
+    handleGETDonorsMe,
+    handlePOSTSignIn
 }

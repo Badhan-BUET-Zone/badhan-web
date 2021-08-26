@@ -9,6 +9,7 @@ git push origin master
 npm run build
 npx cap sync
 firebase deploy
+rm -r ./dist
 git checkout test-branch
 cd ../secrets
 bash ./push.sh

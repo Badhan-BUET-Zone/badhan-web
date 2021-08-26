@@ -113,8 +113,7 @@ import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
 import {isNative} from '@/plugins/android_support';
 import HelpTooltip from "../UI Components/HelpTooltip";
-import {badhanAxios} from "../../api";
-import _ from 'lodash';
+import {handleGETDonorsDuplicate} from "../../api";
 import Container from "../Wrappers/Container";
 
 export default {
@@ -131,23 +130,21 @@ export default {
         minLength: minLength(11),
         maxLength: maxLength(11),
         numeric,
-        uniqueCheck(phone) {
+        async uniqueCheck(phone) {
           if (!phone || phone.length !== 11 || isNaN(parseInt(phone))) return true;
 
-          this.phoneDuplicateCheckLoader = true;
           this.duplicateDonorId = null;
-          this.duplicateDonorMessage = "Checking phone..."
-          return badhanAxios.get('/donors/checkDuplicate', {params: {phone: '88' + phone}})
-              .then((res) => {
-                this.phoneDuplicateCheckLoader = false;
-                this.duplicateDonorId = res.data.donor ? res.data.donor._id : null;
-                this.duplicateDonorMessage = res.data.message;
-                // console.log(res.data.donor._id);
-                return !res.data.found;
-              })
-              .catch((e) => {
-                return false;
-              })
+          this.duplicateDonorMessage = "Checking phone...";
+          this.phoneDuplicateCheckLoader = true;
+          let data = await handleGETDonorsDuplicate({phone: '88' + phone});
+          this.phoneDuplicateCheckLoader = false;
+
+          if (!data)return false;
+
+          this.duplicateDonorId = data.donor ? data.donor._id : null;
+          this.duplicateDonorMessage = data.message;
+          // console.log(res.data.donor._id);
+          return !data.found;
         }
       },
       name: {

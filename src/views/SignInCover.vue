@@ -170,10 +170,9 @@
 <script>
 import SignInDialog from "@/components/SignInDialog";
 
-import {getDeviceInfo,isNative,exitApp} from '@/plugins/android_support';
+import {getDeviceInfo,isNative} from '@/plugins/android_support';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
 import {required, minLength,maxLength} from 'vuelidate/lib/validators'
-import {badhanAxios} from "../api";
 export default {
   name: "SignInCover",
   data() {

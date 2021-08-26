@@ -7,9 +7,15 @@
 
     <Container v-if="getStatisticsLoaderFlag">
       <v-card-text>
-        <p><b>Number of donors: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
-        <p><b>Number of donations: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
-        <p><b>Number of volunteers: </b><br><v-skeleton-loader type="text"></v-skeleton-loader></p>
+        <p><b>Number of donors: </b><br>
+          <v-skeleton-loader type="text"></v-skeleton-loader>
+        </p>
+        <p><b>Number of donations: </b><br>
+          <v-skeleton-loader type="text"></v-skeleton-loader>
+        </p>
+        <p><b>Number of volunteers: </b><br>
+          <v-skeleton-loader type="text"></v-skeleton-loader>
+        </p>
       </v-card-text>
     </Container>
 
@@ -23,20 +29,20 @@
     <Container>
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
       <transition name="slide-fade-down" type="out-in">
-      <v-card-text v-if="logCountLoader" :key="'logLoader'">
-        <v-row>
-          <v-col cols="12" sm="4" v-for="i in 3" :key="i">
-            <SkeletonDateLog></SkeletonDateLog>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-card-text v-else :key="'logLoaded'">
-        <v-row>
-          <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
-            <DateLog :log-count="logCount"></DateLog>
-          </v-col>
-        </v-row>
-      </v-card-text>
+        <v-card-text v-if="logCountLoader" :key="'logLoader'">
+          <v-row>
+            <v-col cols="12" sm="4" v-for="i in 3" :key="i">
+              <SkeletonDateLog></SkeletonDateLog>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-text v-else :key="'logLoaded'">
+          <v-row>
+            <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
+              <DateLog :log-count="logCount"></DateLog>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </transition>
 
       <v-card-actions>
@@ -85,7 +91,7 @@ import PageTitle from "@/components/PageTitle";
 import {mapActions, mapGetters} from "vuex";
 import LogObject from "../components/Statistics/LogObject";
 import {halls} from "../mixins/constants";
-import {badhanAxios} from "../api";
+import {handleGETLogs} from "../api";
 import DateLog from "../components/Statistics/DateLog";
 import SkeletonDateLog from "../components/Statistics/SkeletonDateLog";
 import Container from "../components/Wrappers/Container";
@@ -93,7 +99,7 @@ import ContainerFlat from "../components/Wrappers/ContainerFlat";
 
 export default {
   name: "Statistics",
-  components: {ContainerFlat, Container, PageTitle, LogObject,DateLog,SkeletonDateLog},
+  components: {ContainerFlat, Container, PageTitle, LogObject, DateLog, SkeletonDateLog},
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),
@@ -181,16 +187,11 @@ export default {
       return;
     }
 
-    try{
-      this.logCountLoader = true;
-      let logCountPerDayResult = await badhanAxios.get('/log');
-      this.logCountPerDay = logCountPerDayResult.data.logs;
-    }catch (e) {
-
-    }finally {
-      this.logCountLoader = false;
-    }
-
+    this.logCountLoader = true;
+    let logs = await handleGETLogs();
+    this.logCountLoader = false;
+    if (!logs) return;
+    this.logCountPerDay = logs;
   },
   data() {
     return {
@@ -206,7 +207,7 @@ export default {
         {text: 'Name', value: 'name'},
         {text: 'Hall', value: 'hall'},
         {text: 'Student ID', value: 'studentId'},
-        {text: 'Activity Count',value: 'logCount'}
+        {text: 'Activity Count', value: 'logCount'}
       ],
 
       ////////////////////////////////////////////////////////////// CALENDER
