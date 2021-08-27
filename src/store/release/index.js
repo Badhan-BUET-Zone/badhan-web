@@ -1,40 +1,39 @@
-import {badhanAxios} from '@/api';
+import {badhanAxios, handleGETAppVersion} from '../../api';
 
 const state = {
-    appDetails: null,
     appDetailsLoader: false,
+    appVersion: null,
 };
 
 const getters = {
-    getAppDetails(state){
-        return state.appDetails;
-    },
-    getAppDetailsLoader(state){
+    getAppDetailsLoader(state) {
         return state.appDetailsLoader;
+    },
+    getAppVersion(state){
+        return state.appVersion;
     }
 
 };
 const mutations = {
-    setAppDetails(state, payload){
-        state.appDetails = payload;
-    },
-    setAppDetailsLoader(state){
+    setAppDetailsLoader(state) {
         state.appDetailsLoader = true;
     },
-    unsetAppDetailsLoader(state){
+    unsetAppDetailsLoader(state) {
         state.appDetailsLoader = false;
+    },
+    setAppVersion(state,payload){
+        state.appVersion = payload;
     }
 };
 const actions = {
-    async fetchtAppDetails({commit,getters,rootState,rootGetters, dispatch}){
+    async fetchtAppDetails({commit, getters, rootState, rootGetters, dispatch}) {
         commit('setAppDetailsLoader');
-        try{
-            return await badhanAxios('/v3/log/version');
-        }catch (e){
-
-        }finally {
-            commit('unsetAppDetailsLoader');
+        let response = await handleGETAppVersion();
+        commit('unsetAppDetailsLoader');
+        if(response.status===200){
+            commit('setAppVersion',response.data.version);
         }
+        return response;
     }
 };
 

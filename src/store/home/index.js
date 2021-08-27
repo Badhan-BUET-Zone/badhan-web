@@ -1,5 +1,5 @@
-import {badhanAxios} from '@/api';
-import { bloodGroups, halls } from "@/mixins/constants";
+import {badhanAxios, handleGETSearchOptimized} from '../../api';
+import {bloodGroups, halls} from "@/mixins/constants";
 import donate from "@/store/home/donate";
 
 let compareObject = (a, b) => {
@@ -20,7 +20,7 @@ const state = {
     personGroups: {},
     searchedHall: 0,
 
-    persons:[],
+    persons: [],
     numOfDonor: 0,
 
 
@@ -52,13 +52,12 @@ const getters = {
     getNumberOfDonors: state => {
         return state.numOfDonor;
     },
-    getPersons: state=>{
+    getPersons: state => {
         return state.persons;
     },
-    getSearchedHall: state=>{
+    getSearchedHall: state => {
         return state.searchedHall;
     }
-
 
 
 };
@@ -92,14 +91,14 @@ const mutations = {
     hideSearchResults(state) {
         state.searchResultShown = false;
     },
-    resetSearchResults(state){
-        state.personGroups= {};
-        state.persons=[];
+    resetSearchResults(state) {
+        state.personGroups = {};
+        state.persons = [];
         state.searchResultShown = false;
     },
 
     setPersonGroups(state, payload) {
-        state.personGroups=[];
+        state.personGroups = [];
         state.numOfDonor = payload.length;
 
         let persons = payload;
@@ -128,16 +127,16 @@ const mutations = {
         state.searchResultShown = true;
     },
 
-    setSearchedHall(state,payload){
+    setSearchedHall(state, payload) {
         state.searchedHall = payload;
     },
 
-    deletePerson(state,person){
-        let batch = person.studentId.substr(0,2);
-        for(let j = 0 ; j <state.personGroups.length; j++ ){
-            if(state.personGroups[j].batch===batch){
-                for(let i = 0 ; i < state.personGroups[j].people.length; i++){
-                    if(state.personGroups[j].people[i]._id===person._id){
+    deletePerson(state, person) {
+        let batch = person.studentId.substr(0, 2);
+        for (let j = 0; j < state.personGroups.length; j++) {
+            if (state.personGroups[j].batch === batch) {
+                for (let i = 0; i < state.personGroups[j].people.length; i++) {
+                    if (state.personGroups[j].people[i]._id === person._id) {
                         state.personGroups[j].people.splice(i, 1);
                         return;
                     }
@@ -147,7 +146,7 @@ const mutations = {
     }
 };
 const actions = {
-    async search({ getters, commit }, payload) {
+    async search({getters, commit}, payload) {
 
         //clear previous search results
         commit('hideSearchResults');
@@ -164,18 +163,16 @@ const actions = {
             availableToAll: payload.availableToAll
         };
 
-        try {
-            let response = await badhanAxios.get('/search/v2', {params: sendData} );
-            commit('setPersonGroups', response.data.filteredDonors);
-            commit('setSearchedHall',payload.hall);
-            commit('hideFilter');
-        } catch (error) {
-        } finally {
-            commit('searchLoaderFlagOff');
+        commit('searchLoaderFlagOn');
+        let response = await handleGETSearchOptimized(sendData);
+        commit('searchLoaderFlagOff');
+        if (response.status !== 200) {
+            return false;
         }
+        commit('setPersonGroups', response.data.filteredDonors);
+        commit('setSearchedHall', payload.hall);
+        commit('hideFilter');
     },
-
-
 };
 
 
@@ -184,7 +181,7 @@ export default {
     actions,
     getters,
     mutations,
-    modules:{
+    modules: {
         donate
     }
 }

@@ -1,4 +1,5 @@
-import {badhanAxios,firebaseAxios} from '@/api';
+import {badhanAxios, firebaseAxios, handleGETStatistics} from '../../api';
+
 const state = {
     statistics: null,
     statisticsLoaderFlag: false,
@@ -23,31 +24,30 @@ const getters = {
         return state.statisticsLoaderFlag;
     },
 
-    getLogs: state=>{
+    getLogs: state => {
         return state.logs;
     },
 
 
-
-    getLogsLoaderFlag: state=>{
+    getLogsLoaderFlag: state => {
         return state.logsLoaderFlag;
     },
 
-    getLogDeleteFLag: state=>{
+    getLogDeleteFLag: state => {
         return state.logDeleteFlag;
     },
 
-    getVolunteers: state=>{
+    getVolunteers: state => {
         return state.volunteers;
     },
-    getVolunteerLoaderFlag: state=>{
+    getVolunteerLoaderFlag: state => {
         return state.volunteerLoaderFlag
     },
 
-    getCredits: state=>{
+    getCredits: state => {
         return state.credits;
     },
-    getCreditsLoaderFlag: state=>{
+    getCreditsLoaderFlag: state => {
         return state.creditsLoaderFlag;
     }
 };
@@ -55,117 +55,101 @@ const mutations = {
     setStatistics(state, payload) {
         state.statistics = payload;
     },
-    unsetStatistics(state){
+    unsetStatistics(state) {
         state.statistics = null;
     },
-    setStatisticsLoaderFlag(state){
+    setStatisticsLoaderFlag(state) {
         state.statisticsLoaderFlag = true;
     },
-    unsetStatisticsLoaderFlag(state){
+    unsetStatisticsLoaderFlag(state) {
         state.statisticsLoaderFlag = false;
     },
 
-    setLogs(state,payload){
+    setLogs(state, payload) {
         state.logs = payload;
     },
-    unsetLogs(state){
+    unsetLogs(state) {
         state.logs = [];
     },
-    setLogsLoaderFlag(state){
+    setLogsLoaderFlag(state) {
         state.logsLoaderFlag = true;
     },
-    unsetLogsLoaderFlag(state){
+    unsetLogsLoaderFlag(state) {
         state.logsLoaderFlag = false;
     },
-    setLogDeleteFlag(state){
+    setLogDeleteFlag(state) {
         state.logDeleteFlag = true;
     },
-    unsetLogDeleteFlag(state){
+    unsetLogDeleteFlag(state) {
         state.logDeleteFlag = false;
     },
 
-    setVolunteers(state,payload){
+    setVolunteers(state, payload) {
         state.volunteers = payload;
     },
-    unsetVolunteers(state){
+    unsetVolunteers(state) {
         state.volunteers = [];
     },
-    setVolunteerLoaderFlag(state){
+    setVolunteerLoaderFlag(state) {
         state.volunteerLoaderFlag = true;
     },
-    unsetVolunteerLoaderFlag(state){
+    unsetVolunteerLoaderFlag(state) {
         state.volunteerLoaderFlag = false;
     },
 
-    setCredits(state,payload){
+    setCredits(state, payload) {
         state.credits = payload;
     },
-    setCreditsLoader(state){
+    setCreditsLoader(state) {
         state.creditsLoaderFlag = true;
     },
-    unsetCreditsLoader(state){
+    unsetCreditsLoader(state) {
         state.creditsLoaderFlag = false;
     }
 
 };
 const actions = {
-    async fetchStatistics({ commit, getters }) {
+    async fetchStatistics({commit, getters}) {
         commit('unsetStatistics');
         commit('setStatisticsLoaderFlag');
-        try{
-            let response = await badhanAxios.get('/v2/log/statistics');
-            commit('setStatistics',response.data.statistics);
-        }catch(e){
-
-        }finally {
-            commit('unsetStatisticsLoaderFlag');
-        }
+        let response = await handleGETStatistics();
+        commit('unsetStatisticsLoaderFlag');
+        if (response.status !== 200) return;
+        commit('setStatistics', response.data.statistics);
     },
-    async fetchLogs({commit,getters}){
-        commit('unsetLogs');
-        commit('setLogsLoaderFlag');
-        try{
-            let response = await badhanAxios.get('/v1/log');
-            commit('setLogs',response.data.logs);
-        }catch(e){
-
-        }finally {
-            commit('unsetLogsLoaderFlag');
-        }
-    },
-    async removeAllLogs({commit,dispatch}){
+    async removeAllLogs({commit, dispatch}) {
         commit('setLogDeleteFlag');
-        try{
+        try {
             let response = await badhanAxios.delete('/v1/log');
-            dispatch('fetchLogs');
-        }catch(e){
+            commit('unsetLogs');
+        } catch (e) {
 
-        }finally {
+        } finally {
             commit('unsetLogDeleteFlag');
         }
     },
 
-    async fetchAllVolunteers({commit}){
+    async fetchAllVolunteers({commit}) {
         commit('setVolunteerLoaderFlag');
         commit('unsetVolunteers');
-        try{
+        try {
             let response = await badhanAxios.get('/volunteers/all')
-            commit('setVolunteers',response.data.data);
-        }catch(e){
+            commit('setVolunteers', response.data.data);
+        } catch (e) {
 
-        }finally{
+        } finally {
             commit('unsetVolunteerLoaderFlag');
         }
     },
 
-    async fetchCredits({commit}){
+    async fetchCredits({commit}) {
         commit('setCreditsLoader');
-        try{
+        try {
             let response = await firebaseAxios.get('/contributors.json')
-            commit('setCredits',response.data);
-        }catch (e){
+            commit('setCredits', response.data);
+        } catch (e) {
 
-        }finally{
+        } finally {
             commit('unsetCreditsLoader');
         }
     }

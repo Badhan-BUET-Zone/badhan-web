@@ -3,11 +3,25 @@
     <PageTitle :title="$route.meta.title"></PageTitle>
     <!--    <iframe style="height: 100vh; width: 100%"-->
     <!--            src="https://docs.google.com/document/d/e/2PACX-1vTamaAg-1VswXa2Zd2UScuNBbQAgoIA0AYb1r_Z9Nl7rotLh2_AQEf24kiX4XfL210gCXTKY4_JNB3c/pub?embedded=true"></iframe>-->
-    <Container>
-      <v-card-text>
-        <VueMarkdown>{{text}}</VueMarkdown>
-      </v-card-text>
-    </Container>
+    <transition-group name="slide-fade-down-snapout" mode="out-in">
+      <Container :key="'versionLoading'" v-if="getAppDetailsLoader">
+        <v-card-text>
+          <v-skeleton-loader type="text@2">
+          </v-skeleton-loader>
+        </v-card-text>
+      </Container>
+      <Container v-else :key="'versionLoaded'">
+        <v-card-text>
+          <p>App Version on Google Play: {{ getAppVersion }}</p>
+          <p>Local App Version: {{ getLocalAppVersion }}</p>
+        </v-card-text>
+      </Container>
+      <Container :key="'aboutPage'">
+        <v-card-text>
+          <VueMarkdown>{{ text }}</VueMarkdown>
+        </v-card-text>
+      </Container>
+    </transition-group>
 
   </div>
 
@@ -18,17 +32,28 @@ import PageTitle from "../components/PageTitle";
 import VueMarkdown from 'vue-markdown';
 import readme from '../../README.md';
 import Container from "../components/Wrappers/Container";
+import {mapGetters} from "vuex";
+import {getNativeAppVersion, isNative} from "../plugins/android_support";
+
 export default {
   name: "About",
-  components: {Container, PageTitle,VueMarkdown},
+  computed: {
+    ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
+    getLocalAppVersion() {
+      if (isNative()) {
+        return getNativeAppVersion();
+      }
+      return "Web"
+    }
+  },
+  components: {Container, PageTitle, VueMarkdown},
   data() {
     return {
-      text:readme
+      text: readme
     }
 
   },
-  mounted(){
-    let result = this.text.match(/Java(Script)/);
+  mounted() {
   }
 }
 </script>

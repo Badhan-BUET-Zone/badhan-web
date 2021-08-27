@@ -1,31 +1,28 @@
 <template>
   <div>
     <PageTitle></PageTitle>
-    <ContainerFlat>
+    <Container>
       <v-btn class="ma-2" color="primary" rounded @click="showStats">Show Stats</v-btn>
-    </ContainerFlat>
-
-    <Container v-if="getStatisticsLoaderFlag">
-      <v-card-text>
-        <p><b>Number of donors: </b><br>
-          <v-skeleton-loader type="text"></v-skeleton-loader>
-        </p>
-        <p><b>Number of donations: </b><br>
-          <v-skeleton-loader type="text"></v-skeleton-loader>
-        </p>
-        <p><b>Number of volunteers: </b><br>
-          <v-skeleton-loader type="text"></v-skeleton-loader>
-        </p>
-      </v-card-text>
+      <transition name="slide-fade-down-snapout" mode="out-in">
+        <v-card-text :key="'loadingStats'" v-if="getStatisticsLoaderFlag">
+          <p><b>Number of donors: </b><br>
+            <v-skeleton-loader type="text"></v-skeleton-loader>
+          </p>
+          <p><b>Number of donations: </b><br>
+            <v-skeleton-loader type="text"></v-skeleton-loader>
+          </p>
+          <p><b>Number of volunteers: </b><br>
+            <v-skeleton-loader type="text"></v-skeleton-loader>
+          </p>
+        </v-card-text>
+        <v-card-text :key="'loadedStats'" v-if="getStatistics!==null">
+          <p><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
+          <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
+          <p><b>Number of volunteers: </b><br>{{ getStatistics.volunteerCount }}</p>
+        </v-card-text>
+      </transition>
     </Container>
 
-    <Container v-if="getStatistics!==null">
-      <v-card-text>
-        <p><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
-        <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
-        <p><b>Number of volunteers: </b><br>{{ getStatistics.volunteerCount }}</p>
-      </v-card-text>
-    </Container>
     <Container>
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
       <transition name="slide-fade-down" type="out-in">
@@ -116,7 +113,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
-    ...mapActions('statistics', ['fetchStatistics', 'fetchLogs', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
+    ...mapActions('statistics', ['fetchStatistics', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
     getCountOfLogsOfDate(date) {
       return this.getLogs.filter((log) => {
         return new Date(log.date).toDateString() === new Date(date).toDateString();
@@ -170,10 +167,7 @@ export default {
       this.fetchStatistics();
       this.statsShown = true;
     },
-    async showLogs() {
-      await this.fetchLogs();
-      this.updateRange();
-    },
+
     async showVolunteers() {
 
       await this.fetchAllVolunteers();

@@ -261,6 +261,27 @@ const handleGETDonors = async(payload)=>{
         return e.response;
     }
 }
+const handleGETSearchOptimized = async(payload)=>{
+    try {
+        return await badhanAxios.get('/search/v2', {params: payload} );
+    }catch (e) {
+        return e.response;
+    }
+}
+const handleGETAppVersion = async()=>{
+    try{
+        return await badhanAxios('/v3/log/version');
+    }catch (e) {
+        return e.response;
+    }
+}
+const handleGETStatistics = async()=>{
+    try{
+        return await badhanAxios.get('/v2/log/statistics');
+    }catch (e) {
+        return e.response;
+    }
+}
 export {
     badhanAxios,
     firebaseAxios,
@@ -285,6 +306,9 @@ export {
     handleGETVolunteers,
     handlePOSTDonors,
     handlePOSTDonations,
-    handleGETDonors
+    handleGETDonors,
+    handleGETSearchOptimized,
+    handleGETAppVersion,
+    handleGETStatistics
 
 }

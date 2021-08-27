@@ -202,9 +202,11 @@ import {isNative} from '@/plugins/android_support';
 import {isGuestEnabled} from "../api";
 
 export default {
-  data: () => ({
-    drawer: false,
-  }),
+  data: function (){
+    return{
+      drawer: !this.$isMobile(),
+    }
+  },
   computed: {
     ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
     isNative() {
@@ -215,7 +217,7 @@ export default {
     }
   },
   mounted() {
-    this.drawer = !this.$isMobile();
+    // this.drawer = !this.$isMobile();
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
