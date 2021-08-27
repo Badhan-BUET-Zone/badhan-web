@@ -42,6 +42,7 @@ badhanAxios.interceptors.request.use((config) => {
     }
 
     store.dispatch('notification/notifyError', "Network Not Available");
+
     return {
         ...config,
         cancelToken: new CancelToken((cancel) => cancel('Network Unavailable'))
@@ -212,10 +213,15 @@ const handlePATCHRedirectedAuthentication = async(payload)=>{
 }
 const handleGETDonorsMe = async()=>{
     try {
-        let response = await badhanAxios.get('/donors/me');
-        return response.data.donor;
+        return await badhanAxios.get('/donors/me');
     }catch (e) {
-        return null;
+        if(axios.isCancel(e)){
+            return{
+                status:503,
+                message:e.message
+            }
+        }
+        return e.response;
     }
 }
 const handlePOSTSignIn = async(payload)=>{

@@ -147,12 +147,12 @@ const actions = {
         }
 
         commit('setToken', token);
-
-        let donor = await handleGETDonorsMe();
+        let response = await handleGETDonorsMe();
         commit('signInLoaderFlagOff');
 
-        if (!donor) return false;
+        if (response.status!==200) return false;
 
+        let donor = response.data.donor;
         commit('setMyProfile', donor);
         commit('setLoginFlag');
         commit('saveTokenToLocalStorage');
@@ -164,15 +164,17 @@ const actions = {
         if (getters.getToken === null) return true;
 
         commit('signInLoaderFlagOn');
-        let donor = await handleGETDonorsMe();
+        let response = await handleGETDonorsMe();
         commit('signInLoaderFlagOff');
 
-        if (!donor) {
+        if (response.status!==200) {
+            if(response.status!==401)return false;
             commit('removeToken');
             commit('removeTokenFromLocalStorage');
             return false;
         }
 
+        let donor = response.data.donor;
         commit('setMyProfile', donor);
         commit('setLoginFlag');
         return true;
@@ -202,13 +204,14 @@ const actions = {
         }
         commit('setToken', data.token);
 
-        let donor = await handleGETDonorsMe();
+        let response = await handleGETDonorsMe();
         commit('signInLoaderFlagOff');
 
-        if(!donor){
+        if(response.status!==200){
             return false;
         }
 
+        let donor =  response.data.donor;
         dispatch('notification/notifySuccess', data.message);
         commit('setMyProfile', donor);
 
