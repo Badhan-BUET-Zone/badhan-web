@@ -56,7 +56,6 @@ badhanAxios.interceptors.response.use((response) => {
             stack: error.response.config.method + " " + error.response.config.url
         });
     }
-
     return Promise.reject(error);
 });
 
@@ -83,6 +82,15 @@ firebaseAxios.interceptors.response.use((response) => {
 });
 
 /////////////////////////ROUTES////////////////////////////////////////////////////
+/*
+CONVENTIONS TO BE FOLLOWED
+* No notifications will be sent from here
+* Return response in case of successful api calls and return error.response in case of error cases.
+* Method names must match with the corresponding route controller of backend
+* Always send an object as payload in these methods
+* All API calls must be done from this file
+ */
+
 const handlePATCHDonorsDesignation = async (payload) => {
     try {
         let response = await badhanAxios.patch("/donors/designation", payload);
@@ -90,7 +98,6 @@ const handlePATCHDonorsDesignation = async (payload) => {
         return true;
     } catch (error) {
         return false;
-    } finally {
     }
 }
 const handlePATCHUsersPassword = async (payload) => {
@@ -100,8 +107,6 @@ const handlePATCHUsersPassword = async (payload) => {
         return response.data;
     } catch (error) {
         return null;
-    } finally {
-
     }
 }
 const handleDELETEDonors = async (payload) => {
@@ -111,7 +116,6 @@ const handleDELETEDonors = async (payload) => {
         return true;
     } catch (error) {
         return false;
-    } finally {
     }
 }
 
@@ -122,7 +126,6 @@ const handlePOSTDonorsPasswordRequest = async (payload) => {
         return response.data.token;
     }catch (error) {
         return null;
-    } finally {
     }
 }
 
@@ -132,7 +135,6 @@ const handleGETDonorsDuplicate = async (payload)=>{
         return response.data;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handleGETLogsByDate = async(payload)=>{
@@ -141,7 +143,6 @@ const handleGETLogsByDate = async(payload)=>{
         return response.data.logs;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handleGETLogs = async ()=>{
@@ -150,7 +151,6 @@ const handleGETLogs = async ()=>{
         return response.data.logs;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handleDELETESignOut = async()=>{
@@ -159,7 +159,6 @@ const handleDELETESignOut = async()=>{
         return response.data;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handleDELETESignOutAll = async()=>{
@@ -168,7 +167,6 @@ const handleDELETESignOutAll = async()=>{
         return response.data;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handlePOSTRedirection = async()=>{
@@ -177,8 +175,6 @@ const handlePOSTRedirection = async()=>{
         return response.data.token;
     }catch (e) {
         return null;
-    }finally {
-
     }
 }
 const handlePATCHRedirectedAuthentication = async(payload)=>{
@@ -187,8 +183,6 @@ const handlePATCHRedirectedAuthentication = async(payload)=>{
         return response.data.token;
     }catch (e) {
         return null;
-    }finally {
-
     }
 }
 const handleGETDonorsMe = async()=>{
@@ -197,7 +191,6 @@ const handleGETDonorsMe = async()=>{
         return response.data.donor;
     }catch (e) {
         return null;
-    }finally {
     }
 }
 const handlePOSTSignIn = async(payload)=>{
@@ -206,8 +199,35 @@ const handlePOSTSignIn = async(payload)=>{
         return response.data;
     }catch (e) {
         return null;
-    }finally {
-
+    }
+}
+const handleGETVolunteers = async()=>{
+    try{
+        let response = await badhanAxios.get('/volunteers');
+        return response.data.volunteerList;
+    }catch (e) {
+        return null;
+    }
+}
+const handlePOSTDonors = async(payload)=>{
+    try {
+        return await badhanAxios.post("/donors", payload);
+    }catch (e) {
+        return e.response;
+    }
+}
+const handlePOSTDonations = async(payload)=>{
+    try{
+        return await badhanAxios.post("/donations", payload)
+    }catch (e) {
+        return e.response;
+    }
+}
+const handleGETDonors = async(payload)=>{
+    try{
+        return await badhanAxios.get('/donors', {params:payload});
+    }catch (e) {
+        return e.response;
     }
 }
 export {
@@ -230,5 +250,10 @@ export {
     handlePOSTRedirection,
     handlePATCHRedirectedAuthentication,
     handleGETDonorsMe,
-    handlePOSTSignIn
+    handlePOSTSignIn,
+    handleGETVolunteers,
+    handlePOSTDonors,
+    handlePOSTDonations,
+    handleGETDonors
+
 }

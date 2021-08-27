@@ -235,7 +235,6 @@ export default {
     this.setInformation(this.person);
   },
   methods: {
-    ...mapActions('details',['getDetailsInPersonCard']),
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord', ['postCallRecordFromCard', 'fetchCallRecordsForHome']),
     async callFromDialer() {
@@ -298,22 +297,6 @@ export default {
       this.callRecords =person.callRecords;
     },
 
-    // async fetchProfileDetails() {
-    //   this.showExtensionFlag = false;
-    //   this.profileDetailsLoading = true;
-    //   let person = await this.getDetailsInPersonCard(this.id);
-    //   this.profileDetailsLoading = false;
-    //   if(!person){
-    //     return;
-    //   }
-    //
-    //   this.availableInRendered = 0;
-    //   this.setInformation(person);
-    //   this.profileDetailsClicked = false;
-    //
-    //
-    //
-    // }
   },
 };
 </script>

@@ -1,4 +1,5 @@
-import {badhanAxios} from '@/api';
+import {badhanAxios, handlePOSTDonations} from '../../api';
+
 const state = {
     donationLoaderFlag: false,
 
@@ -7,53 +8,47 @@ const state = {
 };
 
 const getters = {
-    getDonationLoaderFlag: state=>{
+    getDonationLoaderFlag: state => {
         return state.donationLoaderFlag
     },
-    getDonationError: state=>{
+    getDonationError: state => {
         return state.donationError
     },
-    getDonationSuccess: state=>{
+    getDonationSuccess: state => {
         return state.donationSuccess
     }
 };
 const mutations = {
-    donationLoaderFlagOn(state){
-        state.donationLoaderFlag=true;
+    donationLoaderFlagOn(state) {
+        state.donationLoaderFlag = true;
     },
-    donationLoaderFlagOff(state){
-        state.donationLoaderFlag=false;
+    donationLoaderFlagOff(state) {
+        state.donationLoaderFlag = false;
     },
-    setDonationError(state,payload){
+    setDonationError(state, payload) {
         state.donationError = payload;
     },
-    setDonationSuccess(state,payload){
+    setDonationSuccess(state, payload) {
         state.donationSuccess = payload;
     },
-    clearDonationMessage(state){
+    clearDonationMessage(state) {
         state.donationSuccess = null;
         state.donationError = null;
 
     }
 };
 const actions = {
-    async donate({ commit, getters,rootState, rootGetters, dispatch},payload){
-        commit('donationLoaderFlagOn');
+    async donate({commit, getters, rootState, rootGetters, dispatch}, payload) {
         let sendData = {
-            // donorPhone: this.$props.phone,
             donorId: payload.donorId,
             date: new Date(payload.newDonationDate).getTime(),
         };
-
-        try {
-            let response = await badhanAxios.post("/donations", sendData);
-            dispatch('notification/notifySuccess',"Successfully added donation",{root: true});
-            return true;
-        } catch (error) {
-            return false;
-        } finally {
-            commit('donationLoaderFlagOff');
-        }
+        commit('donationLoaderFlagOn');
+        let response = await handlePOSTDonations(sendData);
+        commit('donationLoaderFlagOff');
+        if (response.status !== 201) return false;
+        dispatch('notification/notifySuccess', "Successfully added donation", {root: true});
+        return true;
     }
 };
 

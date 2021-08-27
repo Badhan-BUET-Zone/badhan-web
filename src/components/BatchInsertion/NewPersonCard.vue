@@ -384,9 +384,9 @@ export default {
       }
 
       this.donorCreationLoader = true;
-      let newDonorResult = await this.saveDonor(newDonor);
-      if (newDonorResult.payload.status === 409) {
-        this.duplicateDonorId = newDonorResult.payload.data.donor._id;
+      let response = await this.saveDonor(newDonor);
+      if (response.status === 409) {
+        this.duplicateDonorId = response.data.donor._id;
       }
       this.donorCreationLoader = false;
 

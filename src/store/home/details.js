@@ -1,4 +1,4 @@
-import {badhanAxios} from '/src/api'
+import {badhanAxios, handleGETDonors} from '/src/api'
 
 const state = {
     //SEE DONOR DETAILS
@@ -50,31 +50,18 @@ const actions = {
             donorId: payload
         };
         commit('donorLoaderFlagOn');
-        try {
-            let response = await badhanAxios.get('/donors', {params});
-            commit('setProfile', response.data.donor);
-            commit('callrecord/setCallRecords',response.data.donor.callRecords,{root: true});
-            commit('donation/setDonationList',response.data.donor.donations.map(a => a.date),{root:true});
-            return true;
-        } catch (error) {
-            return false;
-        } finally {
-            commit('donorLoaderFlagOff');
-        }
-    },
 
-    async getDetailsInPersonCard({},payload){
-        let params = {
-            donorId: payload
-        };
-        try {
-            let response = await badhanAxios.get('/donors', {params});
-            return response.data.donor;
-        } catch (error) {
-            return null;
-        } finally {
-        }
-    }
+        let response = await handleGETDonors(params);
+        commit('donorLoaderFlagOff');
+
+        if (response.status !== 200) return false;
+
+        commit('setProfile', response.data.donor);
+        commit('callrecord/setCallRecords', response.data.donor.callRecords, {root: true});
+        commit('donation/setDonationList', response.data.donor.donations.map(a => a.date), {root: true});
+        return true;
+
+    },
 };
 export default {
     state,
