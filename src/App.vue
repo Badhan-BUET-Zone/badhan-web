@@ -87,15 +87,27 @@ export default {
           }
         } catch (e) {}
       }
-    }
+    },
+    // networkEnabled(){
+    //   console.log("Network on")
+    // },
+    // networkDisabled(){
+    //   console.log("Network off")
+    // },
   },
 
   async mounted() {
     document.addEventListener("backbutton", this.androidBackButtonHandler, false);
+    // window.addEventListener('online', this.networkEnabled);
+    // window.addEventListener('offline', this.networkDisabled);
+    // console.log(window.navigator.onLine);
     this.versionCheck();
   },
+
   beforeDestroy() {
     document.removeEventListener("backbutton", this.androidBackButtonHandler);
+    // window.removeEventListener('online', this.networkEnabled);
+    // window.removeEventListener('offline', this.networkDisabled);
   },
 }
 </script>

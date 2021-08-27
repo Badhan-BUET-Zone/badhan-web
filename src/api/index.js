@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {store} from "@/store/store";
 import {processError} from "../mixins/helpers";
 
@@ -7,6 +8,8 @@ const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;
 const badhanAxios = axios.create({
     baseURL
 });
+
+const CancelToken = axios.CancelToken;
 
 const enableGuestAPI = () => {
     badhanAxios.defaults.baseURL += '/guest';
@@ -34,7 +37,22 @@ badhanAxios.interceptors.request.use((config) => {
         'x-auth': store.getters.getToken
     }
 
-    return config;
+    if(window.navigator.onLine){
+        return config;
+    }
+
+    store.dispatch('notification/notifyError', "Network Not Available");
+    return {
+        ...config,
+        cancelToken: new CancelToken((cancel) => cancel('Network Unavailable'))
+    };
+    // return {
+    //     headers: {},
+    //     method: config.method,
+    //     url: ""
+    // };
+
+    // return Promise.reject("Network not available");
 }, function (error) {
     // Do something with request error
     return Promise.reject(error);
@@ -47,15 +65,22 @@ badhanAxios.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     // Do something with request error
-    store.dispatch('notification/notifyError', processError(error))
+    let errorNotification;
     if (error.response && error.response.data) {
-        console.log(error.response.data)
         store.commit('errorStore/addError', {
             name: "Backend error",
             message: error.response.data.message,
             stack: error.response.config.method + " " + error.response.config.url
         });
+        errorNotification = processError(error);
+    }else if(axios.isCancel(error)){
+        errorNotification = "Network Unavailable";
+    }else{
+        errorNotification = "Unknown Error Occurred";
     }
+    console.log("Axios Error:",errorNotification);
+
+    store.dispatch('notification/notifyError',errorNotification)
     return Promise.reject(error);
 });
 
