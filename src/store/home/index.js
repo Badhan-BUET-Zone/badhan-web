@@ -1,4 +1,4 @@
-import {badhanAxios, handleGETSearchOptimized} from '../../api';
+import {handleGETSearchOptimized} from '../../api';
 import {bloodGroups, halls} from "@/mixins/constants";
 import donate from "@/store/home/donate";
 

@@ -236,7 +236,7 @@ export default {
   },
   methods: {
     ...mapActions('donate', ['donate']),
-    ...mapActions('callrecord', ['postCallRecordFromCard', 'fetchCallRecordsForHome']),
+    ...mapActions('callrecord', ['postCallRecordFromCard']),
     async callFromDialer() {
       document.location.href = "tel:+" + this.phone;
       this.newCallRecordLoader = true;

@@ -1,4 +1,4 @@
-import {badhanAxios, handleGETDonors} from '/src/api'
+import {handleGETDonors} from '/src/api'
 
 const state = {
     //SEE DONOR DETAILS

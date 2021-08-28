@@ -86,13 +86,8 @@ export default {
     ...mapGetters(['getHallAdmins', 'getHallAdminsLoaderFlag']),
   },
   methods: {
-    ...mapActions(['changeHallAdmin', 'fetchHallAdmins']),
+    ...mapActions(['fetchHallAdmins']),
     ...mapMutations(['clearHallAdmins']),
-    changeHallAdminClicked() {
-      this.changeHallAdmin({newAdminPhone: this.newAdminPhone});
-    },
-    archiveBatchClicked() {
-    },
   },
   created() {
   },

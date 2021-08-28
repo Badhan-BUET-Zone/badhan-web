@@ -1,4 +1,9 @@
-import {badhanAxios, firebaseAxios, handleGETStatistics} from '../../api';
+import {
+    handleGETStatistics,
+    handleDELETELogs,
+    handleGETVolunteersAll,
+    handleGETCredits
+} from '../../api';
 
 const state = {
     statistics: null,
@@ -119,41 +124,26 @@ const actions = {
     },
     async removeAllLogs({commit, dispatch}) {
         commit('setLogDeleteFlag');
-        try {
-            let response = await badhanAxios.delete('/v1/log');
-            commit('unsetLogs');
-        } catch (e) {
-
-        } finally {
-            commit('unsetLogDeleteFlag');
-        }
+        await handleDELETELogs();
+        commit('unsetLogDeleteFlag');
+        commit('unsetLogs');
     },
-
     async fetchAllVolunteers({commit}) {
         commit('setVolunteerLoaderFlag');
         commit('unsetVolunteers');
-        try {
-            let response = await badhanAxios.get('/volunteers/all')
-            commit('setVolunteers', response.data.data);
-        } catch (e) {
-
-        } finally {
-            commit('unsetVolunteerLoaderFlag');
-        }
+        let response = await handleGETVolunteersAll();
+        commit('unsetVolunteerLoaderFlag');
+        if (response.status !== 200) return;
+        commit('setVolunteers', response.data.data);
     },
 
     async fetchCredits({commit}) {
         commit('setCreditsLoader');
-        try {
-            let response = await firebaseAxios.get('/contributors.json')
-            commit('setCredits', response.data);
-        } catch (e) {
-
-        } finally {
-            commit('unsetCreditsLoader');
-        }
+        let response = await handleGETCredits();
+        commit('unsetCreditsLoader');
+        if (response.status !== 200) return;
+        commit('setCredits', response.data);
     }
-
 };
 
 

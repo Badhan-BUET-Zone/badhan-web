@@ -1,7 +1,8 @@
-import {badhanAxios} from '@/api';
+import {handleDELETEDonations} from '../../api';
+
 const state = {
-    lastDonation:0,
-    donationList:[],
+    lastDonation: 0,
+    donationList: [],
 
     donationLoader: false,
     donationDeleteLoader: false,
@@ -11,99 +12,84 @@ const state = {
 };
 
 const getters = {
-    getLastDonation: state=>{
+    getLastDonation: state => {
         return state.lastDonation;
     },
-    getDonationList: state=>{
+    getDonationList: state => {
         return state.donationList;
     },
-    getDonationLoader: state=>{
+    getDonationLoader: state => {
         return state.donationLoader;
     },
-    getDonationDeleteLoader: state=>{
+    getDonationDeleteLoader: state => {
         return state.donationDeleteLoader;
     },
-    getDonationError: state=>{
+    getDonationError: state => {
         return state.donationError;
     },
-    getDonationSuccess: state=>{
+    getDonationSuccess: state => {
         return state.donationSuccess;
     }
 };
 const mutations = {
-    setLastDonation(state,payload){
+    setLastDonation(state, payload) {
         state.lastDonation = payload;
     },
-    setDonationList(state,payload){
+    setDonationList(state, payload) {
         state.donationList = payload;
     },
-    clearDonationList(state){
+    clearDonationList(state) {
         state.donationList = [];
     },
-    donationLoaderOn(state){
+    donationLoaderOn(state) {
         state.donationLoader = true;
     },
-    donationLoaderOff(state){
+    donationLoaderOff(state) {
         state.donationLoader = false;
     },
-    donationDeleteLoaderOn(state){
+    donationDeleteLoaderOn(state) {
         state.donationDeleteLoader = true;
     },
-    donationDeleteLoaderOff(state){
+    donationDeleteLoaderOff(state) {
         state.donationDeleteLoader = false;
     },
-    setDonationError(state,payload){
+    setDonationError(state, payload) {
         state.donationError = payload;
     },
-    setDonationSuccess(state,payload){
+    setDonationSuccess(state, payload) {
         state.donationSuccess = payload;
     },
-    clearDonationMessage(state){
+    clearDonationMessage(state) {
         state.donationError = null;
         state.donationSuccess = null;
     },
-    addDonation(state,payload){
+    addDonation(state, payload) {
         state.donationList.unshift(payload);
     }
 };
 const actions = {
-    async fetchDonationHistory({commit,getters,rootState,rootGetters, dispatch},payload){
-        commit('donationLoaderOn');
-        commit('clearDonationList');
-        try {
-            let response = await badhanAxios.get("/donations", {params: payload});
-            commit('setDonationList',response.data.donations);
-        } catch (error) {
-        } finally {
-            commit('donationLoaderOff');
-        }
-    },
-    async deleteDonation({commit,getters,rootState,rootGetters, dispatch},payload){
+    async deleteDonation({commit, getters, rootState, rootGetters, dispatch}, payload) {
         commit('donationDeleteLoaderOn');
         let dateToBeDeleted = payload.date;
-
-        try {
-            let response = await badhanAxios.delete("/donations", {params: payload});
-            let history = getters['getDonationList'];
-            for (let i = 0; i < history.length; i++) {
-                if (history[i] == dateToBeDeleted) {
-                    history.splice(i, 1);
-                    break;
-                }
+        let response = await handleDELETEDonations(payload);
+        commit('donationDeleteLoaderOff');
+        if (response.status !== 200) return;
+        let history = getters['getDonationList'];
+        for (let i = 0; i < history.length; i++) {
+            if (history[i] == dateToBeDeleted) {
+                history.splice(i, 1);
+                break;
             }
-            let lastDonationNew = 0;
-            if (history.length !== 0) {
-                lastDonationNew = history.reduce(function (a, b) {
-                    return Math.max(a, b);
-                });
-            }
-            dispatch("notification/notifySuccess","Successfully deleted donation",{root: true});
-            commit('setDonationList',history);
-            return lastDonationNew;
-        } catch (error) {
-        } finally {
-            commit('donationDeleteLoaderOff');
         }
+        let lastDonationNew = 0;
+        if (history.length !== 0) {
+            lastDonationNew = history.reduce(function (a, b) {
+                return Math.max(a, b);
+            });
+        }
+        dispatch("notification/notifySuccess", "Successfully deleted donation", {root: true});
+        commit('setDonationList', history);
+        return lastDonationNew;
     }
 };
 

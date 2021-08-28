@@ -35,8 +35,8 @@
         </v-card-text>
         <v-card-text v-else :key="'logLoaded'">
           <v-row>
-            <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="logCount.dateString">
-              <DateLog :log-count="logCount"></DateLog>
+            <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="i">
+              <DateLog :log-count="logCount" :key="i"></DateLog>
             </v-col>
           </v-row>
         </v-card-text>
@@ -54,17 +54,11 @@
       </v-card-actions>
     </Container>
 
-    <ContainerFlat>
+    <Container>
       <v-btn class="ma-2" color="primary" rounded @click="showVolunteers">Show Volunteers</v-btn>
-    </ContainerFlat>
+      <v-progress-circular v-if="getVolunteerLoaderFlag" indeterminate color="primary"></v-progress-circular>
 
-    <Container v-if="getVolunteerLoaderFlag">
-      <v-progress-circular
-          indeterminate
-          color="primary"
-      ></v-progress-circular>
-    </Container>
-    <Container v-else-if="volunteersShown">
+      <span v-else-if="volunteersShown">
       <v-card-title>List of all volunteers</v-card-title>
       <v-data-table
           dense
@@ -79,6 +73,7 @@
           {{ halls[item.hall] }}
         </template>
       </v-data-table>
+      </span>
     </Container>
   </div>
 </template>
@@ -100,67 +95,18 @@ export default {
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),
-    getLogsByDate() {
-      if (this.selectedDate === null) {
-        return [];
-      }
-      let filteredLogs = this.getLogs.filter((log) => {
-        return new Date(log.date).toDateString() === this.selectedDate.toDateString();
-      })
-      return filteredLogs
-    },
 
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions('statistics', ['fetchStatistics', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
-    getCountOfLogsOfDate(date) {
-      return this.getLogs.filter((log) => {
-        return new Date(log.date).toDateString() === new Date(date).toDateString();
-      }).length
-    },
     async removeAllLogsClicked() {
       let value = await this.$bvModal.msgBoxConfirm('Confirm deletion of all logs?', {
         centered: true
       });
       if (!value) return;
       await this.removeAllLogs();
-    },
-
-
-    ///////////////////////////CALENDER
-    async viewDay({date}) {
-      this.focus = date
-      this.selectedDate = new Date(date);
-    },
-    getEventColor(event) {
-      return event.color
-    },
-    // setToday() {
-    //   this.focus = ''
-    // },
-    prev() {
-      this.$refs.calendar.prev()
-    },
-    next() {
-      this.$refs.calendar.next()
-    },
-
-    updateRange() {
-      const events = []
-
-      this.getLogs.forEach((log) => {
-        events.push({
-          start: new Date(log.date),
-          color: 'secondary',
-          timed: true,
-        })
-      })
-
-      this.events = events
-    },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a
+      this.logCountPerDay = [];
     },
 
     async showStats() {
@@ -203,12 +149,6 @@ export default {
         {text: 'Student ID', value: 'studentId'},
         {text: 'Activity Count', value: 'logCount'}
       ],
-
-      ////////////////////////////////////////////////////////////// CALENDER
-      focus: '',
-
-      selectedDate: null,
-      events: [],
 
       statsShown: false,
       logsShown: false,

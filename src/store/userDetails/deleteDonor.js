@@ -1,4 +1,3 @@
-import {badhanAxios} from '@/api';
 const state = {
     deleteLoaderFlag: false,
     deleteMessage: null,
@@ -40,18 +39,7 @@ const mutations = {
 
 };
 const actions = {
-    async deleteDonor({commit,getters,rootState,rootGetters, dispatch},payload){
-        commit('deleteLoaderFlagOn');
-        try {
-            let response = await badhanAxios.delete("/donors", {params:payload});
-            dispatch('notification/notifySuccess',"Successfully deleted donor",{root: true});
-            return true;
-        } catch (error) {
-            return false;
-        } finally {
-            commit('deleteLoaderFlagOff');
-        }
-    }
+
 };
 
 export default {

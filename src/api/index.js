@@ -37,7 +37,7 @@ badhanAxios.interceptors.request.use((config) => {
         'x-auth': store.getters.getToken
     }
 
-    if(window.navigator.onLine){
+    if (window.navigator.onLine) {
         return config;
     }
 
@@ -74,14 +74,14 @@ badhanAxios.interceptors.response.use((response) => {
             stack: error.response.config.method + " " + error.response.config.url
         });
         errorNotification = processError(error);
-    }else if(axios.isCancel(error)){
+    } else if (axios.isCancel(error)) {
         errorNotification = "Network Unavailable";
-    }else{
+    } else {
         errorNotification = "Unknown Error Occurred";
     }
-    console.log("Axios Error:",errorNotification);
+    console.log("Axios Error:", errorNotification);
 
-    store.dispatch('notification/notifyError',errorNotification)
+    store.dispatch('notification/notifyError', errorNotification)
     return Promise.reject(error);
 });
 
@@ -137,148 +137,227 @@ const handlePATCHUsersPassword = async (payload) => {
 }
 const handleDELETEDonors = async (payload) => {
     try {
-        let response = await badhanAxios.delete("/donors", {params: payload});
-        store.dispatch('notification/notifySuccess', "Successfully deleted donor", {root: true});
-        return true;
+        return await badhanAxios.delete("/donors", {params: payload});
     } catch (error) {
-        return false;
+        return error.response;
     }
 }
 
 const handlePOSTDonorsPasswordRequest = async (payload) => {
     try {
-        let response = await badhanAxios.post('/donors/password',payload);
+        let response = await badhanAxios.post('/donors/password', payload);
         store.dispatch('notification/notifySuccess', response.data.message);
         return response.data.token;
-    }catch (error) {
+    } catch (error) {
         return null;
     }
 }
 
-const handleGETDonorsDuplicate = async (payload)=>{
-    try{
+const handleGETDonorsDuplicate = async (payload) => {
+    try {
         let response = await badhanAxios.get('/donors/checkDuplicate', {params: payload});
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleGETLogsByDate = async(payload)=>{
+const handleGETLogsByDate = async (payload) => {
     try {
         let response = await badhanAxios.get(`/log/date/${payload.timeStamp}`);
         return response.data.logs;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleGETLogs = async ()=>{
-    try{
+const handleGETLogs = async () => {
+    try {
         let response = await badhanAxios.get('/log');
         return response.data.logs;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleDELETESignOut = async()=>{
-    try{
+const handleDELETESignOut = async () => {
+    try {
         let response = await badhanAxios.delete('/users/signout', {});
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleDELETESignOutAll = async()=>{
-    try{
+const handleDELETESignOutAll = async () => {
+    try {
         let response = await badhanAxios.delete('/users/signout/all');
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handlePOSTRedirection = async()=>{
-    try{
+const handlePOSTRedirection = async () => {
+    try {
         let response = await badhanAxios.post('/users/redirection');
         return response.data.token;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handlePATCHRedirectedAuthentication = async(payload)=>{
-    try{
+const handlePATCHRedirectedAuthentication = async (payload) => {
+    try {
         let response = await badhanAxios.patch('/users/redirection', payload);
         return response.data.token;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleGETDonorsMe = async()=>{
+const handleGETDonorsMe = async () => {
     try {
         return await badhanAxios.get('/donors/me');
-    }catch (e) {
-        if(axios.isCancel(e)){
-            return{
-                status:503,
-                message:e.message
+    } catch (e) {
+        if (axios.isCancel(e)) {
+            return {
+                status: 503,
+                message: e.message
             }
         }
         return e.response;
     }
 }
-const handlePOSTSignIn = async(payload)=>{
-    try{
+const handlePOSTSignIn = async (payload) => {
+    try {
         let response = await badhanAxios.post('/users/signin', payload);
         return response.data;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handleGETVolunteers = async()=>{
-    try{
+const handleGETVolunteers = async () => {
+    try {
         let response = await badhanAxios.get('/volunteers');
         return response.data.volunteerList;
-    }catch (e) {
+    } catch (e) {
         return null;
     }
 }
-const handlePOSTDonors = async(payload)=>{
+const handlePOSTDonors = async (payload) => {
     try {
         return await badhanAxios.post("/donors", payload);
-    }catch (e) {
+    } catch (e) {
         return e.response;
     }
 }
-const handlePOSTDonations = async(payload)=>{
-    try{
-        return await badhanAxios.post("/donations", payload)
-    }catch (e) {
-        return e.response;
-    }
-}
-const handleGETDonors = async(payload)=>{
-    try{
-        return await badhanAxios.get('/donors', {params:payload});
-    }catch (e) {
-        return e.response;
-    }
-}
-const handleGETSearchOptimized = async(payload)=>{
+const handlePOSTDonations = async (payload) => {
     try {
-        return await badhanAxios.get('/search/v2', {params: payload} );
-    }catch (e) {
+        return await badhanAxios.post("/donations", payload)
+    } catch (e) {
         return e.response;
     }
 }
-const handleGETAppVersion = async()=>{
-    try{
-        return await badhanAxios('/v3/log/version');
-    }catch (e) {
+const handleGETDonors = async (payload) => {
+    try {
+        return await badhanAxios.get('/donors', {params: payload});
+    } catch (e) {
         return e.response;
     }
 }
-const handleGETStatistics = async()=>{
-    try{
-        return await badhanAxios.get('/v2/log/statistics');
-    }catch (e) {
+const handleGETSearchOptimized = async (payload) => {
+    try {
+        return await badhanAxios.get('/search/v2', {params: payload});
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleGETAppVersion = async () => {
+    try {
+        return await badhanAxios('/log/version');
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleGETStatistics = async () => {
+    try {
+        return await badhanAxios.get('/log/statistics');
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleDELETELogs = async () => {
+    try {
+        return await badhanAxios.delete('/log');
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleGETVolunteersAll = async () => {
+    try {
+        return await badhanAxios.get('/volunteers/all');
+    } catch (e) {
+        return e.response;
+    }
+}
+
+const handleGETLogsByDateAndDonor = async (payload) => {
+    try {
+        return await badhanAxios.get(`/log/date/${payload.timeStamp}/donorId/${payload.donorId}`);
+    } catch (e) {
+        return e.response;
+    }
+}
+
+const handlePATCHDonorsComment = async (payload) => {
+    try {
+        return await badhanAxios.patch("/donors/comment", payload);
+    } catch (e) {
+        return e.response;
+    }
+}
+const handlePATCHDonors = async (payload) => {
+    try {
+        return await badhanAxios.patch("/donors", payload);
+    } catch (e) {
+        return e.response;
+    }
+}
+const handlePATCHAdmins = async (payload) => {
+    try {
+        return await badhanAxios.patch('/admins', payload);
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleGETAdmins = async () => {
+    try {
+        return await badhanAxios.get('/admins');
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleDELETEDonations = async (payload) => {
+    try {
+        return await badhanAxios.delete("/donations", {params: payload});
+    } catch (e) {
+        return e.response;
+    }
+}
+const handlePOSTCallRecord = async (payload) => {
+    try {
+        return await badhanAxios.post("/callrecords", payload);
+    } catch (e) {
+        return e.response;
+    }
+}
+const handleDELETECallRecord = async (payload) => {
+    try {
+        return await badhanAxios.delete("/callrecords",{params:payload});
+    } catch (e) {
+        return e.response;
+    }
+}
+
+//////////////////////////FIREBASE API CALLS ////////////////////////
+const handleGETCredits = async () => {
+    try {
+        return await firebaseAxios.get('/contributors.json');
+    } catch (e) {
         return e.response;
     }
 }
@@ -309,6 +388,16 @@ export {
     handleGETDonors,
     handleGETSearchOptimized,
     handleGETAppVersion,
-    handleGETStatistics
-
+    handleGETStatistics,
+    handleDELETELogs,
+    handleGETVolunteersAll,
+    handleGETCredits,
+    handleGETLogsByDateAndDonor,
+    handlePATCHDonorsComment,
+    handlePATCHDonors,
+    handlePATCHAdmins,
+    handleGETAdmins,
+    handleDELETEDonations,
+    handlePOSTCallRecord,
+    handleDELETECallRecord,
 }

@@ -1,4 +1,5 @@
-import {badhanAxios} from '@/api';
+import {handleGETAdmins, handlePATCHAdmins} from '../../api';
+
 const state = {
     hallAdmins: null,
     hallAdminsLoaderFlag: false,
@@ -13,20 +14,20 @@ const getters = {
     getHallAdmins: state => {
         return state.hallAdmins;
     },
-    getHallAdminsLoaderFlag: state=>{
+    getHallAdminsLoaderFlag: state => {
         return state.hallAdminsLoaderFlag;
     },
-    getHallAdminsFetchError: state=>{
+    getHallAdminsFetchError: state => {
         return state.hallAdminsFetchError;
     },
 
-    getChangeAdminLoaderFlag: state=>{
+    getChangeAdminLoaderFlag: state => {
         return state.changeAdminLoaderFlag;
     },
-    getChangeAdminError: state=>{
+    getChangeAdminError: state => {
         return state.changeAdminError;
     },
-    getChangeAdminSuccess: state=>{
+    getChangeAdminSuccess: state => {
         return state.changeAdminSuccess;
     }
 };
@@ -34,67 +35,58 @@ const mutations = {
     setHallAdmins(state, payload) {
         state.hallAdmins = payload;
     },
-    setHallAdminsFetchError(state,payload){
+    setHallAdminsFetchError(state, payload) {
         state.hallAdminsFetchError = payload;
     },
-    clearHallAdminsFetchError(state){
+    clearHallAdminsFetchError(state) {
         state.hallAdminsFetchError = null;
     },
-    hallAdminsLoaderFlagOn(state){
+    hallAdminsLoaderFlagOn(state) {
         state.hallAdminsLoaderFlag = true;
     },
-    hallAdminsLoaderFlagOff(state){
+    hallAdminsLoaderFlagOff(state) {
         state.hallAdminsLoaderFlag = false;
     },
 
-    setChangeAdminError(state,payload){
+    setChangeAdminError(state, payload) {
         state.changeAdminError = payload;
     },
-    clearChangeAdminError(state){
+    clearChangeAdminError(state) {
         state.changeAdminError = null;
     },
-    changeAdminLoaderFlagOn(state){
+    changeAdminLoaderFlagOn(state) {
         state.changeAdminLoaderFlag = true;
     },
-    changeAdminLoaderFlagOff(state){
+    changeAdminLoaderFlagOff(state) {
         state.changeAdminLoaderFlag = false;
     },
-    setChangeAdminSuccess(state,payload){
+    setChangeAdminSuccess(state, payload) {
         state.changeAdminSuccess = payload;
     },
-    clearChangeAdminSuccess(state){
+    clearChangeAdminSuccess(state) {
         state.changeAdminSuccess = null;
     },
-    clearHallAdmins(state){
-        state.hallAdmins=null;
+    clearHallAdmins(state) {
+        state.hallAdmins = null;
     }
 
 };
 const actions = {
-    async fetchHallAdmins({ commit }) {
+    async fetchHallAdmins({commit}) {
         commit('hallAdminsLoaderFlagOn');
-        try {
-            let response = await badhanAxios.get('/admins');
-            commit('setHallAdmins',response.data.admins)
-        } catch (error) {
-        } finally {
-            commit('hallAdminsLoaderFlagOff');
-        }
+        let response = await handleGETAdmins()
+        commit('hallAdminsLoaderFlagOff');
+        if (response.status !== 200) return;
+        commit('setHallAdmins', response.data.admins)
     },
 
-    async changeHallAdmin({commit,getters,dispatch},payload){
-            commit('changeAdminLoaderFlagOn');
-            try {
-                let response = await badhanAxios.patch('/admins', payload);
-                dispatch('notification/notifySuccess',"Successfully changed hall admin");
-
-                return true;
-
-            } catch (error) {
-                return false;
-            } finally {
-                commit('changeAdminLoaderFlagOff');
-            }
+    async changeHallAdmin({commit, getters, dispatch}, payload) {
+        commit('changeAdminLoaderFlagOn');
+        let response = await handlePATCHAdmins(payload);
+        commit('changeAdminLoaderFlagOff');
+        if (response.status !== 200) return false;
+        dispatch('notification/notifySuccess', "Successfully changed hall admin");
+        return true;
     }
 };
 

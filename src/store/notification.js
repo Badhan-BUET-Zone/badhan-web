@@ -1,4 +1,3 @@
-import {badhanAxios} from '@/api';
 const state = {
     notificationFlag: false,
     notification: null,

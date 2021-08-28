@@ -429,7 +429,6 @@ export default {
     ...mapGetters('details', ['getDonorLoaderFlag', 'getProfile']),
     ...mapGetters(['getLoadingFlag', 'getDesignation', 'getPhone', 'getHall', 'getID', 'getToken']),
     ...mapGetters('userDetails', ['getDetailsLoaderFlag']),
-    ...mapGetters('deleteDonor', ['getDeleteLoaderFlag']),
     ...mapGetters(['getChangeAdminLoaderFlag']),
     ...mapGetters('comment', ['getCommentLoaderFlag']),
     ...mapGetters('donation', ['getDonationList']),
@@ -508,8 +507,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
-    ...mapActions('donation', ['deleteDonation', 'fetchDonationHistory']),
-    ...mapActions('deleteDonor', ['deleteDonor']),
+    ...mapActions('donation', ['deleteDonation']),
     ...mapActions(['changeHallAdmin']),
     ...mapActions('comment', ['saveComment']),
     ...mapActions('userDetails', ['saveUserDetails']),
@@ -518,7 +516,7 @@ export default {
     ...mapMutations('donation', ['addDonation']),
     ...mapMutations(['deletePerson']),
     ...mapMutations(['setToken']),
-    ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord', 'fetchCallRecords']),
+    ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
 
     async createPasswordRecoveryLink() {
       this.passwordRecoveryFlag = true;
@@ -554,7 +552,9 @@ export default {
       })
     },
     async changeHallAdminClicked() {
-      if (await this.changeHallAdmin({donorId: this._id})) {
+      let response = await this.changeHallAdmin({donorId: this._id});
+      console.log(response);
+      if (response) {
         this.designation = 2
       }
     },
@@ -562,12 +562,17 @@ export default {
       let confirmation = await this.$bvModal.msgBoxConfirm('CAUTION: Are you sure you want to delete this donor?', {
         centered: true
       })
-      this.deleteDonorFlag = true;
-      if (confirmation === true && await handleDELETEDonors({donorId: this._id})) {
+
+      if (confirmation === true) {
+        this.deleteDonorFlag = true;
+        let response = await handleDELETEDonors({donorId: this._id});
+        this.deleteDonorFlag = false;
+        if(response.status!==200)return;
         this.deletePerson({_id: this._id, studentId: this.studentId});
+        this.notifySuccess('Deleted donor successfully');
         await this.$router.push('/home');
       }
-      this.deleteDonorFlag = false;
+
     },
     async callFromDialer() {
       await this.postCallRecord({donorId: this._id});

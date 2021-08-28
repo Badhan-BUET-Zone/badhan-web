@@ -1,4 +1,4 @@
-import {badhanAxios, handlePOSTDonations} from '../../api';
+import {handlePOSTDonations} from '../../api';
 
 const state = {
     donationLoaderFlag: false,

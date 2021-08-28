@@ -1,5 +1,4 @@
 import {
-    badhanAxios,
     resetBaseURL,
     enableGuestAPI,
     handleDELETESignOut,

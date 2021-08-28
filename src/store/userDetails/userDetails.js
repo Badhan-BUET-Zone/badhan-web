@@ -1,4 +1,5 @@
-import {badhanAxios} from '@/api';
+import {handlePATCHDonors} from '../../api';
+
 const state = {
     detailsLoaderFlag: false,
     detailsError: null,
@@ -6,45 +7,42 @@ const state = {
 };
 
 const getters = {
-    getDetailsLoaderFlag: state=>{
+    getDetailsLoaderFlag: state => {
         return state.detailsLoaderFlag;
     },
-    getDetailsError: state=>{
+    getDetailsError: state => {
         return state.detailsError;
     },
-    getDetailsSuccess: state=>{
+    getDetailsSuccess: state => {
         return state.detailsSuccess;
     },
 };
 const mutations = {
-    detailsLoaderFlagOn(state){
-        state.detailsLoaderFlag=true;
+    detailsLoaderFlagOn(state) {
+        state.detailsLoaderFlag = true;
     },
-    detailsLoaderFlagOff(state){
-        state.detailsLoaderFlag=false;
+    detailsLoaderFlagOff(state) {
+        state.detailsLoaderFlag = false;
     },
-    setDetailsError(state,payload){
+    setDetailsError(state, payload) {
         state.detailsError = payload;
     },
-    setDetailsSuccess(state,payload){
+    setDetailsSuccess(state, payload) {
         state.detailsSuccess = payload;
     },
-    clearDetailsMessage(state){
+    clearDetailsMessage(state) {
         state.detailsError = null;
-        state.detailsSuccess=null;
+        state.detailsSuccess = null;
     },
 };
 const actions = {
-    async saveUserDetails({commit,getters,rootState,rootGetters, dispatch},payload){
+    async saveUserDetails({commit, getters, rootState, rootGetters, dispatch}, payload) {
         commit('detailsLoaderFlagOn');
-        try {
-            let response = await badhanAxios.patch("/donors", payload);
-            dispatch('notification/notifySuccess',"Successfully saved details",{root:true})
-            commit("setPhone", parseInt(payload.newPhone),{root:true});
-        } catch (error) {
-        } finally {
-            commit('detailsLoaderFlagOff');
-        }
+        let response = await handlePATCHDonors(payload);
+        commit('detailsLoaderFlagOff');
+        if (response.status !== 200) return;
+        dispatch('notification/notifySuccess', "Successfully saved details", {root: true})
+        commit("setPhone", parseInt(payload.newPhone), {root: true});
     }
 };
 export default {
