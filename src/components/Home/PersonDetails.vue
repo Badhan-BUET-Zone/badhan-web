@@ -316,6 +316,7 @@ import PageTitle from "../PageTitle";
 import ShareProfileButton from "../ShareProfileButton";
 import Container from "../Wrappers/Container";
 import ContainerOutlined from "../Wrappers/ContainerOutlined";
+import {isGuestEnabled} from "../../api";
 import {
   handlePATCHDonorsDesignation,
   handlePATCHUsersPassword,
@@ -442,7 +443,7 @@ export default {
       return this.designation === 1 && halls.indexOf(this.hall)<=6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isPasswordLinkResetable() {
-      return !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
+      return !isGuestEnabled() && !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
     },
     isDeletable() {
       return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)));
@@ -664,7 +665,7 @@ export default {
         donorId: this._id,
         password: this.newPassword,
       });
-      if (data) {
+      if (data && !isGuestEnabled()) {
         this.setToken(data.token);
       }
       this.passwordChangeFlag = false;
