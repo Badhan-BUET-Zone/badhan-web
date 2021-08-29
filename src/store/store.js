@@ -49,5 +49,3 @@ export const store = new Vuex.Store({
     consoleStore
   }
 });
-
-// store.commit('loadTokenFromLocalStorage');

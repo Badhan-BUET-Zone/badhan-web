@@ -2,19 +2,11 @@ import {handlePATCHDonors} from '../../api';
 
 const state = {
     detailsLoaderFlag: false,
-    detailsError: null,
-    detailsSuccess: null,
 };
 
 const getters = {
     getDetailsLoaderFlag: state => {
         return state.detailsLoaderFlag;
-    },
-    getDetailsError: state => {
-        return state.detailsError;
-    },
-    getDetailsSuccess: state => {
-        return state.detailsSuccess;
     },
 };
 const mutations = {
@@ -23,16 +15,6 @@ const mutations = {
     },
     detailsLoaderFlagOff(state) {
         state.detailsLoaderFlag = false;
-    },
-    setDetailsError(state, payload) {
-        state.detailsError = payload;
-    },
-    setDetailsSuccess(state, payload) {
-        state.detailsSuccess = payload;
-    },
-    clearDetailsMessage(state) {
-        state.detailsError = null;
-        state.detailsSuccess = null;
     },
 };
 const actions = {

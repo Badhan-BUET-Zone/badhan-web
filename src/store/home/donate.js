@@ -2,21 +2,12 @@ import {handlePOSTDonations} from '../../api';
 
 const state = {
     donationLoaderFlag: false,
-
-    donationError: null,
-    donationSuccess: null,
 };
 
 const getters = {
     getDonationLoaderFlag: state => {
         return state.donationLoaderFlag
     },
-    getDonationError: state => {
-        return state.donationError
-    },
-    getDonationSuccess: state => {
-        return state.donationSuccess
-    }
 };
 const mutations = {
     donationLoaderFlagOn(state) {
@@ -25,17 +16,6 @@ const mutations = {
     donationLoaderFlagOff(state) {
         state.donationLoaderFlag = false;
     },
-    setDonationError(state, payload) {
-        state.donationError = payload;
-    },
-    setDonationSuccess(state, payload) {
-        state.donationSuccess = payload;
-    },
-    clearDonationMessage(state) {
-        state.donationSuccess = null;
-        state.donationError = null;
-
-    }
 };
 const actions = {
     async donate({commit, getters, rootState, rootGetters, dispatch}, payload) {

@@ -290,7 +290,7 @@ import {downloadTextFile} from "../plugins/android_support";
 export default {
   name: "ActiveSearch",
   computed: {
-    ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading', 'isFilterShown']),
+    ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
     showScroll(){
       return window.screenY>1000;
     },
@@ -398,7 +398,7 @@ export default {
   methods: {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
-    ...mapMutations(['hideSearchResults', 'showFilter', 'hideFilter', 'toggleFilter','resetSearchResults']),
+    ...mapMutations(['hideSearchResults','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('errorStore', ['addError',]),
     async downloadInAndroid(){
@@ -527,15 +527,6 @@ export default {
       this.address = "";
       this.hideSearchResults();
       this.showFab=false;
-    },
-    showFilterClicked() {
-      this.showFilter();
-    },
-    hideFilterClicked() {
-      this.hideFilter();
-    },
-    toggleFilterClicked() {
-      this.toggleFilter();
     },
 
     fabClicked(){

@@ -2,36 +2,20 @@ import {handleGETVolunteers, handlePOSTDonors, handlePOSTDonations} from "../../
 
 const state = {
     volunteers: [],
-    volunteerError: null,
     volunteerLoader: false,
-
     newDonorLoader: false,
-    newDonorError: null,
-    newDonorSuccess: null,
 };
 
 const getters = {
     getVolunteers: state => {
         return state.volunteers;
     },
-    getVolunteerError: state => {
-        return state.volunteerError;
-    },
     getVolunteerLoader: state => {
         return state.volunteerLoader;
     },
-
     getNewDonorLoader: state => {
         return state.newDonorLoader;
     },
-    getNewDonorError: state => {
-        return state.newDonorError;
-    },
-    getNewDonorSuccess: state => {
-        return state.newDonorSuccess;
-    }
-
-
 };
 const mutations = {
     setVolunteers(state, payload) {
@@ -41,38 +25,18 @@ const mutations = {
         state.volunteers = [];
 
     },
-    setVolunteerError(state, payload) {
-        state.volunteerError = payload;
-    },
-    clearVolunteerError(state) {
-        state.volunteerError = null;
-    },
     volunteerLoaderOn(state) {
         state.volunteerLoader = true;
     },
     volunteerLoaderOff(state) {
         state.volunteerLoader = false;
     },
-
-
     newDonorLoaderOn(state) {
         state.newDonorLoader = true;
     },
     newDonorLoaderOff(state) {
         state.newDonorLoader = false;
     },
-
-    setNewDonorError(state, payload) {
-        state.newDonorError = payload;
-    },
-    setNewDonorSuccess(state, payload) {
-        state.newDonorSuccess = payload;
-    },
-    clearNewDonorMessage(state) {
-        state.newDonorError = null;
-        state.newDonorSuccess = null;
-    },
-
 };
 const actions = {
     async fetchVolunteers({commit, getters}) {

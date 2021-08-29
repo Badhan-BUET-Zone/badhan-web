@@ -3,11 +3,7 @@ import {handleGETAdmins, handlePATCHAdmins} from '../../api';
 const state = {
     hallAdmins: null,
     hallAdminsLoaderFlag: false,
-    hallAdminsFetchError: null,
-
     changeAdminLoaderFlag: false,
-    changeAdminError: null,
-    changeAdminSuccess: null,
 };
 
 const getters = {
@@ -17,29 +13,13 @@ const getters = {
     getHallAdminsLoaderFlag: state => {
         return state.hallAdminsLoaderFlag;
     },
-    getHallAdminsFetchError: state => {
-        return state.hallAdminsFetchError;
-    },
-
     getChangeAdminLoaderFlag: state => {
         return state.changeAdminLoaderFlag;
     },
-    getChangeAdminError: state => {
-        return state.changeAdminError;
-    },
-    getChangeAdminSuccess: state => {
-        return state.changeAdminSuccess;
-    }
 };
 const mutations = {
     setHallAdmins(state, payload) {
         state.hallAdmins = payload;
-    },
-    setHallAdminsFetchError(state, payload) {
-        state.hallAdminsFetchError = payload;
-    },
-    clearHallAdminsFetchError(state) {
-        state.hallAdminsFetchError = null;
     },
     hallAdminsLoaderFlagOn(state) {
         state.hallAdminsLoaderFlag = true;
@@ -48,23 +28,11 @@ const mutations = {
         state.hallAdminsLoaderFlag = false;
     },
 
-    setChangeAdminError(state, payload) {
-        state.changeAdminError = payload;
-    },
-    clearChangeAdminError(state) {
-        state.changeAdminError = null;
-    },
     changeAdminLoaderFlagOn(state) {
         state.changeAdminLoaderFlag = true;
     },
     changeAdminLoaderFlagOff(state) {
         state.changeAdminLoaderFlag = false;
-    },
-    setChangeAdminSuccess(state, payload) {
-        state.changeAdminSuccess = payload;
-    },
-    clearChangeAdminSuccess(state) {
-        state.changeAdminSuccess = null;
     },
     clearHallAdmins(state) {
         state.hallAdmins = null;

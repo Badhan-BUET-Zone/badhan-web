@@ -32,9 +32,6 @@ const getters = {
     getSignInLoaderFlag: state => {
         return state.signInLoaderFlag
     },
-    getRedirectionRequestMade: state => {
-        return state.redirectionRequestMade
-    },
     getIsLoggedIn: state => {
         return state.isLoggedIn;
     },

@@ -2,14 +2,8 @@ import {handleGETDonors} from '/src/api'
 
 const state = {
     //SEE DONOR DETAILS
-
     profile: null,
-
-    //
     donorLoaderFlag: true,
-    donorDetailsError: null,
-
-
 };
 const getters = {
     //SEE DETAILS
@@ -28,20 +22,12 @@ const mutations = {
     setProfile(state, payload) {
         state.profile = payload;
     },
-
     donorLoaderFlagOn(state) {
         state.donorLoaderFlag = true;
     },
     donorLoaderFlagOff(state) {
         state.donorLoaderFlag = false;
     },
-
-    setDonorDetailsError(state, payload) {
-        state.donorDetailsError = payload;
-    },
-    clearDonorDetailsError(state) {
-        state.donorDetailsError = null;
-    }
 
 };
 const actions = {

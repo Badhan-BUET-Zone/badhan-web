@@ -1,6 +1,6 @@
 import {handleGETSearchOptimized} from '../../api';
-import {bloodGroups, halls} from "@/mixins/constants";
-import donate from "@/store/home/donate";
+import {bloodGroups, halls} from "../../mixins/constants";
+import donate from "../../store/home/donate";
 
 let compareObject = (a, b) => {
     if (a.batch < b.batch) {
@@ -8,14 +8,11 @@ let compareObject = (a, b) => {
     } else {
         return -1;
     }
-    return 0;
 }
 
 const state = {
     //SEARCH DONORS
     searchLoaderFlag: false,
-    searchError: "",
-    filterShownFlag: true,
     searchResultShown: false,
     personGroups: {},
     searchedHall: 0,
@@ -27,24 +24,11 @@ const state = {
 };
 
 const getters = {
-    //SEARCH RESULTS
-    getSearchResults: state => {
-        return state.personGroups;
-    },
-    getNumberOfSearchResult: state => {
-        return state.numOfDonor;
-    },
-    isFilterShown: state => {
-        return state.filterShownFlag;
-    },
     isSearchResultShown: state => {
         return state.searchResultShown;
     },
     isSearchLoading: state => {
         return state.searchLoaderFlag;
-    },
-    getSearchError: state => {
-        return state.searchError;
     },
     getPersonGroups: state => {
         return state.personGroups;
@@ -58,8 +42,6 @@ const getters = {
     getSearchedHall: state => {
         return state.searchedHall;
     }
-
-
 };
 const mutations = {
 
@@ -69,24 +51,6 @@ const mutations = {
     },
     searchLoaderFlagOff(state) {
         state.searchLoaderFlag = false;
-    },
-    setSearchError(state, payload) {
-        state.searchError = payload;
-    },
-    clearSearchError(state) {
-        state.searchError = "";
-    },
-    showFilter(state) {
-        state.filterShownFlag = true;
-    },
-    hideFilter(state) {
-        state.filterShownFlag = false;
-    },
-    toggleFilter(state) {
-        state.filterShownFlag = !state.filterShownFlag;
-    },
-    showSearchResults(state) {
-        state.searchResultShown = true;
     },
     hideSearchResults(state) {
         state.searchResultShown = false;
@@ -171,7 +135,6 @@ const actions = {
         }
         commit('setPersonGroups', response.data.filteredDonors);
         commit('setSearchedHall', payload.hall);
-        commit('hideFilter');
     },
 };
 
