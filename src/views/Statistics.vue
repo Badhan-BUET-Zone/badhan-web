@@ -45,7 +45,7 @@
       <v-card-actions>
         <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag"
                :loading="getLogDeleteFLag"
-               @click="removeAllLogsClicked">
+               @click="deleteLogsPrompt">
           <v-icon left>
             mdi-delete
           </v-icon>
@@ -75,6 +75,13 @@
       </v-data-table>
       </span>
     </Container>
+    <Dialog
+        :message="'Delete all logs?'"
+        :confirmed="deleteLogsConfirmed"
+        :dialog-opened="deleteLogsPromptFlag"
+        :canceled="deleteLogsCanceled"
+    >
+    </Dialog>
   </div>
 </template>
 
@@ -88,10 +95,11 @@ import DateLog from "../components/Statistics/DateLog";
 import SkeletonDateLog from "../components/Statistics/SkeletonDateLog";
 import Container from "../components/Wrappers/Container";
 import ContainerFlat from "../components/Wrappers/ContainerFlat";
+import Dialog from "../components/Dialog";
 
 export default {
   name: "Statistics",
-  components: {ContainerFlat, Container, PageTitle, LogObject, DateLog, SkeletonDateLog},
+  components: {Dialog, ContainerFlat, Container, PageTitle, LogObject, DateLog, SkeletonDateLog},
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation']),
@@ -100,11 +108,14 @@ export default {
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions('statistics', ['fetchStatistics', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
-    async removeAllLogsClicked() {
-      let value = await this.$bvModal.msgBoxConfirm('Confirm deletion of all logs?', {
-        centered: true
-      });
-      if (!value) return;
+    deleteLogsPrompt(){
+      this.deleteLogsPromptFlag=true;
+    },
+    deleteLogsCanceled(){
+      this.deleteLogsPromptFlag=false;
+    },
+    async deleteLogsConfirmed(){
+      this.deleteLogsPromptFlag=false;
       await this.removeAllLogs();
       this.logCountPerDay = [];
     },
@@ -135,6 +146,7 @@ export default {
   },
   data() {
     return {
+      deleteLogsPromptFlag: false,
       halls,
       headers: [
         {text: 'Time', value: 'date'},

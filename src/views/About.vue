@@ -13,7 +13,7 @@
       <Container v-else :key="'versionLoaded'">
         <v-card-text>
           <p>App Version on Google Play: {{ getAppVersion }}</p>
-          <p>Local App Version: {{ getLocalAppVersion }}</p>
+          <p>Local App Version: {{ nativeAppVersion }}</p>
         </v-card-text>
       </Container>
       <Container :key="'aboutPage'">
@@ -39,21 +39,19 @@ export default {
   name: "About",
   computed: {
     ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
-    getLocalAppVersion() {
-      if (isNative()) {
-        return getNativeAppVersion();
-      }
-      return "Web"
-    }
   },
   components: {Container, PageTitle, VueMarkdown},
   data() {
     return {
-      text: readme
+      text: readme,
+      nativeAppVersion: "Web",
     }
 
   },
-  mounted() {
+  async mounted() {
+    if(isNative()){
+      this.nativeAppVersion = await getNativeAppVersion();
+    }
   }
 }
 </script>

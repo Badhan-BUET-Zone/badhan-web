@@ -1,315 +1,322 @@
 <template>
-  <!--  <div style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">-->
-  <transition name="slide-fade-down-snapout" mode="out-in">
-    <Container v-if="getDonorLoaderFlag" :key="'donorLoading'">
-      <v-card-title><span class="grey--text">Loading...</span></v-card-title>
-      <v-skeleton-loader type="article"></v-skeleton-loader>
-    </Container>
+  <div>
+    <transition name="slide-fade-down-snapout" mode="out-in">
+      <Container v-if="getDonorLoaderFlag" :key="'donorLoading'">
+        <v-card-title><span class="grey--text">Loading...</span></v-card-title>
+        <v-skeleton-loader type="article"></v-skeleton-loader>
+      </Container>
 
-    <Container v-else-if="donorErrorHappened" :key="'donorError'">
-      <PageTitle></PageTitle>
-      <v-card class="mx-auto mt-2" max-width="700">
-        <v-card-title>No donor found</v-card-title>
-      </v-card>
-    </Container>
+      <Container v-else-if="donorErrorHappened" :key="'donorError'">
+        <PageTitle></PageTitle>
+        <v-card class="mx-auto mt-2" max-width="700">
+          <v-card-title>No donor found</v-card-title>
+        </v-card>
+      </Container>
 
-    <Container v-else :key="'donorLoaded'">
-      <v-card-title>{{ name }}</v-card-title>
-      <v-card-text class="mb-5">
-        <v-chip color="secondary" class="mr-1 mb-1">
-          <span v-if="designation === 0">Donor</span>
-          <span v-else-if="designation === 1">Volunteer</span>
-          <span v-else-if="designation === 2">Hall Admin</span>
-          <span v-else>Super Admin</span>
-        </v-chip>
-        <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
-        <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="warning">{{ availableIn }} Days remaining</v-chip>
-        <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
-        <br>
-        <div class="row" v-if="!getLoadingFlag">
-          <div class="col-lg-6 col-md-12 col-sm-12" id="firstColumn">
-            <ContainerOutlined>
-              <v-card-title>
-                <v-btn rounded @click="personDetailCollapseFlag = !personDetailCollapseFlag">
-                  Person Details
-                </v-btn>
-                <HelpTooltip>
-                  <div style="max-width: 200px">
-                    You can only edit donors of your own hall, editing donors of other halls is restricted.<br>You
-                    can still view details, update comments and manage donations of a donor of other halls if that
-                    donor is marked as public data.
-                  </div>
-                </HelpTooltip>
-              </v-card-title>
-              <transition name="slide-fade-down-snapout" mode="out-in">
-                <v-card-text v-if="personDetailCollapseFlag">
-                  <div>
-                    <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
-                                  :disabled="!isDetailsEditable" @blur="$v.name.$touch()"
-                                  :error-messages="nameErrors"></v-text-field>
-                    <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
-                                  :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
-                                  :error-messages="phoneErrors"></v-text-field>
-                    <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
-                              :disabled="!isDetailsEditable"></v-select>
-                    <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
-                                  :disabled="!isDetailsEditable" @blur="$v.studentId.$touch()"
-                                  :error-messages="studentIdErrors"></v-text-field>
-                    <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
-                                  :disabled="!isDetailsEditable"></v-text-field>
-                    <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
-                                  :disabled="!isDetailsEditable"></v-text-field>
-                    <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
-                              :disabled="!isDetailsEditable || designation === 2 || designation === 1"></v-select>
-                    <v-checkbox :disabled="!isDetailsEditable || halls.indexOf(hall)===8" v-model="availableToAll"
-                                dense
-                                label="Public Data"></v-checkbox>
-
-                    <div v-if="getDesignation > designation || $isMe(_id)">
-                      <v-btn color="primary" rounded class="white--text ml-2" small
-                             :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error"
-                             :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
-                        <v-icon left>
-                          mdi-content-save
-                        </v-icon>
-                        Save
-                      </v-btn>
-                    </div>
-                  </div>
-                  <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
-                              label="Comment" auto-grow
-                              :disabled="getCommentLoaderFlag" :rows="1"
-                              :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
-                  </v-textarea>
-
-                  <v-btn color="primary" rounded small
-                         :disabled="getCommentLoaderFlag"
-                         :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
-                    <v-icon left>
-                      mdi-content-save
-                    </v-icon>
-                    Save Comment
+      <Container v-else :key="'donorLoaded'">
+        <v-card-title>{{ name }}</v-card-title>
+        <v-card-text class="mb-5">
+          <v-chip color="secondary" class="mr-1 mb-1">
+            <span v-if="designation === 0">Donor</span>
+            <span v-else-if="designation === 1">Volunteer</span>
+            <span v-else-if="designation === 2">Hall Admin</span>
+            <span v-else>Super Admin</span>
+          </v-chip>
+          <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
+          <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="warning">{{ availableIn }} Days remaining</v-chip>
+          <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
+          <br>
+          <div class="row" v-if="!getLoadingFlag">
+            <div class="col-lg-6 col-md-12 col-sm-12" id="firstColumn">
+              <ContainerOutlined>
+                <v-card-title>
+                  <v-btn rounded @click="personDetailCollapseFlag = !personDetailCollapseFlag">
+                    Person Details
                   </v-btn>
-                </v-card-text>
-              </transition>
-            </ContainerOutlined>
-
-            <ContainerOutlined v-if="getDesignation >= designation || $isMe(_id)">
-              <v-card-title>
-                <v-btn rounded
-                       @click="settingsCollapseFlag = !settingsCollapseFlag">
-                  Settings
-                </v-btn>
-              </v-card-title>
-              <transition name="slide-fade-down-snapout" mode="out-in">
-                <v-card-text v-if="settingsCollapseFlag">
-                  <transition-group name="slide-fade-down" mode="out-in">
-                    <v-btn key="promoteToVolunteer"
-                           small
-                           class="ma-1"
-                           color="primary"
-                           :loading="promoteFlag"
-                           :disabled="promoteFlag"
-                           @click="promoteClicked"
-                           rounded v-if="isAllowedToPromoteToVolunteer">
-                      <v-icon left>mdi-arrow-up</v-icon>
-                      Promote To Volunteer
-                    </v-btn>
-                    <v-btn key="passwordRecoveryLink" small :loading="passwordRecoveryFlag"
-                           :disabled="passwordRecoveryFlag"
-                           @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
-                           v-if="isPasswordLinkResetable">
-                      <v-icon left>mdi-lock-reset</v-icon>
-                      Password Recovery Link
-                    </v-btn>
-
-                    <div key="linkGenerated" class="mt-2" v-if="passwordRecoveryLink">
-                      <v-row no-gutters>
-                        <v-col cols="9">
-                          <v-text-field rounded dense outlined disabled
-                                        v-model="passwordRecoveryLink" label="Recovery link"></v-text-field>
-                        </v-col>
-                        <v-col cols="3">
-                          <v-tooltip
-                              v-model="passwordRecoveryTooltip"
-                              top
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
-                                     color="secondary">
-                                <v-icon>
-                                  mdi-clipboard-outline
-                                </v-icon>
-                              </v-btn>
-                            </template>
-                            <span style="max-width: 300px">Password recovery link copied to clipboard.</span>
-                          </v-tooltip>
-                        </v-col>
-                      </v-row>
+                  <HelpTooltip>
+                    <div style="max-width: 200px">
+                      You can only edit donors of your own hall, editing donors of other halls is restricted.<br>You
+                      can still view details, update comments and manage donations of a donor of other halls if that
+                      donor is marked as public data.
                     </div>
+                  </HelpTooltip>
+                </v-card-title>
+                <transition name="slide-fade-down-snapout" mode="out-in">
+                  <v-card-text v-if="personDetailCollapseFlag">
+                    <div>
+                      <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
+                                    :disabled="!isDetailsEditable" @blur="$v.name.$touch()"
+                                    :error-messages="nameErrors"></v-text-field>
+                      <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
+                                    :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
+                                    :error-messages="phoneErrors"></v-text-field>
+                      <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
+                                :disabled="!isDetailsEditable"></v-select>
+                      <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
+                                    :disabled="!isDetailsEditable" @blur="$v.studentId.$touch()"
+                                    :error-messages="studentIdErrors"></v-text-field>
+                      <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
+                                    :disabled="!isDetailsEditable"></v-text-field>
+                      <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
+                                    :disabled="!isDetailsEditable"></v-text-field>
+                      <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
+                                :disabled="!isDetailsEditable || designation === 2 || designation === 1"></v-select>
+                      <v-checkbox :disabled="!isDetailsEditable || halls.indexOf(hall)===8" v-model="availableToAll"
+                                  dense
+                                  label="Public Data"></v-checkbox>
 
-
-                    <v-btn key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
-                           :disabled="promoteFlag"
-                           v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
-                      <v-icon left>mdi-arrow-down</v-icon>
-                      Demote To Donor
-                    </v-btn>
-
-                    <div key="passwordChange" v-if="$isMe(_id)">
-                      <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :type="newPasswordFlag ? 'text' : 'password'" outlined
-                                    label="New Password" v-model="newPassword"
-                                    class="input-group--focused"
-                                    @click:append="newPasswordFlag = !newPasswordFlag"
-                                    :disabled="!isDetailsEditable"
-                                    @blur="$v.newPassword.$touch()"
-                                    :error-messages="newPasswordErrors"></v-text-field>
-                      <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :type="confirmPasswordFlag ? 'text' : 'password'" outlined
-                                    label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
-                                    @click:append="confirmPasswordFlag = !confirmPasswordFlag"
-                                    :disabled="!isDetailsEditable"
-                                    @blur="$v.confirmPassword.$touch()"
-                                    :error-messages="confirmPasswordErrors"></v-text-field>
-                      <v-btn small class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
-                        <v-icon left>mdi-window-close</v-icon>
-                        Cancel
-                      </v-btn>
-                      <v-btn class="ma-1" color="primary" rounded small
-                             :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
-                             :loading="passwordChangeFlag"
-                             @click="savePasswordClicked"
-                      >
-                        <v-icon left>mdi-content-save</v-icon>
-                        Save
-                      </v-btn>
+                      <div v-if="getDesignation > designation || $isMe(_id)">
+                        <v-btn color="primary" rounded class="white--text ml-2" small
+                               :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error"
+                               :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
+                          <v-icon left>
+                            mdi-content-save
+                          </v-icon>
+                          Save
+                        </v-btn>
+                      </div>
                     </div>
-                    <v-btn key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorClicked" rounded
-                           color="warning"
-                           :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
-                      <v-icon left dark>mdi-delete</v-icon>
-                      Delete this person
-                    </v-btn>
-                    <v-btn key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
-                           v-if="getDesignation===3 && designation===1"
-                           :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
-                           :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
-                      <v-icon left dark>mdi-arrow-up</v-icon>
-                      Promote to Hall admin
-                    </v-btn>
-                  </transition-group>
-                </v-card-text>
-              </transition>
-            </ContainerOutlined>
+                    <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
+                                label="Comment" auto-grow
+                                :disabled="getCommentLoaderFlag" :rows="1"
+                                :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
+                    </v-textarea>
 
-          </div>
-          <div class="col-lg-6 col-md-12 col-md-12" style="height: fit-content">
-            <!--              NEW DONATION SECTION-->
-            <div>
-              <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :return-value.sync="newDonationDate"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                      rounded
-                      v-model="newDonationDate"
-                      label="Add a donation date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      outlined
-                      v-bind="attrs"
-                      v-on="on"
-                      dense
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="newDonationDate" no-title scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
-                  <v-btn
-                      small
-                      rounded
-                      text
-                      color="primary"
-                      @click="$refs.menu.save(newDonationDate)"
-                  >
-                    OK
+                    <v-btn color="primary" rounded small
+                           :disabled="getCommentLoaderFlag"
+                           :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
+                      <v-icon left>
+                        mdi-content-save
+                      </v-icon>
+                      Save Comment
+                    </v-btn>
+                  </v-card-text>
+                </transition>
+              </ContainerOutlined>
+
+              <ContainerOutlined v-if="getDesignation >= designation || $isMe(_id)">
+                <v-card-title>
+                  <v-btn rounded
+                         @click="settingsCollapseFlag = !settingsCollapseFlag">
+                    Settings
                   </v-btn>
-                </v-date-picker>
-              </v-menu>
+                </v-card-title>
+                <transition name="slide-fade-down-snapout" mode="out-in">
+                  <v-card-text v-if="settingsCollapseFlag">
+                    <transition-group name="slide-fade-down" mode="out-in">
+                      <v-btn key="promoteToVolunteer"
+                             small
+                             class="ma-1"
+                             color="primary"
+                             :loading="promoteFlag"
+                             :disabled="promoteFlag"
+                             @click="promoteClicked"
+                             rounded v-if="isAllowedToPromoteToVolunteer">
+                        <v-icon left>mdi-arrow-up</v-icon>
+                        Promote To Volunteer
+                      </v-btn>
+                      <v-btn key="passwordRecoveryLink" small :loading="passwordRecoveryFlag"
+                             :disabled="passwordRecoveryFlag"
+                             @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
+                             v-if="isPasswordLinkResetable">
+                        <v-icon left>mdi-lock-reset</v-icon>
+                        Password Recovery Link
+                      </v-btn>
+
+                      <div key="linkGenerated" class="mt-2" v-if="passwordRecoveryLink">
+                        <v-row no-gutters>
+                          <v-col cols="9">
+                            <v-text-field rounded dense outlined disabled
+                                          v-model="passwordRecoveryLink" label="Recovery link"></v-text-field>
+                          </v-col>
+                          <v-col cols="3">
+                            <v-tooltip
+                                v-model="passwordRecoveryTooltip"
+                                top
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
+                                       color="secondary">
+                                  <v-icon>
+                                    mdi-clipboard-outline
+                                  </v-icon>
+                                </v-btn>
+                              </template>
+                              <span style="max-width: 300px">Password recovery link copied to clipboard.</span>
+                            </v-tooltip>
+                          </v-col>
+                        </v-row>
+                      </div>
+
+
+                      <v-btn key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
+                             :disabled="promoteFlag"
+                             v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
+                        <v-icon left>mdi-arrow-down</v-icon>
+                        Demote To Donor
+                      </v-btn>
+
+                      <div key="passwordChange" v-if="$isMe(_id)">
+                        <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                                      :type="newPasswordFlag ? 'text' : 'password'" outlined
+                                      label="New Password" v-model="newPassword"
+                                      class="input-group--focused"
+                                      @click:append="newPasswordFlag = !newPasswordFlag"
+                                      :disabled="!isDetailsEditable"
+                                      @blur="$v.newPassword.$touch()"
+                                      :error-messages="newPasswordErrors"></v-text-field>
+                        <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                                      :type="confirmPasswordFlag ? 'text' : 'password'" outlined
+                                      label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
+                                      @click:append="confirmPasswordFlag = !confirmPasswordFlag"
+                                      :disabled="!isDetailsEditable"
+                                      @blur="$v.confirmPassword.$touch()"
+                                      :error-messages="confirmPasswordErrors"></v-text-field>
+                        <v-btn small class="ma-1" color="secondary" style="text-decoration: none" to="/home" rounded>
+                          <v-icon left>mdi-window-close</v-icon>
+                          Cancel
+                        </v-btn>
+                        <v-btn class="ma-1" color="primary" rounded small
+                               :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
+                               :loading="passwordChangeFlag"
+                               @click="savePasswordClicked"
+                        >
+                          <v-icon left>mdi-content-save</v-icon>
+                          Save
+                        </v-btn>
+                      </div>
+                      <v-btn key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorPrompt"
+                             rounded
+                             color="warning"
+                             :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
+                        <v-icon left dark>mdi-delete</v-icon>
+                        Delete this person
+                      </v-btn>
+                      <v-btn key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
+                             v-if="getDesignation===3 && designation===1"
+                             :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
+                             :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
+                        <v-icon left dark>mdi-arrow-up</v-icon>
+                        Promote to Hall admin
+                      </v-btn>
+                    </transition-group>
+                  </v-card-text>
+                </transition>
+              </ContainerOutlined>
+
             </div>
-            <v-btn
-                color="primary"
-                rounded
-                small
-                style="width: 100%"
-                @click="donateClicked()"
-                :loading="getDonationLoaderFlag"
-                :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
-            >
-              <v-icon left>
-                mdi-check
-              </v-icon>
-              Done
-            </v-btn>
-            <!--              NEW DONATION SECTION END-->
-
-            <p class="mt-2 h6 font-weight-bold">Last Donation:</p>
-            <template v-if="lastDonation !== 0">
-              <p>{{ lastDonation }}</p>
-              <p class="h6 font-weight-bold">Donation History:</p>
-              <div v-if="getDonationList.length!==0">
-                <DonationCard
-                    v-for="(date,index) in getDonationList"
-                    :key="index"
-                    :date="date"
-                    :delete-donation="deleteDonationClicked">
-                </DonationCard>
-<!--                <v-card-->
-<!--                    class="mb-1 rounded-xl"-->
-<!--                    outlined-->
-<!--                    dense-->
-<!--                    v-for="(date,index) in getDonationList"-->
-<!--                    :key="index"-->
-<!--                >-->
-<!--                  <v-card-text>-->
-<!--                    <v-row>-->
-<!--                      <v-col cols="9">-->
-<!--                          <span>-->
-<!--                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}-->
-<!--                          </span>-->
-<!--                      </v-col>-->
-<!--                      <v-col cols="3">-->
-<!--                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>-->
-<!--                          <v-icon>mdi-delete</v-icon>-->
-<!--                        </v-btn>-->
-<!--                      </v-col>-->
-<!--                    </v-row>-->
-<!--                  </v-card-text>-->
-<!--                </v-card>-->
-                <br/>
+            <div class="col-lg-6 col-md-12 col-md-12" style="height: fit-content">
+              <!--              NEW DONATION SECTION-->
+              <div>
+                <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="newDonationDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        rounded
+                        v-model="newDonationDate"
+                        label="Add a donation date"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        outlined
+                        v-bind="attrs"
+                        v-on="on"
+                        dense
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="newDonationDate" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn
+                        small
+                        rounded
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(newDonationDate)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
               </div>
-            </template>
-            <span v-else>(Unknown)</span>
+              <v-btn
+                  color="primary"
+                  rounded
+                  small
+                  style="width: 100%"
+                  @click="donateClicked()"
+                  :loading="getDonationLoaderFlag"
+                  :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
+              >
+                <v-icon left>
+                  mdi-check
+                </v-icon>
+                Done
+              </v-btn>
+              <!--              NEW DONATION SECTION END-->
 
-            <p class="h6 font-weight-bold">Call History:</p>
+              <p class="mt-2 h6 font-weight-bold">Last Donation:</p>
+              <template v-if="lastDonation !== 0">
+                <p>{{ lastDonation }}</p>
+                <p class="h6 font-weight-bold">Donation History:</p>
+                <div v-if="getDonationList.length!==0">
+                  <DonationCard
+                      v-for="(date,index) in getDonationList"
+                      :key="index"
+                      :date="date"
+                      :delete-donation="deleteDonationClicked">
+                  </DonationCard>
+                  <!--                <v-card-->
+                  <!--                    class="mb-1 rounded-xl"-->
+                  <!--                    outlined-->
+                  <!--                    dense-->
+                  <!--                    v-for="(date,index) in getDonationList"-->
+                  <!--                    :key="index"-->
+                  <!--                >-->
+                  <!--                  <v-card-text>-->
+                  <!--                    <v-row>-->
+                  <!--                      <v-col cols="9">-->
+                  <!--                          <span>-->
+                  <!--                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}-->
+                  <!--                          </span>-->
+                  <!--                      </v-col>-->
+                  <!--                      <v-col cols="3">-->
+                  <!--                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>-->
+                  <!--                          <v-icon>mdi-delete</v-icon>-->
+                  <!--                        </v-btn>-->
+                  <!--                      </v-col>-->
+                  <!--                    </v-row>-->
+                  <!--                  </v-card-text>-->
+                  <!--                </v-card>-->
+                  <br/>
+                </div>
+              </template>
+              <span v-else>(Unknown)</span>
 
-            <CallRecordCard :call-record="callRecord"
-                            v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
-            <span v-if="getCallRecords.length===0">No call history found</span>
+              <p class="h6 font-weight-bold">Call History:</p>
+
+              <CallRecordCard :call-record="callRecord"
+                              v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
+              <span v-if="getCallRecords.length===0">No call history found</span>
+            </div>
           </div>
-        </div>
-      </v-card-text>
-    </Container>
+        </v-card-text>
+      </Container>
 
-  </transition>
-  <!--  </div>-->
+    </transition>
+    <Dialog
+        :message="'Delete donor?'"
+        :canceled="deleteDonorCanceled"
+        :confirmed="deleteDonorConfirmed"
+        :dialog-opened="deleteDonorDialogFlag"
+    ></Dialog>
+  </div>
 </template>
 
 <script>
@@ -330,11 +337,13 @@ import {
   handlePOSTDonorsPasswordRequest
 } from "../../api";
 import DonationCard from "./DonationCard";
+import Dialog from "../Dialog";
 
 export default {
   name: "PersonDetails",
   props: ["donorId"],
   components: {
+    Dialog,
     DonationCard,
     ContainerOutlined,
     Container,
@@ -401,6 +410,8 @@ export default {
       passwordRecoveryFlag: false,
       passwordRecoveryTooltip: false,
       passwordRecoveryLink: null,
+
+      deleteDonorDialogFlag: false,
     };
   },
   validations: {
@@ -445,10 +456,10 @@ export default {
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
 
     isAllowedToPromoteToVolunteer() {
-      return this.designation === 0 && halls.indexOf(this.hall)<=6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
+      return this.designation === 0 && halls.indexOf(this.hall) <= 6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isAllowedToDemoteToDonor() {
-      return this.designation === 1 && halls.indexOf(this.hall)<=6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
+      return this.designation === 1 && halls.indexOf(this.hall) <= 6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
     isPasswordLinkResetable() {
       return !isGuestEnabled() && !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
@@ -567,21 +578,21 @@ export default {
         this.designation = 2
       }
     },
-    async deleteDonorClicked() {
-      let confirmation = await this.$bvModal.msgBoxConfirm('CAUTION: Are you sure you want to delete this donor?', {
-        centered: true
-      })
-
-      if (confirmation === true) {
-        this.deleteDonorFlag = true;
-        let response = await handleDELETEDonors({donorId: this._id});
-        this.deleteDonorFlag = false;
-        if(response.status!==200)return;
-        this.deletePerson({_id: this._id, studentId: this.studentId});
-        this.notifySuccess('Deleted donor successfully');
-        await this.$router.push('/home');
-      }
-
+    deleteDonorPrompt() {
+      this.deleteDonorDialogFlag = true;
+    },
+    async deleteDonorConfirmed() {
+      this.deleteDonorDialogFlag = false;
+      this.deleteDonorFlag = true;
+      let response = await handleDELETEDonors({donorId: this._id});
+      this.deleteDonorFlag = false;
+      if (response.status !== 200) return;
+      this.deletePerson({_id: this._id, studentId: this.studentId});
+      this.notifySuccess('Deleted donor successfully');
+      await this.$router.push('/home');
+    },
+    async deleteDonorCanceled() {
+      this.deleteDonorDialogFlag = false;
     },
     async callFromDialer() {
       await this.postCallRecord({donorId: this._id});

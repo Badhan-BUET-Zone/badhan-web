@@ -270,6 +270,10 @@
       <router-view></router-view>
       </transition>
     </div>
+    <MessageBox
+        :message="'CSV downloaded to Documents folder'"
+        :dialogOpened="downloadCSVMessageFlag" :confirmed="hideCSVDownloadMessage"
+    ></MessageBox>
   </div>
 </template>
 
@@ -286,6 +290,7 @@ import HelpTooltip from "@/components/UI Components/HelpTooltip";
 import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
 import {convertObjectToCSV, textFileDownloadInWeb,processPersonsForReport} from "../mixins/helpers";
 import {downloadTextFile} from "../plugins/android_support";
+import MessageBox from "../components/MessageBox";
 
 export default {
   name: "ActiveSearch",
@@ -329,6 +334,7 @@ export default {
 
   },
   components: {
+    MessageBox,
     'person-details': PersonDetails,
     PageTitle,
     "person-card": PersonCard,
@@ -357,6 +363,8 @@ export default {
 
       radios: 'AvailableToAll',
       showFab: false,
+
+      downloadCSVMessageFlag: false,
     };
   },
   validations: () => {
@@ -401,14 +409,18 @@ export default {
     ...mapMutations(['hideSearchResults','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('errorStore', ['addError',]),
+    showCSVDownloadMessage(){
+      this.downloadCSVMessageFlag = true;
+    },
+    hideCSVDownloadMessage(){
+      this.downloadCSVMessageFlag = false;
+    },
     async downloadInAndroid(){
       let processedPersons = processPersonsForReport(this.getPersons)
       let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       try{
         await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
-        await this.$bvModal.msgBoxOk("CSV downloaded to Documents folder", {
-          centered:true
-        });
+        this.showCSVDownloadMessage();
       }catch (e) {
         this.addError({name:"Download CSV Failure",message:"Count not save csv file to android storage",stack:e});
       }

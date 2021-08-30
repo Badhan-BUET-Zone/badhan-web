@@ -46,6 +46,6 @@ export const store = new Vuex.Store({
     release,
     statistics,
     errorStore,
-    consoleStore
+    consoleStore,
   }
 });

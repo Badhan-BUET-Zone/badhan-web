@@ -6,7 +6,7 @@
   >
     <v-card rounded>
       <v-card-title>
-        Confirm
+        Alert
       </v-card-title>
       <v-card-text>
         {{message}}
@@ -16,11 +16,6 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn rounded
-            color="secondary" @click="canceled"
-        >
-          Cancel
-        </v-btn>
         <v-btn rounded color="primary" @click="confirmed">
           Ok
         </v-btn>
@@ -31,6 +26,7 @@
 
 <script>
 export default {
+name: "MessageBox",
   props: {
     message: {
       type:String,
@@ -44,13 +40,8 @@ export default {
       type:Function,
       required: true
     },
-    canceled: {
-      type:Function,
-      required: true
-    },
 
   },
-  name: "Dialog",
   data() {
     return {
       dialog: false,
