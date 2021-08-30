@@ -40,7 +40,7 @@
               <v-list-item-title>Go to Web</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="signOutClicked">
+          <v-list-item @click="signOutModalPrompted">
             <v-list-item-icon>
               <v-icon>
                 mdi-logout
@@ -50,7 +50,7 @@
               <v-list-item-title>Sign Out</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="signOutAllClicked">
+          <v-list-item @click="signOutAllModalPrompted">
             <v-list-item-icon>
               <v-icon>
                 mdi-logout
@@ -191,6 +191,18 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+    <Dialog
+        :message="'Sign out?'"
+        :canceled="signOutModalCanceled"
+        :dialog-opened="signOutModalFlag"
+        :confirmed="signOutModalConfirmed">
+    </Dialog>
+    <Dialog
+        :message="'Sign out from all devices?'"
+        :canceled="signOutAllModalCanceled"
+        :dialog-opened="signOutAllModalFlag"
+        :confirmed="signOutAllModalConfirmed">
+    </Dialog>
 
   </div>
 </template>
@@ -198,13 +210,17 @@
 <script>
 
 import {mapActions, mapGetters} from 'vuex';
-import {isNative} from '@/plugins/android_support';
+import {isNative} from '../plugins/android_support';
 import {isGuestEnabled} from "../api";
+import Dialog from "./Dialog";
 
 export default {
+  components: {Dialog},
   data: function (){
     return{
       drawer: !this.$isMobile(),
+      signOutModalFlag: false,
+      signOutAllModalFlag: false,
     }
   },
   computed: {
@@ -217,7 +233,6 @@ export default {
     }
   },
   mounted() {
-    // this.drawer = !this.$isMobile();
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
@@ -225,25 +240,27 @@ export default {
     async myProfileclicked() {
       await this.$router.push({path: '/home/details', query: {id: this.getID}});
     },
-    async signOutClicked() {
-      this.$bvModal.msgBoxConfirm('Confirm Logout?', {
-        centered: true
-      })
-          .then(async (value) => {
-            if (value === true) {
-              await this.logout();
-              this.$router.push('/');
-            }
-          })
+    async signOutModalPrompted(){
+      this.signOutModalFlag = true;
     },
-    async signOutAllClicked() {
-      let value = await this.$bvModal.msgBoxConfirm('Confirm logout from all devices?', {
-        centered: true
-      });
-      if (value === true) {
-        await this.logoutAll();
-        this.$router.push('/');
-      }
+    async signOutModalCanceled(){
+      this.signOutModalFlag = false;
+    },
+    async signOutModalConfirmed(){
+      this.signOutModalFlag  = false;
+      await this.logout();
+      await this.$router.push('/');
+    },
+    async signOutAllModalPrompted(){
+      this.signOutAllModalFlag = true;
+    },
+    async signOutAllModalCanceled(){
+      this.signOutAllModalFlag = false;
+    },
+    async signOutAllModalConfirmed(){
+      this.signOutAllModalFlag  = false;
+      await this.logoutAll();
+      await this.$router.push('/');
     },
     async goToWebClicked() {
       let redirectionToken = await this.requestRedirectionToken();
@@ -253,7 +270,6 @@ export default {
         query: {token: redirectionToken, payload: this.$route.fullPath}
       });
       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
-
     }
   },
   watch: {

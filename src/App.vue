@@ -11,6 +11,19 @@
     </transition>
     <Notification></Notification>
 
+    <Dialog
+        :message="'Exit App?'"
+        :canceled="exitAppCanceled"
+        :confirmed="exitAppConfirmed"
+        :dialog-opened="exitPromptFlag">
+    </Dialog>
+    <Dialog
+        :message="'New version ' + updatedVersion+ ' available. Please download the latest update.'"
+        :canceled="updateCanceled"
+        :confirmed="updateConfirmed"
+        :dialog-opened="updatePromptFlag">
+    </Dialog>
+
   </v-app>
 </template>
 
@@ -24,6 +37,7 @@ import {mapActions, mapGetters} from "vuex";
 import SignInDialog from "./components/SignInDialog";
 
 import {getDeviceInfo, isNative, exitApp} from '@/plugins/android_support';
+import Dialog from "./components/Dialog";
 
 export default {
   name: 'app',
@@ -31,9 +45,14 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       waitingForExitConfirmation: false,
+
+      exitPromptFlag: false,
+      updatePromptFlag: false,
+      updatedVersion: "",
     }
   },
   components: {
+    Dialog,
     PageTitle,
     'app-bar': AppBar,
     Notification,
@@ -44,31 +63,34 @@ export default {
   },
   methods: {
     ...mapActions('release', ['fetchtAppDetails']),
+    exitAppPrompt(){
+      this.exitPromptFlag  = true;
+    },
+    exitAppConfirmed(){
+      this.exitPromptFlag = false;
+      exitApp();
+    },
+    exitAppCanceled(){
+      this.exitPromptFlag = false;
+    },
+    updatePrompt(){
+      this.updatePromptFlag = true;
+    },
+    updateConfirmed(){
+      this.updatePromptFlag = false;
+      window.open("https://play.google.com/store/apps/details?id=com.mmmbadhan");
+    },
+    updateCanceled(){
+      this.updatePromptFlag = false;
+    },
+
     androidBackButtonHandler() {
       if (this.$route.name === "Details") {
         this.$router.push('/home');
         return;
       }
       if (this.$route.path === "/home" || this.$route.path === '/') {
-        if (this.waitingForExitConfirmation === true) {
-          return;
-        }
-        this.waitingForExitConfirmation = true;
-        this.$bvModal.msgBoxConfirm('Exit app?', {
-          centered: true
-        })
-            .then(value => {
-              if (value === true) {
-                exitApp();
-              } else {
-                this.waitingForExitConfirmation = false;
-
-              }
-            })
-            .catch(err => {
-              // An error occurred
-            }).finally(() => {
-        })
+        this.exitAppPrompt();
       } else {
         this.$router.go(-1);
       }
@@ -78,36 +100,19 @@ export default {
       const deployedAppInfo = await this.fetchtAppDetails();
 
       if (isNative() && deployedAppInfo.data.version != info.appVersion) {
-        try {
-          let value = await this.$bvModal.msgBoxConfirm('New version ' + deployedAppInfo.data.version + ' available. Please download the latest update.', {
-            centered: true
-          });
-          if (value) {
-            window.open("https://play.google.com/store/apps/details?id=com.mmmbadhan");
-          }
-        } catch (e) {}
+        this.updatedVersion = deployedAppInfo.data.version;
+        this.updatePrompt();
       }
     },
-    // networkEnabled(){
-    //   console.log("Network on")
-    // },
-    // networkDisabled(){
-    //   console.log("Network off")
-    // },
   },
 
   async mounted() {
     document.addEventListener("backbutton", this.androidBackButtonHandler, false);
-    // window.addEventListener('online', this.networkEnabled);
-    // window.addEventListener('offline', this.networkDisabled);
-    // console.log(window.navigator.onLine);
     this.versionCheck();
   },
 
   beforeDestroy() {
     document.removeEventListener("backbutton", this.androidBackButtonHandler);
-    // window.removeEventListener('online', this.networkEnabled);
-    // window.removeEventListener('offline', this.networkDisabled);
   },
 }
 </script>

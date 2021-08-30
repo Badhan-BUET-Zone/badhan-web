@@ -265,28 +265,34 @@
               <p>{{ lastDonation }}</p>
               <p class="h6 font-weight-bold">Donation History:</p>
               <div v-if="getDonationList.length!==0">
-                <v-card
-                    class="mb-1 rounded-xl"
-                    outlined
-                    dense
+                <DonationCard
                     v-for="(date,index) in getDonationList"
                     :key="index"
-                >
-                  <v-card-text>
-                    <v-row>
-                      <v-col cols="9">
-                          <span>
-                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}
-                          </span>
-                      </v-col>
-                      <v-col cols="3">
-                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>
-                          <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-card-text>
-                </v-card>
+                    :date="date"
+                    :delete-donation="deleteDonationClicked">
+                </DonationCard>
+<!--                <v-card-->
+<!--                    class="mb-1 rounded-xl"-->
+<!--                    outlined-->
+<!--                    dense-->
+<!--                    v-for="(date,index) in getDonationList"-->
+<!--                    :key="index"-->
+<!--                >-->
+<!--                  <v-card-text>-->
+<!--                    <v-row>-->
+<!--                      <v-col cols="9">-->
+<!--                          <span>-->
+<!--                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}-->
+<!--                          </span>-->
+<!--                      </v-col>-->
+<!--                      <v-col cols="3">-->
+<!--                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>-->
+<!--                          <v-icon>mdi-delete</v-icon>-->
+<!--                        </v-btn>-->
+<!--                      </v-col>-->
+<!--                    </v-row>-->
+<!--                  </v-card-text>-->
+<!--                </v-card>-->
                 <br/>
               </div>
             </template>
@@ -323,11 +329,13 @@ import {
   handleDELETEDonors,
   handlePOSTDonorsPasswordRequest
 } from "../../api";
+import DonationCard from "./DonationCard";
 
 export default {
   name: "PersonDetails",
   props: ["donorId"],
   components: {
+    DonationCard,
     ContainerOutlined,
     Container,
     ShareProfileButton,
@@ -606,6 +614,7 @@ export default {
       this.commentTime = new Date().getTime();
 
     },
+
     async deleteDonationClicked(date) {
       let lastDonation = await this.deleteDonation({
         donorId: this._id,
