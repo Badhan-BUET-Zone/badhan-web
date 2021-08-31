@@ -39,12 +39,14 @@ export default {
   methods: {
     async getPersonActivities() {
       let splitDate = this.dateString.split('-');
+
       let timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime();
       this.personLogLoading = true;
       let response = await handleGETLogsByDateAndDonor({timeStamp, donorId: this.dateLog.donorId});
       this.personLogLoading = false;
-      if (response !== 200) return;
+      if (response.status !== 200) return;
       this.personLogs = response.data.logs;
+      console.log(response.data);
     }
   }
 }
