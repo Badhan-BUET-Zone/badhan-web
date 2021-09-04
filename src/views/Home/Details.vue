@@ -1,7 +1,11 @@
 <template>
-  <v-card style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">
-
-    <v-app-bar class="rounded-b-xl">
+<!--/*  <v-card style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;overflow-y: scroll;">*/-->
+    <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="800"
+    >
+    <v-app-bar class="rounded-xl">
       <v-btn icon @click="$router.push('/home')">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
@@ -9,7 +13,9 @@
       <ShareProfileButton :id="$route.query.id"></ShareProfileButton>
     </v-app-bar>
     <PersonDetails :donorId="$route.query.id"></PersonDetails>
-  </v-card>
+    </v-dialog>
+<!--  </v-card>-->
+
 </template>
 
 <script>
@@ -21,6 +27,11 @@ export default {
   components: {
     ShareProfileButton,
     PersonDetails,
+  },
+  data:()=>{
+    return{
+      dialog: true
+    }
   }
 }
 </script>
