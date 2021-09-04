@@ -10,6 +10,7 @@
       <SignInDialog v-if="getSignInLoaderFlag"></SignInDialog>
     </transition>
     <Notification></Notification>
+    <MessageBox></MessageBox>
 
     <Dialog
         :message="'Exit App?'"
@@ -38,6 +39,7 @@ import SignInDialog from "./components/SignInDialog";
 
 import {getDeviceInfo, isNative, exitApp} from '@/plugins/android_support';
 import Dialog from "./components/Dialog";
+import MessageBox from "./components/MessageBox";
 
 export default {
   name: 'app',
@@ -52,6 +54,7 @@ export default {
     }
   },
   components: {
+    MessageBox,
     Dialog,
     PageTitle,
     'app-bar': AppBar,

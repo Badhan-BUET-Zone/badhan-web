@@ -270,10 +270,6 @@
       <router-view></router-view>
       </transition>
     </div>
-    <MessageBox
-        :message="'CSV downloaded to Documents folder'"
-        :dialogOpened="downloadCSVMessageFlag" :confirmed="hideCSVDownloadMessage"
-    ></MessageBox>
   </div>
 </template>
 
@@ -409,18 +405,13 @@ export default {
     ...mapMutations(['hideSearchResults','resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('errorStore', ['addError',]),
-    showCSVDownloadMessage(){
-      this.downloadCSVMessageFlag = true;
-    },
-    hideCSVDownloadMessage(){
-      this.downloadCSVMessageFlag = false;
-    },
+    ...mapMutations('messageBox',['setMessage']),
     async downloadInAndroid(){
       let processedPersons = processPersonsForReport(this.getPersons)
       let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       try{
         await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
-        this.showCSVDownloadMessage();
+        this.setMessage('CSV downloaded to Documents folder');
       }catch (e) {
         this.addError({name:"Download CSV Failure",message:"Count not save csv file to android storage",stack:e});
       }
@@ -430,6 +421,7 @@ export default {
       let processedPersons = processPersonsForReport(this.getPersons)
       let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       textFileDownloadInWeb(csv,'badhan_'+this.getSearchedHall+'.csv');
+      this.setMessage('CSV downloaded');
     },
 
     onScroll (e) {

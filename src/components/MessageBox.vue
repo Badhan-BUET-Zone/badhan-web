@@ -6,10 +6,10 @@
   >
     <v-card rounded>
       <v-card-title>
-        Alert
+        Message
       </v-card-title>
       <v-card-text>
-        {{message}}
+        {{ getMessage }}
       </v-card-text>
 
       <v-divider></v-divider>
@@ -25,28 +25,47 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations} from 'vuex';
 export default {
-name: "MessageBox",
+  name: "MessageBox",
   props: {
-    message: {
-      type:String,
-      required: true
-    },
-    dialogOpened: {
-      type:Boolean,
-      required: true
-    },
-    confirmed: {
-      type:Function,
-      required: true
-    },
+    // message: {
+    //   type:String,
+    //   required: true
+    // },
+    // dialogOpened: {
+    //   type:Boolean,
+    //   required: true
+    // },
+    // confirmed: {
+    //   type:Function,
+    //   required: true
+    // },
 
   },
   data() {
     return {
-      dialog: false,
     }
   },
+  computed: {
+    ...mapGetters('messageBox',['getNotificationFlag','getMessage']),
+    dialogOpened: {
+      // getter
+      get() {
+        return this.getNotificationFlag;
+      },
+      // setter
+      set(newValue) {
+        this.setMessageFlag(newValue);
+      },
+    }
+  },
+  methods:{
+    ...mapMutations('messageBox',['setMessage','setMessageFlag']),
+    confirmed(){
+      this.setMessageFlag(false);
+    }
+  }
 }
 </script>
 
