@@ -5,6 +5,10 @@ import Home from "@/views/Home";
 import SignInCover from "@/views/SignInCover";
 import Details from "../views/Home/Details";
 import {store} from "@/store/store";
+import LogsByDate from "../views/Statistics/LogsByDate";
+import RecentLogs from "../views/Statistics/RecentLogs";
+import Stats from "../views/Statistics/Stats";
+import VolunteersAll from "../views/Statistics/VolunteersAll";
 
 Vue.use(VueRouter)
 
@@ -77,7 +81,53 @@ const routes = [
             title: 'Statistics',
             designation: 3,
             reRouteIfAuthorized: false,
-        }
+        },
+        children: [
+            {
+                name: 'LogsByDate',
+                path: 'logsByDate',
+                component: LogsByDate,
+                meta: {
+                    title: 'Logs by Date',
+                    requiresAuth: true,
+                    designation: 3,
+                    reRouteIfAuthorized: false,
+                }
+            },
+            {
+                name: 'RecentLogs',
+                path: 'recentLogs',
+                component: RecentLogs,
+                meta: {
+                    title: 'Recent Logs',
+                    requiresAuth: true,
+                    designation: 3,
+                    reRouteIfAuthorized: false,
+                }
+            },
+            {
+                name: 'Stats',
+                path: 'stats',
+                component: Stats,
+                meta: {
+                    title: 'Account Stats',
+                    requiresAuth: true,
+                    designation: 3,
+                    reRouteIfAuthorized: false,
+                }
+            },
+            {
+                name:'VolunteersAll',
+                path: 'volunteersAll',
+                component: VolunteersAll,
+                meta:{
+                    title:'All Volunteers',
+                    requiresAuth: true,
+                    designation: 3,
+                    reRouteIfAuthorized: false,
+                }
+            }
+        ]
     },
     {
         name: 'Credits',
