@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "@/views/Home";
+import Home from "../views/Home";
 
-import SignInCover from "@/views/SignInCover";
+import SignInCover from "../views/SignInCover";
 import Details from "../views/Home/Details";
-import {store} from "@/store/store";
+import {store} from "../store/store";
 import LogsByDate from "../views/Statistics/LogsByDate";
 import RecentLogs from "../views/Statistics/RecentLogs";
 import Stats from "../views/Statistics/Stats";
@@ -16,7 +16,7 @@ const routes = [
     {
         name: 'HallAdminList',
         path: '/halladminlist',
-        component: () => import('@/views/HallAdminList.vue'),
+        component: () => import('../views/HallAdminList.vue'),
         meta: {
             requiresAuth: true,
             title: 'List of Hall Admins',
@@ -38,7 +38,6 @@ const routes = [
             {
                 name: 'Details',
                 path: 'details',
-                // component: PersonDetails,
                 component: Details,
                 meta: {
                     title: 'Donor Details',
@@ -52,8 +51,7 @@ const routes = [
     {
         name: 'MyProfile',
         path: '/myProfile',
-        // component: PersonDetails,
-        component: () => import('@/views/MyProfile.vue'),
+        component: () => import('../views/MyProfile.vue'),
         meta: {
             requiresAuth: true,
             title: 'My Profile',
@@ -75,7 +73,7 @@ const routes = [
     {
         name: 'Statistics',
         path: '/statistics',
-        component: () => import('@/views/Statistics.vue'),
+        component: () => import('../views/Statistics.vue'),
         meta: {
             requiresAuth: true,
             title: 'Statistics',
@@ -86,7 +84,7 @@ const routes = [
             {
                 name: 'LogsByDate',
                 path: 'logsByDate',
-                component: LogsByDate,
+                component:() => import('../views/Statistics/LogsByDate.vue'),
                 meta: {
                     title: 'Logs by Date',
                     requiresAuth: true,
@@ -97,7 +95,7 @@ const routes = [
             {
                 name: 'RecentLogs',
                 path: 'recentLogs',
-                component: RecentLogs,
+                component:() => import('../views/Statistics/RecentLogs'),
                 meta: {
                     title: 'Recent Logs',
                     requiresAuth: true,
@@ -108,7 +106,7 @@ const routes = [
             {
                 name: 'Stats',
                 path: 'stats',
-                component: Stats,
+                component:() => import('../views/Statistics/Stats'),
                 meta: {
                     title: 'Account Stats',
                     requiresAuth: true,
@@ -119,7 +117,7 @@ const routes = [
             {
                 name:'VolunteersAll',
                 path: 'volunteersAll',
-                component: VolunteersAll,
+                component:() => import('../views/Statistics/VolunteersAll'),
                 meta:{
                     title:'All Volunteers',
                     requiresAuth: true,
@@ -132,7 +130,7 @@ const routes = [
     {
         name: 'Credits',
         path: '/credits',
-        component: () => import('@/views/Credits.vue'),
+        component: () => import('../views/Credits.vue'),
         meta: {
             requiresAuth: false,
             title: "Developers of Badhan",
@@ -143,7 +141,7 @@ const routes = [
     {
         name: 'About',
         path: '/about',
-        component: () => import('@/views/About.vue'),
+        component: () => import('../views/About.vue'),
         meta: {
             requiresAuth: false,
             title: "About Badhan",
@@ -155,7 +153,7 @@ const routes = [
     {
         name: 'VolunteerList',
         path: '/volunteerlist',
-        component: () => import('@/views/VolunteerList.vue'),
+        component: () => import('../views/VolunteerList.vue'),
         meta: {
             requiresAuth: true,
             title: 'List of Volunteers',
@@ -166,7 +164,7 @@ const routes = [
     {
         name: 'Donor Creation',
         path: '/donorCreation',
-        component: () => import('@/views/DonorCreation.vue'),
+        component: () => import('../views/DonorCreation.vue'),
         meta: {
             requiresAuth: true,
             title: 'Donor Creation',
@@ -177,7 +175,7 @@ const routes = [
     {
         name: 'SingleDonorCreation',
         path: '/singleDonorCreation',
-        component: () => import('@/views/SingleDonorCreation.vue'),
+        component: () => import('../views/SingleDonorCreation.vue'),
         meta: {
             requiresAuth: true,
             title: 'Create Donor',
@@ -188,7 +186,7 @@ const routes = [
     {
         name: 'Archive',
         path: '/archive',
-        component: () => import('@/views/Archive.vue'),
+        component: () => import('../views/Archive.vue'),
         meta: {
             requiresAuth: true,
             title: 'Archived Donors',
@@ -199,7 +197,7 @@ const routes = [
     {
         name: 'PasswordReset',
         path: '/passwordReset',
-        component: () => import('@/views/PasswordReset.vue'),
+        component: () => import('../views/PasswordReset.vue'),
         meta: {
             requiresAuth: false,
             title: 'Set Your Password',
@@ -210,7 +208,7 @@ const routes = [
     {
         name: 'Redirection',
         path: '/redirection',
-        component: () => import('@/views/Redirection.vue'),
+        component: () => import('../views/Redirection.vue'),
         meta: {
             requiresAuth: false,
             title: 'Redirection',
@@ -221,7 +219,7 @@ const routes = [
     {
         name: 'DevConsole',
         path: '/devconsole',
-        component: () => import('@/views/DevConsole.vue'),
+        component: () => import('../views/DevConsole.vue'),
         meta: {
             requiresAuth: true,
             title: 'Developer Console',
@@ -232,7 +230,7 @@ const routes = [
     {
         name: 'NotFound',
         path: '/*',
-        component: () => import('@/views/NotFound.vue'),
+        component: () => import('../views/NotFound.vue'),
         meta: {
             requiresAuth: false,
             title: "404 Not Found",
@@ -247,7 +245,7 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach(async (to, from, next) => {
-    if (!to.meta.requiresAuth && to.name != 'SignIn') {
+    if (!to.meta.requiresAuth && to.name !== 'SignIn') {
         next();
     }
 
