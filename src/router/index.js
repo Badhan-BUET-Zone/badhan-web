@@ -5,10 +5,6 @@ import Home from "../views/Home";
 import SignInCover from "../views/SignInCover";
 import Details from "../views/Home/Details";
 import {store} from "../store/store";
-import LogsByDate from "../views/Statistics/LogsByDate";
-import RecentLogs from "../views/Statistics/RecentLogs";
-import Stats from "../views/Statistics/Stats";
-import VolunteersAll from "../views/Statistics/VolunteersAll";
 
 Vue.use(VueRouter)
 
@@ -201,6 +197,17 @@ const routes = [
         meta: {
             requiresAuth: false,
             title: 'Set Your Password',
+            designation: 0,
+            reRouteIfAuthorized: true,
+        }
+    },
+    {
+        name: 'ForgotPassword',
+        path: '/forgotPassword',
+        component: () => import('../views/ForgotPassword.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Password Recovery',
             designation: 0,
             reRouteIfAuthorized: true,
         }

@@ -353,6 +353,14 @@ const handleDELETECallRecord = async (payload) => {
     }
 }
 
+const handlePOSTPasswordForgot = async (payload)=>{
+    try{
+        return await badhanAxios.post("/users/password/forgot",{phone: payload.phone});
+    }catch (e) {
+        return e.response;
+    }
+}
+
 //////////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
     try {
@@ -400,4 +408,5 @@ export {
     handleDELETEDonations,
     handlePOSTCallRecord,
     handleDELETECallRecord,
+    handlePOSTPasswordForgot
 }

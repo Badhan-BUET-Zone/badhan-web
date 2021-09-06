@@ -67,7 +67,7 @@
                         :error-messages="passwordErrors"
                         :hint="'Enter your password'"
                     ></v-text-field>
-<!--                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>-->
+                    <!--                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>-->
                     <v-btn
                         color="primary"
                         rounded
@@ -80,6 +80,11 @@
                         mdi-login
                       </v-icon>
                       Sign In
+                    </v-btn>
+                    <br>
+                    <v-btn small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
+                           style="text-decoration: none">
+                      Forgot Password?
                     </v-btn>
                     <br>
                     <v-btn
@@ -170,9 +175,10 @@
 <script>
 import SignInDialog from "@/components/SignInDialog";
 
-import {getDeviceInfo,isNative} from '@/plugins/android_support';
+import {getDeviceInfo, isNative} from '@/plugins/android_support';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
-import {required, minLength,maxLength} from 'vuelidate/lib/validators'
+import {required, minLength, maxLength} from 'vuelidate/lib/validators'
+
 export default {
   name: "SignInCover",
   data() {
@@ -203,12 +209,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['getSignInLoaderFlag','getAutoRedirectionPath']),
+    ...mapGetters(['getSignInLoaderFlag', 'getAutoRedirectionPath']),
     isMobile() {
       return isNative();
     },
 
-    phoneErrors(){
+    phoneErrors() {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
       !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
@@ -216,7 +222,7 @@ export default {
       !this.$v.phone.required && errors.push('Phone is required.')
       return errors
     },
-    passwordErrors(){
+    passwordErrors() {
       const errors = []
       if (!this.$v.password.$dirty) return errors
       !this.$v.password.required && errors.push('Password is required.')//minLength
@@ -227,11 +233,11 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
-    ...mapActions(['login','guestLogin']),
-    ...mapMutations(['clearSignInError','setAutoRedirectionPath','unsetAutoRedirectionPath']),
+    ...mapActions(['login', 'guestLogin']),
+    ...mapMutations(['clearSignInError', 'setAutoRedirectionPath', 'unsetAutoRedirectionPath']),
     async signInClicked() {
       await this.$v.$touch();
-      if(this.$v.$anyError){
+      if (this.$v.$anyError) {
         return;
       }
 
@@ -242,7 +248,7 @@ export default {
       });
 
       if (isSignInOk) {
-        if(this.getAutoRedirectionPath){
+        if (this.getAutoRedirectionPath) {
           await this.$router.push(this.getAutoRedirectionPath);
           this.unsetAutoRedirectionPath();
           return;
@@ -251,9 +257,9 @@ export default {
       }
     },
 
-    async guestSignInClicked(){
-        await this.guestLogin();
-        await this.$router.push("/home");
+    async guestSignInClicked() {
+      await this.guestLogin();
+      await this.$router.push("/home");
     },
 
     clearClicked() {
