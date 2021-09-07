@@ -50,6 +50,11 @@
                       <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
+                      <v-text-field rounded dense outlined :label="'Email ' + ((designation!==0 && !$isMe(_id))?'(You cannot edit this email)':'')" v-model="email"
+                                    :disabled="!isDetailsEditable || (designation!==0 && !$isMe(_id)) "
+                                    @blur="$v.email.$touch()"
+                                    :error-messages="emailErrors">
+                      </v-text-field>
                       <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!isDetailsEditable"></v-select>
                       <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
@@ -67,7 +72,7 @@
 
                       <div v-if="getDesignation > designation || $isMe(_id)">
                         <v-btn color="primary" rounded class="white--text ml-2" small
-                               :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error"
+                               :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error || $v.email.$error"
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
                           <v-icon left>
                             mdi-content-save
@@ -360,6 +365,7 @@ export default {
       oldPhone: "",
       phone: "",
       studentId: "",
+      email: "",
       bloodGroup: "",
       availableIn: "",
       designation: "",
@@ -427,6 +433,13 @@ export default {
       numeric,
       required
     },
+    email: {
+      validEmail(email) {
+        if (email === "") return true;
+        let emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailRegex.test(email);
+      }
+    },
     name: {
       required
     },
@@ -488,6 +501,12 @@ export default {
       !this.$v.studentId.maxLength && errors.push('Student ID must be of 7 digits')
       !this.$v.studentId.numeric && errors.push('Student ID must be numeric')
       !this.$v.studentId.required && errors.push('Student ID is required')
+      return errors
+    },
+    emailErrors() {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.validEmail && errors.push('Email not valid')
       return errors
     },
     nameErrors() {
@@ -694,8 +713,9 @@ export default {
       await this.$v.name.$touch();
       await this.$v.phone.$touch();
       await this.$v.studentId.$touch();
+      await this.$v.email.$touch();
 
-      if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentId.$error) {
+      if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentId.$error || this.$v.email.$error) {
         return;
       }
 
@@ -713,6 +733,7 @@ export default {
         name: this.name,
         phone: parseInt("88" + this.phone),
         studentId: this.studentId,
+        email: this.email,
         bloodGroup: bloodGroups.indexOf(this.bloodGroup),
         hall: halls.indexOf(this.hall),
         roomNumber: room,
@@ -766,6 +787,7 @@ export default {
     this.oldPhone = profile.phone;
     this.studentId = profile.studentId;
     this.bloodGroup = bloodGroups[profile.bloodGroup];
+    this.email = profile.email;
     this.hall = halls[profile.hall];
     this.room = profile.roomNumber;
     this.address = profile.address;
