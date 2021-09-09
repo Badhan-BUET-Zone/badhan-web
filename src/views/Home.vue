@@ -306,8 +306,6 @@ export default {
         if (this.getDesignation === 3) {
           return halls.slice(0, 7);
         } else {
-          //covid support
-          //return [halls[this.getHall], halls[7]];
           return [halls[this.getHall]];
         }
       }

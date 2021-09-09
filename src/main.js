@@ -3,8 +3,7 @@ import App from './App.vue'
 
 import router from './router'
 import {store} from "./store/store";
-// import AOS from 'aos'
-// import 'aos/dist/aos.css'
+import ldb from "./localDatabase";
 
 //Bootstrap
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -12,19 +11,16 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuelidate from 'vuelidate'
 import VueClipboard from 'vue-clipboard2'
-import Mixins from '@/mixins/index';
+import Mixins from './mixins/index';
 import vuetify from './plugins/vuetify';
+import "./mixins/filters";
 
-
-
-import filters from "./mixins/filters";
+Vue.prototype.$myldb = ldb;
 
 Vue.use(VueClipboard);
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-
-Vue.filter('getHallName',filters.getHallName);
 
 Vue.config.errorHandler = (err, vm, info) => {
   // err: error trace
@@ -48,13 +44,8 @@ Vue.config.productionTip = false;
 export const eventBus = new Vue();
 
 new Vue({
-  // created () {
-  //   AOS.init()
-  // },
   router,
   store,
   vuetify,
   render: h => h(App)
 }).$mount('#app')
-
-// vm.$vuetify.theme.dark=true;

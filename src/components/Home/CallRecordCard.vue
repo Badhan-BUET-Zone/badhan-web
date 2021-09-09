@@ -9,7 +9,7 @@
         <v-col cols="9">
           <p>
             {{ callRecord.callerId.name }}<br>
-            <b>Hall: </b>{{ halls[callRecord.callerId.hall] }}<br>
+            <b>Hall: </b>{{ callRecord.callerId.hall | getHallName }}<br>
             <b>Designation: </b>{{ designations[callRecord.callerId.designation] }}<br>
             <b>Time: </b>{{ dateString }} at {{ time }}
           </p>
@@ -28,7 +28,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import {halls, designations} from "@/mixins/constants";
+import {designations} from "@/mixins/constants";
 import Dialog from "../Dialog";
 
 export default {
@@ -37,7 +37,6 @@ export default {
   data: () => {
     return {
       deleteLoaderFlag: false,
-      halls,
       designations,
       date: 0,
       month: 0,

@@ -67,7 +67,6 @@
                         :error-messages="passwordErrors"
                         :hint="'Enter your password'"
                     ></v-text-field>
-                    <!--                    <v-checkbox dense label="Remember me" v-model="rememberFlag"></v-checkbox>-->
                     <v-btn
                         color="primary"
                         rounded
@@ -186,8 +185,6 @@ export default {
       detailsFlag: false,
       phone: "",
       password: "",
-      rememberFlag: localStorage.getItem("rememberFlag") == "true",
-
       passwordFlag: false,
       version: ""
     }
@@ -204,9 +201,7 @@ export default {
     }
   },
   watch: {
-    rememberFlag(to, from) {
-      localStorage.setItem("rememberFlag", to);
-    },
+
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getAutoRedirectionPath']),

@@ -98,7 +98,6 @@ export default {
     return {
       tabs: null,
       deleteLogsPromptFlag: false,
-      halls,
       headers: [
         {text: 'Time', value: 'date'},
         {text: 'Name', value: 'donorId.name'},

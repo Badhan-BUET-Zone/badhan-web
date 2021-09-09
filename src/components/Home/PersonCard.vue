@@ -15,7 +15,7 @@
               flat rounded
           >
             <v-card-text>
-              {{ bloodGroup | numToBloodGroup }}
+              {{ bloodGroup | getBloodGroupString }}
               <br>
               {{ availableInRendered }} day
             </v-card-text>
@@ -27,7 +27,7 @@
               flat rounded
           >
             <v-card-text>
-              {{ bloodGroup | numToBloodGroup }}
+              {{ bloodGroup | getBloodGroupString }}
               <br>
               <span class="text-caption">Available</span>
             </v-card-text>
@@ -46,7 +46,7 @@
             <span v-if="phone">{{ phone.toString().substr(2) }}</span>
             <br>
             <b>Hall: </b>
-            <span>{{ halls[hall] }}</span>
+            <span>{{ hall |getHallName }}</span>
           </div>
         </v-col>
       </v-row>
@@ -153,10 +153,9 @@
 </template>
 
 <script>
-import {departments, bloodGroups} from "@/mixins/constants";
+import {departments} from "@/mixins/constants";
 
 import {mapActions, mapGetters} from "vuex";
-import {halls} from "@/mixins/constants";
 
 export default {
   name: "PersonCard",
@@ -167,9 +166,6 @@ export default {
   filters: {
     idToDept(studentId) {
       return departments[Number(studentId.toString().substr(2, 2))];
-    },
-    numToBloodGroup(num) {
-      return bloodGroups[num];
     },
   },
   data: function () {
@@ -187,8 +183,6 @@ export default {
       availableInRendered: 0,
 
       newCallRecordLoader: false,
-
-      halls,
 
       profileDetailsClicked: false,
       profileDetailsLoading: false,

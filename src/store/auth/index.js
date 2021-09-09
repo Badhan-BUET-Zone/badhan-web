@@ -9,6 +9,9 @@ import {
     handlePOSTSignIn
 } from '../../api';
 
+import ldb from '../../localDatabase';
+
+
 const state = {
     token: null,
     signInLoaderFlag: false,
@@ -53,26 +56,21 @@ const mutations = {
     },
 
     loadTokenFromLocalStorage(state) {
-        state.token = localStorage.getItem('x-auth');
+        state.token = ldb.token.load();
     },
 
     saveTokenToLocalStorage(state) {
-        localStorage.setItem('x-auth', state.token);
+        ldb.token.save(state.token)
     },
-
-    removeTokenFromLocalStorage(state) {
-        localStorage.removeItem('x-auth');
-    },
-
 
     setToken(state, token) {
         state.token = token;
-        localStorage.setItem('x-auth', state.token);
+        ldb.token.save(state.token);
     },
 
     removeToken(state) {
         state.token = null;
-        localStorage.removeItem('x-auth');
+        ldb.token.clear();
     },
 
     signInLoaderFlagOn(state) {
@@ -109,7 +107,7 @@ const actions = {
         commit('setLoadingFalse');
         commit('unsetLoginFlag')
         commit('removeToken');
-        commit('removeTokenFromLocalStorage');
+        ldb.token.clear();
         resetBaseURL()
     },
     async logoutAll({commit, dispatch}) {
@@ -122,7 +120,7 @@ const actions = {
         commit('setLoadingFalse');
         commit('unsetLoginFlag');
         commit('removeToken');
-        commit('removeTokenFromLocalStorage');
+        ldb.token.clear();
         resetBaseURL()
 
     },
@@ -166,7 +164,7 @@ const actions = {
         if (response.status!==200) {
             if(response.status!==401)return false;
             commit('removeToken');
-            commit('removeTokenFromLocalStorage');
+            ldb.token.clear();
             return false;
         }
 
@@ -214,7 +212,7 @@ const actions = {
         if (payload.rememberFlag) {
             commit('saveTokenToLocalStorage');
         } else {
-            commit('removeTokenFromLocalStorage');
+            ldb.token.clear();
         }
         commit('setLoginFlag');
         return true;

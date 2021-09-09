@@ -15,7 +15,7 @@
                     sort-desc
       >
         <template v-slot:item.hall="{ item }">
-          {{ halls[item.hall] }}
+          {{item.hall | getHallName}}
         </template>
       </v-data-table>
     </transition>
@@ -34,7 +34,6 @@ export default {
   },
   data() {
     return {
-      halls,
       volunteerListHeaders: [
         {text: 'Name', value: 'name'},
         {text: 'Hall', value: 'hall'},

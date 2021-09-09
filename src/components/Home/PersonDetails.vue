@@ -50,7 +50,7 @@
                       <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
-                      <v-text-field rounded dense outlined :label="'Email ' + ((designation!==0 && !$isMe(_id))?'(You cannot edit this email)':'')" v-model="email"
+                      <v-text-field :hint="(designation!==0 && !$isMe(_id))?'You cannot edit this email':'Password Recovery Email'" :persistent-hint="(designation!==0 && !$isMe(_id))" rounded dense outlined :label="'Email'" v-model="email"
                                     :disabled="!isDetailsEditable || (designation!==0 && !$isMe(_id)) "
                                     @blur="$v.email.$touch()"
                                     :error-messages="emailErrors">
@@ -537,8 +537,6 @@ export default {
         if (this.getDesignation === 3) {
           return [...halls.slice(0, 7), halls[8]];
         } else {
-          //covid support
-          //return [halls[this.getHall], halls[7]];
           return [halls[this.getHall], halls[8]];
         }
       }

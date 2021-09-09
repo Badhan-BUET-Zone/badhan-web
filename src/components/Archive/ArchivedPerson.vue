@@ -33,7 +33,7 @@
               height: 100%;
             "
                     >
-                        {{ bloodGroup | numToBloodGroup }}
+                        {{ bloodGroup | getBloodGroupString }}
                     </div>
                 </v-col>
             </v-row>
@@ -56,9 +56,6 @@ export default {
     filters: {
         idToDept(studentID) {
             return departments[Number(studentID.toString().substr(2, 2))];
-        },
-        numToBloodGroup(num) {
-            return bloodGroups[num];
         },
     },
 }

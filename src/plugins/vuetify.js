@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib/framework';
-
+import ldb from '../localDatabase';
 Vue.use(Vuetify);
 import colors from 'vuetify/lib/util/colors'
 export default new Vuetify({
     theme: {
-        dark: localStorage.getItem('darkTheme')==='true',
+        dark: ldb.theme.load(),
         themes: {
             light: {
                 primary: colors.red.darken3,

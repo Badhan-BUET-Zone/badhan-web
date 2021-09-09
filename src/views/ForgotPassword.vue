@@ -9,15 +9,16 @@
       <v-card-text>
         <v-text-field :disabled="recoveryCalledLoader" @blur="$v.phone.$touch()"
                       :error-messages="phoneErrors" class="required" rounded outlined label="Enter your phone number" dense v-model="phone"></v-text-field>
-        <v-btn :loading="recoveryCalledLoader" :disabled="recoveryCalledLoader|| emailTimeCoolDownTime<4*60 || $v.$anyError" @click="recoveryClicked" color="primary" rounded>
-          <v-icon left>
-            mdi-backup-restore
-          </v-icon>
-          Get Recovery Email
-        </v-btn>
+        <Button
+            :click="recoveryClicked"
+            :color="'primary'"
+            :disabled="recoveryCalledLoader|| emailTimeCoolDownTime<4*60 || $v.$anyError"
+            :loading="recoveryCalledLoader"
+            text="Get Recovery Email" icon="mdi-backup-restore">
+        </Button>
         <transition name="slide-fade-down" mode="out-in">
           <v-progress-linear v-if="emailTimeCoolDownTime<4*60" striped
-                             class="rounded-xl mt-2"
+                             class="rounded-xl ma-2"
                              color="primary"
                              v-model="emailCoolDownBar"
                              height="25"
@@ -46,9 +47,11 @@ import PageTitle from "../components/PageTitle";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {handlePOSTPasswordForgot} from "../api";
 import {mapActions} from "vuex";
+import Button from "../components/UI Components/Button";
+import ldb from "../localDatabase";
 export default {
   name: "ForgotPassword",
-  components: {PageTitle, Container},
+  components: {Button, PageTitle, Container},
   validations: () => {
     return {
       phone: {
@@ -90,7 +93,7 @@ export default {
       }
 
       this.coolDownTimerHandler();
-      localStorage.setItem('passwordEmailRecoveryTimestamp',String(new Date().getTime()));
+      ldb.emailRecovery.save();
       this.success =  false;
       this.recoveryCalledLoader = true;
       let response = await handlePOSTPasswordForgot({phone: '88'+this.phone});
@@ -107,7 +110,7 @@ export default {
           clearInterval(timerId);
           this.emailTimeCoolDownTime = 4*60;
           this.phone = null;
-          localStorage.removeItem('passwordEmailRecoveryTimestamp');
+          ldb.emailRecovery.clear();
           this.$v.$reset();
           return;
         }
@@ -116,9 +119,8 @@ export default {
     }
   },
   mounted(){
-    let timeStampOfLastPasswordRecovery = localStorage.getItem('passwordEmailRecoveryTimestamp');
+    let timeStampOfLastPasswordRecovery = ldb.emailRecovery.load();
     if(timeStampOfLastPasswordRecovery){
-      timeStampOfLastPasswordRecovery = parseInt(timeStampOfLastPasswordRecovery);
       let currentTime = new Date().getTime();
       if((currentTime-timeStampOfLastPasswordRecovery)/1000 < 4*60){
         this.emailTimeCoolDownTime = 4*60- Math.ceil((currentTime-timeStampOfLastPasswordRecovery)/1000);

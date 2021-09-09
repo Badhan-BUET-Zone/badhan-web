@@ -26,6 +26,7 @@ import {mapGetters} from "vuex";
 import PageTitle from "../components/PageTitle";
 import ShareProfileButton from "../components/ShareProfileButton";
 import Container from "../components/Wrappers/Container";
+import ldb from "../localDatabase";
 
 export default {
   name: "MyProfile",
@@ -44,7 +45,7 @@ export default {
       // setter
       set(newValue) {
         this.$vuetify.theme.dark = newValue
-        localStorage.setItem('darkTheme', newValue);
+        ldb.theme.save(newValue)
       }
     },
   },

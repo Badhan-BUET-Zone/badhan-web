@@ -85,8 +85,6 @@ export default {
   data: function () {
     return {
       //constants
-      bloodGroups,
-      halls,
       departments,
 
       seeVolunteersFlag: !this.$isMobile(),
@@ -100,9 +98,6 @@ export default {
   filters: {
     idToDept(studentID) {
       return departments[Number(studentID.toString().substr(2, 2))];
-    },
-    numToBloodGroup(num) {
-      return bloodGroups[num];
     },
   },
   methods: {

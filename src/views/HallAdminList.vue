@@ -49,7 +49,7 @@
                 v-for="(hallAdmin,index) in getHallAdmins"
                 :key="index"
             >
-              <td>{{ halls[hallAdmin.hall] }}</td>
+              <td>{{ hallAdmin.hall | getHallName}}</td>
               <td>{{ hallAdmin.name }}</td>
             </tr>
             </tbody>
