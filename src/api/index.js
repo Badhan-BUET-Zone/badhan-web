@@ -316,7 +316,7 @@ const handlePATCHDonorsComment = async (payload) => {
 }
 const handlePATCHDonors = async (payload) => {
     try {
-        return await badhanAxios.patch("/donors", payload);
+        return await badhanAxios.patch("/donors/v2", payload);
     } catch (e) {
         return e.response;
     }
