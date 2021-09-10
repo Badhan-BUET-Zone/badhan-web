@@ -23,7 +23,7 @@
                              v-model="emailCoolDownBar"
                              height="25"
           >
-            <strong>Retry after {{Math.floor(emailTimeCoolDownTime/60)}} minutes {{emailTimeCoolDownTime%60}} seconds</strong>
+            <span>Retry after {{Math.floor(emailTimeCoolDownTime/60)}} minutes {{emailTimeCoolDownTime%60}} seconds</span>
           </v-progress-linear>
         </transition>
 
@@ -34,7 +34,12 @@
         Check Email
       </v-card-title>
       <v-card-text>
-        Please check your email and follow the instructions
+        Please check your email and follow the instructions. It may take some time. Please be patient.
+        <ul>
+          <li>Please check your spam folder if you don't get a mail in your inbox</li>
+          <li>If you don't receive any recovery email please try again after 4 minutes</li>
+          <li>Contact the Super admins if you find any problems regarding receiving emails</li>
+        </ul>
       </v-card-text>
     </Container>
     </transition-group>
@@ -110,6 +115,7 @@ export default {
           clearInterval(timerId);
           this.emailTimeCoolDownTime = 4*60;
           this.phone = null;
+          this.success = false;
           ldb.emailRecovery.clear();
           this.$v.$reset();
           return;
@@ -125,6 +131,7 @@ export default {
       if((currentTime-timeStampOfLastPasswordRecovery)/1000 < 4*60){
         this.emailTimeCoolDownTime = 4*60- Math.ceil((currentTime-timeStampOfLastPasswordRecovery)/1000);
         this.coolDownTimerHandler();
+        this.success = true;
       }
     }
   }
