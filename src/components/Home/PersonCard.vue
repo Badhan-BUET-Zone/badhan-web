@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import {departments} from "@/mixins/constants";
+import {departments} from "../../mixins/constants";
 
 import {mapActions, mapGetters} from "vuex";
 

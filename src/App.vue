@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import AppBar from "@/components/AppBar";
+import AppBar from "./components/AppBar";
 
 import PageTitle from "./components/PageTitle";
 
@@ -37,7 +37,7 @@ import Notification from "./components/Notification";
 import {mapActions, mapGetters} from "vuex";
 import SignInDialog from "./components/SignInDialog";
 
-import {getDeviceInfo, isNative, exitApp} from '@/plugins/android_support';
+import {getDeviceInfo, isNative, exitApp} from './plugins/android_support';
 import Dialog from "./components/Dialog";
 import MessageBox from "./components/MessageBox";
 

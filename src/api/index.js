@@ -1,6 +1,10 @@
+/*
+This module handles all necessary tasks to communicate with the backend.
+Current active backends are- an express app and firebase realtime database
+ */
 import axios from "axios";
 
-import {store} from "@/store/store";
+import {store} from "../store/store";
 import {processError} from "../mixins/helpers";
 
 const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;

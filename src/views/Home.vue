@@ -274,15 +274,15 @@
 </template>
 
 <script>
-import PersonDetails from "@/components/Home/PersonDetails";
-import PageTitle from "@/components/PageTitle";
-import PersonCard from "@/components/Home/PersonCard";
-import {isNative} from '@/plugins/android_support';
-import {bloodGroups, halls} from "@/mixins/constants";
+import PersonDetails from "../components/Home/PersonDetails";
+import PageTitle from "../components/PageTitle";
+import PersonCard from "../components/Home/PersonCard";
+import {isNative} from '../plugins/android_support';
+import {bloodGroups, halls} from "../mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
 import {isGuestEnabled} from "../api";
-import HelpTooltip from "@/components/UI Components/HelpTooltip";
+import HelpTooltip from "../components/UI Components/HelpTooltip";
 import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
 import {convertObjectToCSV, textFileDownloadInWeb,processPersonsForReport} from "../mixins/helpers";
 import {downloadTextFile} from "../plugins/android_support";

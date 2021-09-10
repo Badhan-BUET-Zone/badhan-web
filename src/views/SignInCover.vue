@@ -172,9 +172,9 @@
 </template>
 
 <script>
-import SignInDialog from "@/components/SignInDialog";
+import SignInDialog from "../components/SignInDialog";
 
-import {getDeviceInfo, isNative} from '@/plugins/android_support';
+import {getDeviceInfo, isNative} from '../plugins/android_support';
 import {mapActions, mapGetters, mapMutations} from 'vuex';
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 

@@ -1,7 +1,7 @@
-import comment from "@/store/userDetails/comment";
-import userDetails from "@/store/userDetails/userDetails";
-import donation from "@/store/userDetails/donation";
-import callrecord from "@/store/userDetails/callrecord";
+import comment from "../userDetails/comment";
+import userDetails from "../userDetails/userDetails";
+import donation from "../userDetails/donation";
+import callrecord from "../userDetails/callrecord";
 
 export default {
     actions:{

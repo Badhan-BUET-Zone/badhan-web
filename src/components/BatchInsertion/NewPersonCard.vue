@@ -108,10 +108,10 @@
 </template>
 
 <script>
-import {halls, bloodGroups, departments} from "@/mixins/constants";
+import {halls, bloodGroups, departments} from "../../mixins/constants";
 import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
-import {isNative} from '@/plugins/android_support';
+import {isNative} from '../../plugins/android_support';
 import HelpTooltip from "../UI Components/HelpTooltip";
 import {handleGETDonorsDuplicate} from "../../api";
 import Container from "../Wrappers/Container";

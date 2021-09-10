@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import {bloodGroups, halls, departments} from "@/mixins/constants";
+import {bloodGroups, halls, departments} from "../mixins/constants";
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import PageTitle from "../components/PageTitle";
 import HelpTooltip from "../components/UI Components/HelpTooltip";

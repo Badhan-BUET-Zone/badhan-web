@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import {halls} from '@/mixins/constants';
+import {halls} from '../mixins/constants';
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import PageTitle from "../components/PageTitle";
 import HelpTooltip from "../components/UI Components/HelpTooltip";

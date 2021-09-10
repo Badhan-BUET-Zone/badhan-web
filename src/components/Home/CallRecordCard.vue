@@ -28,7 +28,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import {designations} from "@/mixins/constants";
+import {designations} from "../../mixins/constants";
 import Dialog from "../Dialog";
 
 export default {

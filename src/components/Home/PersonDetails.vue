@@ -325,11 +325,11 @@
 </template>
 
 <script>
-import {halls, bloodGroups} from "@/mixins/constants";
+import {halls, bloodGroups} from "../../mixins/constants";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
-import CallRecordCard from "@/components/Home/CallRecordCard";
-import HelpTooltip from "@/components/UI Components/HelpTooltip";
+import CallRecordCard from "../../components/Home/CallRecordCard";
+import HelpTooltip from "../../components/UI Components/HelpTooltip";
 import PageTitle from "../PageTitle";
 import ShareProfileButton from "../ShareProfileButton";
 import Container from "../Wrappers/Container";

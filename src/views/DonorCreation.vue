@@ -146,7 +146,7 @@
 import PageTitle from "../components/PageTitle";
 import {maxLength, minLength, required} from 'vuelidate/lib/validators'
 import {mapActions, mapGetters} from "vuex";
-import {isNative} from '@/plugins/android_support';
+import {isNative} from '../plugins/android_support';
 import HelpTooltip from "../components/UI Components/HelpTooltip";
 
 
