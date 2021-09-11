@@ -3,7 +3,7 @@ import Vue from 'vue';
 const getHallName = (hallCode)=>{
     return halls[hallCode];
 }
-const getDesignation = (designationCode)=>{
+const getDesignationString = (designationCode)=>{
     return designations[designationCode]
 }
 const getBloodGroupString = (bloodGroupCode)=>{
@@ -11,5 +11,5 @@ const getBloodGroupString = (bloodGroupCode)=>{
 }
 
 Vue.filter("getHallName", getHallName);
-Vue.filter('getDesignation',getDesignation);
+Vue.filter('getDesignationString',getDesignationString);
 Vue.filter('getBloodGroupString',getBloodGroupString);

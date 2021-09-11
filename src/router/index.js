@@ -88,17 +88,17 @@ const routes = [
                     reRouteIfAuthorized: false,
                 }
             },
-            {
-                name: 'RecentLogs',
-                path: 'recentLogs',
-                component:() => import('../views/Statistics/RecentLogs'),
-                meta: {
-                    title: 'Recent Logs',
-                    requiresAuth: true,
-                    designation: 3,
-                    reRouteIfAuthorized: false,
-                }
-            },
+            // {
+            //     name: 'RecentLogs',
+            //     path: 'recentLogs',
+            //     component:() => import('../views/Statistics/RecentLogs'),
+            //     meta: {
+            //         title: 'Recent Logs',
+            //         requiresAuth: true,
+            //         designation: 3,
+            //         reRouteIfAuthorized: false,
+            //     }
+            // },
             {
                 name: 'Stats',
                 path: 'stats',
