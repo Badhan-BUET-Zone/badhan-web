@@ -108,8 +108,7 @@ export default {
       menusForAll: [
         {icon: "mdi-home", text: "Home", to: "/home"},
         {icon: "mdi-plus", text: "Donor Creation", to: "/singleDonorCreation"},
-        {icon: "mdi-account-check", text: "List of Volunteers", to: "/volunteerlist"},
-        {icon: "mdi-star", text: "List of Hall Admins", to: "/halladminlist"},
+        {icon: "mdi-account-group",text:"Members", to: "/members"},
         {icon: "mdi-account", text: "My Profile", to: "/myProfile"},
         {icon: "mdi-hand-heart", text: "Credits", to: "/credits"},
         {icon: "mdi-information",text:"About",to:"/about"}

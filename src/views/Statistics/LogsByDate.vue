@@ -18,19 +18,7 @@
           </v-row>
         </v-card-text>
       </transition>
-
-      <v-card-actions>
-        <v-btn class="mt-2" color="error" rounded :disabled="getLogDeleteFLag"
-               :loading="getLogDeleteFLag"
-               @click="deleteLogsPrompt">
-          <v-icon left>
-            mdi-delete
-          </v-icon>
-          Delete All Logs
-        </v-btn>
-      </v-card-actions>
     </Container>
-
   </div>
 </template>
 
@@ -74,12 +62,6 @@ export default {
       this.fetchStatistics();
       this.statsShown = true;
     },
-
-    async showVolunteers() {
-
-      await this.fetchAllVolunteers();
-      this.volunteersShown = true;
-    }
   },
   async mounted() {
     // this.notifyInfo('Page under construction');

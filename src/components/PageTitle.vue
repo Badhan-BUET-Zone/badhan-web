@@ -4,7 +4,6 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     <v-toolbar-title>{{ $route.meta.title }}</v-toolbar-title>
-    <v-spacer></v-spacer>
     <slot></slot>
   </v-app-bar>
 </template>

@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        name: 'HallAdminList',
-        path: '/halladminlist',
-        component: () => import('../views/HallAdminList.vue'),
+        name: 'Members',
+        path: '/members',
+        component: () => import('../views/Members.vue'),
         meta: {
             requiresAuth: true,
-            title: 'List of Hall Admins',
+            title: 'Members of Badhan BUET',
             designation: 1,
             reRouteIfAuthorized: false,
         }
@@ -88,17 +88,6 @@ const routes = [
                     reRouteIfAuthorized: false,
                 }
             },
-            // {
-            //     name: 'RecentLogs',
-            //     path: 'recentLogs',
-            //     component:() => import('../views/Statistics/RecentLogs'),
-            //     meta: {
-            //         title: 'Recent Logs',
-            //         requiresAuth: true,
-            //         designation: 3,
-            //         reRouteIfAuthorized: false,
-            //     }
-            // },
             {
                 name: 'Stats',
                 path: 'stats',
@@ -142,18 +131,6 @@ const routes = [
             requiresAuth: false,
             title: "About Badhan",
             designation: 0,
-            reRouteIfAuthorized: false,
-        }
-    },
-
-    {
-        name: 'VolunteerList',
-        path: '/volunteerlist',
-        component: () => import('../views/VolunteerList.vue'),
-        meta: {
-            requiresAuth: true,
-            title: 'List of Volunteers',
-            designation: 1,
             reRouteIfAuthorized: false,
         }
     },

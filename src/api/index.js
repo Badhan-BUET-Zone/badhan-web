@@ -364,6 +364,13 @@ const handlePOSTPasswordForgot = async (payload)=>{
         return e.response;
     }
 }
+const handleGETDonorsDesignation = async()=>{
+    try{
+        return await badhanAxios.get('/donors/designation');
+    }catch (e) {
+        return e.response;
+    }
+}
 
 //////////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
@@ -412,5 +419,6 @@ export {
     handleDELETEDonations,
     handlePOSTCallRecord,
     handleDELETECallRecord,
-    handlePOSTPasswordForgot
+    handlePOSTPasswordForgot,
+    handleGETDonorsDesignation
 }

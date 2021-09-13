@@ -15,6 +15,7 @@ import statistics from "./statistics";
 import errorStore from "./errorStore";
 import consoleStore from "./consoleStore";
 import messageBox from "./messageBox";
+import members from "./members";
 export const store = new Vuex.Store({
 
   state: {
@@ -47,6 +48,7 @@ export const store = new Vuex.Store({
     statistics,
     errorStore,
     consoleStore,
-    messageBox
+    messageBox,
+    members
   }
 });
