@@ -300,7 +300,7 @@
                 </v-card-text>
               </ContainerOutlined>
 
-              <ContainerOutlined v-if="getHall === halls.indexOf(hall)|| halls.indexOf(hall) === 8">
+              <ContainerOutlined v-if="getDesignation === 3">
                 <v-card-title>
                   Public Contacts
                 </v-card-title>
