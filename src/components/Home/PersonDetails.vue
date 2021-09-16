@@ -50,10 +50,13 @@
                       <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
-                      <v-text-field :hint="(designation!==0 && !$isMe(_id))?'You cannot edit this email':'Password Recovery Email'" :persistent-hint="(designation!==0 && !$isMe(_id))" rounded dense outlined :label="'Email'" v-model="email"
-                                    :disabled="!isDetailsEditable || (designation!==0 && !$isMe(_id)) "
-                                    @blur="$v.email.$touch()"
-                                    :error-messages="emailErrors">
+                      <v-text-field
+                          :hint="(designation!==0 && !$isMe(_id))?'You cannot edit this email':'Password Recovery Email'"
+                          :persistent-hint="(designation!==0 && !$isMe(_id))" rounded dense outlined :label="'Email'"
+                          v-model="email"
+                          :disabled="!isDetailsEditable || (designation!==0 && !$isMe(_id)) "
+                          @blur="$v.email.$touch()"
+                          :error-messages="emailErrors">
                       </v-text-field>
                       <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!isDetailsEditable"></v-select>
@@ -211,104 +214,127 @@
 
             </div>
             <div class="col-lg-6 col-md-12 col-md-12" style="height: fit-content">
-              <!--              NEW DONATION SECTION-->
-              <div>
-                <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :return-value.sync="newDonationDate"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        rounded
-                        v-model="newDonationDate"
-                        label="Add a donation date"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        outlined
-                        v-bind="attrs"
-                        v-on="on"
-                        dense
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="newDonationDate" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
-                    <v-btn
-                        small
-                        rounded
-                        text
-                        color="primary"
-                        @click="$refs.menu.save(newDonationDate)"
+
+              <ContainerOutlined>
+                <v-card-title>
+                  Add Donation
+                </v-card-title>
+                <v-card-text>
+                  <!--              NEW DONATION SECTION-->
+                  <div>
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="newDonationDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
                     >
-                      OK
-                    </v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </div>
-              <v-btn
-                  color="primary"
-                  rounded
-                  small
-                  style="width: 100%"
-                  @click="donateClicked()"
-                  :loading="getDonationLoaderFlag"
-                  :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
-              >
-                <v-icon left>
-                  mdi-check
-                </v-icon>
-                Done
-              </v-btn>
-              <!--              NEW DONATION SECTION END-->
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            rounded
+                            v-model="newDonationDate"
+                            label="Add a donation date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            outlined
+                            v-bind="attrs"
+                            v-on="on"
+                            dense
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="newDonationDate" no-title scrollable>
+                        <v-spacer></v-spacer>
+                        <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
+                        <v-btn
+                            small
+                            rounded
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(newDonationDate)"
+                        >
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </div>
+                  <v-btn
+                      color="primary"
+                      rounded
+                      small
+                      style="width: 100%"
+                      @click="donateClicked()"
+                      :loading="getDonationLoaderFlag"
+                      :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
+                  >
+                    <v-icon left>
+                      mdi-check
+                    </v-icon>
+                    Done
+                  </v-btn>
+                  <!--              NEW DONATION SECTION END-->
+                </v-card-text>
+              </ContainerOutlined>
 
-              <p class="mt-2 h6 font-weight-bold">Last Donation:</p>
-              <template v-if="lastDonation !== 0">
-                <p>{{ lastDonation }}</p>
-                <p class="h6 font-weight-bold">Donation History:</p>
-                <div v-if="getDonationList.length!==0">
-                  <DonationCard
-                      v-for="(date,index) in getDonationList"
-                      :key="index"
-                      :date="date"
-                      :delete-donation="deleteDonationClicked">
-                  </DonationCard>
-                  <!--                <v-card-->
-                  <!--                    class="mb-1 rounded-xl"-->
-                  <!--                    outlined-->
-                  <!--                    dense-->
-                  <!--                    v-for="(date,index) in getDonationList"-->
-                  <!--                    :key="index"-->
-                  <!--                >-->
-                  <!--                  <v-card-text>-->
-                  <!--                    <v-row>-->
-                  <!--                      <v-col cols="9">-->
-                  <!--                          <span>-->
-                  <!--                            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}-->
-                  <!--                          </span>-->
-                  <!--                      </v-col>-->
-                  <!--                      <v-col cols="3">-->
-                  <!--                        <v-btn @click="deleteDonationClicked(date)" color="warning" x-small fab depressed>-->
-                  <!--                          <v-icon>mdi-delete</v-icon>-->
-                  <!--                        </v-btn>-->
-                  <!--                      </v-col>-->
-                  <!--                    </v-row>-->
-                  <!--                  </v-card-text>-->
-                  <!--                </v-card>-->
-                  <br/>
-                </div>
-              </template>
-              <span v-else>(Unknown)</span>
+              <ContainerOutlined v-if="getHall === halls.indexOf(hall)|| halls.indexOf(hall) === 8">
+                <v-card-title>
+                  Donations
+                </v-card-title>
+                <v-card-text>
+                  <p class="mt-2 h6 font-weight-bold">Last Donation:</p>
+                  <template v-if="lastDonation !== 0">
+                    <p>{{ lastDonation }}</p>
+                    <p class="h6 font-weight-bold">Donation History:</p>
+                    <div v-if="getDonationList.length!==0">
+                      <DonationCard
+                          v-for="(date,index) in getDonationList"
+                          :key="index"
+                          :date="date"
+                          :delete-donation="deleteDonationClicked">
+                      </DonationCard>
+                      <br/>
+                    </div>
+                  </template>
+                  <span v-else>(Unknown)</span>
+                </v-card-text>
+              </ContainerOutlined>
 
-              <p class="h6 font-weight-bold">Call History:</p>
+              <ContainerOutlined v-if="getHall === halls.indexOf(hall)|| halls.indexOf(hall) === 8">
+                <v-card-title>
+                  Public Contacts
+                </v-card-title>
+                <v-card-text>
+                  <p class="mt-2 h6 font-weight-bold">Existing Public Contacts:</p>
+                  <p v-if="publicContacts.length===0">This contact is not published for the public to see</p>
+                  <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts" :key="publicContact._id"
+                          color="secondary" close
+                          @click:close="()=>{deletePublicContactClicked(publicContact._id)}">
+                    {{ publicContact.bloodGroup | getBloodGroupString }}
+                  </v-chip>
+                  <v-progress-linear indeterminate v-if="deletePublicContactLoader"></v-progress-linear>
+                  <p class="mt-4 h6 font-weight-bold">New Public Contact</p>
+                  <v-select
+                      rounded
+                      dense
+                      outlined
+                      v-model="selectedNewPublicContact"
+                      :items="publicContactBloodGroups"
+                      item-text="name"
+                      item-value="code"
+                      label="Blood Group"
+                      return-object
+                  ></v-select>
 
-              <CallRecordCard :call-record="callRecord"
-                              v-for="(callRecord) in getCallRecords" :key="callRecord._id"></CallRecordCard>
-              <span v-if="getCallRecords.length===0">No call history found</span>
+                  <Button
+                      :click="publishToPublicContactClicked"
+                      :loading="newPublicContactLoader"
+                      :disabled="newPublicContactLoader"
+                      :color="'primary'" :text="'Publish'" :icon="'mdi-content-save'">
+                  </Button>
+
+                </v-card-text>
+              </ContainerOutlined>
             </div>
           </div>
         </v-card-text>
@@ -339,15 +365,19 @@ import {
   handlePATCHDonorsDesignation,
   handlePATCHUsersPassword,
   handleDELETEDonors,
-  handlePOSTDonorsPasswordRequest
+  handlePOSTDonorsPasswordRequest,
+  handleDELETEPublicContacts,
+  handlePOSTPublicContacts,
 } from "../../api";
 import DonationCard from "./DonationCard";
 import Dialog from "../Dialog";
+import Button from "../UI Components/Button";
 
 export default {
   name: "PersonDetails",
   props: ["donorId"],
   components: {
+    Button,
     Dialog,
     DonationCard,
     ContainerOutlined,
@@ -357,7 +387,7 @@ export default {
     HelpTooltip,
     PageTitle
   },
-  data: () => {
+  data: function () {
     return {
       //form fields
       _id: null,
@@ -418,6 +448,18 @@ export default {
       passwordRecoveryLink: null,
 
       deleteDonorDialogFlag: false,
+
+      publicContacts: [],
+      publicContactBloodGroups: [
+        {name: "A+", code: 0},
+        {name: "B+", code: 2},
+        {name: "O+", code: 4},
+        {name: "AB+", code: 6},
+        {name: "All Negative", code: -1}
+      ],
+      selectedNewPublicContact: null,
+      newPublicContactLoader: false,
+      deletePublicContactLoader: false,
     };
   },
   validations: {
@@ -554,6 +596,30 @@ export default {
     ...mapMutations(['deletePerson']),
     ...mapMutations(['setToken']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
+    ...mapActions('notification',['notifySuccess']),
+
+    async publishToPublicContactClicked() {
+      console.log(this.selectedNewPublicContact);
+      this.newPublicContactLoader = true;
+      let response = await handlePOSTPublicContacts({donorId: this._id,bloodGroup: this.selectedNewPublicContact.code})
+      this.newPublicContactLoader = false;
+      if(response.status!==201)return;
+      this.publicContacts.push({_id: response.data.publicContact._id,bloodGroup: this.selectedNewPublicContact.code})
+      this.notifySuccess('Public Contacts Updated');
+    },
+
+    async deletePublicContactClicked(contactId) {
+      this.deletePublicContactLoader = true;
+      let response = await handleDELETEPublicContacts({donorId: this._id,contactId});
+      this.deletePublicContactLoader = false;
+      if(response.status!==200) return;
+
+      this.publicContacts = this.publicContacts.filter((publicContact) => {
+        return publicContact._id !== contactId
+      });
+
+      this.notifySuccess('Public Contacts Updated');
+    },
 
     async createPasswordRecoveryLink() {
       this.passwordRecoveryFlag = true;
@@ -766,6 +832,7 @@ export default {
     },
   },
   async mounted() {
+
     this.donorErrorHappened = false;
     this.dataLoaded = false;
 
@@ -795,6 +862,7 @@ export default {
     this.donationCount = this.getDonationList.length;
     this.commentTime = profile.commentTime;
     this.availableToAll = profile.availableToAll;
+    this.publicContacts = profile.publicContacts;
 
     let date = new Date(profile.lastDonation);
     this.lastDonation =
@@ -817,6 +885,7 @@ export default {
     this.dataLoaded = true;
 
     this.$forceUpdate();
+    this.personDetailCollapseFlag = !this.$isMobile();
   },
   // beforeRouteLeave(to,from,next){
   //   next();

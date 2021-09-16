@@ -372,6 +372,28 @@ const handleGETDonorsDesignation = async()=>{
     }
 }
 
+const handleGETPublicContacts = async()=>{
+    try{
+        return await badhanAxios.get('/publicContacts')
+    }catch (e) {
+        return e.response;
+    }
+}
+const handlePOSTPublicContacts = async(payload)=>{
+    try{
+        return await badhanAxios.post('/publicContacts',payload);
+    }catch (e) {
+        return e.response;
+    }
+}
+const handleDELETEPublicContacts = async(payload)=>{
+    try{
+        return await badhanAxios.delete('/publicContacts',{params: payload});
+    }catch (e) {
+        return e.response;
+    }
+}
+
 //////////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
     try {
@@ -420,5 +442,8 @@ export {
     handlePOSTCallRecord,
     handleDELETECallRecord,
     handlePOSTPasswordForgot,
-    handleGETDonorsDesignation
+    handleGETDonorsDesignation,
+    handleGETPublicContacts,
+    handlePOSTPublicContacts,
+    handleDELETEPublicContacts
 }

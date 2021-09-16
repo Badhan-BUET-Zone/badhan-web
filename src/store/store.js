@@ -16,6 +16,8 @@ import errorStore from "./errorStore";
 import consoleStore from "./consoleStore";
 import messageBox from "./messageBox";
 import members from "./members";
+import publicContacts from "./publicContacts";
+
 export const store = new Vuex.Store({
 
   state: {
@@ -49,6 +51,7 @@ export const store = new Vuex.Store({
     errorStore,
     consoleStore,
     messageBox,
-    members
+    members,
+    publicContacts
   }
 });

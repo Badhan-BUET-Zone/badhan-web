@@ -7,6 +7,7 @@ const getDesignationString = (designationCode)=>{
     return designations[designationCode]
 }
 const getBloodGroupString = (bloodGroupCode)=>{
+    if(bloodGroupCode===-1) return "All Negative";
     return bloodGroups[bloodGroupCode];
 }
 const idToDept = (studentID)=>{

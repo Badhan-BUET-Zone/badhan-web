@@ -36,3 +36,7 @@ export const processPersonsForReport = (persons)=>{
     })
     return persons;
 }
+
+export const directCall = (phoneNumber)=>{
+    document.location.href = "tel:+" + phoneNumber;
+}

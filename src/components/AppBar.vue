@@ -108,7 +108,8 @@ export default {
       menusForAll: [
         {icon: "mdi-home", text: "Home", to: "/home"},
         {icon: "mdi-plus", text: "Donor Creation", to: "/singleDonorCreation"},
-        {icon: "mdi-account-group",text:"Members", to: "/members"},
+        {icon: "mdi-account-group",text: "Members", to: "/members"},
+        {icon: "mdi-earth",text: "Public Contacts", to: "/contacts"},
         {icon: "mdi-account", text: "My Profile", to: "/myProfile"},
         {icon: "mdi-hand-heart", text: "Credits", to: "/credits"},
         {icon: "mdi-information",text:"About",to:"/about"}

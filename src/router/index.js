@@ -21,6 +21,17 @@ const routes = [
         }
     },
     {
+        name: 'PublicContacts',
+        path: '/contacts',
+        component: () => import('../views/PublicContacts'),
+        meta: {
+            requiresAuth: false,
+            title: "Contact Badhan",
+            designation: 0,
+            reRouteIfAuthorized: false,
+        }
+    },
+    {
         name: 'Home',
         path: '/home',
         component: Home,
