@@ -277,7 +277,7 @@
                 </v-card-text>
               </ContainerOutlined>
 
-              <ContainerOutlined v-if="getHall === halls.indexOf(hall)|| halls.indexOf(hall) === 8">
+              <ContainerOutlined>
                 <v-card-title>
                   Donations
                 </v-card-title>
