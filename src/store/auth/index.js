@@ -108,6 +108,7 @@ const actions = {
         commit('unsetLoginFlag')
         commit('removeToken');
         ldb.token.clear();
+        ldb.reset();
         resetBaseURL()
     },
     async logoutAll({commit, dispatch}) {
@@ -121,6 +122,7 @@ const actions = {
         commit('unsetLoginFlag');
         commit('removeToken');
         ldb.token.clear();
+        ldb.reset();
         resetBaseURL()
 
     },
@@ -132,6 +134,7 @@ const actions = {
         return token;
     },
     async redirectionLogin({getters, commit, dispatch}, payload) {
+        ldb.reset();
         commit('signInLoaderFlagOn');
         let token = await handlePATCHRedirectedAuthentication({token: payload});
 
@@ -165,6 +168,7 @@ const actions = {
             if(response.status!==401)return false;
             commit('removeToken');
             ldb.token.clear();
+            ldb.reset();
             return false;
         }
 
@@ -184,6 +188,7 @@ const actions = {
     },
 
     async login({getters, commit, dispatch}, payload) {
+        ldb.reset();
         commit('signInLoaderFlagOn');
         let sendData = {
             phone: parseInt('88' + payload.phone),
