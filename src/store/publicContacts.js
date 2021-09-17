@@ -1,4 +1,4 @@
-import {handleGETPublicContacts} from "../api";
+import {handleGETPublicContacts,isGuestEnabled} from "../api";
 import ldb from '../localDatabase';
 
 const state = {
@@ -42,6 +42,8 @@ const actions = {
         commit('publicContactsLoaderFlagOff');
         if (response.status !== 200) return;
         commit('setPublicContacts', response.data);
+
+        if(isGuestEnabled())return;
         ldb.publicContacts.save(response.data);
     },
 };

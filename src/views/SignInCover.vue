@@ -153,14 +153,22 @@
                 >
                   Know the Developers
                 </v-btn>
+<!--                <v-btn class="align-self-end ma-1"-->
+<!--                       x-small-->
+<!--                       color="primary"-->
+<!--                       rounded-->
+<!--                       outlined-->
+<!--                       style="text-decoration: none"-->
+<!--                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">-->
+<!--                  Don't have an account?-->
+<!--                </v-btn>-->
                 <v-btn class="align-self-end ma-1"
-                       x-small
                        color="primary"
                        rounded
                        outlined
                        style="text-decoration: none"
-                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">
-                  Don't have an account?
+                       :to="'/contacts'">
+                  Emergency Contacts
                 </v-btn>
               </v-row>
             </v-container>

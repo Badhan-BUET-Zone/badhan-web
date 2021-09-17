@@ -329,10 +329,9 @@
                   <Button
                       :click="publishToPublicContactClicked"
                       :loading="newPublicContactLoader"
-                      :disabled="newPublicContactLoader"
+                      :disabled="newPublicContactLoader || selectedNewPublicContact===null"
                       :color="'primary'" :text="'Publish'" :icon="'mdi-content-save'">
                   </Button>
-
                 </v-card-text>
               </ContainerOutlined>
             </div>
