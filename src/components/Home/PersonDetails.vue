@@ -593,7 +593,7 @@ export default {
     ...mapActions('donate', ['donate']),
     ...mapMutations('donation', ['addDonation']),
     ...mapMutations(['deletePerson']),
-    ...mapMutations(['setToken']),
+    ...mapMutations(['setToken','saveTokenToLocalStorage']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
     ...mapActions('notification',['notifySuccess']),
 
@@ -769,6 +769,7 @@ export default {
       });
       if (data && !isGuestEnabled()) {
         this.setToken(data.token);
+        this.saveTokenToLocalStorage();
       }
       this.passwordChangeFlag = false;
     },

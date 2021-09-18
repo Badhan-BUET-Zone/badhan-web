@@ -1,12 +1,12 @@
 import {
-    resetBaseURL,
     enableGuestAPI,
     handleDELETESignOut,
     handleDELETESignOutAll,
-    handlePOSTRedirection,
-    handlePATCHRedirectedAuthentication,
     handleGETDonorsMe,
-    handlePOSTSignIn
+    handlePATCHRedirectedAuthentication,
+    handlePOSTRedirection,
+    handlePOSTSignIn,
+    resetBaseURL
 } from '../../api';
 
 import ldb from '../../localDatabase';
@@ -65,8 +65,8 @@ const mutations = {
 
     setToken(state, token) {
         state.token = token;
-        ldb.token.save(state.token);
     },
+
 
     removeToken(state) {
         state.token = null;
@@ -177,7 +177,19 @@ const actions = {
         commit('setLoginFlag');
         return true;
     },
+    async checkToken({getters,commit,dispatch}){
+        commit('signInLoaderFlagOn');
+        let response = await handleGETDonorsMe();
+        commit('signInLoaderFlagOff');
 
+        if (response.status!==200) {
+            if(response.status!==401)return false;
+            commit('removeToken');
+            ldb.reset();
+            return false;
+        }
+        return response.data.donor;
+    },
     async guestLogin({dispatch}) {
         enableGuestAPI();
         await dispatch('login', {phone: "123465", password: "oseihgfweoisng", rememberFlag: false})

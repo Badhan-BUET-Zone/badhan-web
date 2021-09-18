@@ -105,7 +105,7 @@
 
                 <br>
                 <v-btn
-                    x-small
+                    small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -116,7 +116,7 @@
                   About the App
                 </v-btn>
                 <v-btn
-                    x-small
+                    small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -129,7 +129,7 @@
                   <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
                 <v-btn
-                    x-small
+                    small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -143,7 +143,7 @@
                 </v-btn>
 
                 <v-btn
-                    x-small
+                    small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -154,7 +154,7 @@
                   Know the Developers
                 </v-btn>
 <!--                <v-btn class="align-self-end ma-1"-->
-<!--                       x-small-->
+<!--                       small-->
 <!--                       color="primary"-->
 <!--                       rounded-->
 <!--                       outlined-->
@@ -162,7 +162,8 @@
 <!--                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">-->
 <!--                  Don't have an account?-->
 <!--                </v-btn>-->
-                <v-btn class="align-self-end ma-1"
+                <br>
+                <v-btn small class="align-self-end ma-1"
                        color="primary"
                        rounded
                        outlined

@@ -1,7 +1,10 @@
 <template>
   <div>
     <PageTitle></PageTitle>
-    <Container>
+    <Container v-if="!tokenCheckLoader">
+      <v-card-text>
+        Welcome back {{name}} ({{designation|getDesignationString}}). Please specify new password to reset your password.
+      </v-card-text>
       <v-card-text>
         <v-text-field @blur="$v.newPassword.$touch()"
                       :error-messages="newPasswordErrors" @click:append="newPasswordFlag = !newPasswordFlag" :type="newPasswordFlag ? 'text' : 'password'" :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'" v-model="newPassword" dense outlined rounded label="New Password"></v-text-field>
@@ -25,7 +28,8 @@
 import Container from "../components/Wrappers/Container";
 import PageTitle from "../components/PageTitle";
 import {handlePATCHUsersPassword} from "../api";
-import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
+import {required, minLength, sameAs} from 'vuelidate/lib/validators'
+import {mapActions, mapMutations} from "vuex";
 
 export default {
   name: "PasswordReset",
@@ -57,8 +61,17 @@ export default {
     PageTitle,
     Container
   },
-  mounted() {
-
+  async mounted() {
+    this.setToken(this.$route.query.token);
+    this.tokenCheckLoader = true;
+    let donor = await this.checkToken();
+    if(donor) {
+      this.name = donor.name;
+      this.designation = donor.designation;
+    }else{
+      await this.$router.push('/');
+    }
+    this.tokenCheckLoader = false;
   },
   data:()=>{
     return{
@@ -67,9 +80,16 @@ export default {
       passwordChangeFlag: false,
       newPasswordFlag: false,
       confirmPasswordFlag: false,
+
+      tokenCheckLoader: false,
+      designation: 0,
+      name: "",
     }
   },
+
   methods:{
+    ...mapMutations(['setToken']),
+    ...mapActions(['checkToken']),
     async changePasswordClicked(){
       await this.$v.$touch();
       if (this.$v.$anyError) {
@@ -85,6 +105,7 @@ export default {
         return;
       }
       this.$store.commit('setToken',result.token);
+      this.$store.commit('saveTokenToLocalStorage')
       if(await this.$store.dispatch('autoLogin')){
         await this.$router.push({name:'Home'});
       }
