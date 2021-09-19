@@ -17,16 +17,15 @@
             text="Get Recovery Email" icon="mdi-backup-restore">
         </Button>
         <transition name="slide-fade-down" mode="out-in">
-          <v-progress-linear v-if="emailTimeCoolDownTime<4*60" striped
+          <v-progress-linear v-if="emailTimeCoolDownTime<4*60"
                              class="rounded-xl ma-2"
                              color="primary"
                              v-model="emailCoolDownBar"
-                             height="25"
+                             height="25" dark
           >
             <span>Retry after {{Math.floor(emailTimeCoolDownTime/60)}} minutes {{emailTimeCoolDownTime%60}} seconds</span>
           </v-progress-linear>
         </transition>
-
       </v-card-text>
     </Container>
     <Container v-if="success" :key="'recoverySuccess'">
