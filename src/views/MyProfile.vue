@@ -13,6 +13,7 @@
               inset
               label="Switch to dark theme"
           ></v-switch>
+          <v-card-actions>
           <Button
               :color="'primary'"
               :disabled="getLoginsLoader"
@@ -21,18 +22,22 @@
               :loading="getLoginsLoader"
               :click="getLogins">
           </Button>
+          </v-card-actions>
 
           <v-card-title v-if="logins.length!==0">List of Logins</v-card-title>
-          <LoginCard
-              v-for="(login,index) in logins"
-              :click="deleteLogin"
-              :browser-family="login.browserFamily"
-              :device="login.device"
-              :ip-address="login.ipAddress"
-              :os="login.os"
-              :_id="login._id"
-              :key="login._id"
-          ></LoginCard>
+
+          <v-row>
+            <v-col v-for="(login,index) in logins" :key="login._id" cols="12" sm="6">
+              <LoginCard
+                  :click="deleteLogin"
+                  :browser-family="login.browserFamily"
+                  :device="login.device"
+                  :ip-address="login.ipAddress"
+                  :os="login.os"
+                  :_id="login._id"
+              ></LoginCard>
+            </v-col>
+          </v-row>
         </v-card-text>
       </Container>
     </transition>

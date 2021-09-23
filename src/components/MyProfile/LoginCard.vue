@@ -1,10 +1,7 @@
 <template>
 <ContainerOutlined>
-  <v-card-text>
-    <b>OS:</b> {{os}},
-    <b>Device:</b> {{device}},
-    <b>IPAddress: </b> {{ipAddress}},
-    <b>Browser:</b> {{browserFamily}}
+  <v-card-text style="white-space: pre-line">
+    {{loginInformation}}
   </v-card-text>
   <v-card-actions>
     <Button
@@ -48,6 +45,29 @@ export default {
     device: {
       type: String,
       required: true,
+    }
+  },
+  computed:{
+    loginInformation(){
+      let infoString = "";
+      let device = this.device.split(' ')[0];
+      let os = this.os.split(' ')[0];
+      if(os!=='Other'){
+        infoString += "OS: "+os+"\n";
+      }
+      if(device!=='Other'){
+        infoString += "Device: "+device+"\n";
+      }
+      if(this.ipAddress!=="::1" && this.ipAddress!=="0.0.0.0"){
+        infoString += "IP Address: "+this.ipAddress+ "\n";
+      }
+      if(this.browserFamily!=="Other"){
+        infoString += "Client App: "+this.browserFamily+"\n";
+      }
+      if(infoString===""){
+        infoString = "Unknown device";
+      }
+      return infoString;
     }
   },
   components: {Button, ContainerOutlined},
