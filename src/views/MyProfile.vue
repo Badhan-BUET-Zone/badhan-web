@@ -15,7 +15,8 @@
           ></v-switch>
         </v-card-text>
         <v-card-title>List of Logins</v-card-title>
-        <div v-if="loginsFetched">
+        <transition name="slide-fade-down" mode="out-in">
+        <div v-if="loginsFetched" :key="'loginsFetched'">
           <v-card-text>Current Device</v-card-text>
           <v-card-text>
             <v-row>
@@ -52,7 +53,7 @@
             </v-row>
           </v-card-text>
         </div>
-        <v-card-actions v-if="!loginsFetched">
+        <v-card-actions v-if="!loginsFetched" :key="'loginFetchAction'">
           <Button
               :color="'primary'"
               :disabled="getLoginsLoader"
@@ -62,6 +63,7 @@
               :click="getLogins">
           </Button>
         </v-card-actions>
+        </transition>
       </Container>
     </transition>
 
