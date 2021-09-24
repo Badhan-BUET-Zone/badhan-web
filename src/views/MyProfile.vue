@@ -13,18 +13,23 @@
               inset
               label="Switch to dark theme"
           ></v-switch>
-          <v-card-actions>
-          <Button
-              :color="'primary'"
-              :disabled="getLoginsLoader"
-              :icon="'mdi-refresh'"
-              :text="'Get recent logins'"
-              :loading="getLoginsLoader"
-              :click="getLogins">
-          </Button>
-          </v-card-actions>
+        </v-card-text>
 
-          <v-card-title v-if="logins.length!==0">List of Logins</v-card-title>
+        <v-card-title>List of Logins</v-card-title>
+
+        <v-card-actions>
+          <Button v-if="!loginsFetched"
+                  :color="'primary'"
+                  :disabled="getLoginsLoader"
+                  :icon="'mdi-refresh'"
+                  :text="'Get recent logins'"
+                  :loading="getLoginsLoader"
+                  :click="getLogins">
+          </Button>
+        </v-card-actions>
+
+        <v-card-text>
+          <p v-if="logins.length===0 && loginsFetched">This is the only logged in device for your account</p>
 
           <v-row>
             <v-col v-for="(login,index) in logins" :key="login._id" cols="12" sm="6">
@@ -63,7 +68,8 @@ export default {
     return {
       showTooltip: false,
       getLoginsLoader: false,
-      logins:[],
+      logins: [],
+      loginsFetched: false,
     }
   },
   computed: {
@@ -81,18 +87,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions('notification',['notifySuccess']),
-    async getLogins(){
+    ...mapActions('notification', ['notifySuccess']),
+    async getLogins() {
       this.getLoginsLoader = true;
       let response = await handleGETLogins();
       this.getLoginsLoader = false;
-      if(response.status!==200) return;
+      if (response.status !== 200) return;
       this.logins = response.data.logins;
+      this.loginsFetched = true;
     },
-    async deleteLogin(tokenId){
+    async deleteLogin(tokenId) {
       let response = await handleDELETELogins({tokenId});
-      if(response.status!==200)return;
-      this.logins = this.logins.filter(login=>login._id!==tokenId);
+      if (response.status !== 200) return;
+      this.logins = this.logins.filter(login => login._id !== tokenId);
       this.notifySuccess(response.data.message);
     },
     shareClicked() {
