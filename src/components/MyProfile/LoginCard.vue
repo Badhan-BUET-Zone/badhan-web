@@ -3,7 +3,7 @@
   <v-card-text style="white-space: pre-line">
     {{loginInformation}}
   </v-card-text>
-  <v-card-actions>
+  <v-card-actions v-if="showDelete">
     <Button
         :click="deleteClicked"
         :loading="deleteLoaderFlag"
@@ -45,6 +45,10 @@ export default {
     device: {
       type: String,
       required: true,
+    },
+    showDelete: {
+      type: Boolean,
+      required: true,
     }
   },
   computed:{
@@ -61,8 +65,12 @@ export default {
       if(this.ipAddress!=="::1" && this.ipAddress!=="0.0.0.0"){
         infoString += "IP Address: "+this.ipAddress+ "\n";
       }
-      if(this.browserFamily!=="Other"){
-        infoString += "Client App: "+this.browserFamily+"\n";
+      if(this.browserFamily!=="Other" ){
+        if(this.browserFamily==="Chrome Mobile WebView"){
+          infoString += "Client App: Badhan App\n";
+        }else{
+          infoString += "Client App: "+this.browserFamily+"\n";
+        }
       }
       if(infoString===""){
         infoString = "Unknown device";

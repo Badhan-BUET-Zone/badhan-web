@@ -14,36 +14,54 @@
               label="Switch to dark theme"
           ></v-switch>
         </v-card-text>
-
         <v-card-title>List of Logins</v-card-title>
-
-        <v-card-actions>
-          <Button v-if="!loginsFetched"
-                  :color="'primary'"
-                  :disabled="getLoginsLoader"
-                  :icon="'mdi-refresh'"
-                  :text="'Get recent logins'"
-                  :loading="getLoginsLoader"
-                  :click="getLogins">
+        <div v-if="loginsFetched">
+          <v-card-text>Current Device</v-card-text>
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <LoginCard
+                    v-if="currentLogin"
+                    :show-delete="false"
+                    :click="deleteLogin"
+                    :browser-family="currentLogin.browserFamily"
+                    :device="currentLogin.device"
+                    :ip-address="currentLogin.ipAddress"
+                    :os="currentLogin.os"
+                    :_id="currentLogin._id"
+                ></LoginCard>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-text>Other Devices</v-card-text>
+          <v-card-text v-if="logins.length===0 && loginsFetched">This is the only logged in device for your account
+          </v-card-text>
+          <v-card-text>
+            <v-row>
+              <v-col v-for="(login,index) in logins" :key="login._id" cols="12" sm="6">
+                <LoginCard
+                    :show-delete="true"
+                    :click="deleteLogin"
+                    :browser-family="login.browserFamily"
+                    :device="login.device"
+                    :ip-address="login.ipAddress"
+                    :os="login.os"
+                    :_id="login._id"
+                ></LoginCard>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </div>
+        <v-card-actions v-if="!loginsFetched">
+          <Button
+              :color="'primary'"
+              :disabled="getLoginsLoader"
+              :icon="'mdi-refresh'"
+              :text="'Get recent logins'"
+              :loading="getLoginsLoader"
+              :click="getLogins">
           </Button>
         </v-card-actions>
-
-        <v-card-text>
-          <p v-if="logins.length===0 && loginsFetched">This is the only logged in device for your account</p>
-
-          <v-row>
-            <v-col v-for="(login,index) in logins" :key="login._id" cols="12" sm="6">
-              <LoginCard
-                  :click="deleteLogin"
-                  :browser-family="login.browserFamily"
-                  :device="login.device"
-                  :ip-address="login.ipAddress"
-                  :os="login.os"
-                  :_id="login._id"
-              ></LoginCard>
-            </v-col>
-          </v-row>
-        </v-card-text>
       </Container>
     </transition>
 
@@ -70,6 +88,7 @@ export default {
       getLoginsLoader: false,
       logins: [],
       loginsFetched: false,
+      currentLogin: null,
     }
   },
   computed: {
@@ -94,6 +113,7 @@ export default {
       this.getLoginsLoader = false;
       if (response.status !== 200) return;
       this.logins = response.data.logins;
+      this.currentLogin = response.data.currentLogin;
       this.loginsFetched = true;
     },
     async deleteLogin(tokenId) {
