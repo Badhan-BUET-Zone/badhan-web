@@ -41,13 +41,31 @@
       </v-card-text>
       </transition>
     </Container>
+    <Container>
+      <v-card-title>
+        পেজটি শেয়ার করুন
+      </v-card-title>
+      <v-card-text>
+        পেজটি শেয়ার করুন যেন সকলে দ্রুত ব্লাড ডোনেশন পেতে পারে
+      </v-card-text>
+      <v-card-actions>
+        <Button
+            :icon="'mdi-share'"
+            :text="'Share'"
+            :click="shareClicked"
+            :color="'info'"
+            :loading="false"
+            :disabled="false">
+        </Button>
+      </v-card-actions>
+    </Container>
   </div>
 </template>
 
 <script>
 import PageTitle from "../components/PageTitle";
 import Container from "../components/Wrappers/Container";
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import ContainerOutlined from "../components/Wrappers/ContainerOutlined";
 import ContainerFlat from "../components/Wrappers/ContainerFlat";
 import Button from "../components/UI Components/Button";
@@ -61,8 +79,17 @@ export default {
   },
   methods: {
     ...mapActions('publicContacts', ['fetchPublicContacts']),
+    ...mapMutations('messageBox',['setMessage']),
     directCallClicked(phone) {
       directCall(phone)
+    },
+    shareClicked(){
+      let linkText = "জরুরি রক্ত ডোনেশন পেতে নিচের লিংকে ক্লিক করে বাঁধন বুয়েট জোনের সদস্যদের সাথে যোগাযোগ করুন।\n" +
+          "https://badhan-buet.web.app/#/contacts"
+      this.$copyText(linkText).then((e) => {
+        this.setMessage('লিংক কপি হয়েছে। প্রয়োজনমতো জায়গায় শেয়ার করুন।')
+      }, (e) => {
+      })
     }
   },
   async mounted() {
