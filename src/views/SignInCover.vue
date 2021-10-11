@@ -26,7 +26,7 @@
                   />
                   <br>
                   <span
-                      class="font-weight-black"
+                      class="font-weight-bold"
                   >
                       Badhan
                     </span>
