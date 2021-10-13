@@ -30,11 +30,8 @@
                   >
                       Badhan
                     </span>
-                  <p class="subtitle-2">BUET Zone
-                    (<span class="subtitle-2">
-                    <span v-if="!isMobile">Web Version</span>
-                    <span v-else>Version: {{ version }}</span>
-                  </span>)
+                  <p class="subtitle-2">BUET Zone<br>
+
                   </p>
                 </v-col>
                 <v-col class="text-center"
@@ -81,13 +78,13 @@
                       Sign In
                     </v-btn>
                     <br>
-                    <v-btn small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
+                    <div class="d-flex">
+                    <v-btn x-small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
                            style="text-decoration: none">
                       Forgot Password?
                     </v-btn>
-                    <br>
                     <v-btn
-                        small
+                        x-small
                         text
                         color="primary"
                         rounded
@@ -98,6 +95,7 @@
                     >
                       Or, login as guest
                     </v-btn>
+                    </div>
                   </div>
 
                 </v-col>
@@ -105,7 +103,7 @@
 
                 <br>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -116,7 +114,7 @@
                   About the App
                 </v-btn>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -129,7 +127,7 @@
                   <v-icon right>mdi-google-play</v-icon>
                 </v-btn>
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     rounded
                     class="align-self-end ma-1"
@@ -143,7 +141,7 @@
                 </v-btn>
 
                 <v-btn
-                    small
+                    x-small
                     color="primary"
                     class="align-self-end ma-1"
                     outlined
@@ -153,17 +151,17 @@
                 >
                   Know the Developers
                 </v-btn>
-<!--                <v-btn class="align-self-end ma-1"-->
-<!--                       small-->
-<!--                       color="primary"-->
-<!--                       rounded-->
-<!--                       outlined-->
-<!--                       style="text-decoration: none"-->
-<!--                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">-->
-<!--                  Don't have an account?-->
-<!--                </v-btn>-->
+                <!--                <v-btn class="align-self-end ma-1"-->
+                <!--                       small-->
+                <!--                       color="primary"-->
+                <!--                       rounded-->
+                <!--                       outlined-->
+                <!--                       style="text-decoration: none"-->
+                <!--                       href="https://docs.google.com/forms/d/1G4SYOGWoERJzPVuLUu1bSVUaOQEieCPoEKojf_gjh7g/edit">-->
+                <!--                  Don't have an account?-->
+                <!--                </v-btn>-->
                 <br>
-                <v-btn small class="align-self-end ma-1"
+                <v-btn x-small class="align-self-end ma-1"
                        color="primary"
                        rounded
                        outlined
@@ -177,6 +175,22 @@
         </v-img>
       </v-row>
     </section>
+    <v-footer rounded padless>
+      <v-row no-gutters>
+        <v-col
+            class="text-center"
+            cols="12"
+        >
+      <span class="grey--text" style="font-size: 10px;">
+        <span v-if="!isMobile">Version: Web</span>
+        <span v-else>Version: {{ version }} </span>,
+        <span>Database: {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</span>,
+        <span>Build Time: {{getBuildTime}}</span>
+      </span>
+        </v-col>
+      </v-row>
+
+    </v-footer>
   </div>
 </template>
 
@@ -209,11 +223,12 @@ export default {
       minLength: minLength(4),
     }
   },
-  watch: {
-
-  },
+  watch: {},
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getAutoRedirectionPath']),
+    getBuildTime(){
+      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString();
+    },
     isMobile() {
       return isNative();
     },
