@@ -15,7 +15,7 @@
           <p><b>App Version on Google Play:</b> {{ getAppVersion }}</p>
           <p><b>Local App Version:</b> {{ nativeAppVersion }}</p>
           <p><b>Database:</b> {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</p>
-          <p><b>Build Time:</b> {{getBuildTime}}</p>
+          <p><b>Last Updated:</b> {{getBuildTime}}</p>
         </v-card-text>
       </Container>
       <Container :key="'aboutPage'">
