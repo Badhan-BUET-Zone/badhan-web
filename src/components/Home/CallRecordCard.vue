@@ -33,7 +33,7 @@ import Dialog from "../Dialog";
 
 export default {
   name: "CallRecordCard",
-  props: ["callRecord"],
+  props: ["callRecord","deleted"],
   data: () => {
     return {
       deleteLoaderFlag: false,
@@ -62,6 +62,7 @@ export default {
       this.deleteLoaderFlag = true;
       await this.deleteCallRecord({donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id});
       this.deleteLoaderFlag = false;
+      this.deleted(this.callRecord._id);
     },
   },
   mounted() {

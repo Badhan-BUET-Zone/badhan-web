@@ -300,6 +300,15 @@
                 </v-card-text>
               </ContainerOutlined>
 
+              <ContainerOutlined>
+                <v-card-title>Call History</v-card-title>
+                <v-card-text>
+                  <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord" :deleted="callRecordDeleted">
+
+                  </CallRecordCard>
+                </v-card-text>
+              </ContainerOutlined>
+
               <ContainerOutlined v-if="getDesignation === 3">
                 <v-card-title>
                   Public Contacts
@@ -459,6 +468,8 @@ export default {
       selectedNewPublicContact: null,
       newPublicContactLoader: false,
       deletePublicContactLoader: false,
+
+      callRecords:[],
     };
   },
   validations: {
@@ -597,6 +608,9 @@ export default {
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
     ...mapActions('notification',['notifySuccess']),
 
+    callRecordDeleted(id){
+      this.callRecords = this.callRecords.filter((callRecord)=>callRecord._id!==id);
+    },
     async publishToPublicContactClicked() {
       console.log(this.selectedNewPublicContact);
       this.newPublicContactLoader = true;
@@ -863,6 +877,7 @@ export default {
     this.commentTime = profile.commentTime;
     this.availableToAll = profile.availableToAll;
     this.publicContacts = profile.publicContacts;
+    this.callRecords = profile.callRecords;
 
     let date = new Date(profile.lastDonation);
     this.lastDonation =
