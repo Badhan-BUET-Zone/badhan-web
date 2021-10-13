@@ -175,22 +175,6 @@
         </v-img>
       </v-row>
     </section>
-    <v-footer rounded padless>
-      <v-row no-gutters>
-        <v-col
-            class="text-center"
-            cols="12"
-        >
-      <span class="grey--text" style="font-size: 10px;">
-        <span v-if="!isMobile">Version: Web</span>
-        <span v-else>Version: {{ version }} </span>,
-        <span>Database: {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</span>,
-        <span>Build Time: {{getBuildTime}}</span>
-      </span>
-        </v-col>
-      </v-row>
-
-    </v-footer>
   </div>
 </template>
 

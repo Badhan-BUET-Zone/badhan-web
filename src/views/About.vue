@@ -12,8 +12,10 @@
       </Container>
       <Container v-else :key="'versionLoaded'">
         <v-card-text>
-          <p>App Version on Google Play: {{ getAppVersion }}</p>
-          <p>Local App Version: {{ nativeAppVersion }}</p>
+          <p><b>App Version on Google Play:</b> {{ getAppVersion }}</p>
+          <p><b>Local App Version:</b> {{ nativeAppVersion }}</p>
+          <p><b>Database:</b> {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</p>
+          <p><b>Build Time:</b> {{getBuildTime}}</p>
         </v-card-text>
       </Container>
       <Container :key="'aboutPage'">
@@ -39,6 +41,13 @@ export default {
   name: "About",
   computed: {
     ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
+    getBuildTime(){
+      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString();
+    },
+    isMobile() {
+      return isNative();
+    },
+
   },
   components: {Container, PageTitle, VueMarkdown},
   data() {
