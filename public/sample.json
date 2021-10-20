@@ -39,7 +39,8 @@
                 "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Ftaaha.jpg?alt=media",
                 "contributions": [
                     "API Development",
-                    "Backend Documentation"
+                    "Backend Documentation",
+                    "Automated Testing"
                 ],
                 "calender": "June 2021 - Present",
                 "links": [
@@ -54,6 +55,7 @@
                 "name": "Hasan Masum",
                 "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fhasanmasum.jpg?alt=media",
                 "contributions": [
+                    "Prototyping and UX Design",
                     "Database Management",
                     "Testing and Bug Report"
                 ],

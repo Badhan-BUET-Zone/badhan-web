@@ -2,6 +2,12 @@
 **Website** : https://badhan-buet.web.app <br/>
 **App Link** : https://play.google.com/store/apps/details?id=com.mmmbadhan <br/>
 **Developers** : https://badhan-buet.web.app/#/credits
+
+**Figma Prototype** : https://www.figma.com/file/Z1zoTdP4oGoRwQcCz3s2rm/badhan </br>
+**Backend Documentation** : https://badhan-web-test.herokuapp.com/doc/ </br>
+**Active Issue List** : https://github.com/mirmahathir1/badhan-backup/issues </br>
+**Database Backup and Restore Repository** : https://github.com/mirmahathir1/badhan-backup </br>
+**Automated Backend Test Repository** : https://github.com/mirmahathir1/badhan-test </br>
 ## Description
 
 BADHAN is a Voluntary Blood Donors’ Orgnanization. It is totally a non-political, non-communal, non-regional, non-racial, secular and voluntary social organization. It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country 
@@ -101,15 +107,19 @@ Badhan,BUET Zone is grateful to them.They voluntarily agreed to develop this app
 
 **Developers**: 
 [Mir Mahathir Mohammad](https://www.facebook.com/MirMahathirMohammad?_rdc=1&_rdr),
-[MH Rahat](https://www.facebook.com/mhrahat01),
-[Aniruddha GS](https://www.facebook.com/aniruddhags3927),
-[Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367),
-[Anisha Islam](https://www.facebook.com/anisha.islam.1690),
-[Atiqur Rahman Shuvo](https://www.facebook.com/Shiroe041)
+[Sumaiya Azad](https://www.facebook.com/mhrahat01),
+[Hasan Masum](https://www.facebook.com/h.masum.52),
+[Sanju Basak](https://www.facebook.com/sanju.basak.71),
 
 **Contributors from BADHAN, BUET Zone**: 
 [MH Rahat](https://www.facebook.com/mhrahat01),
 [Shadman Sakib Showrov](https://www.facebook.com/Showrov1996)
+
+**Legacy Developers**:
+[Aniruddha GS](https://www.facebook.com/aniruddhags3927),
+[Priyeta Saha](https://www.facebook.com/profile.php?id=100010509641367),
+[Anisha Islam](https://www.facebook.com/anisha.islam.1690),
+[Atiqur Rahman Shuvo](https://www.facebook.com/Shiroe041)
 
 #### # Sign Out
 <img src="https://user-images.githubusercontent.com/38842742/118943080-1df77180-b975-11eb-8db2-b560c07f4a30.gif" alt="Sign Out" width="300"/><br>
