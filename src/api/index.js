@@ -418,6 +418,13 @@ const handleGETCredits = async () => {
         return e.response;
     }
 }
+const handleGETFrontendSettings = async()=>{
+    try{
+        return await firebaseAxios.get('/frontendSettings.json');
+    }catch (e) {
+        return e.response;
+    }
+}
 export {
     badhanAxios,
     firebaseAxios,
@@ -463,5 +470,8 @@ export {
     handlePOSTPublicContacts,
     handleDELETEPublicContacts,
     handleGETLogins,
-    handleDELETELogins
+    handleDELETELogins,
+
+    //firebase methods
+    handleGETFrontendSettings,
 }

@@ -34,7 +34,7 @@ import AppBar from "./components/AppBar";
 import PageTitle from "./components/PageTitle";
 
 import Notification from "./components/Notification";
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import SignInDialog from "./components/SignInDialog";
 
 import {getDeviceInfo, isNative, exitApp} from './plugins/android_support';
@@ -63,9 +63,12 @@ export default {
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn']),
+    ...mapGetters('frontendSettings',['getSettings']),
   },
   methods: {
     ...mapActions('release', ['fetchtAppDetails']),
+    ...mapActions('frontendSettings',['fetchSettings']),
+
     exitAppPrompt(){
       this.exitPromptFlag  = true;
     },
@@ -99,11 +102,14 @@ export default {
       }
     },
     async versionCheck() {
-      const info = await getDeviceInfo();
-      const deployedAppInfo = await this.fetchtAppDetails();
+      await this.fetchSettings();
+      let googlePlayAppVersion = this.getSettings.version;
 
-      if (isNative() && deployedAppInfo.data.version != info.appVersion) {
-        this.updatedVersion = deployedAppInfo.data.version;
+      const info = await getDeviceInfo();
+      // const deployedAppInfo = await this.fetchtAppDetails();
+
+      if (isNative() && googlePlayAppVersion != info.appVersion) {
+        this.updatedVersion = googlePlayAppVersion;
         this.updatePrompt();
       }
     },

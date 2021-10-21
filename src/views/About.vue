@@ -4,15 +4,9 @@
     <!--    <iframe style="height: 100vh; width: 100%"-->
     <!--            src="https://docs.google.com/document/d/e/2PACX-1vTamaAg-1VswXa2Zd2UScuNBbQAgoIA0AYb1r_Z9Nl7rotLh2_AQEf24kiX4XfL210gCXTKY4_JNB3c/pub?embedded=true"></iframe>-->
     <transition-group name="slide-fade-down-snapout" mode="out-in">
-      <Container :key="'versionLoading'" v-if="getAppDetailsLoader">
+      <Container :key="'versionLoaded'">
         <v-card-text>
-          <v-skeleton-loader type="text@2">
-          </v-skeleton-loader>
-        </v-card-text>
-      </Container>
-      <Container v-else :key="'versionLoaded'">
-        <v-card-text>
-          <p><b>App Version on Google Play:</b> {{ getAppVersion }}</p>
+          <p><b>App Version on Google Play:</b> {{ getGooglePlayAppVersion }}</p>
           <p><b>Local App Version:</b> {{ nativeAppVersion }}</p>
           <p><b>Database:</b> {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</p>
           <p><b>Last Updated:</b> {{getBuildTime}}</p>
@@ -41,12 +35,16 @@ export default {
   name: "About",
   computed: {
     ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
+    ...mapGetters('frontendSettings',['getSettings']),
     getBuildTime(){
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString();
     },
     isMobile() {
       return isNative();
     },
+    getGooglePlayAppVersion(){
+      return this.getSettings.version;
+    }
 
   },
   components: {Container, PageTitle, VueMarkdown},
