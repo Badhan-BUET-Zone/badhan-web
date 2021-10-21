@@ -12,6 +12,7 @@ let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;
 let ldbSettings = ldb.frontendSettings.load();
 if(ldbSettings.status!=="ERROR" && process.env.NODE_ENV!=='development'){
     baseURL = process.env.NODE_ENV==="production"?ldbSettings.data.backendBaseURL:ldbSettings.data.backendTestBaseURL;
+    console.log("USING CACHED BASEURL")
 }
 
 const badhanAxios = axios.create({
