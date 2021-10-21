@@ -6,8 +6,13 @@ import axios from "axios";
 
 import {store} from "../store/store";
 import {processError} from "../mixins/helpers";
+import ldb from "../localDatabase";
 
-const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;
+let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL;
+let ldbSettings = ldb.frontendSettings.load();
+if(ldbSettings.status!=="ERROR" && process.env.NODE_ENV!=='development'){
+    baseURL = process.env.NODE_ENV==="production"?ldbSettings.data.backendBaseURL:ldbSettings.data.backendTestBaseURL;
+}
 
 const badhanAxios = axios.create({
     baseURL

@@ -3,8 +3,8 @@ import ldb from "../localDatabase";
 const state = {
     settings:{
         "version": "4.5.1",
-        "backendBaseURL": "https://badhan-web.herokuapp.com",
-        "backendTestBaseURL": "https://badhan-web-test.herokuapp.com",
+        "backendBaseURL": process.env.VUE_APP_BADHAN_API_BASE_URL,
+        "backendTestBaseURL":process.env.VUE_APP_BADHAN_API_BASE_URL,
         "defaultExists":true,
     }
 };
