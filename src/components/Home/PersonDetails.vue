@@ -302,6 +302,9 @@
 
               <ContainerOutlined>
                 <v-card-title>Call History</v-card-title>
+                <v-card-text v-if="callRecords.length===0">
+                  <p>No call history</p>
+                </v-card-text>
                 <v-card-text>
                   <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord" :deleted="callRecordDeleted">
 
