@@ -54,7 +54,6 @@ import ContainerFlat from "../components/Wrappers/ContainerFlat";
 export default {
   name: "SingleDonorCreation",
   components: {
-    PersonModal,
     ContainerFlat,
     NewPersonCard,
     PageTitle,
