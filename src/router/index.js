@@ -91,7 +91,7 @@ const routes = [
             {
                 name: 'LogsByDate',
                 path: 'logsByDate',
-                component:() => import('../views/Statistics/LogsByDate.vue'),
+                component: () => import('../views/Statistics/LogsByDate.vue'),
                 meta: {
                     title: 'Logs by Date',
                     requiresAuth: true,
@@ -102,7 +102,7 @@ const routes = [
             {
                 name: 'Stats',
                 path: 'stats',
-                component:() => import('../views/Statistics/Stats'),
+                component: () => import('../views/Statistics/Stats'),
                 meta: {
                     title: 'Account Stats',
                     requiresAuth: true,
@@ -111,11 +111,11 @@ const routes = [
                 }
             },
             {
-                name:'VolunteersAll',
+                name: 'VolunteersAll',
                 path: 'volunteersAll',
-                component:() => import('../views/Statistics/VolunteersAll'),
-                meta:{
-                    title:'All Volunteers',
+                component: () => import('../views/Statistics/VolunteersAll'),
+                meta: {
+                    title: 'All Volunteers',
                     requiresAuth: true,
                     designation: 3,
                     reRouteIfAuthorized: false,
@@ -165,7 +165,20 @@ const routes = [
             title: 'Create Donor',
             designation: 1,
             reRouteIfAuthorized: false,
-        }
+        },
+        children: [
+            {
+                name: 'DuplicateDetails',
+                path: 'duplicateDetails',
+                component: () => import('../views/SingleDonorCreation/DuplicateDetails'),
+                meta: {
+                    title: 'Duplicate Details',
+                    requiresAuth: true,
+                    designation: 1,
+                    reRouteIfAuthorized: false,
+                }
+            },
+        ]
     },
     {
         name: 'Archive',

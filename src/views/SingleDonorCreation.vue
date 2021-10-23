@@ -38,6 +38,9 @@
         Advanced donor creation
       </v-btn>
     </ContainerFlat>
+    <transition name="slide-fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -47,10 +50,12 @@ import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
 import PageTitle from "../components/PageTitle";
 import HelpTooltip from "../components/UI Components/HelpTooltip";
 import ContainerFlat from "../components/Wrappers/ContainerFlat";
+import PersonModal from "../components/PersonModal";
 
 export default {
   name: "SingleDonorCreation",
   components: {
+    PersonModal,
     ContainerFlat,
     NewPersonCard,
     PageTitle,

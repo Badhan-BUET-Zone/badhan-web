@@ -392,7 +392,11 @@ export default {
 
     },
     goToDuplicateProfile() {
-      window.open(this.frontendBaseURL + "/#/home/details?id=" + this.duplicateDonorId);
+      if(isNative()){
+        this.$router.push({path:'/singleDonorCreation/duplicateDetails?id='+this.duplicateDonorId});
+      }else{
+        window.open(this.frontendBaseURL + "/#/home/details?id=" + this.duplicateDonorId);
+      }
     },
     async discardClicked() {
       if (this.discardDonor !== null) {
