@@ -286,6 +286,13 @@
                   <template v-if="lastDonation !== 0">
                     <p>{{ lastDonation }}</p>
                     <p class="h6 font-weight-bold">Donation History:</p>
+                    <Button
+                        :icon="donationsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
+                        :text="donationsCollapseFlag?'Show '+getDonationList.length+' donations':'Hide donations'"
+                        :click="()=>{this.donationsCollapseFlag=!this.donationsCollapseFlag}"
+                        :color="'info'"></Button>
+                    <transition name="slide-fade-down">
+                    <span v-if="!donationsCollapseFlag">
                     <div v-if="getDonationList.length!==0">
                       <DonationCard
                           v-for="(date,index) in getDonationList"
@@ -295,6 +302,11 @@
                       </DonationCard>
                       <br/>
                     </div>
+                    <div v-else>
+                      No donations found
+                    </div>
+                    </span>
+                    </transition>
                   </template>
                   <span v-else>(Unknown)</span>
                 </v-card-text>
@@ -302,14 +314,22 @@
 
               <ContainerOutlined>
                 <v-card-title>Call History</v-card-title>
-                <v-card-text v-if="callRecords.length===0">
-                  <p>No call history</p>
-                </v-card-text>
                 <v-card-text>
+                  <p class="h6 font-weight-bold">List of calls made to this donor:</p>
+                  <Button
+                      :icon="callRecordsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
+                      :text="callRecordsCollapseFlag?'Show '+callRecords.length+' calls':'Hide calls'"
+                      :click="()=>{this.callRecordsCollapseFlag=!this.callRecordsCollapseFlag}"
+                      :color="'info'">
+                  </Button>
+                </v-card-text>
+                <transition name="slide-fade-down">
+                <v-card-text v-if="!callRecordsCollapseFlag">
+                  <p v-if="callRecords.length===0">No call history</p>
                   <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord" :deleted="callRecordDeleted">
-
                   </CallRecordCard>
                 </v-card-text>
+                </transition>
               </ContainerOutlined>
 
               <ContainerOutlined v-if="getDesignation === 3">
@@ -474,6 +494,8 @@ export default {
       deletePublicContactLoader: false,
 
       callRecords:[],
+      callRecordsCollapseFlag: true,
+      donationsCollapseFlag: true,
     };
   },
   validations: {
