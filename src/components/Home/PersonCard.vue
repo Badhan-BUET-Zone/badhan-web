@@ -154,7 +154,7 @@
 
 <script>
 import {departments} from "../../mixins/constants";
-
+import {fixBackSlash} from '../../mixins/helpers'
 import {mapActions, mapGetters} from "vuex";
 
 export default {
@@ -283,7 +283,7 @@ export default {
       this.bloodGroup = person.bloodGroup;
       this.studentId = person.studentId;
       this.lastDonation = person.lastDonation;
-      this.comment = person.comment;
+      this.comment = fixBackSlash(person.comment);
       this.address = person.address;
       this.roomNumber = person.roomNumber;
       this.id = person._id;

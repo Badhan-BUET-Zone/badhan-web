@@ -383,6 +383,7 @@ import {
 import DonationCard from "./DonationCard";
 import Dialog from "../Dialog";
 import Button from "../UI Components/Button";
+import {fixBackSlash} from "../../mixins/helpers"
 
 export default {
   name: "PersonDetails",
@@ -874,7 +875,7 @@ export default {
     this.room = profile.roomNumber;
     this.address = profile.address;
     this.address = profile.address;
-    this.comment = profile.comment;
+    this.comment = fixBackSlash(profile.comment);
     this.designation = profile.designation;
     this.donationCount = this.getDonationList.length;
     this.commentTime = profile.commentTime;

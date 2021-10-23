@@ -40,3 +40,7 @@ export const processPersonsForReport = (persons)=>{
 export const directCall = (phoneNumber)=>{
     document.location.href = "tel:+" + phoneNumber;
 }
+
+export const fixBackSlash = (text)=>{
+    return text.replaceAll("&#x2F;", "/");
+}
