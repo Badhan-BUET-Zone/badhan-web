@@ -195,13 +195,13 @@ export default {
         maxLength: maxLength(2),
         numeric,
         required,
-        // lastDonationCheck(value) {
-        //   return !(this.lastDonation === null && parseInt(value) !== 0);
-        // },
-        // lastDonationCheck2(value) {
-        //   return !(this.lastDonation !== null && parseInt(value) === 0);
-        //
-        // }
+        lastDonationCheck(value) {
+          return !(this.lastDonation === null && parseInt(value) !== 0);
+        },
+        lastDonationCheck2(value) {
+          return !(this.lastDonation !== null && parseInt(value) === 0);
+
+        }
       },
       availableToAll: {
         isBoolean: (value) => {
@@ -281,8 +281,8 @@ export default {
       !this.$v.donationCount.maxLength && errors.push('Max donation count can be 99')
       !this.$v.donationCount.required && errors.push('Minimum donation count must be zero')
       !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
-      // !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
-      // !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
+      !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
+      !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
       return errors
     },
     availableToAllErrors() {
@@ -316,7 +316,7 @@ export default {
       roomNumber: null,
       comment: null,
       donationCount: null,
-      lastDonation: null,
+      lastDonation: "",
       availableToAll: false,
 
       donorCreationLoader: false,
@@ -359,7 +359,7 @@ export default {
     this.availableToAll = this.$props.donor.availableToAll;
 
     // this.lastDonation = this.$props.donor.lastDonation;
-    if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null) {
+    if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null && this.$props.donor.lastDonation!=="") {
       this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0, 10)
     }
 
@@ -374,7 +374,7 @@ export default {
       }
 
       let lastDonation;
-      if (this.lastDonation === null) {
+      if (this.lastDonation === null || this.lastDonation === "") {
         lastDonation = 0;
       } else {
         lastDonation = new Date(this.lastDonation).getTime();
