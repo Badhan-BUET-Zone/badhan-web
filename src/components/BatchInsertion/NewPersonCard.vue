@@ -83,7 +83,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
               v-model="lastDonation"
-              label="Picker in menu"
+              label="Last Donation"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
