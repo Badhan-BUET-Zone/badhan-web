@@ -3,21 +3,21 @@
   <div class="mb-2" style="width: 100%">
     <v-card
         style="width: 100%; height: 100%;"
-        class="pa-1"
+
         @click="expansionClicked" rounded
     >
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
           <v-card
               v-if="availableInRendered > 0"
-              class="ma-1 text-center"
+              class="text-center"
               color="errorLight"
               flat rounded
           >
-            <v-card-text>
-              {{ bloodGroup | getBloodGroupString }}
-              <br>
-              {{ availableInRendered }} day
+            <v-card-text style="font-size: 10px;  line-height: 1.6;">
+              <span>{{ bloodGroup | getBloodGroupString }}</span><br>
+              <span>{{ availableInRendered }} day</span><br>
+              <span>{{donationCount}} donations</span>
             </v-card-text>
           </v-card>
           <v-card
@@ -26,10 +26,10 @@
               color="successLight"
               flat rounded
           >
-            <v-card-text>
-              {{ bloodGroup | getBloodGroupString }}
-              <br>
-              <span class="text-caption">Available</span>
+            <v-card-text style="font-size: 10px; line-height: 1.6;">
+              <span>{{ bloodGroup | getBloodGroupString }}</span><br>
+              <span>Available</span><br>
+              <span>{{donationCount}} donations</span>
             </v-card-text>
           </v-card>
 
@@ -200,6 +200,7 @@ export default {
       hall:null,
       commentTime: 0,
       callRecords: [],
+      donationCount: 0,
 
     };
   },
@@ -289,6 +290,7 @@ export default {
       this.id = person._id;
       this.commentTime = person.commentTime;
       this.callRecords =person.callRecords;
+      this.donationCount = person.donationCountOptimized;
     },
 
   },
