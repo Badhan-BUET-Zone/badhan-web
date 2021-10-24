@@ -72,7 +72,7 @@
       </v-card>
 
 
-      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="lastDonation"
+      <v-menu ref="lastDonationMenu" v-model="lastDonationMenu" :close-on-content-click="false" :return-value.sync="lastDonation"
               transition="scale-transition" offset-y min-width="auto">
         <template v-slot:activator="{ on, attrs }">
           <v-text-field rounded v-model="lastDonation" label="Pick Last Donation Date" prepend-icon="mdi-calendar"
@@ -81,8 +81,8 @@
         </template>
         <v-date-picker v-model="lastDonation" no-title scrollable>
           <v-spacer></v-spacer>
-          <v-btn rounded text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn rounded text color="primary" @click="$refs.menu.save(lastDonation)">OK</v-btn>
+          <v-btn rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>
+          <v-btn rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-card-text>
@@ -305,7 +305,7 @@ export default {
       availableToAll: false,
 
       donorCreationLoader: false,
-      menu: false,
+      lastDonationMenu: false,
       warnings: [],
       duplicateDonorId: null,
 
