@@ -71,36 +71,6 @@
         </v-card-text>
       </v-card>
 
-
-<!--      <v-menu-->
-<!--          ref="lastDonationMenu"-->
-<!--          v-model="lastDonationMenu"-->
-<!--          :close-on-content-click="false"-->
-<!--          :return-value.sync="lastDonation"-->
-<!--          transition="scale-transition"-->
-<!--          offset-y-->
-<!--          min-width="auto">-->
-<!--        <template v-slot:activator="{ on, attrs }">-->
-<!--          <v-text-field-->
-<!--              rounded-->
-<!--              v-model="lastDonation"-->
-<!--              label="Pick Last Donation Date"-->
-<!--              prepend-icon="mdi-calendar"-->
-<!--              readonly-->
-<!--              outlined-->
-<!--              v-bind="attrs"-->
-<!--              v-on="on"-->
-<!--              dense-->
-<!--          >-->
-<!--          </v-text-field>-->
-<!--        </template>-->
-<!--        <v-date-picker v-model="lastDonation" no-title scrollable>-->
-<!--          <v-spacer></v-spacer>-->
-<!--          <v-btn small rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>-->
-<!--          <v-btn small rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>-->
-<!--        </v-date-picker>-->
-<!--      </v-menu>-->
-
       <v-menu
           ref="menu"
           v-model="menu"
@@ -200,7 +170,6 @@ export default {
 
           this.duplicateDonorId = data.donor ? data.donor._id : null;
           this.duplicateDonorMessage = data.message;
-          // console.log(res.data.donor._id);
           return !data.found;
         }
       },
@@ -357,7 +326,7 @@ export default {
       address: null,
       roomNumber: null,
       comment: null,
-      donationCount: null,
+      donationCount: 0,
       lastDonation: null,
       availableToAll: false,
 
@@ -371,7 +340,6 @@ export default {
       phoneDuplicateCheckLoader: false,
       duplicateDonorMessage: "",
 
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       menu: false,
     }
   },

@@ -80,7 +80,7 @@ export default {
         address: null,
         roomNumber: null,
         comment: null,
-        donationCount: null,
+        donationCount: 0,
         lastDonation: null,
 
         availableToAll: false,
