@@ -81,7 +81,7 @@ export default {
         roomNumber: null,
         comment: null,
         donationCount: null,
-        lastDonation: "",
+        lastDonation: null,
 
         availableToAll: false,
 

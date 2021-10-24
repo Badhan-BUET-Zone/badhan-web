@@ -72,47 +72,47 @@
       </v-card>
 
 
-      <v-menu
-          ref="lastDonationMenu"
-          v-model="lastDonationMenu"
-          :close-on-content-click="false"
-          :return-value.sync="lastDonation"
-          transition="scale-transition"
-          offset-y
-          min-width="auto">
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-              rounded
-              v-model="lastDonation"
-              label="Pick Last Donation Date"
-              prepend-icon="mdi-calendar"
-              readonly
-              outlined
-              v-bind="attrs"
-              v-on="on"
-              dense
-          >
-          </v-text-field>
-        </template>
-        <v-date-picker v-model="lastDonation" no-title scrollable>
-          <v-spacer></v-spacer>
-          <v-btn small rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>
-          <v-btn small rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>
-        </v-date-picker>
-      </v-menu>
+<!--      <v-menu-->
+<!--          ref="lastDonationMenu"-->
+<!--          v-model="lastDonationMenu"-->
+<!--          :close-on-content-click="false"-->
+<!--          :return-value.sync="lastDonation"-->
+<!--          transition="scale-transition"-->
+<!--          offset-y-->
+<!--          min-width="auto">-->
+<!--        <template v-slot:activator="{ on, attrs }">-->
+<!--          <v-text-field-->
+<!--              rounded-->
+<!--              v-model="lastDonation"-->
+<!--              label="Pick Last Donation Date"-->
+<!--              prepend-icon="mdi-calendar"-->
+<!--              readonly-->
+<!--              outlined-->
+<!--              v-bind="attrs"-->
+<!--              v-on="on"-->
+<!--              dense-->
+<!--          >-->
+<!--          </v-text-field>-->
+<!--        </template>-->
+<!--        <v-date-picker v-model="lastDonation" no-title scrollable>-->
+<!--          <v-spacer></v-spacer>-->
+<!--          <v-btn small rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>-->
+<!--          <v-btn small rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>-->
+<!--        </v-date-picker>-->
+<!--      </v-menu>-->
 
       <v-menu
           ref="menu"
           v-model="menu"
           :close-on-content-click="false"
-          :return-value.sync="date"
+          :return-value.sync="lastDonation"
           transition="scale-transition"
           offset-y
           min-width="auto"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-              v-model="date"
+              v-model="lastDonation"
               label="Picker in menu"
               prepend-icon="mdi-calendar"
               readonly
@@ -121,7 +121,7 @@
           ></v-text-field>
         </template>
         <v-date-picker
-            v-model="date"
+            v-model="lastDonation"
             no-title
             scrollable
         >
@@ -136,7 +136,7 @@
           <v-btn
               text
               color="primary"
-              @click="$refs.menu.save(date)"
+              @click="$refs.menu.save(lastDonation)"
           >
             OK
           </v-btn>
@@ -358,7 +358,7 @@ export default {
       roomNumber: null,
       comment: null,
       donationCount: null,
-      lastDonation: "",
+      lastDonation: null,
       availableToAll: false,
 
       donorCreationLoader: false,
@@ -373,7 +373,6 @@ export default {
 
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       menu: false,
-      modal: false,
     }
   },
 
@@ -404,9 +403,8 @@ export default {
     this.donationCount = this.$props.donor.donationCount;
     this.availableToAll = this.$props.donor.availableToAll;
 
-    // this.lastDonation = this.$props.donor.lastDonation;
-    if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null && this.$props.donor.lastDonation!=="") {
-      this.lastDonation = new Date(this.$props.donor.lastDonation).toISOString().substr(0, 10)
+    if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null) {
+      this.lastDonation = (new Date(this.$props.donor.lastDonation)).toISOString().substr(0, 10);
     }
 
   },
@@ -420,7 +418,7 @@ export default {
       }
 
       let lastDonation;
-      if (this.lastDonation === null || this.lastDonation === "") {
+      if (this.lastDonation === null) {
         lastDonation = 0;
       } else {
         lastDonation = new Date(this.lastDonation).getTime();
