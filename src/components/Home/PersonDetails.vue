@@ -247,15 +247,7 @@
                       <v-date-picker v-model="newDonationDate" no-title scrollable>
                         <v-spacer></v-spacer>
                         <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
-                        <v-btn
-                            small
-                            rounded
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(newDonationDate)"
-                        >
-                          OK
-                        </v-btn>
+                        <v-btn small rounded text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
                       </v-date-picker>
                     </v-menu>
                   </div>

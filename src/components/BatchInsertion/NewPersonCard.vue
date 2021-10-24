@@ -72,17 +72,32 @@
       </v-card>
 
 
-      <v-menu ref="lastDonationMenu" v-model="lastDonationMenu" :close-on-content-click="false" :return-value.sync="lastDonation"
-              transition="scale-transition" offset-y min-width="auto">
+      <v-menu
+          ref="lastDonationMenu"
+          v-model="lastDonationMenu"
+          :close-on-content-click="false"
+          :return-value.sync="lastDonation"
+          transition="scale-transition"
+          offset-y
+          min-width="auto">
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field rounded v-model="lastDonation" label="Pick Last Donation Date" prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs" v-on="on"></v-text-field>
+          <v-text-field
+              rounded
+              v-model="lastDonation"
+              label="Pick Last Donation Date"
+              prepend-icon="mdi-calendar"
+              readonly
+              outlined
+              v-bind="attrs"
+              v-on="on"
+              dense
+          >
+          </v-text-field>
         </template>
         <v-date-picker v-model="lastDonation" no-title scrollable>
           <v-spacer></v-spacer>
-          <v-btn rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>
-          <v-btn rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>
+          <v-btn small rounded text color="primary" @click="lastDonationMenu = false">Cancel</v-btn>
+          <v-btn small rounded text color="primary" @click="$refs.lastDonationMenu.save(lastDonation)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-card-text>
@@ -180,13 +195,13 @@ export default {
         maxLength: maxLength(2),
         numeric,
         required,
-        lastDonationCheck(value) {
-          return !(this.lastDonation === null && parseInt(value) !== 0);
-        },
-        lastDonationCheck2(value) {
-          return !(this.lastDonation !== null && parseInt(value) === 0);
-
-        }
+        // lastDonationCheck(value) {
+        //   return !(this.lastDonation === null && parseInt(value) !== 0);
+        // },
+        // lastDonationCheck2(value) {
+        //   return !(this.lastDonation !== null && parseInt(value) === 0);
+        //
+        // }
       },
       availableToAll: {
         isBoolean: (value) => {
@@ -266,8 +281,8 @@ export default {
       !this.$v.donationCount.maxLength && errors.push('Max donation count can be 99')
       !this.$v.donationCount.required && errors.push('Minimum donation count must be zero')
       !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
-      !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
-      !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
+      // !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
+      // !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
       return errors
     },
     availableToAllErrors() {
