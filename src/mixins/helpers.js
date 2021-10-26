@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import {bloodGroups} from "./constants";
+import {bloodGroups,halls} from "./constants";
 
 export const processError = (error)=>{
     if(error.response && error.response.data && error.response.data.message){
@@ -31,6 +31,7 @@ export const processPersonsForReport = (persons)=>{
     persons.forEach((person)=>{
         person["Blood Group"] = bloodGroups[person.bloodGroup];
         person["Donation Count"] = person.donationCountOptimized;
+        person["Hall"] = halls[person.hall];
         let date = new Date(person.lastDonation);
         person["Last Donation"] = date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
     })

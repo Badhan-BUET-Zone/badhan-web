@@ -406,7 +406,7 @@ export default {
     ...mapMutations('messageBox',['setMessage']),
     async downloadInAndroid(){
       let processedPersons = processPersonsForReport(this.getPersons)
-      let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
+      let csv = convertObjectToCSV(processedPersons,["name","Hall","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       try{
         await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
         this.setMessage('CSV downloaded to Documents folder');
@@ -417,7 +417,7 @@ export default {
     downloadInWeb(){
       // console.log(jsonToCSV(this.getPersons));
       let processedPersons = processPersonsForReport(this.getPersons)
-      let csv = convertObjectToCSV(processedPersons,["name","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
+      let csv = convertObjectToCSV(processedPersons,["name","Hall","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
       textFileDownloadInWeb(csv,'badhan_'+this.getSearchedHall+'.csv');
       this.setMessage('CSV downloaded');
     },
