@@ -26,7 +26,7 @@ const routes = [
         component: () => import('../views/PublicContacts'),
         meta: {
             requiresAuth: false,
-            title: "Contact Badhan",
+            title: "Contact Badhan BUET Zone",
             designation: 0,
             reRouteIfAuthorized: false,
         }
