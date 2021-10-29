@@ -74,6 +74,25 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <v-list>
+        <v-list-item>
+          <v-btn rounded depressed small @click="toggleTheme">
+            <v-icon left v-if="!darkTheme">
+              mdi-brightness-3
+            </v-icon>
+            <v-icon left v-else>
+              mdi-brightness-5
+            </v-icon>
+            Activate {{darkTheme?'Day':'Night'}} Mode
+          </v-btn>
+<!--          <v-switch-->
+<!--              dense-->
+<!--              v-model="darkTheme"-->
+<!--              inset-->
+<!--              :label="darkTheme?'Disable dark theme':'Enable dark theme'"-->
+<!--          ></v-switch>-->
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <Dialog
         :message="'Sign out?'"
@@ -97,11 +116,13 @@ import {mapActions, mapGetters} from 'vuex';
 import {isNative} from '../plugins/android_support';
 import {isGuestEnabled} from "../api";
 import Dialog from "./Dialog";
+import ldb from "../localDatabase";
 
 export default {
   components: {Dialog},
   data: function (){
     return{
+      theme: this.$vuetify.theme.dark,
       drawer: !this.$isMobile(),
       signOutModalFlag: false,
       signOutAllModalFlag: false,
@@ -122,6 +143,18 @@ export default {
   },
   computed: {
     ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
+      darkTheme: {
+        // getter
+        get() {
+          return this.$vuetify.theme.dark;
+        },
+        // setter
+        set(newValue) {
+          this.$vuetify.theme.dark = newValue
+          ldb.theme.save(newValue)
+        }
+      },
+
     isNative() {
       return isNative();
     },
@@ -134,6 +167,11 @@ export default {
   methods: {
     ...mapActions('notification', ['notifySuccess']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
+    toggleTheme(){
+      this.theme = !this.theme;
+      this.$vuetify.theme.dark = this.theme;
+      ldb.theme.save(this.theme);
+    },
     async myProfileclicked() {
       await this.$router.push({path: '/home/details', query: {id: this.getID}});
     },
