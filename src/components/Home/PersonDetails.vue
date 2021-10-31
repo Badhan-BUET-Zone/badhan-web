@@ -316,11 +316,12 @@
                   </Button>
                 </v-card-text>
                 <transition name="slide-fade-down">
-                <v-card-text v-if="!callRecordsCollapseFlag">
-                  <p v-if="callRecords.length===0">No call history</p>
-                  <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord" :deleted="callRecordDeleted">
-                  </CallRecordCard>
-                </v-card-text>
+                  <v-card-text v-if="!callRecordsCollapseFlag">
+                    <p v-if="callRecords.length===0">No call history</p>
+                    <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord"
+                                    :deleted="callRecordDeleted">
+                    </CallRecordCard>
+                  </v-card-text>
                 </transition>
               </ContainerOutlined>
 
@@ -331,7 +332,8 @@
                 <v-card-text>
                   <p class="mt-2 h6 font-weight-bold">Existing Public Contacts:</p>
                   <p v-if="publicContacts.length===0">This contact is not published for the public to see</p>
-                  <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts" :key="publicContact._id"
+                  <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts"
+                          :key="publicContact._id"
                           color="secondary" close
                           @click:close="()=>{deletePublicContactClicked(publicContact._id)}">
                     {{ publicContact.bloodGroup | getBloodGroupString }}
@@ -485,7 +487,7 @@ export default {
       newPublicContactLoader: false,
       deletePublicContactLoader: false,
 
-      callRecords:[],
+      callRecords: [],
       callRecordsCollapseFlag: true,
       donationsCollapseFlag: true,
     };
@@ -548,7 +550,7 @@ export default {
       return !isGuestEnabled() && !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
     },
     isDeletable() {
-      return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)));
+      return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || halls.indexOf(this.hall) === 8 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)));
     },
 
     isDetailsEditable() {
@@ -622,28 +624,28 @@ export default {
     ...mapActions('donate', ['donate']),
     ...mapMutations('donation', ['addDonation']),
     ...mapMutations(['deletePerson']),
-    ...mapMutations(['setToken','saveTokenToLocalStorage']),
+    ...mapMutations(['setToken', 'saveTokenToLocalStorage']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
-    ...mapActions('notification',['notifySuccess']),
+    ...mapActions('notification', ['notifySuccess']),
 
-    callRecordDeleted(id){
-      this.callRecords = this.callRecords.filter((callRecord)=>callRecord._id!==id);
+    callRecordDeleted(id) {
+      this.callRecords = this.callRecords.filter((callRecord) => callRecord._id !== id);
     },
     async publishToPublicContactClicked() {
       console.log(this.selectedNewPublicContact);
       this.newPublicContactLoader = true;
-      let response = await handlePOSTPublicContacts({donorId: this._id,bloodGroup: this.selectedNewPublicContact.code})
+      let response = await handlePOSTPublicContacts({donorId: this._id, bloodGroup: this.selectedNewPublicContact.code})
       this.newPublicContactLoader = false;
-      if(response.status!==201)return;
-      this.publicContacts.push({_id: response.data.publicContact._id,bloodGroup: this.selectedNewPublicContact.code})
+      if (response.status !== 201) return;
+      this.publicContacts.push({_id: response.data.publicContact._id, bloodGroup: this.selectedNewPublicContact.code})
       this.notifySuccess('Public Contacts Updated');
     },
 
     async deletePublicContactClicked(contactId) {
       this.deletePublicContactLoader = true;
-      let response = await handleDELETEPublicContacts({donorId: this._id,contactId});
+      let response = await handleDELETEPublicContacts({donorId: this._id, contactId});
       this.deletePublicContactLoader = false;
-      if(response.status!==200) return;
+      if (response.status !== 200) return;
 
       this.publicContacts = this.publicContacts.filter((publicContact) => {
         return publicContact._id !== contactId
