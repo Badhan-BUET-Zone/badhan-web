@@ -14,7 +14,46 @@
       </Container>
 
       <Container v-else :key="'donorLoaded'">
-        <v-card-title>{{ name }}</v-card-title>
+        <v-card-title>{{ name }}
+          <v-menu
+              v-model="bookmarkMenu"
+              :close-on-content-click="false"
+              :nudge-width="200"
+              offset-x
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                  color="primary"
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+              >
+                <v-icon>
+                  mdi-bookmark
+                </v-icon>
+              </v-btn>
+            </template>
+
+
+            <v-card rounded>
+              <v-card-title>Bookmark Donor</v-card-title>
+              <v-card-text>
+              <v-checkbox dense label="Public Bookmark"></v-checkbox>
+              <v-checkbox disabled dense label="Private Bookmark"></v-checkbox>
+<!--                    <v-btn-->
+<!--                        :class="fav ? 'red&#45;&#45;text' : ''"-->
+<!--                        icon-->
+<!--                        @click="fav = !fav"-->
+<!--                    >-->
+<!--                      <v-icon>mdi-heart</v-icon>-->
+<!--                    </v-btn>-->
+              </v-card-text>
+              <v-card-actions>
+                <Button :icon="'mdi-close'" :text="'Cancel'" :click="()=>{this.bookmarkMenu = false}" :color="'secondary'"></Button>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
+        </v-card-title>
         <v-card-text class="mb-5">
           <v-chip color="secondary" class="mr-1 mb-1">
             <span v-if="designation === 0">Donor</span>
@@ -416,6 +455,11 @@ export default {
   data: function () {
     return {
       //form fields
+      fav: true,
+      bookmarkMenu: false,
+      message: false,
+      hints: true,
+
       _id: null,
       name: "",
       oldPhone: "",

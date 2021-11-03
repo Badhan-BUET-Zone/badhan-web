@@ -128,6 +128,7 @@ export default {
       signOutAllModalFlag: false,
       menusForAll: [
         {icon: "mdi-home", text: "Home", to: "/home"},
+        {icon: "mdi-bookmark", text: "Bookmarks", to: "/bookmarks/public"},
         {icon: "mdi-plus", text: "Donor Creation", to: "/singleDonorCreation"},
         {icon: "mdi-account-group",text: "Members", to: "/members"},
         {icon: "mdi-earth",text: "Public Contacts", to: "/contacts"},

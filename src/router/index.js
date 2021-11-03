@@ -10,6 +10,41 @@ Vue.use(VueRouter)
 
 const routes = [
     {
+        name: 'Bookmarks',
+        path: '/bookmarks',
+        component: () => import('../views/Bookmarks.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'Bookmarked Donors',
+            designation: 1,
+            reRouteIfAuthorized: false,
+        },
+        children: [
+            {
+                name: 'PublicBookmarks',
+                path: 'public',
+                component: ()=> import('../views/Bookmarks/PublicBookmarks.vue'),
+                meta: {
+                    title: 'Public Bookmarks',
+                    requiresAuth: true,
+                    designation: 1,
+                    reRouteIfAuthorized: false,
+                }
+            },
+            {
+                name: 'PrivateBookmarks',
+                path: 'private',
+                component: ()=> import('../views/Bookmarks/PrivateBookmarks.vue'),
+                meta: {
+                    title: 'Private Bookmarks',
+                    requiresAuth: true,
+                    designation: 1,
+                    reRouteIfAuthorized: false,
+                }
+            }
+        ]
+    },
+    {
         name: 'Members',
         path: '/members',
         component: () => import('../views/Members.vue'),

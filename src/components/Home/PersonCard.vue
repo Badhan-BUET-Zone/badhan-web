@@ -17,7 +17,7 @@
             <v-card-text style="font-size: 10px;  line-height: 1.6;">
               <span>{{ bloodGroup | getBloodGroupString }}</span><br>
               <span>{{ availableInRendered }} day</span><br>
-              <span>{{donationCount}} donations</span>
+              <span>{{ donationCount }} donations</span>
             </v-card-text>
           </v-card>
           <v-card
@@ -29,7 +29,7 @@
             <v-card-text style="font-size: 10px; line-height: 1.6;">
               <span>{{ bloodGroup | getBloodGroupString }}</span><br>
               <span>Available</span><br>
-              <span>{{donationCount}} donations</span>
+              <span>{{ donationCount }} donations</span>
             </v-card-text>
           </v-card>
 
@@ -40,7 +40,7 @@
             class="d-flex align-content-center"
         >
           <div style="font-size: small; width: 100%" class="text-wrap pa-2">
-            <b style="width: 100%">{{ name }}</b>
+            <b style="width: 100%">{{ name }} <v-icon color="secondary">mdi-bookmark</v-icon></b>
             <br/>
             <b>Phone: </b>
             <span v-if="phone">{{ phone.toString().substr(2) }}</span>
@@ -54,100 +54,102 @@
 
     <!--    Person card extension-->
     <transition name="slide-fade-down-snapout" mode="out-in">
-    <v-card class="mt-2 rounded-xl" v-if="showExtensionFlag">
-      <v-card-text>
-        <v-row no-gutters>
-          <v-col cols="12" sm="6">
-            <span><b>Department: </b>{{ studentId | idToDept }} <br></span>
-            <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{ address }} <br></span>
-            <span v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
+      <v-card class="mt-2 rounded-xl" v-if="showExtensionFlag">
+        <v-card-text>
+          <v-row no-gutters>
+            <v-col cols="12" sm="6">
+              <span><b>Department: </b>{{ studentId | idToDept }} <br></span>
+              <span v-if="address!==undefined && address!==null && address.length !==0"><b>Address:</b> {{
+                  address
+                }} <br></span>
+              <span v-if="roomNumber!==undefined && roomNumber!==null && roomNumber.length !==0"><b>Room:</b>
               {{ roomNumber }}</span>
-          </v-col>
-          <v-col cols="12" sm="6">
+            </v-col>
+            <v-col cols="12" sm="6">
             <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{
                 commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString()
               }} )<br></span>
-            <span><b>Last called: </b>
+              <span><b>Last called: </b>
               <span v-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
               <span v-else>Unknown</span>
               <br>
             </span>
-            <span>Called {{ getCallCountInRange }} times in last 3 days</span>
-          </v-col>
-        </v-row>
-        <div class="mt-1">
+              <span>Called {{ getCallCountInRange }} times in last 3 days</span>
+            </v-col>
+          </v-row>
+          <div class="mt-1">
+            <v-btn
+                small
+                rounded
+                color="primary"
+                v-b-modal="'detailsModal'"
+                @click="loadPersonDetails()"
+                :disabled="seeDetailsLoaderFlag"
+                :loading="seeDetailsLoaderFlag"
+            >
+              <v-icon left>
+                mdi-account-details
+              </v-icon>
+              See profile
+            </v-btn>
+            <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
+                   class="ml-2" @click="callFromDialer"
+            >
+              <v-icon left>
+                mdi-phone
+              </v-icon>
+              Direct call
+            </v-btn
+            >
+          </div>
+          <div class="mt-2">
+            <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="newDonationDate"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    rounded
+                    v-model="newDonationDate"
+                    label="Add a donation date"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    outlined
+                    v-bind="attrs"
+                    v-on="on"
+                    dense
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="newDonationDate" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.menu.save(newDonationDate)"
+                >OK
+                </v-btn
+                >
+              </v-date-picker>
+            </v-menu>
+          </div>
           <v-btn
-              small
-              rounded
               color="primary"
-              v-b-modal="'detailsModal'"
-              @click="loadPersonDetails()"
-              :disabled="seeDetailsLoaderFlag"
-              :loading="seeDetailsLoaderFlag"
-          >
-            <v-icon left>
-              mdi-account-details
-            </v-icon>
-            See profile
+              rounded
+              small
+              style="width: 100%"
+              @click="donateClicked()"
+              :loading="getDonationLoaderFlag"
+              :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
+          >Done
           </v-btn>
-          <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
-                 class="ml-2" @click="callFromDialer"
-          >
-            <v-icon left>
-              mdi-phone
-            </v-icon>
-            Direct call
-          </v-btn
-          >
-        </div>
-        <div class="mt-2">
-          <v-menu
-              ref="menu"
-              v-model="menu"
-              :close-on-content-click="false"
-              :return-value.sync="newDonationDate"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                  rounded
-                  v-model="newDonationDate"
-                  label="Add a donation date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                  dense
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="newDonationDate" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.menu.save(newDonationDate)"
-              >OK
-              </v-btn
-              >
-            </v-date-picker>
-          </v-menu>
-        </div>
-        <v-btn
-            color="primary"
-            rounded
-            small
-            style="width: 100%"
-            @click="donateClicked()"
-            :loading="getDonationLoaderFlag"
-            :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
-        >Done
-        </v-btn>
-      </v-card-text>
-    </v-card>
+        </v-card-text>
+      </v-card>
     </transition>
   </div>
 </template>
@@ -197,7 +199,7 @@ export default {
       address: "(Unknown)",
       roomNumber: "(Unknown)",
       id: null,
-      hall:null,
+      hall: null,
       commentTime: 0,
       callRecords: [],
       donationCount: 0,
@@ -263,7 +265,7 @@ export default {
       this.showExtensionFlag = !this.showExtensionFlag;
     },
 
-    setAvailableIn(donationDate){
+    setAvailableIn(donationDate) {
       let newAvailableIn =
           120 -
           Math.round(
@@ -276,11 +278,11 @@ export default {
       }
     },
 
-    setInformation(person){
+    setInformation(person) {
       this.setAvailableIn(person.lastDonation);
       this.phone = person.phone;
       this.name = person.name;
-      this.hall  = person.hall;
+      this.hall = person.hall;
       this.bloodGroup = person.bloodGroup;
       this.studentId = person.studentId;
       this.lastDonation = person.lastDonation;
@@ -289,7 +291,7 @@ export default {
       this.roomNumber = person.roomNumber;
       this.id = person._id;
       this.commentTime = person.commentTime;
-      this.callRecords =person.callRecords;
+      this.callRecords = person.callRecords;
       this.donationCount = person.donationCountOptimized;
     },
 
