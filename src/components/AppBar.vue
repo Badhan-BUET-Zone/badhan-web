@@ -85,12 +85,6 @@
             </v-icon>
             Activate {{darkTheme?'Day':'Night'}} Mode
           </v-btn>
-<!--          <v-switch-->
-<!--              dense-->
-<!--              v-model="darkTheme"-->
-<!--              inset-->
-<!--              :label="darkTheme?'Disable dark theme':'Enable dark theme'"-->
-<!--          ></v-switch>-->
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
