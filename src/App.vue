@@ -91,10 +91,6 @@ export default {
     },
 
     androidBackButtonHandler() {
-      if (this.$route.name === "Details") {
-        this.$router.push('/home');
-        return;
-      }
       if (this.$route.path === "/home" || this.$route.path === '/') {
         this.exitAppPrompt();
       } else {

@@ -21,22 +21,11 @@ const routes = [
         },
         children: [
             {
-                name: 'PublicBookmarks',
-                path: 'public',
-                component: ()=> import('../views/Bookmarks/PublicBookmarks.vue'),
+                name: 'Details',
+                path: 'details',
+                component: Details,
                 meta: {
-                    title: 'Public Bookmarks',
-                    requiresAuth: true,
-                    designation: 1,
-                    reRouteIfAuthorized: false,
-                }
-            },
-            {
-                name: 'PrivateBookmarks',
-                path: 'private',
-                component: ()=> import('../views/Bookmarks/PrivateBookmarks.vue'),
-                meta: {
-                    title: 'Private Bookmarks',
+                    title: 'Donor Details',
                     requiresAuth: true,
                     designation: 1,
                     reRouteIfAuthorized: false,

@@ -38,7 +38,7 @@
     <v-card-text style="font-size: small">
       <div style="float: right;">
         <v-btn depressed class="ma-1" x-small fab color="green" dark><v-icon>mdi-phone</v-icon></v-btn>
-        <v-btn depressed class="ma-1" x-small fab color="blue" dark><v-icon>mdi-account-details</v-icon></v-btn>
+        <v-btn to="/bookmarks/details?id=5e901d56effc5900177ced73" depressed class="ma-1" x-small fab color="blue" dark><v-icon>mdi-account-details</v-icon></v-btn>
       </div>
         <span><b>Department: </b>CSE</span><br>
         <span><b>Address: </b>Need to stay in bed for 4 weeks Need to stay in bed for 4 weeks Need to stay in bed for 4 weeks Need to stay in bed for 4 weeks Need to stay in bed for 4 weeks Need to stay in bed for 4 weeks </span><br>
