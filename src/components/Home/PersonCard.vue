@@ -40,7 +40,7 @@
             class="d-flex align-content-center"
         >
           <div style="font-size: small; width: 100%" class="text-wrap pa-2">
-            <b style="width: 100%">{{ name }} <v-icon color="secondary">mdi-bookmark</v-icon></b>
+            <b style="width: 100%">{{ name }} <v-icon small color="secondary">mdi-bookmark</v-icon></b>
             <br/>
             <b>Phone: </b>
             <span v-if="phone">{{ phone.toString().substr(2) }}</span>
