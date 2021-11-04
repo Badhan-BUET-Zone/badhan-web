@@ -10,12 +10,12 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        name: 'Bookmarks',
-        path: '/bookmarks',
-        component: () => import('../views/Bookmarks.vue'),
+        name: 'ActiveDonors',
+        path: '/activeDonors',
+        component: () => import('../views/ActiveDonors.vue'),
         meta: {
             requiresAuth: true,
-            title: 'Bookmarked Donors',
+            title: 'Active Donors',
             designation: 1,
             reRouteIfAuthorized: false,
         },

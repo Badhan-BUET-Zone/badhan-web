@@ -16,7 +16,7 @@
       <Container v-else :key="'donorLoaded'">
         <v-card-title>{{ name }}
           <v-menu
-              v-model="bookmarkMenu"
+              v-model="activeDonorMenu"
               :close-on-content-click="false"
               :nudge-width="200"
               offset-x
@@ -36,10 +36,9 @@
 
 
             <v-card rounded>
-              <v-card-title>Bookmark Donor</v-card-title>
+              <v-card-title>Mark as Active Donor</v-card-title>
               <v-card-text>
-              <v-checkbox dense label="Public Bookmark"></v-checkbox>
-              <v-checkbox disabled dense label="Private Bookmark"></v-checkbox>
+              <v-checkbox dense label="Mark as Active Donor"></v-checkbox>
 <!--                    <v-btn-->
 <!--                        :class="fav ? 'red&#45;&#45;text' : ''"-->
 <!--                        icon-->
@@ -49,7 +48,7 @@
 <!--                    </v-btn>-->
               </v-card-text>
               <v-card-actions>
-                <Button :icon="'mdi-close'" :text="'Cancel'" :click="()=>{this.bookmarkMenu = false}" :color="'secondary'"></Button>
+                <Button :icon="'mdi-close'" :text="'Cancel'" :click="()=>{this.activeDonorMenu = false}" :color="'secondary'"></Button>
               </v-card-actions>
             </v-card>
           </v-menu>
@@ -456,7 +455,7 @@ export default {
     return {
       //form fields
       fav: true,
-      bookmarkMenu: false,
+      activeDonorMenu: false,
       message: false,
       hints: true,
 
