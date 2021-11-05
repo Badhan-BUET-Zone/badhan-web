@@ -40,7 +40,7 @@
             class="d-flex align-content-center"
         >
           <div style="font-size: small; width: 100%" class="text-wrap pa-2">
-            <b style="width: 100%">{{ name }} <v-icon small color="secondary">mdi-bookmark</v-icon></b>
+            <b style="width: 100%">{{ name }} <v-icon v-if="markedBy" small color="secondary">mdi-bookmark</v-icon></b>
             <br/>
             <b>Phone: </b>
             <span v-if="phone">{{ phone.toString().substr(2) }}</span>
@@ -204,6 +204,8 @@ export default {
       callRecords: [],
       donationCount: 0,
 
+      markedBy: null,
+
     };
   },
   computed: {
@@ -293,6 +295,7 @@ export default {
       this.commentTime = person.commentTime;
       this.callRecords = person.callRecords;
       this.donationCount = person.donationCountOptimized;
+      this.markedBy = person.markedBy;
     },
 
   },

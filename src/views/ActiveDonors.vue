@@ -1,6 +1,11 @@
 <template>
   <div>
     <PageTitle></PageTitle>
+    <Container>
+      <v-card-text>
+        Page under construction <v-icon>mdi-hammer</v-icon>
+      </v-card-text>
+    </Container>
     <div style="max-width: 700px" class="mx-auto">
       <div class="mb-2">
         <v-card

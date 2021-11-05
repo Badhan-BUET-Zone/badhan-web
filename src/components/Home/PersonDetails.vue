@@ -28,27 +28,29 @@
                   v-bind="attrs"
                   v-on="on"
               >
-                <v-icon>
+                <v-icon v-if="markedBy">
                   mdi-bookmark
+                </v-icon>
+                <v-icon v-else>
+                  mdi-bookmark-off-outline
                 </v-icon>
               </v-btn>
             </template>
-
-
             <v-card rounded>
-              <v-card-title>Mark as Active Donor</v-card-title>
+              <v-card-title>Active Donor</v-card-title>
               <v-card-text>
-              <v-checkbox dense label="Mark as Active Donor"></v-checkbox>
-<!--                    <v-btn-->
-<!--                        :class="fav ? 'red&#45;&#45;text' : ''"-->
-<!--                        icon-->
-<!--                        @click="fav = !fav"-->
-<!--                    >-->
-<!--                      <v-icon>mdi-heart</v-icon>-->
-<!--                    </v-btn>-->
+                <span v-if="markedBy">Marked by: {{ markedBy }}</span>
+                <v-switch
+                    :disabled="activeDonorLoader"
+                    :loading="activeDonorLoader"
+                    v-model="markedAsActiveDonor"
+                    @change="markAsActiveDonorHandler"
+                    label="Active donor"
+                    dense>
+                </v-switch>
+                <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.activeDonorMenu=false;}" :color="'secondary'"></Button>
               </v-card-text>
               <v-card-actions>
-                <Button :icon="'mdi-close'" :text="'Cancel'" :click="()=>{this.activeDonorMenu = false}" :color="'secondary'"></Button>
               </v-card-actions>
             </v-card>
           </v-menu>
@@ -423,7 +425,7 @@ import PageTitle from "../PageTitle";
 import ShareProfileButton from "../ShareProfileButton";
 import Container from "../Wrappers/Container";
 import ContainerOutlined from "../Wrappers/ContainerOutlined";
-import {isGuestEnabled} from "../../api";
+import {handleDELETEActiveDonors, handlePOSTActiveDonors, isGuestEnabled} from "../../api";
 import {
   handlePATCHDonorsDesignation,
   handlePATCHUsersPassword,
@@ -533,6 +535,10 @@ export default {
       callRecords: [],
       callRecordsCollapseFlag: true,
       donationsCollapseFlag: true,
+
+      markedAsActiveDonor: false,
+      markedBy: null,
+      activeDonorLoader: false,
     };
   },
   validations: {
@@ -582,7 +588,7 @@ export default {
     ...mapGetters('donation', ['getDonationList']),
     ...mapGetters('donate', ['getDonationLoaderFlag']),
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
-
+    ...mapGetters(['getName']),
     isAllowedToPromoteToVolunteer() {
       return this.designation === 0 && halls.indexOf(this.hall) <= 6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
@@ -670,6 +676,23 @@ export default {
     ...mapMutations(['setToken', 'saveTokenToLocalStorage']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
     ...mapActions('notification', ['notifySuccess']),
+    async markAsActiveDonorHandler(markFlag) {
+      this.activeDonorLoader=true;
+      if (markFlag) {
+        let result = await handlePOSTActiveDonors({donorId: this._id});
+        this.activeDonorLoader = false;
+        if (result.status !== 201) return;
+        this.markedBy = this.getName;
+        this.notifySuccess('Donor marked as active donor');
+        return;
+      }
+
+      let result = await handleDELETEActiveDonors({donorId: this._id});
+      this.activeDonorLoader = false;
+      if (result.status !== 200) return;
+      this.markedBy = null;
+      this.notifySuccess('Donor unmarked')
+    },
 
     callRecordDeleted(id) {
       this.callRecords = this.callRecords.filter((callRecord) => callRecord._id !== id);
@@ -941,6 +964,8 @@ export default {
     this.availableToAll = profile.availableToAll;
     this.publicContacts = profile.publicContacts;
     this.callRecords = profile.callRecords;
+    this.markedBy = profile.markedBy?profile.markedBy.markerId.name:null;
+    this.markedAsActiveDonor = !!this.markedBy;
 
     let date = new Date(profile.lastDonation);
     this.lastDonation =

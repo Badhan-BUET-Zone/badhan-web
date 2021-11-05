@@ -416,6 +416,20 @@ const handleDELETELogins = async(payload)=>{
         return e.response;
     }
 }
+const handlePOSTActiveDonors = async(payload)=>{
+    try{
+        return await badhanAxios.post('/activeDonors',{donorId: payload.donorId})
+    }catch (e) {
+        return e.response;
+    }
+}
+const handleDELETEActiveDonors = async(payload)=>{
+    try{
+        return await badhanAxios.delete(`/activeDonors/${payload.donorId}`);
+    }catch (e) {
+        return e.response;
+    }
+}
 
 //////////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
@@ -478,6 +492,8 @@ export {
     handleDELETEPublicContacts,
     handleGETLogins,
     handleDELETELogins,
+    handlePOSTActiveDonors,
+    handleDELETEActiveDonors,
 
     //firebase methods
     handleGETFrontendSettings,

@@ -21,7 +21,7 @@ const routes = [
         },
         children: [
             {
-                name: 'Details',
+                name: 'ActiveDonorDetails',
                 path: 'details',
                 component: Details,
                 meta: {
