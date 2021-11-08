@@ -430,6 +430,13 @@ const handleDELETEActiveDonors = async(payload)=>{
         return e.response;
     }
 }
+const handleGETActiveDonors = async(payload)=>{
+    try{
+        return await badhanAxios.get(`/activeDonors?bloodGroup=${payload.bloodGroup}&hall=${payload.hall}&batch=${payload.batch}&name=${payload.name}&address=${payload.address}&isAvailable=${payload.isAvailable}&isNotAvailable=${payload.isNotAvailable}&availableToAll=${payload.availableToAll}&markedByMe=${payload.markedByMe}`);
+    }catch (e) {
+        return e.response;
+    }
+}
 
 //////////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
@@ -494,6 +501,7 @@ export {
     handleDELETELogins,
     handlePOSTActiveDonors,
     handleDELETEActiveDonors,
+    handleGETActiveDonors,
 
     //firebase methods
     handleGETFrontendSettings,

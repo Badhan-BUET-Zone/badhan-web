@@ -18,6 +18,7 @@ import messageBox from "./messageBox";
 import members from "./members";
 import publicContacts from "./publicContacts";
 import frontendSettings from "./frontendSettings";
+import activeDonors from "./activeDonors";
 
 export const store = new Vuex.Store({
 
@@ -55,5 +56,6 @@ export const store = new Vuex.Store({
     members,
     publicContacts,
     frontendSettings,
+    activeDonors
   }
 });
