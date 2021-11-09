@@ -7,15 +7,30 @@
       <v-row no-gutters>
         <v-col align-self="center" cols="4">
           <v-card
+              v-if="availableIn > 0"
+              class="text-center"
+              color="errorLight"
+              flat rounded
+          >
+            <v-card-text style="font-size: 10px;  line-height: 1.6;">
+              <span>{{ bloodGroup | getBloodGroupString }}</span><br>
+              <span>{{ availableIn }} day</span><br>
+              <span>{{ donationCount }} donations</span>
+            </v-card-text>
+          </v-card>
+          <v-card
+              v-else
               class="text-center"
               color="successLight"
               flat rounded
           >
-            <v-card-text>
-              <span>B+</span><br>
-              <span>2 donations</span>
+            <v-card-text style="font-size: 10px; line-height: 1.6;">
+              <span>{{ bloodGroup | getBloodGroupString }}</span><br>
+              <span>Available</span><br>
+              <span>{{ donationCount }} donations</span>
             </v-card-text>
           </v-card>
+
         </v-col>
         <v-col
             cols="8"
@@ -23,7 +38,7 @@
             class="d-flex align-content-center"
         >
           <div style="font-size: small; width: 100%" class="text-wrap pa-2">
-            <b style="width: 100%">{{name}}</b>
+            <b style="width: 100%">{{name}} <v-icon v-if="markerName" small color="secondary">mdi-bookmark</v-icon></b>
             <br/>
             <b>Phone: </b>
             <span>{{phone}}</span>
@@ -38,7 +53,7 @@
       <v-card-text style="font-size: small">
         <div style="float: right;">
           <v-btn @click="callFromDialer" :disabled="newCallRecordLoader" :loading="newCallRecordLoader" depressed class="ma-1" x-small fab color="green" dark><v-icon>mdi-phone</v-icon></v-btn>
-          <v-btn :to="'/activeDonors/details?id='+id" depressed class="ma-1" x-small fab color="blue" dark><v-icon>mdi-account-details</v-icon></v-btn>
+          <v-btn style="text-decoration: none" :to="'/activeDonors/details?id='+id" depressed class="ma-1" x-small fab color="blue" dark><v-icon>mdi-account-details</v-icon></v-btn>
         </div>
         <span><b>Department: </b>{{department}}</span><br>
         <span><b>Address: </b>{{address}}</span><br>
@@ -65,6 +80,7 @@ export default {
   mounted() {
     let donor = this.$props.donor;
     this.id = donor._id;
+    this.bloodGroup = donor.bloodGroup;
     this.name = donor.name;
     this.hall = halls[donor.hall];
     this.phone = '+'+donor.phone;
@@ -76,6 +92,12 @@ export default {
     this.markedTime = donor.markedTime;
     this.lastCallRecord = donor.lastCallRecord;
     this.callRecordCount = donor.callRecordCount;
+    this.lastDonation = donor.lastDonation;
+    this.donationCount = donor.donationCount;
+
+
+
+    this.setAvailableIn(this.lastDonation);
 
   },
   methods:{
@@ -88,6 +110,14 @@ export default {
       this.lastCallRecord = new Date().getTime();
       this.callRecordCount++;
     },
+    setAvailableIn(donationDate) {
+      this.availableIn =
+          120 -
+          Math.round(
+              (Math.round(new Date().getTime()) - donationDate) /
+              (1000 * 3600 * 24)
+          );
+    },
   },
   data: () => {
     return {
@@ -98,14 +128,19 @@ export default {
       department:'',
       address:'',
       comment:'',
+      bloodGroup:-1,
       commentTime:'',
-      markerName:'',
+      markerName:null,
       markedTime:'',
       lastCallRecord:'',
+      lastDonation:0,
       callCount:0,
+      donationCount:0,
       callRecordCount:0,
       newCallRecordLoader: false,
       donorDetailsExpansion: false,
+
+      availableIn: 0,
     }
   }
 }
