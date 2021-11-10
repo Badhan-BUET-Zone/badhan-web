@@ -164,6 +164,10 @@ const actions = {
         let response = await handleGETDonorsMe();
         commit('signInLoaderFlagOff');
 
+        if(!response){
+            return false;
+        }
+
         if (response.status!==200) {
             if(response.status!==401)return false;
             commit('removeToken');

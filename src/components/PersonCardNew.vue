@@ -87,10 +87,10 @@ export default {
     this.department = departments[parseInt(donor.studentId.substr(2,2))];
     this.address = donor.address;
     this.comment = donor.comment;
-    this.commentTime = donor.commentTime;
+    this.commentTime = donor.commentTime===0?'Unknown':new Date(donor.commentTime).toLocaleString() ;
     this.markerName = donor.markerName;
-    this.markedTime = donor.markedTime;
-    this.lastCallRecord = donor.lastCallRecord;
+    this.markedTime = new Date(donor.markedTime).toLocaleString();
+    this.lastCallRecord = donor.lastCallRecord===0?'Unknown':new Date(donor.lastCallRecord).toLocaleString() ;
     this.callRecordCount = donor.callRecordCount;
     this.lastDonation = donor.lastDonation;
     this.donationCount = donor.donationCount;
@@ -107,7 +107,7 @@ export default {
       this.newCallRecordLoader = true;
       await this.postCallRecordFromCard({donorId: this.id});
       this.newCallRecordLoader = false;
-      this.lastCallRecord = new Date().getTime();
+      this.lastCallRecord = new Date().toLocaleString();
       this.callRecordCount++;
     },
     setAvailableIn(donationDate) {
