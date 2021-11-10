@@ -2,11 +2,13 @@
   <div>
     <PageTitle></PageTitle>
     <ContainerFlat>
+      <v-card-text>
       <v-bottom-sheet
           v-model="filterListMenu"
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+              color="secondary"
               rounded
               small
               v-bind="attrs"
@@ -26,7 +28,9 @@
           <Filters :search-clicked="searchClicked"></Filters>
         </v-sheet>
       </v-bottom-sheet>
+      <Button :icon="'mdi-refresh'" :text="'Reload'" :click="getAllActiveDonors" :color="'primary'"></Button>
       <v-checkbox @change="checkBoxChanged" v-model="markedByMe" label="Show donors marked by me"></v-checkbox>
+      </v-card-text>
     </ContainerFlat>
 
 
@@ -103,7 +107,8 @@ export default {
         this.$refs.noPostFoundHolder.removeChild(this.$refs.noPostFoundHolder.children[0]);
       }
     },
-    async searchActiveDonorsAndSet() {
+    async getAllActiveDonors() {
+      this.markedByMe=false;
       let payloadForGetActiveDonors = {
         bloodGroup: -1,
         hall: 5,
@@ -114,6 +119,7 @@ export default {
         isNotAvailable: true,
         availableToAll: true,
         markedByMe: false,
+        availableToAllOrHall: true,
       }
       this.lastSearched = payloadForGetActiveDonors;
       await this.search(payloadForGetActiveDonors);
@@ -150,6 +156,7 @@ export default {
         address: inputAddress,
         availableToAll: searchQueries.availableToAll === 'AvailableToAll',
         markedByMe: this.markedByMe,
+        availableToAllOrHall: false,
       }
       this.lastSearched = payloadForGetActiveDonors;
       this.filterListMenu = false;
@@ -171,7 +178,7 @@ export default {
 
   },
   mounted() {
-    this.searchActiveDonorsAndSet();
+    this.getAllActiveDonors();
   },
   data: () => {
     return {
