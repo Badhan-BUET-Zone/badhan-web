@@ -25,7 +25,9 @@
         >
           <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.filterListMenu = false}"
                   :color="'secondary'"></Button>
-          <Filters :search-clicked="searchClicked"></Filters>
+          <div style="height: 500px;overflow-y: scroll;">
+            <Filters :search-clicked="searchClicked"></Filters>
+          </div>
         </v-sheet>
       </v-bottom-sheet>
       <Button :icon="'mdi-refresh'" :text="'Reload'" :click="getAllActiveDonors" :color="'primary'"></Button>
