@@ -25,7 +25,7 @@
         >
           <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.filterListMenu = false}"
                   :color="'secondary'"></Button>
-          <div style="height: 500px;overflow-y: scroll;">
+          <div style="height: 75vh;overflow-y: scroll;">
             <Filters :search-clicked="searchClicked"></Filters>
           </div>
         </v-sheet>

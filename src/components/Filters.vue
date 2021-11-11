@@ -1,9 +1,5 @@
 <template>
   <v-card rounded>
-    <v-card-title>
-
-    </v-card-title>
-
     <!--    Main Filters-->
     <v-card-text>
       <v-form>
