@@ -10,7 +10,6 @@
       </v-btn>
     </ContainerFlat>
 
-
     <Container v-if="!isNative">
       <v-card-text>
         Select a JSON file
@@ -86,7 +85,6 @@
       </v-card-actions>
     </Container>
 
-
     <br>
     <div v-if="listOfDonors.length!==0">
       <span class="ma-5 h5">Donor Information</span>
@@ -143,26 +141,25 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import {maxLength, minLength, required} from 'vuelidate/lib/validators'
-import {mapActions, mapGetters} from "vuex";
-import {isNative} from '../plugins/android_support';
-import HelpTooltip from "../components/UI Components/HelpTooltip";
+import PageTitle from '../components/PageTitle'
+import { required } from 'vuelidate/lib/validators'
+import { mapActions, mapGetters } from 'vuex'
+import { isNative } from '../plugins/android_support'
+import HelpTooltip from '../components/UI Components/HelpTooltip'
 
-
-import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
-import {isGuestEnabled} from "../api";
-import Container from "../components/Wrappers/Container";
-import ContainerFlat from "../components/Wrappers/ContainerFlat";
+import NewPersonCard from '../components/BatchInsertion/NewPersonCard'
+import { isGuestEnabled } from '../api'
+import Container from '../components/Wrappers/Container'
+import ContainerFlat from '../components/Wrappers/ContainerFlat'
 
 export default {
-  name: "BatchInsertion",
+  name: 'BatchInsertion',
   data: () => {
     return {
       jsonFile: null,
       invalidJSONError: null,
       listOfDonors: [],
-      donorPage: 1,
+      donorPage: 1
     }
   },
 
@@ -173,70 +170,69 @@ export default {
   },
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
-    isGuestEnabled() {
-      return isGuestEnabled();
+    isGuestEnabled () {
+      return isGuestEnabled()
     },
-    jsonFileErrors() {
+    jsonFileErrors () {
       const errors = []
       if (!this.$v.jsonFile.$dirty) return errors
       !this.$v.jsonFile.required && errors.push('JSON file is required.')
       return errors
     },
-    isNative() {
-      return isNative();
+    isNative () {
+      return isNative()
     }
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions(['requestRedirectionToken']),
-    async fileUploadClicked() {
-      await this.$v.$touch();
+    async fileUploadClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
-      const reader = new FileReader();
-      reader.readAsText(this.jsonFile);
-      this.donorPage = 1;
+      const reader = new FileReader()
+      reader.readAsText(this.jsonFile)
+      this.donorPage = 1
       reader.onload = evt => {
         try {
-          this.listOfDonors = JSON.parse(evt.target.result);
+          this.listOfDonors = JSON.parse(evt.target.result)
 
           for (let i = 0; i < this.listOfDonors.length; i++) {
-            this.listOfDonors[i].key = i;
+            this.listOfDonors[i].key = i
           }
         } catch (e) {
-          this.invalidJSONError = e;
+          this.invalidJSONError = e
         }
       }
     },
-    discardDonor(key) {
-      this.listOfDonors = this.listOfDonors.filter((donor) => donor.key !== key);
+    discardDonor (key) {
+      this.listOfDonors = this.listOfDonors.filter((donor) => donor.key !== key)
 
       if ((this.donorPage - 1) * 4 === this.listOfDonors.length) {
-        this.donorPage--;
+        this.donorPage--
       }
     },
-    resetClicked() {
-      this.$v.$reset();
-      this.jsonFile = null;
-      this.resetForms();
-      this.invalidJSONError = null;
+    resetClicked () {
+      this.$v.$reset()
+      this.jsonFile = null
+      this.resetForms()
+      this.invalidJSONError = null
     },
-    resetForms() {
-      this.listOfDonors = [];
+    resetForms () {
+      this.listOfDonors = []
     },
-    async redirectFileUpload() {
-      let redirectionToken = await this.requestRedirectionToken();
-      let routeData;
-      routeData = this.$router.resolve({
+    async redirectFileUpload () {
+      const redirectionToken = await this.requestRedirectionToken()
+      const routeData = this.$router.resolve({
         name: 'Redirection',
-        query: {token: redirectionToken, payload: this.$route.fullPath}
-      });
-      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
+        query: { token: redirectionToken, payload: this.$route.fullPath }
+      })
+      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
     }
   },
-  mounted() {
-    this.resetForms();
+  mounted () {
+    this.resetForms()
   },
   components: {
     ContainerFlat,

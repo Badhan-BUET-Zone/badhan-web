@@ -25,56 +25,56 @@
 </template>
 
 <script>
-import Container from "../components/Wrappers/Container";
-import PageTitle from "../components/PageTitle";
-import {handlePATCHUsersPassword} from "../api";
-import {required, minLength, sameAs} from 'vuelidate/lib/validators'
-import {mapActions, mapMutations} from "vuex";
+import Container from '../components/Wrappers/Container'
+import PageTitle from '../components/PageTitle'
+import { handlePATCHUsersPassword } from '../api'
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
-  name: "PasswordReset",
+  name: 'PasswordReset',
   validations: {
     newPassword: {
       required,
-      minLength: minLength(6),
+      minLength: minLength(6)
     },
     confirmPassword: {
       sameAs: sameAs('newPassword')
     }
   },
-  computed:{
-    newPasswordErrors() {
+  computed: {
+    newPasswordErrors () {
       const errors = []
       if (!this.$v.newPassword.$dirty) return errors
       !this.$v.newPassword.required && errors.push('Specify a password')
       !this.$v.newPassword.minLength && errors.push('Password must be at least 6 characters long')
       return errors
     },
-    confirmPasswordErrors() {
+    confirmPasswordErrors () {
       const errors = []
       if (!this.$v.confirmPassword.$dirty) return errors
       !this.$v.confirmPassword.sameAs && errors.push('Password does not match')
       return errors
-    },
+    }
   },
   components: {
     PageTitle,
     Container
   },
-  async mounted() {
-    this.setToken(this.$route.query.token);
-    this.tokenCheckLoader = true;
-    let donor = await this.checkToken();
-    if(donor) {
-      this.name = donor.name;
-      this.designation = donor.designation;
-    }else{
-      await this.$router.push('/');
+  async mounted () {
+    this.setToken(this.$route.query.token)
+    this.tokenCheckLoader = true
+    const donor = await this.checkToken()
+    if (donor) {
+      this.name = donor.name
+      this.designation = donor.designation
+    } else {
+      await this.$router.push('/')
     }
-    this.tokenCheckLoader = false;
+    this.tokenCheckLoader = false
   },
-  data:()=>{
-    return{
+  data: () => {
+    return {
       newPassword: null,
       confirmPassword: null,
       passwordChangeFlag: false,
@@ -83,33 +83,32 @@ export default {
 
       tokenCheckLoader: false,
       designation: 0,
-      name: "",
+      name: ''
     }
   },
 
-  methods:{
+  methods: {
     ...mapMutations(['setToken']),
     ...mapActions(['checkToken']),
-    async changePasswordClicked(){
-      await this.$v.$touch();
+    async changePasswordClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
 
-      this.$store.commit('setToken',this.$route.query.token);
-      this.passwordChangeFlag = true;
-      let result = await handlePATCHUsersPassword({password:this.newPassword});
-      this.passwordChangeFlag = false;
-      if(!result) {
-        this.$store.commit('removeToken');
-        return;
+      this.$store.commit('setToken', this.$route.query.token)
+      this.passwordChangeFlag = true
+      const result = await handlePATCHUsersPassword({ password: this.newPassword })
+      this.passwordChangeFlag = false
+      if (!result) {
+        this.$store.commit('removeToken')
+        return
       }
-      this.$store.commit('setToken',result.token);
+      this.$store.commit('setToken', result.token)
       this.$store.commit('saveTokenToLocalStorage')
-      if(await this.$store.dispatch('autoLogin')){
-        await this.$router.push({name:'Home'});
+      if (await this.$store.dispatch('autoLogin')) {
+        await this.$router.push({ name: 'Home' })
       }
-
     }
   }
 }

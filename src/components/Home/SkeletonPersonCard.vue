@@ -38,7 +38,7 @@
 
 <script>
 export default {
-name: "SkeletonPersonCard"
+  name: 'SkeletonPersonCard'
 }
 </script>
 

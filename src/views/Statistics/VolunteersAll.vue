@@ -23,36 +23,35 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import Container from "../../components/Wrappers/Container";
-import {halls} from "../../mixins/constants";
+import { mapActions, mapGetters } from 'vuex'
+import Container from '../../components/Wrappers/Container'
 
 export default {
-  name: "VolunteersAll",
+  name: 'VolunteersAll',
   components: {
     Container
   },
-  data() {
+  data () {
     return {
       volunteerListHeaders: [
-        {text: 'Name', value: 'name'},
-        {text: 'Hall', value: 'hall'},
-        {text: 'Student ID', value: 'studentId'},
-        {text: 'Activity Count', value: 'logCount'}
+        { text: 'Name', value: 'name' },
+        { text: 'Hall', value: 'hall' },
+        { text: 'Student ID', value: 'studentId' },
+        { text: 'Activity Count', value: 'logCount' }
       ],
-      volunteersShown: false,
+      volunteersShown: false
     }
   },
   computed: {
-    ...mapGetters('statistics', ['getVolunteers', 'getVolunteerLoaderFlag']),
+    ...mapGetters('statistics', ['getVolunteers', 'getVolunteerLoaderFlag'])
 
   },
   methods: {
-    ...mapActions('statistics', ['fetchAllVolunteers']),
+    ...mapActions('statistics', ['fetchAllVolunteers'])
   },
-  async mounted() {
-    await this.fetchAllVolunteers();
-    this.volunteersShown = true;
+  async mounted () {
+    await this.fetchAllVolunteers()
+    this.volunteersShown = true
   }
 }
 </script>

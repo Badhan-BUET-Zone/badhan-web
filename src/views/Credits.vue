@@ -66,34 +66,34 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import {mapGetters, mapActions} from "vuex";
-import Container from "../components/Wrappers/Container";
-import PersonCredit from "../components/Credits/PersonCredit";
-import SkeletonPersonCredit from "../components/Credits/SkeletonPersonCredit";
+import PageTitle from '../components/PageTitle'
+import { mapGetters, mapActions } from 'vuex'
+import Container from '../components/Wrappers/Container'
+import PersonCredit from '../components/Credits/PersonCredit'
+import SkeletonPersonCredit from '../components/Credits/SkeletonPersonCredit'
 
 export default {
-  name: "Credits",
-  components: {SkeletonPersonCredit, PersonCredit, Container, PageTitle},
+  name: 'Credits',
+  components: { SkeletonPersonCredit, PersonCredit, Container, PageTitle },
   computed: {
-    ...mapGetters('statistics', ['getCredits', 'getCreditsLoaderFlag']),
+    ...mapGetters('statistics', ['getCredits', 'getCreditsLoaderFlag'])
   },
-  data() {
+  data () {
     return {
 
     }
   },
   methods: {
     ...mapActions('statistics', ['fetchCredits']),
-    goTo(url) {
-      window.open(url, '_blank');
+    goTo (url) {
+      window.open(url, '_blank')
     }
   },
-  mounted() {
-    this.$vuetify.goTo(0);
-    this.fetchCredits();
+  mounted () {
+    this.$vuetify.goTo(0)
+    this.fetchCredits()
   }
-};
+}
 </script>
 
 <style scoped>

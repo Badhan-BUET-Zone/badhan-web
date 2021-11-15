@@ -29,96 +29,93 @@
 </template>
 
 <script>
-import AppBar from "./components/AppBar";
+import AppBar from './components/AppBar'
 
-import PageTitle from "./components/PageTitle";
+import Notification from './components/Notification'
+import { mapActions, mapGetters } from 'vuex'
+import SignInDialog from './components/SignInDialog'
 
-import Notification from "./components/Notification";
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import SignInDialog from "./components/SignInDialog";
-
-import {getDeviceInfo, isNative, exitApp} from './plugins/android_support';
-import Dialog from "./components/Dialog";
-import MessageBox from "./components/MessageBox";
+import { getDeviceInfo, isNative, exitApp } from './plugins/android_support'
+import Dialog from './components/Dialog'
+import MessageBox from './components/MessageBox'
 
 export default {
   name: 'app',
-  data() {
+  data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       waitingForExitConfirmation: false,
 
       exitPromptFlag: false,
       updatePromptFlag: false,
-      updatedVersion: "",
+      updatedVersion: ''
     }
   },
   components: {
     MessageBox,
     Dialog,
-    PageTitle,
     'app-bar': AppBar,
     Notification,
     SignInDialog
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn']),
-    ...mapGetters('frontendSettings',['getSettings']),
+    ...mapGetters('frontendSettings', ['getSettings'])
   },
   methods: {
     ...mapActions('release', ['fetchtAppDetails']),
-    ...mapActions('frontendSettings',['fetchSettings']),
+    ...mapActions('frontendSettings', ['fetchSettings']),
 
-    exitAppPrompt(){
-      this.exitPromptFlag  = true;
+    exitAppPrompt () {
+      this.exitPromptFlag = true
     },
-    exitAppConfirmed(){
-      this.exitPromptFlag = false;
-      exitApp();
+    exitAppConfirmed () {
+      this.exitPromptFlag = false
+      exitApp()
     },
-    exitAppCanceled(){
-      this.exitPromptFlag = false;
+    exitAppCanceled () {
+      this.exitPromptFlag = false
     },
-    updatePrompt(){
-      this.updatePromptFlag = true;
+    updatePrompt () {
+      this.updatePromptFlag = true
     },
-    updateConfirmed(){
-      this.updatePromptFlag = false;
-      window.open("https://play.google.com/store/apps/details?id=com.mmmbadhan");
+    updateConfirmed () {
+      this.updatePromptFlag = false
+      window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
     },
-    updateCanceled(){
-      this.updatePromptFlag = false;
+    updateCanceled () {
+      this.updatePromptFlag = false
     },
 
-    androidBackButtonHandler() {
-      if (this.$route.path === "/home" || this.$route.path === '/') {
-        this.exitAppPrompt();
+    androidBackButtonHandler () {
+      if (this.$route.path === '/home' || this.$route.path === '/') {
+        this.exitAppPrompt()
       } else {
-        this.$router.go(-1);
+        this.$router.go(-1)
       }
     },
-    async versionCheck() {
-      await this.fetchSettings();
-      let googlePlayAppVersion = this.getSettings.version;
+    async versionCheck () {
+      await this.fetchSettings()
+      const googlePlayAppVersion = this.getSettings.version
 
-      const info = await getDeviceInfo();
+      const info = await getDeviceInfo()
       // const deployedAppInfo = await this.fetchtAppDetails();
 
-      if (isNative() && googlePlayAppVersion != info.appVersion) {
-        this.updatedVersion = googlePlayAppVersion;
-        this.updatePrompt();
+      if (isNative() && googlePlayAppVersion !== info.appVersion) {
+        this.updatedVersion = googlePlayAppVersion
+        this.updatePrompt()
       }
-    },
+    }
   },
 
-  async mounted() {
-    document.addEventListener("backbutton", this.androidBackButtonHandler, false);
-    this.versionCheck();
+  async mounted () {
+    document.addEventListener('backbutton', this.androidBackButtonHandler, false)
+    this.versionCheck()
   },
 
-  beforeDestroy() {
-    document.removeEventListener("backbutton", this.androidBackButtonHandler);
-  },
+  beforeDestroy () {
+    document.removeEventListener('backbutton', this.androidBackButtonHandler)
+  }
 }
 </script>
 
@@ -192,6 +189,5 @@ export default {
   transform: translateY(-40px);
   opacity: 0;
 }
-
 
 </style>

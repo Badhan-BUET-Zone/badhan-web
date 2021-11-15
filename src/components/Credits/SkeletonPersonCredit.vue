@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import Container from "../Wrappers/Container";
+import Container from '../Wrappers/Container'
 export default {
-name: "SkeletonPersonCredit",
-  components: {Container}
+  name: 'SkeletonPersonCredit',
+  components: { Container }
 }
 </script>
 

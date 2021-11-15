@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "SkeletonDateLog"
+  name: 'SkeletonDateLog'
 }
 </script>
 

@@ -1,14 +1,14 @@
-import {setWithExpiry,getWithExpiry} from './helpers';
-const save=(members)=>{
-    setWithExpiry('publicContacts',members,60*1000);
+import { setWithExpiry, getWithExpiry } from './helpers'
+const save = (members) => {
+  setWithExpiry('publicContacts', members, 60 * 1000)
 }
-const load=()=>{
-    return getWithExpiry('publicContacts');
+const load = () => {
+  return getWithExpiry('publicContacts')
 }
-const clear=()=>{
-    localStorage.removeItem('publicContacts');
+const clear = () => {
+  localStorage.removeItem('publicContacts')
 }
 
 export default {
-    save,load,clear,
+  save, load, clear
 }

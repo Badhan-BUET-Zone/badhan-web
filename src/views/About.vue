@@ -24,40 +24,39 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import VueMarkdown from 'vue-markdown';
-import readme from '../../README.md';
-import Container from "../components/Wrappers/Container";
-import {mapGetters} from "vuex";
-import {getNativeAppVersion, isNative} from "../plugins/android_support";
+import PageTitle from '../components/PageTitle'
+import VueMarkdown from 'vue-markdown'
+import readme from '../../README.md'
+import Container from '../components/Wrappers/Container'
+import { mapGetters } from 'vuex'
+import { getNativeAppVersion, isNative } from '../plugins/android_support'
 
 export default {
-  name: "About",
+  name: 'About',
   computed: {
     ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
-    ...mapGetters('frontendSettings',['getSettings']),
-    getBuildTime(){
-      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString();
+    ...mapGetters('frontendSettings', ['getSettings']),
+    getBuildTime () {
+      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
-    isMobile() {
-      return isNative();
+    isMobile () {
+      return isNative()
     },
-    getGooglePlayAppVersion(){
-      return this.getSettings.version;
+    getGooglePlayAppVersion () {
+      return this.getSettings.version
     }
 
   },
-  components: {Container, PageTitle, VueMarkdown},
-  data() {
+  components: { Container, PageTitle, VueMarkdown },
+  data () {
     return {
       text: readme,
-      nativeAppVersion: "Web",
+      nativeAppVersion: 'Web'
     }
-
   },
-  async mounted() {
-    if(isNative()){
-      this.nativeAppVersion = await getNativeAppVersion();
+  async mounted () {
+    if (isNative()) {
+      this.nativeAppVersion = await getNativeAppVersion()
     }
   }
 }

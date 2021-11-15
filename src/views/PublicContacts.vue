@@ -63,37 +63,37 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import Container from "../components/Wrappers/Container";
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import ContainerOutlined from "../components/Wrappers/ContainerOutlined";
-import ContainerFlat from "../components/Wrappers/ContainerFlat";
-import Button from "../components/UI Components/Button";
-import {directCall} from "../mixins/helpers";
+import PageTitle from '../components/PageTitle'
+import Container from '../components/Wrappers/Container'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import ContainerOutlined from '../components/Wrappers/ContainerOutlined'
+import ContainerFlat from '../components/Wrappers/ContainerFlat'
+import Button from '../components/UI Components/Button'
+import { directCall } from '../mixins/helpers'
 
 export default {
-  name: "PublicContacts",
-  components: {Button, ContainerFlat, ContainerOutlined, Container, PageTitle},
+  name: 'PublicContacts',
+  components: { Button, ContainerFlat, ContainerOutlined, Container, PageTitle },
   computed: {
     ...mapGetters('publicContacts', ['getPublicContacts', 'getPublicContactsLoaderFlag'])
   },
   methods: {
     ...mapActions('publicContacts', ['fetchPublicContacts']),
-    ...mapMutations('messageBox',['setMessage']),
-    directCallClicked(phone) {
+    ...mapMutations('messageBox', ['setMessage']),
+    directCallClicked (phone) {
       directCall(phone)
     },
-    shareClicked(){
-      let linkText = "জরুরি রক্ত ডোনেশন পেতে নিচের লিংকে ক্লিক করে বাঁধন বুয়েট জোনের সদস্যদের সাথে যোগাযোগ করুন।\n" +
-          "https://badhan-buet.web.app/#/contacts"
+    shareClicked () {
+      const linkText = 'জরুরি রক্ত ডোনেশন পেতে নিচের লিংকে ক্লিক করে বাঁধন বুয়েট জোনের সদস্যদের সাথে যোগাযোগ করুন।\n' +
+          'https://badhan-buet.web.app/#/contacts'
       this.$copyText(linkText).then((e) => {
         this.setMessage('লিংক কপি হয়েছে। প্রয়োজনমতো জায়গায় শেয়ার করুন।')
       }, (e) => {
       })
     }
   },
-  async mounted() {
-    await this.fetchPublicContacts();
+  async mounted () {
+    await this.fetchPublicContacts()
   }
 }
 </script>

@@ -1,27 +1,26 @@
 const state = {
-    consoleLogs:[],
-};
+  consoleLogs: []
+}
 
 const getters = {
-    getConsoleLogs(state){
-        return state.consoleLogs
-    },
-};
+  getConsoleLogs (state) {
+    return state.consoleLogs
+  }
+}
 const mutations = {
-    addConsoleLog(state, consoleLog){
-        state.consoleLogs.unshift(consoleLog);
-    },
-};
+  addConsoleLog (state, consoleLog) {
+    state.consoleLogs.unshift(consoleLog)
+  }
+}
 const actions = {
 
-};
-
+}
 
 export default {
-    state,
-    actions,
-    getters,
-    mutations,
-    namespaced: true,
+  state,
+  actions,
+  getters,
+  mutations,
+  namespaced: true
 
 }

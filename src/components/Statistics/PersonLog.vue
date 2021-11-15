@@ -9,7 +9,7 @@
     </v-btn>
     <v-skeleton-loader type="text@3" v-if="personLogLoading"></v-skeleton-loader>
 
-    <div v-for="(personLog,i) in personLogs">
+    <div v-for="(personLog,i) in personLogs" :key="i">
       {{ i + 1 }}) Time:
       {{ new Date(personLog.date).toDateString() + ' ' + new Date(personLog.date).toLocaleTimeString() }} <br>
       Operation: {{ personLog.operation }} <br>
@@ -21,32 +21,32 @@
 </template>
 
 <script>
-import {handleGETLogsByDateAndDonor} from "../../api";
-import LogObject from "./LogObject";
+import { handleGETLogsByDateAndDonor } from '../../api'
+import LogObject from './LogObject'
 
 export default {
-  name: "PersonLog",
-  props: ["dateLog", "dateString"],
+  name: 'PersonLog',
+  props: ['dateLog', 'dateString'],
   components: {
     LogObject
   },
   data: function () {
     return {
       personLogs: [],
-      personLogLoading: false,
+      personLogLoading: false
     }
   },
   methods: {
-    async getPersonActivities() {
-      let splitDate = this.dateString.split('-');
+    async getPersonActivities () {
+      const splitDate = this.dateString.split('-')
 
-      let timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime();
-      this.personLogLoading = true;
-      let response = await handleGETLogsByDateAndDonor({timeStamp, donorId: this.dateLog.donorId});
-      this.personLogLoading = false;
-      if (response.status !== 200) return;
-      this.personLogs = response.data.logs;
-      console.log(response.data);
+      const timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime()
+      this.personLogLoading = true
+      const response = await handleGETLogsByDateAndDonor({ timeStamp, donorId: this.dateLog.donorId })
+      this.personLogLoading = false
+      if (response.status !== 200) return
+      this.personLogs = response.data.logs
+      console.log(response.data)
     }
   }
 }

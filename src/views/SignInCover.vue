@@ -100,7 +100,6 @@
 
                 </v-col>
 
-
                 <br>
                 <v-btn
                     x-small
@@ -179,21 +178,19 @@
 </template>
 
 <script>
-import SignInDialog from "../components/SignInDialog";
-
-import {getDeviceInfo, isNative} from '../plugins/android_support';
-import {mapActions, mapGetters, mapMutations} from 'vuex';
-import {required, minLength, maxLength} from 'vuelidate/lib/validators'
+import { getDeviceInfo, isNative } from '../plugins/android_support'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
-  name: "SignInCover",
-  data() {
+  name: 'SignInCover',
+  data () {
     return {
       detailsFlag: false,
-      phone: "",
-      password: "",
+      phone: '',
+      password: '',
       passwordFlag: false,
-      version: ""
+      version: ''
     }
   },
   validations: {
@@ -204,20 +201,20 @@ export default {
     },
     password: {
       required,
-      minLength: minLength(4),
+      minLength: minLength(4)
     }
   },
   watch: {},
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getAutoRedirectionPath']),
-    getBuildTime(){
-      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString();
+    getBuildTime () {
+      return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
-    isMobile() {
-      return isNative();
+    isMobile () {
+      return isNative()
     },
 
-    phoneErrors() {
+    phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
       !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
@@ -225,10 +222,10 @@ export default {
       !this.$v.phone.required && errors.push('Phone is required.')
       return errors
     },
-    passwordErrors() {
+    passwordErrors () {
       const errors = []
       if (!this.$v.password.$dirty) return errors
-      !this.$v.password.required && errors.push('Password is required.')//minLength
+      !this.$v.password.required && errors.push('Password is required.')// minLength
       !this.$v.password.minLength && errors.push('Password is must be more than 3 characters')
       return errors
     }
@@ -238,48 +235,48 @@ export default {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['login', 'guestLogin']),
     ...mapMutations(['clearSignInError', 'setAutoRedirectionPath', 'unsetAutoRedirectionPath']),
-    async signInClicked() {
-      await this.$v.$touch();
+    async signInClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
 
-      let isSignInOk = await this.login({
+      const isSignInOk = await this.login({
         phone: this.phone,
         password: this.password,
-        rememberFlag: true,
-      });
+        rememberFlag: true
+      })
 
       if (isSignInOk) {
         if (this.getAutoRedirectionPath) {
-          await this.$router.push(this.getAutoRedirectionPath);
-          this.unsetAutoRedirectionPath();
-          return;
+          await this.$router.push(this.getAutoRedirectionPath)
+          this.unsetAutoRedirectionPath()
+          return
         }
-        await this.$router.push("/home");
+        await this.$router.push('/home')
       }
     },
 
-    async guestSignInClicked() {
-      await this.guestLogin();
-      await this.$router.push("/home");
+    async guestSignInClicked () {
+      await this.guestLogin()
+      await this.$router.push('/home')
     },
 
-    clearClicked() {
+    clearClicked () {
       this.$v.$reset()
-      this.phone = "";
-      this.password = "";
-      this.clearSignInError();
-    },
+      this.phone = ''
+      this.password = ''
+      this.clearSignInError()
+    }
   },
-  async mounted() {
-    const info = await getDeviceInfo();
-    this.version = info.appVersion;
+  async mounted () {
+    const info = await getDeviceInfo()
+    this.version = info.appVersion
   },
 
   components: {
-    SignInDialog,
-  },
+
+  }
 }
 </script>
 

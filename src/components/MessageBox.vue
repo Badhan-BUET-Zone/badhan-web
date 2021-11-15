@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex';
+import { mapGetters, mapMutations } from 'vuex'
 export default {
-  name: "MessageBox",
+  name: 'MessageBox',
   props: {
     // message: {
     //   type:String,
@@ -43,27 +43,27 @@ export default {
     // },
 
   },
-  data() {
+  data () {
     return {
     }
   },
   computed: {
-    ...mapGetters('messageBox',['getNotificationFlag','getMessage']),
+    ...mapGetters('messageBox', ['getNotificationFlag', 'getMessage']),
     dialogOpened: {
       // getter
-      get() {
-        return this.getNotificationFlag;
+      get () {
+        return this.getNotificationFlag
       },
       // setter
-      set(newValue) {
-        this.setMessageFlag(newValue);
-      },
+      set (newValue) {
+        this.setMessageFlag(newValue)
+      }
     }
   },
-  methods:{
-    ...mapMutations('messageBox',['setMessage','setMessageFlag']),
-    confirmed(){
-      this.setMessageFlag(false);
+  methods: {
+    ...mapMutations('messageBox', ['setMessage', 'setMessageFlag']),
+    confirmed () {
+      this.setMessageFlag(false)
     }
   }
 }

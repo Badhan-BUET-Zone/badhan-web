@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "PageTitle",
-  props: ["title"],
+  name: 'PageTitle',
+  props: ['title'],
   computed: {
-    ...mapGetters(['getIsLoggedIn']),
+    ...mapGetters(['getIsLoggedIn'])
   }
 }
 </script>

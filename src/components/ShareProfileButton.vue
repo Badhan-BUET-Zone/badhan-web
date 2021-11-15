@@ -3,7 +3,7 @@
       v-model="showTooltip"
       bottom
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template>
       <v-btn rounded class="ml-3" text x-small @click="shareClicked">
         <v-icon left>
           mdi-share
@@ -17,30 +17,30 @@
 
 <script>
 export default {
-  props:["id"],
-  name: "ShareProfileButton",
+  props: ['id'],
+  name: 'ShareProfileButton',
   data: () => {
     return {
-      showTooltip: false,
+      showTooltip: false
     }
   },
-  methods:{
-    shareClicked() {
-      let routeData = this.$router.resolve({
+  methods: {
+    shareClicked () {
+      const routeData = this.$router.resolve({
         name: 'Details',
         query: {
-          id: this.id,
+          id: this.id
         }
-      });
+      })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
       this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
-        this.showTooltip = true;
+        this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
-        }, 2000);
+        }, 2000)
       }, (e) => {
       })
-    },
+    }
   }
 }
 </script>

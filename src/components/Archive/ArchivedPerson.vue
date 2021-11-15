@@ -42,22 +42,22 @@
 </template>
 
 <script>
-import {bloodGroups, departments} from "../../mixins/constants";
+import { departments } from '../../mixins/constants'
 
 export default {
-    name: "ArchivedPerson",
-    props: [
-        "phone",
-        "name",
-        "bloodGroup",
-        "studentID",
-        "id"
-    ],
-    filters: {
-        idToDept(studentID) {
-            return departments[Number(studentID.toString().substr(2, 2))];
-        },
-    },
+  name: 'ArchivedPerson',
+  props: [
+    'phone',
+    'name',
+    'bloodGroup',
+    'studentID',
+    'id'
+  ],
+  filters: {
+    idToDept (studentID) {
+      return departments[Number(studentID.toString().substr(2, 2))]
+    }
+  }
 }
 </script>
 

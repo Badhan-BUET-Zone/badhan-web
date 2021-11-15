@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-import {designations} from "../../mixins/constants";
-import Dialog from "../Dialog";
+import { mapActions } from 'vuex'
+import { designations } from '../../mixins/constants'
+import Dialog from '../Dialog'
 
 export default {
-  name: "CallRecordCard",
-  props: ["callRecord","deleted"],
+  name: 'CallRecordCard',
+  props: ['callRecord', 'deleted'],
   data: () => {
     return {
       deleteLoaderFlag: false,
@@ -41,9 +41,9 @@ export default {
       date: 0,
       month: 0,
       year: 0,
-      time: "0",
-      dateString: "0",
-      deletePromptFlag: false,
+      time: '0',
+      dateString: '0',
+      deletePromptFlag: false
     }
   },
   components: {
@@ -51,24 +51,24 @@ export default {
   },
   methods: {
     ...mapActions('callrecord', ['deleteCallRecord']),
-    async deletePrompt(){
-      this.deletePromptFlag = true;
+    async deletePrompt () {
+      this.deletePromptFlag = true
     },
-    async deletionCanceled(){
-      this.deletePromptFlag = false;
+    async deletionCanceled () {
+      this.deletePromptFlag = false
     },
-    async deletionConfirmed(){
-      this.deletePromptFlag = false;
-      this.deleteLoaderFlag = true;
-      await this.deleteCallRecord({donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id});
-      this.deleteLoaderFlag = false;
-      this.deleted(this.callRecord._id);
-    },
+    async deletionConfirmed () {
+      this.deletePromptFlag = false
+      this.deleteLoaderFlag = true
+      await this.deleteCallRecord({ donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id })
+      this.deleteLoaderFlag = false
+      this.deleted(this.callRecord._id)
+    }
   },
-  mounted() {
-    let dateObject = new Date(this.callRecord.date);
-    this.dateString = dateObject.toDateString();
-    this.time = dateObject.toLocaleTimeString();
+  mounted () {
+    const dateObject = new Date(this.callRecord.date)
+    this.dateString = dateObject.toDateString()
+    this.time = dateObject.toLocaleTimeString()
   }
 }
 </script>

@@ -11,7 +11,7 @@
         Details
       </v-btn>
       <v-skeleton-loader type="text@3" v-if="dateLogsLoading"></v-skeleton-loader>
-      <div v-for="dateLog in dateLogs">
+      <div v-for="(dateLog,index) in dateLogs" :key="index">
         <PersonLog :date-log="dateLog" :date-string="logCount.dateString"></PersonLog>
       </div>
     </v-card-text>
@@ -19,32 +19,31 @@
 </template>
 
 <script>
-import {handleGETLogsByDate} from "../../api";
-import PersonLog from "./PersonLog";
+import { handleGETLogsByDate } from '../../api'
+import PersonLog from './PersonLog'
 
 export default {
-  props: ["logCount"],
-  name: "DateLog",
+  props: ['logCount'],
+  name: 'DateLog',
 
   data: function () {
     return {
       dateLogs: [],
-      dateLogsLoading: false,
+      dateLogsLoading: false
     }
   },
   components: {
     PersonLog
   },
   methods: {
-    async detailsClick() {
-      let splitDate = this.logCount.dateString.split('-');
-      let timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime();
-      this.dateLogsLoading = true;
-      let logs = await handleGETLogsByDate({timeStamp});
-      this.dateLogsLoading = false;
-      if (!logs) return;
-      this.dateLogs = logs;
-
+    async detailsClick () {
+      const splitDate = this.logCount.dateString.split('-')
+      const timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime()
+      this.dateLogsLoading = true
+      const logs = await handleGETLogsByDate({ timeStamp })
+      this.dateLogsLoading = false
+      if (!logs) return
+      this.dateLogs = logs
     }
   }
 }

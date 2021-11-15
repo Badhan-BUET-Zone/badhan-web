@@ -6,7 +6,7 @@
 
 <script>
 export default {
-name: "ContainerFlat"
+  name: 'ContainerFlat'
 }
 </script>
 

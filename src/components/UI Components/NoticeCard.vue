@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import Container from "../Wrappers/Container";
+import Container from '../Wrappers/Container'
 export default {
-  name: "NoticeCard",
-  components: {Container}
+  name: 'NoticeCard',
+  components: { Container }
 }
 </script>
 

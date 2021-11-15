@@ -135,20 +135,18 @@
 </template>
 
 <script>
-import {halls, bloodGroups, departments} from "../../mixins/constants";
-import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
-import {mapActions, mapGetters} from "vuex";
-import {isNative} from '../../plugins/android_support';
-import HelpTooltip from "../UI Components/HelpTooltip";
-import {handleGETDonorsDuplicate} from "../../api";
-import Container from "../Wrappers/Container";
+import { halls, bloodGroups, departments } from '../../mixins/constants'
+import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
+import { mapActions, mapGetters } from 'vuex'
+import { isNative } from '../../plugins/android_support'
+import { handleGETDonorsDuplicate } from '../../api'
+import Container from '../Wrappers/Container'
 
 export default {
-  name: "NewPersonCard",
+  name: 'NewPersonCard',
   props: ['donor', 'discardDonor'],
   components: {
-    Container,
-    HelpTooltip
+    Container
   },
   validations: () => {
     return {
@@ -157,20 +155,20 @@ export default {
         minLength: minLength(11),
         maxLength: maxLength(11),
         numeric,
-        async uniqueCheck(phone) {
-          if (!phone || phone.length !== 11 || isNaN(parseInt(phone))) return true;
+        async uniqueCheck (phone) {
+          if (!phone || phone.length !== 11 || isNaN(parseInt(phone))) return true
 
-          this.duplicateDonorId = null;
-          this.duplicateDonorMessage = "Checking phone...";
-          this.phoneDuplicateCheckLoader = true;
-          let data = await handleGETDonorsDuplicate({phone: '88' + phone});
-          this.phoneDuplicateCheckLoader = false;
+          this.duplicateDonorId = null
+          this.duplicateDonorMessage = 'Checking phone...'
+          this.phoneDuplicateCheckLoader = true
+          const data = await handleGETDonorsDuplicate({ phone: '88' + phone })
+          this.phoneDuplicateCheckLoader = false
 
-          if (!data)return false;
+          if (!data) return false
 
-          this.duplicateDonorId = data.donor ? data.donor._id : null;
-          this.duplicateDonorMessage = data.message;
-          return !data.found;
+          this.duplicateDonorId = data.donor ? data.donor._id : null
+          this.duplicateDonorMessage = data.message
+          return !data.found
         }
       },
       name: {
@@ -184,39 +182,38 @@ export default {
         maxLength: maxLength(7),
         numeric,
         required,
-        departmentCheck(studentId) {
-          let indexOfDepartment = parseInt(String(studentId).substr(2, 2));
+        departmentCheck (studentId) {
+          const indexOfDepartment = parseInt(String(studentId).substr(2, 2))
           if (indexOfDepartment > 18) {
-            return false;
+            return false
           }
           // if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
           //   return false;
           // }
-          return true;
+          return true
         }
       },
       hall: {
         required,
-        permission(hall) {
-          //COVID DATABASE
-          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3);
+        permission (hall) {
+          // COVID DATABASE
+          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3)
         }
       },
       donationCount: {
         maxLength: maxLength(2),
         numeric,
         required,
-        lastDonationCheck(value) {
-          return !(this.lastDonation === null && parseInt(value) !== 0);
+        lastDonationCheck (value) {
+          return !(this.lastDonation === null && parseInt(value) !== 0)
         },
-        lastDonationCheck2(value) {
-          return !(this.lastDonation !== null && parseInt(value) === 0);
-
+        lastDonationCheck2 (value) {
+          return !(this.lastDonation !== null && parseInt(value) === 0)
         }
       },
       availableToAll: {
         isBoolean: (value) => {
-          return typeof value == "boolean";
+          return typeof value === 'boolean'
         }
       }
     }
@@ -224,30 +221,30 @@ export default {
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
-    frontendBaseURL() {
-      return process.env.VUE_APP_FRONTEND_BASE;
+    frontendBaseURL () {
+      return process.env.VUE_APP_FRONTEND_BASE
     },
 
     computedPhone: {
-      get() {
-        return this.phone;
+      get () {
+        return this.phone
       },
-      set(val) {
+      set (val) {
         if (this.timeout) clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
-          this.phone = val;
+          this.phone = val
         }, 2000)
       }
     },
 
-    availableHalls() {
-      return [...halls.slice(0, 7), halls[8]];
+    availableHalls () {
+      return [...halls.slice(0, 7), halls[8]]
     },
 
-    isNative() {
-      return isNative();
+    isNative () {
+      return isNative()
     },
-    phoneErrors() {
+    phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
       !this.$v.phone.minLength && errors.push('Phone must be 11 digits long')
@@ -257,13 +254,13 @@ export default {
       !this.$v.phone.uniqueCheck && errors.push(this.duplicateDonorMessage)
       return errors
     },
-    nameErrors() {
+    nameErrors () {
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.required && errors.push('Name is required')
       return errors
     },
-    studentIdErrors() {
+    studentIdErrors () {
       const errors = []
       if (!this.$v.studentId.$dirty) return errors
       !this.$v.studentId.minLength && errors.push('Student ID must be 7 digits long')
@@ -273,30 +270,30 @@ export default {
       !this.$v.studentId.departmentCheck && errors.push('Invalid department ID')
       return errors
     },
-    bloodGroupErrors() {
+    bloodGroupErrors () {
       const errors = []
       if (!this.$v.bloodGroup.$dirty) return errors
       !this.$v.bloodGroup.required && errors.push('Blood group is required')
       return errors
     },
-    hallErrors() {
+    hallErrors () {
       const errors = []
       if (!this.$v.hall.$dirty) return errors
-      !this.$v.hall.required && errors.push('Hall is required');
+      !this.$v.hall.required && errors.push('Hall is required')
       !this.$v.hall.permission && errors.push('You are not allowed to create donor for this hall')
       return errors
     },
-    donationCountErrors() {
+    donationCountErrors () {
       const errors = []
       if (!this.$v.donationCount.$dirty) return errors
       !this.$v.donationCount.maxLength && errors.push('Max donation count can be 99')
       !this.$v.donationCount.required && errors.push('Minimum donation count must be zero')
       !this.$v.donationCount.numeric && errors.push('Donation count must be numeric')
-      !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero');
-      !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified');
+      !this.$v.donationCount.lastDonationCheck && errors.push('Last donation must be specified if donation count is non-zero')
+      !this.$v.donationCount.lastDonationCheck2 && errors.push('Donation count must be non-zero if last donation is specified')
       return errors
     },
-    availableToAllErrors() {
+    availableToAllErrors () {
       const errors = []
       if (!this.$v.availableToAll.$dirty) return errors
       !this.$v.availableToAll.isBoolean && errors.push('Max donation count can be 99')
@@ -305,9 +302,9 @@ export default {
   },
 
   watch: {
-    'hall'(to, from) {
+    'hall' (to, from) {
       if (to === '(Unknown)') {
-        this.availableToAll = true;
+        this.availableToAll = true
       }
     }
   },
@@ -338,67 +335,66 @@ export default {
       departmentListShown: false,
       timeout: null,
       phoneDuplicateCheckLoader: false,
-      duplicateDonorMessage: "",
+      duplicateDonorMessage: '',
 
-      menu: false,
+      menu: false
     }
   },
 
-  mounted() {
-    const keysExpected = ["name", "phone", "studentId", "bloodGroup", "hall", "address", "roomNumber", "comment", "donationCount", "lastDonation", "key", "availableToAll"]
+  mounted () {
+    const keysExpected = ['name', 'phone', 'studentId', 'bloodGroup', 'hall', 'address', 'roomNumber', 'comment', 'donationCount', 'lastDonation', 'key', 'availableToAll']
     Object.keys(this.$props.donor).forEach((key) => {
       if (!keysExpected.includes(key)) {
-        this.warnings.push("Unwanted key found: " + key);
+        this.warnings.push('Unwanted key found: ' + key)
       }
     })
 
     keysExpected.forEach((expectedKey) => {
       if (!Object.keys(this.$props.donor).includes(expectedKey)) {
-        this.warnings.push("Missing key: " + expectedKey);
+        this.warnings.push('Missing key: ' + expectedKey)
       }
-    });
+    })
 
-    this.name = this.$props.donor.name;
-    this.phone = this.$props.donor.phone;
-    this.studentId = this.$props.donor.studentId;
-    this.bloodGroup = this.bloodGroups[this.$props.donor.bloodGroup];
+    this.name = this.$props.donor.name
+    this.phone = this.$props.donor.phone
+    this.studentId = this.$props.donor.studentId
+    this.bloodGroup = this.bloodGroups[this.$props.donor.bloodGroup]
 
-    this.hall = this.halls[this.$props.donor.hall];
+    this.hall = this.halls[this.$props.donor.hall]
 
-    this.address = this.$props.donor.address;
-    this.roomNumber = this.$props.donor.roomNumber;
-    this.comment = this.$props.donor.comment;
-    this.donationCount = this.$props.donor.donationCount;
-    this.availableToAll = this.$props.donor.availableToAll;
+    this.address = this.$props.donor.address
+    this.roomNumber = this.$props.donor.roomNumber
+    this.comment = this.$props.donor.comment
+    this.donationCount = this.$props.donor.donationCount
+    this.availableToAll = this.$props.donor.availableToAll
 
     if (this.$props.donor.lastDonation !== 0 && this.$props.donor.lastDonation !== null) {
-      this.lastDonation = (new Date(this.$props.donor.lastDonation)).toISOString().substr(0, 10);
+      this.lastDonation = (new Date(this.$props.donor.lastDonation)).toISOString().substr(0, 10)
     }
-
   },
   methods: {
     ...mapActions('halladmin', ['saveDonor']),
 
-    async createDonorClicked() {
-      await this.$v.$touch();
+    async createDonorClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
 
-      let lastDonation;
+      let lastDonation
       if (this.lastDonation === null) {
-        lastDonation = 0;
+        lastDonation = 0
       } else {
-        lastDonation = new Date(this.lastDonation).getTime();
+        lastDonation = new Date(this.lastDonation).getTime()
       }
 
-      if (this.comment === "" || this.comment === null) this.comment = "(Unknown)";
-      if (this.address === "" || this.address === null) this.address = "(Unknown)";
-      if (this.roomNumber === "" || this.roomNumber === null) this.roomNumber = "(Unknown)";
+      if (this.comment === '' || this.comment === null) this.comment = '(Unknown)'
+      if (this.address === '' || this.address === null) this.address = '(Unknown)'
+      if (this.roomNumber === '' || this.roomNumber === null) this.roomNumber = '(Unknown)'
 
-      let newDonor = {
+      const newDonor = {
         name: String(this.name),
-        phone: Number("88" + this.phone),
+        phone: Number('88' + this.phone),
         bloodGroup: Number(this.bloodGroups.indexOf(this.bloodGroup)),
         hall: Number(this.halls.indexOf(this.hall)),
         studentId: Number(this.studentId),
@@ -410,50 +406,48 @@ export default {
         availableToAll: this.availableToAll
       }
 
-      this.donorCreationLoader = true;
-      let response = await this.saveDonor(newDonor);
+      this.donorCreationLoader = true
+      const response = await this.saveDonor(newDonor)
       if (response.status === 409) {
-        this.duplicateDonorId = response.data.donor._id;
+        this.duplicateDonorId = response.data.donor._id
       }
-      this.donorCreationLoader = false;
-
+      this.donorCreationLoader = false
     },
-    goToDuplicateProfile() {
-      if(isNative()){
-        this.$router.push({path:'/singleDonorCreation/duplicateDetails?id='+this.duplicateDonorId});
-      }else{
-        window.open(this.frontendBaseURL + "/#/home/details?id=" + this.duplicateDonorId);
+    goToDuplicateProfile () {
+      if (isNative()) {
+        this.$router.push({ path: '/singleDonorCreation/duplicateDetails?id=' + this.duplicateDonorId })
+      } else {
+        window.open(this.frontendBaseURL + '/#/home/details?id=' + this.duplicateDonorId)
       }
     },
-    async discardClicked() {
+    async discardClicked () {
       if (this.discardDonor !== null) {
-        this.discardDonor(this.$props.donor.key);
-        return;
+        this.discardDonor(this.$props.donor.key)
+        return
       }
-      await this.$v.$reset();
+      await this.$v.$reset()
 
-      this.name = null;
-      this.phone = null;
-      this.studentId = null;
-      this.bloodGroup = null;
+      this.name = null
+      this.phone = null
+      this.studentId = null
+      this.bloodGroup = null
 
-      this.hall = halls[this.getHall];
+      this.hall = halls[this.getHall]
 
-      this.address = null;
-      this.roomNumber = null;
-      this.comment = null;
-      this.donationCount = null;
-      this.lastDonation = null;
+      this.address = null
+      this.roomNumber = null
+      this.comment = null
+      this.donationCount = null
+      this.lastDonation = null
 
-      this.availableToAll = false;
+      this.availableToAll = false
 
-      this.key = new Date().getTime();
+      this.key = new Date().getTime()
 
-      this.duplicateDonorId = null;
-
+      this.duplicateDonorId = null
     }
 
-  },
+  }
 
 }
 </script>

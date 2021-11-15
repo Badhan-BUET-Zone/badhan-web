@@ -50,7 +50,6 @@
                         disabled
                     ></v-text-field>
 
-
                     <!--        A button to reset the form fields-->
                     <v-btn rounded color="warning" disabled> Reset</v-btn>
 
@@ -81,18 +80,18 @@
 </template>
 
 <script>
-import ArchivedPersonList from "../components/Archive/ArchivedPersonList";
-import {mapActions} from "vuex";
-import PageTitle from "../components/PageTitle";
+import ArchivedPersonList from '../components/Archive/ArchivedPersonList'
+import { mapActions } from 'vuex'
+import PageTitle from '../components/PageTitle'
 export default {
-name: "Archive",
-    components: {ArchivedPersonList, PageTitle},
-    methods:{
-    ...mapActions('notification',['notifyInfo'])
-    },
-    mounted() {
-        this.notifyInfo('Section under construction');
-    }
+  name: 'Archive',
+  components: { ArchivedPersonList, PageTitle },
+  methods: {
+    ...mapActions('notification', ['notifyInfo'])
+  },
+  mounted () {
+    this.notifyInfo('Section under construction')
+  }
 }
 </script>
 

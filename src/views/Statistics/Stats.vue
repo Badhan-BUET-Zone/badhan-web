@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import Container from "../../components/Wrappers/Container";
-import {mapActions, mapGetters} from 'vuex';
+import Container from '../../components/Wrappers/Container'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Stats",
+  name: 'Stats',
   components: {
     Container
   },
@@ -39,15 +39,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
+    ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag'])
   },
   methods: {
-    ...mapActions('statistics', ['fetchStatistics']),
+    ...mapActions('statistics', ['fetchStatistics'])
 
   },
-  mounted() {
-    this.fetchStatistics();
-    this.statsShown = true;
+  mounted () {
+    this.fetchStatistics()
+    this.statsShown = true
   }
 }
 </script>

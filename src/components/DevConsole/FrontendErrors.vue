@@ -17,11 +17,11 @@
 
 <script>
 export default {
-name: "FrontendErrors",
-  props:["error"],
-  data(){
-    return{
-      showStack: false,
+  name: 'FrontendErrors',
+  props: ['error'],
+  data () {
+    return {
+      showStack: false
     }
   }
 }

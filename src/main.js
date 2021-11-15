@@ -5,10 +5,10 @@ import App from './App.vue'
 import router from './router'
 
 // to keep session information in vuex that are not required to be kept even after a reload
-import {store} from "./store/store";
+import { store } from './store/store'
 
 // to keep long lived data in vuejs that are required even after a reload
-import ldb from "./localDatabase";
+import ldb from './localDatabase'
 
 // bootstrap, a well known UI component library along with it's vue.js compatible bootstrap-vue library
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -22,31 +22,31 @@ import Vuelidate from 'vuelidate'
 import VueClipboard from 'vue-clipboard2'
 
 // mixin functions to be used across the whole vue.js app
-import Mixins from './mixins/index';
+import Mixins from './mixins/index'
 
 // the main UI component library used in this project
-import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify'
 
 // filter functions used in <template> tags all across this vue.js project
-import "./mixins/filters";
+import './mixins/filters'
 
 // to catch any runtime errors, similar to a try catch block in programming
-import errorHandlers from "./mixins/errorHandlers";
+import errorHandlers from './mixins/errorHandlers'
 
-Vue.prototype.$myldb = ldb;
+Vue.prototype.$myldb = ldb
 
-Vue.use(VueClipboard);
+Vue.use(VueClipboard)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-Vue.config.errorHandler = errorHandlers.errorHandler;
-Vue.config.warnHandler = errorHandlers.warnHandler;
+Vue.config.errorHandler = errorHandlers.errorHandler
+Vue.config.warnHandler = errorHandlers.warnHandler
 
-Vue.mixin(Mixins);
+Vue.mixin(Mixins)
 
-Vue.config.productionTip = false;
-export const eventBus = new Vue();
+Vue.config.productionTip = false
+export const eventBus = new Vue()
 
 new Vue({
   router,

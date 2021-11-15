@@ -28,40 +28,40 @@
 </template>
 
 <script>
-import Dialog from "../Dialog";
+import Dialog from '../Dialog'
 
 export default {
-  components: {Dialog},
+  components: { Dialog },
   props: {
     date: {
       type: Number,
       required: true
     },
-    deleteDonation:{
+    deleteDonation: {
       type: Function,
-      required: true,
+      required: true
     }
   },
-  name: "DonationCard",
-  data() {
+  name: 'DonationCard',
+  data () {
     return {
       donationDeletionPromptDialog: false,
-      donationDeletionLoader: false,
+      donationDeletionLoader: false
     }
   },
   methods: {
-    promptDonationDeletion() {
-      this.donationDeletionPromptDialog = true;
+    promptDonationDeletion () {
+      this.donationDeletionPromptDialog = true
     },
-    cancelDonationDeletion() {
-      this.donationDeletionPromptDialog = false;
+    cancelDonationDeletion () {
+      this.donationDeletionPromptDialog = false
     },
-    async confirmDonationDeletion() {
-      this.donationDeletionPromptDialog = false;
-      this.donationDeletionLoader = true;
-      await this.deleteDonation(this.date);
-      this.donationDeletionLoader = false;
-    },
+    async confirmDonationDeletion () {
+      this.donationDeletionPromptDialog = false
+      this.donationDeletionLoader = true
+      await this.deleteDonation(this.date)
+      this.donationDeletionLoader = false
+    }
   }
 }
 </script>

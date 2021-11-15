@@ -28,28 +28,27 @@
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 export default {
-  name: "LogObject",
-  props:["object"],
-  components:{
+  name: 'LogObject',
+  props: ['object'],
+  components: {
     VueJsonPretty
   },
-  data() {
+  data () {
     return {
       dialog: false
     }
   },
-  computed:{
+  computed: {
 
   },
-  methods:{
+  methods: {
 
   },
-  mounted(){
+  mounted () {
   }
-
 
 }
 </script>

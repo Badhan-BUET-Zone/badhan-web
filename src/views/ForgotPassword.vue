@@ -46,28 +46,28 @@
 </template>
 
 <script>
-import Container from "../components/Wrappers/Container";
-import PageTitle from "../components/PageTitle";
-import {required, minLength, maxLength, numeric} from 'vuelidate/lib/validators'
-import {handlePOSTPasswordForgot} from "../api";
-import {mapActions} from "vuex";
-import Button from "../components/UI Components/Button";
-import ldb from "../localDatabase";
+import Container from '../components/Wrappers/Container'
+import PageTitle from '../components/PageTitle'
+import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
+import { handlePOSTPasswordForgot } from '../api'
+import { mapActions } from 'vuex'
+import Button from '../components/UI Components/Button'
+import ldb from '../localDatabase'
 export default {
-  name: "ForgotPassword",
-  components: {Button, PageTitle, Container},
+  name: 'ForgotPassword',
+  components: { Button, PageTitle, Container },
   validations: () => {
     return {
       phone: {
         required,
         minLength: minLength(11),
         maxLength: maxLength(11),
-        numeric,
-      },
+        numeric
+      }
     }
   },
-  computed:{
-    phoneErrors() {
+  computed: {
+    phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
       !this.$v.phone.minLength && errors.push('Phone must be 11 digits long')
@@ -76,61 +76,60 @@ export default {
       !this.$v.phone.numeric && errors.push('Phone must be numeric')
       return errors
     },
-    emailCoolDownBar(){
-      return (this.emailTimeCoolDownTime / (4*60.0))*100;
+    emailCoolDownBar () {
+      return (this.emailTimeCoolDownTime / (4 * 60.0)) * 100
     }
   },
-  data:()=>{
-    return{
+  data: () => {
+    return {
       phone: null,
       recoveryCalledLoader: false,
       success: false,
-      emailTimeCoolDownTime: 4*60.0,
+      emailTimeCoolDownTime: 4 * 60.0
     }
   },
-  methods:{
-    ...mapActions('notification',['notifySuccess']),
-    async recoveryClicked(){
-      await this.$v.$touch();
+  methods: {
+    ...mapActions('notification', ['notifySuccess']),
+    async recoveryClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
 
-      this.coolDownTimerHandler();
-      ldb.emailRecovery.save();
-      this.success =  false;
-      this.recoveryCalledLoader = true;
-      let response = await handlePOSTPasswordForgot({phone: '88'+this.phone});
-      this.recoveryCalledLoader = false;
-      if(response.status!==200)return;
-      this.success = true;
-      this.notifySuccess('Recovery mail has been sent');
+      this.coolDownTimerHandler()
+      ldb.emailRecovery.save()
+      this.success = false
+      this.recoveryCalledLoader = true
+      const response = await handlePOSTPasswordForgot({ phone: '88' + this.phone })
+      this.recoveryCalledLoader = false
+      if (response.status !== 200) return
+      this.success = true
+      this.notifySuccess('Recovery mail has been sent')
     },
-    coolDownTimerHandler(){
-
-      this.emailTimeCoolDownTime--;
-      let timerId = setInterval(()=>{
-        if(this.emailTimeCoolDownTime===0){
-          clearInterval(timerId);
-          this.emailTimeCoolDownTime = 4*60;
-          this.phone = null;
-          this.success = false;
-          ldb.emailRecovery.clear();
-          this.$v.$reset();
-          return;
+    coolDownTimerHandler () {
+      this.emailTimeCoolDownTime--
+      const timerId = setInterval(() => {
+        if (this.emailTimeCoolDownTime === 0) {
+          clearInterval(timerId)
+          this.emailTimeCoolDownTime = 4 * 60
+          this.phone = null
+          this.success = false
+          ldb.emailRecovery.clear()
+          this.$v.$reset()
+          return
         }
-        this.emailTimeCoolDownTime--;
-      },1000)
+        this.emailTimeCoolDownTime--
+      }, 1000)
     }
   },
-  mounted(){
-    let timeStampOfLastPasswordRecovery = ldb.emailRecovery.load();
-    if(timeStampOfLastPasswordRecovery){
-      let currentTime = new Date().getTime();
-      if((currentTime-timeStampOfLastPasswordRecovery)/1000 < 4*60){
-        this.emailTimeCoolDownTime = 4*60- Math.ceil((currentTime-timeStampOfLastPasswordRecovery)/1000);
-        this.coolDownTimerHandler();
-        this.success = true;
+  mounted () {
+    const timeStampOfLastPasswordRecovery = ldb.emailRecovery.load()
+    if (timeStampOfLastPasswordRecovery) {
+      const currentTime = new Date().getTime()
+      if ((currentTime - timeStampOfLastPasswordRecovery) / 1000 < 4 * 60) {
+        this.emailTimeCoolDownTime = 4 * 60 - Math.ceil((currentTime - timeStampOfLastPasswordRecovery) / 1000)
+        this.coolDownTimerHandler()
+        this.success = true
       }
     }
   }

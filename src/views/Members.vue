@@ -103,22 +103,22 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import Container from "../components/Wrappers/Container";
-import {mapActions, mapGetters} from "vuex";
+import PageTitle from '../components/PageTitle'
+import Container from '../components/Wrappers/Container'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Members",
-  components: {Container, PageTitle},
+  name: 'Members',
+  components: { Container, PageTitle },
   computed: {
     ...mapGetters('members', ['getVolunteers', 'getHallAdmins', 'getSuperAdmins', 'getMemberLoaderFlag']),
-    ...mapGetters(['getHall']),
+    ...mapGetters(['getHall'])
   },
   methods: {
-    ...mapActions('members', ['fetchMembers']),
+    ...mapActions('members', ['fetchMembers'])
   },
-  async mounted() {
-    await this.fetchMembers();
+  async mounted () {
+    await this.fetchMembers()
   }
 }
 </script>

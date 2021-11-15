@@ -30,7 +30,6 @@
       </HelpTooltip>
     </PageTitle>
 
-
     <NewPersonCard v-if="donor!==null" :donor="donor" :discard-donor="null"></NewPersonCard>
 
     <ContainerFlat>
@@ -45,14 +44,14 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import NewPersonCard from "../components/BatchInsertion/NewPersonCard";
-import PageTitle from "../components/PageTitle";
-import HelpTooltip from "../components/UI Components/HelpTooltip";
-import ContainerFlat from "../components/Wrappers/ContainerFlat";
+import { mapGetters } from 'vuex'
+import NewPersonCard from '../components/BatchInsertion/NewPersonCard'
+import PageTitle from '../components/PageTitle'
+import HelpTooltip from '../components/UI Components/HelpTooltip'
+import ContainerFlat from '../components/Wrappers/ContainerFlat'
 
 export default {
-  name: "SingleDonorCreation",
+  name: 'SingleDonorCreation',
   components: {
     ContainerFlat,
     NewPersonCard,
@@ -65,10 +64,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getHall', 'getDesignation']),
+    ...mapGetters(['getHall', 'getDesignation'])
   },
   methods: {
-    reset() {
+    reset () {
       this.donor = {
         name: null,
         phone: null,
@@ -85,12 +84,12 @@ export default {
 
         availableToAll: false,
 
-        key: new Date().getTime(),
+        key: new Date().getTime()
       }
     }
   },
-  mounted() {
-    this.reset();
+  mounted () {
+    this.reset()
   }
 }
 </script>

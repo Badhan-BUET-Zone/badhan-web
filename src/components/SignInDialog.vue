@@ -35,14 +35,14 @@
 <script>
 export default {
   props: ['dialog'],
-  data() {
+  data () {
     return {
       // dialog: false,
       notifications: false,
       sound: true,
-      widgets: false,
+      widgets: false
     }
-  },
+  }
 }
 </script>
 

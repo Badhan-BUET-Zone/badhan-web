@@ -18,29 +18,27 @@
 
 <script>
 
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import PageTitle from "../components/PageTitle";
-import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
-import FrontendErrors from "../components/DevConsole/FrontendErrors";
-import Container from "../components/Wrappers/Container";
+import { mapGetters, mapMutations } from 'vuex'
+import PageTitle from '../components/PageTitle'
+import 'vue-json-pretty/lib/styles.css'
+import FrontendErrors from '../components/DevConsole/FrontendErrors'
+import Container from '../components/Wrappers/Container'
 
 export default {
-  name: "DevConsole",
+  name: 'DevConsole',
   computed: {
     ...mapGetters('errorStore', ['getErrors']),
     ...mapGetters(['getDesignation']),
-    ...mapGetters('consoleStore', ['getConsoleLogs']),
+    ...mapGetters('consoleStore', ['getConsoleLogs'])
   },
   components: {
     Container,
     PageTitle,
-    VueJsonPretty,
     FrontendErrors
   },
   methods: {
-    ...mapMutations('errorStore', ['addError',]),
-    ...mapMutations('consoleStore', ['addConsoleLog']),
+    ...mapMutations('errorStore', ['addError']),
+    ...mapMutations('consoleStore', ['addConsoleLog'])
     // async fileSelect() {
     //   let multiple_selection = true;
     //   let ext = ["*"];
@@ -52,11 +50,11 @@ export default {
     //   this.addConsoleLog(selectedFile);
     // }
   },
-  async mounted() {
+  async mounted () {
     if (this.getDesignation !== 3) {
-      this.$router.push({name: 'NotFound'});
+      this.$router.push({ name: 'NotFound' })
     }
-  },
+  }
 }
 </script>
 

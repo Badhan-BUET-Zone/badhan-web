@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
+import PageTitle from '../components/PageTitle'
 
 export default {
-  name: "Statistics",
-  components: {PageTitle},
-  data() {
+  name: 'Statistics',
+  components: { PageTitle },
+  data () {
     return {}
-  },
+  }
 
 }
 </script>

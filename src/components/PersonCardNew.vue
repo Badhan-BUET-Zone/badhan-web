@@ -67,80 +67,77 @@
 </template>
 
 <script>
-import {halls,departments} from "../mixins/constants";
-import {mapActions} from "vuex";
+import { halls, departments } from '../mixins/constants'
+import { mapActions } from 'vuex'
 
 export default {
-  props:{
-    donor:{
-      type: Object,
+  props: {
+    donor: {
+      type: Object
     }
   },
-  name: "PersonCardNew",
-  mounted() {
-    let donor = this.$props.donor;
-    this.id = donor._id;
-    this.bloodGroup = donor.bloodGroup;
-    this.name = donor.name;
-    this.hall = halls[donor.hall];
-    this.phone = '+'+donor.phone;
-    this.department = departments[parseInt(donor.studentId.substr(2,2))];
-    this.address = donor.address;
-    this.comment = donor.comment;
-    this.commentTime = donor.commentTime===0?'Unknown':new Date(donor.commentTime).toLocaleString() ;
-    this.markerName = donor.markerName;
-    this.markedTime = new Date(donor.markedTime).toLocaleString();
-    this.lastCallRecord = donor.lastCallRecord===0?'Unknown':new Date(donor.lastCallRecord).toLocaleString() ;
-    this.callRecordCount = donor.callRecordCount;
-    this.lastDonation = donor.lastDonation;
-    this.donationCount = donor.donationCount;
+  name: 'PersonCardNew',
+  mounted () {
+    const donor = this.$props.donor
+    this.id = donor._id
+    this.bloodGroup = donor.bloodGroup
+    this.name = donor.name
+    this.hall = halls[donor.hall]
+    this.phone = '+' + donor.phone
+    this.department = departments[parseInt(donor.studentId.substr(2, 2))]
+    this.address = donor.address
+    this.comment = donor.comment
+    this.commentTime = donor.commentTime === 0 ? 'Unknown' : new Date(donor.commentTime).toLocaleString()
+    this.markerName = donor.markerName
+    this.markedTime = new Date(donor.markedTime).toLocaleString()
+    this.lastCallRecord = donor.lastCallRecord === 0 ? 'Unknown' : new Date(donor.lastCallRecord).toLocaleString()
+    this.callRecordCount = donor.callRecordCount
+    this.lastDonation = donor.lastDonation
+    this.donationCount = donor.donationCount
 
-
-
-    this.setAvailableIn(this.lastDonation);
-
+    this.setAvailableIn(this.lastDonation)
   },
-  methods:{
-    ...mapActions('callrecord',['postCallRecordFromCard']),
-    async callFromDialer() {
-      document.location.href = "tel:+" + this.phone;
-      this.newCallRecordLoader = true;
-      await this.postCallRecordFromCard({donorId: this.id});
-      this.newCallRecordLoader = false;
-      this.lastCallRecord = new Date().toLocaleString();
-      this.callRecordCount++;
+  methods: {
+    ...mapActions('callrecord', ['postCallRecordFromCard']),
+    async callFromDialer () {
+      document.location.href = 'tel:+' + this.phone
+      this.newCallRecordLoader = true
+      await this.postCallRecordFromCard({ donorId: this.id })
+      this.newCallRecordLoader = false
+      this.lastCallRecord = new Date().toLocaleString()
+      this.callRecordCount++
     },
-    setAvailableIn(donationDate) {
+    setAvailableIn (donationDate) {
       this.availableIn =
           120 -
           Math.round(
-              (Math.round(new Date().getTime()) - donationDate) /
+            (Math.round(new Date().getTime()) - donationDate) /
               (1000 * 3600 * 24)
-          );
-    },
+          )
+    }
   },
   data: () => {
     return {
       id: '',
-      name:'',
-      hall:'',
-      phone:'',
-      department:'',
-      address:'',
-      comment:'',
-      bloodGroup:-1,
-      commentTime:'',
-      markerName:null,
-      markedTime:'',
-      lastCallRecord:'',
-      lastDonation:0,
-      callCount:0,
-      donationCount:0,
-      callRecordCount:0,
+      name: '',
+      hall: '',
+      phone: '',
+      department: '',
+      address: '',
+      comment: '',
+      bloodGroup: -1,
+      commentTime: '',
+      markerName: null,
+      markedTime: '',
+      lastCallRecord: '',
+      lastDonation: 0,
+      callCount: 0,
+      donationCount: 0,
+      callRecordCount: 0,
       newCallRecordLoader: false,
       donorDetailsExpansion: false,
 
-      availableIn: 0,
+      availableIn: 0
     }
   }
 }

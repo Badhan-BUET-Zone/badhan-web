@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "ContainerOutlined"
+  name: 'ContainerOutlined'
 }
 </script>
 

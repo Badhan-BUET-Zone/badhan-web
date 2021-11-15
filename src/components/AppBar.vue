@@ -64,14 +64,17 @@
       <v-divider></v-divider>
       <v-list nav dense rounded>
         <v-list-item-group active-class="primary--text text--accent-4">
-          <v-list-item v-for="(menu,index) in menusForAll" :key="menu.icon" link :to="menu.to" style="text-decoration: none">
+          <v-list-item v-for="(menu) in menusForAll" :key="menu.icon" link :to="menu.to" style="text-decoration: none">
             <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
             <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="getDesignation===3" v-for="(menu,index) in menusForSuperAdmin" :key="menu.icon" link :to="menu.to" style="text-decoration: none">
-            <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
-            <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
-          </v-list-item>
+          <span v-for="(menu) in menusForSuperAdmin" :key="menu.icon">
+            <v-list-item v-if="getDesignation===3"  link :to="menu.to" style="text-decoration: none">
+              <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
+              <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
+            </v-list-item>
+          </span>
+
         </v-list-item-group>
       </v-list>
       <v-list>
@@ -106,106 +109,105 @@
 
 <script>
 
-import {mapActions, mapGetters} from 'vuex';
-import {isNative} from '../plugins/android_support';
-import {isGuestEnabled} from "../api";
-import Dialog from "./Dialog";
-import ldb from "../localDatabase";
+import { mapActions, mapGetters } from 'vuex'
+import { isNative } from '../plugins/android_support'
+import { isGuestEnabled } from '../api'
+import Dialog from './Dialog'
+import ldb from '../localDatabase'
 
 export default {
-  components: {Dialog},
-  data: function (){
-    return{
+  components: { Dialog },
+  data: function () {
+    return {
       theme: this.$vuetify.theme.dark,
       drawer: !this.$isMobile(),
       signOutModalFlag: false,
       signOutAllModalFlag: false,
       menusForAll: [
-        {icon: "mdi-home", text: "Home", to: "/home"},
-        {icon: "mdi-bookmark", text: "Active Donors", to: "/activeDonors"},
-        {icon: "mdi-plus", text: "Donor Creation", to: "/singleDonorCreation"},
-        {icon: "mdi-account-group",text: "Members", to: "/members"},
-        {icon: "mdi-earth",text: "Public Contacts", to: "/contacts"},
-        {icon: "mdi-account", text: "My Profile", to: "/myProfile"},
-        {icon: "mdi-hand-heart", text: "Credits", to: "/credits"},
-        {icon: "mdi-information",text:"About",to:"/about"}
+        { icon: 'mdi-home', text: 'Home', to: '/home' },
+        { icon: 'mdi-bookmark', text: 'Active Donors', to: '/activeDonors' },
+        { icon: 'mdi-plus', text: 'Donor Creation', to: '/singleDonorCreation' },
+        { icon: 'mdi-account-group', text: 'Members', to: '/members' },
+        { icon: 'mdi-earth', text: 'Public Contacts', to: '/contacts' },
+        { icon: 'mdi-account', text: 'My Profile', to: '/myProfile' },
+        { icon: 'mdi-hand-heart', text: 'Credits', to: '/credits' },
+        { icon: 'mdi-information', text: 'About', to: '/about' }
       ],
       menusForSuperAdmin: [
-        {icon: "mdi-chart-bar", text: "Statistics", to: "/statistics/logsByDate"},
-        {icon: "mdi-developer-board", text: "Dev Console", to: "/devconsole"},
+        { icon: 'mdi-chart-bar', text: 'Statistics', to: '/statistics/logsByDate' },
+        { icon: 'mdi-developer-board', text: 'Dev Console', to: '/devconsole' }
       ]
     }
   },
   computed: {
     ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
-      darkTheme: {
-        // getter
-        get() {
-          return this.$vuetify.theme.dark;
-        },
-        // setter
-        set(newValue) {
-          this.$vuetify.theme.dark = newValue
-          ldb.theme.save(newValue)
-        }
+    darkTheme: {
+      // getter
+      get () {
+        return this.$vuetify.theme.dark
       },
-
-    isNative() {
-      return isNative();
+      // setter
+      set (newValue) {
+        this.$vuetify.theme.dark = newValue
+        ldb.theme.save(newValue)
+      }
     },
-    isGuestEnabled() {
-      return isGuestEnabled();
+
+    isNative () {
+      return isNative()
+    },
+    isGuestEnabled () {
+      return isGuestEnabled()
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
-    toggleTheme(){
-      this.theme = !this.theme;
-      this.$vuetify.theme.dark = this.theme;
-      ldb.theme.save(this.theme);
+    toggleTheme () {
+      this.theme = !this.theme
+      this.$vuetify.theme.dark = this.theme
+      ldb.theme.save(this.theme)
     },
-    async myProfileclicked() {
-      await this.$router.push({path: '/home/details', query: {id: this.getID}});
+    async myProfileclicked () {
+      await this.$router.push({ path: '/home/details', query: { id: this.getID } })
     },
-    async signOutModalPrompted(){
-      this.signOutModalFlag = true;
+    async signOutModalPrompted () {
+      this.signOutModalFlag = true
     },
-    async signOutModalCanceled(){
-      this.signOutModalFlag = false;
+    async signOutModalCanceled () {
+      this.signOutModalFlag = false
     },
-    async signOutModalConfirmed(){
-      this.signOutModalFlag  = false;
-      await this.logout();
-      await this.$router.push('/');
+    async signOutModalConfirmed () {
+      this.signOutModalFlag = false
+      await this.logout()
+      await this.$router.push('/')
     },
-    async signOutAllModalPrompted(){
-      this.signOutAllModalFlag = true;
+    async signOutAllModalPrompted () {
+      this.signOutAllModalFlag = true
     },
-    async signOutAllModalCanceled(){
-      this.signOutAllModalFlag = false;
+    async signOutAllModalCanceled () {
+      this.signOutAllModalFlag = false
     },
-    async signOutAllModalConfirmed(){
-      this.signOutAllModalFlag  = false;
-      await this.logoutAll();
-      await this.$router.push('/');
+    async signOutAllModalConfirmed () {
+      this.signOutAllModalFlag = false
+      await this.logoutAll()
+      await this.$router.push('/')
     },
-    async goToWebClicked() {
-      let redirectionToken = await this.requestRedirectionToken();
-      let routeData;
-      routeData = this.$router.resolve({
+    async goToWebClicked () {
+      const redirectionToken = await this.requestRedirectionToken()
+      const routeData = this.$router.resolve({
         name: 'Redirection',
-        query: {token: redirectionToken, payload: this.$route.fullPath}
-      });
-      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
+        query: { token: redirectionToken, payload: this.$route.fullPath }
+      })
+      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
     }
   },
   watch: {
-    group() {
+    group () {
       this.drawer = false
-    },
-  },
+    }
+  }
 }
 </script>

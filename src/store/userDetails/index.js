@@ -1,19 +1,19 @@
-import comment from "../userDetails/comment";
-import userDetails from "../userDetails/userDetails";
-import donation from "../userDetails/donation";
-import callrecord from "../userDetails/callrecord";
+import comment from '../userDetails/comment'
+import userDetails from '../userDetails/userDetails'
+import donation from '../userDetails/donation'
+import callrecord from '../userDetails/callrecord'
 
 export default {
-    actions:{
-        resetAllMessages({commit,getters}){
+  actions: {
+    resetAllMessages ({ commit, getters }) {
 
-        }
-    },
-
-    modules:{
-        comment,
-        userDetails,
-        donation,
-        callrecord
     }
+  },
+
+  modules: {
+    comment,
+    userDetails,
+    donation,
+    callrecord
+  }
 }

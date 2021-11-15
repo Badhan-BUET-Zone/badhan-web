@@ -22,24 +22,24 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-    name: "Snackbar.vue",
-    computed: {
-        ...mapGetters('notification', ['getNotification', "getNotificationFlag", "getNotificationColor"]),
-        notification: {
-            get: function () {
-                return this.getNotificationFlag
-            },
-            set: function (newValue) {
-                this.setNotificationFlag = newValue;
-            }
-        }
-    },
-    methods: {
-        ...mapActions('notification', ['setNotificationFlag'])
+  name: 'Snackbar.vue',
+  computed: {
+    ...mapGetters('notification', ['getNotification', 'getNotificationFlag', 'getNotificationColor']),
+    notification: {
+      get: function () {
+        return this.getNotificationFlag
+      },
+      set: function (newValue) {
+        this.setNotificationFlag = newValue
+      }
     }
+  },
+  methods: {
+    ...mapActions('notification', ['setNotificationFlag'])
+  }
 }
 </script>
 

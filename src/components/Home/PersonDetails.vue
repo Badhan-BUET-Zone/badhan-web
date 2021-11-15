@@ -91,10 +91,10 @@
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
                       <v-text-field
-                          :hint="(designation!==0 && !$isMe(_id))?'You cannot edit this email':'Password Recovery Email'"
-                          :persistent-hint="(designation!==0 && !$isMe(_id))" rounded dense outlined :label="'Email'"
+                          :hint="(designation!==0 && !$isMe(id))?'You cannot edit this email':'Password Recovery Email'"
+                          :persistent-hint="(designation!==0 && !$isMe(id))" rounded dense outlined :label="'Email'"
                           v-model="email"
-                          :disabled="!isDetailsEditable || (designation!==0 && !$isMe(_id)) "
+                          :disabled="!isDetailsEditable || (designation!==0 && !$isMe(id)) "
                           @blur="$v.email.$touch()"
                           :error-messages="emailErrors">
                       </v-text-field>
@@ -113,7 +113,7 @@
                                   dense
                                   label="Public Data"></v-checkbox>
 
-                      <div v-if="getDesignation > designation || $isMe(_id)">
+                      <div v-if="getDesignation > designation || $isMe(id)">
                         <v-btn color="primary" rounded class="white--text ml-2" small
                                :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error || $v.email.$error"
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
@@ -142,7 +142,7 @@
                 </transition>
               </ContainerOutlined>
 
-              <ContainerOutlined v-if="getDesignation >= designation || $isMe(_id)">
+              <ContainerOutlined v-if="getDesignation >= designation || $isMe(id)">
                 <v-card-title>
                   <v-btn rounded
                          @click="settingsCollapseFlag = !settingsCollapseFlag">
@@ -196,7 +196,6 @@
                         </v-row>
                       </div>
 
-
                       <v-btn key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
                              :disabled="promoteFlag"
                              v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
@@ -204,7 +203,7 @@
                         Demote To Donor
                       </v-btn>
 
-                      <div key="passwordChange" v-if="$isMe(_id)">
+                      <div key="passwordChange" v-if="$isMe(id)">
                         <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="newPasswordFlag ? 'text' : 'password'" outlined
                                       label="New Password" v-model="newPassword"
@@ -416,95 +415,94 @@
 </template>
 
 <script>
-import {halls, bloodGroups} from "../../mixins/constants";
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import {required, minLength, maxLength, numeric, sameAs} from 'vuelidate/lib/validators'
-import CallRecordCard from "../../components/Home/CallRecordCard";
-import HelpTooltip from "../../components/UI Components/HelpTooltip";
-import PageTitle from "../PageTitle";
-import ShareProfileButton from "../ShareProfileButton";
-import Container from "../Wrappers/Container";
-import ContainerOutlined from "../Wrappers/ContainerOutlined";
-import {handleDELETEActiveDonors, handlePOSTActiveDonors, isGuestEnabled} from "../../api";
+import { halls, bloodGroups } from '../../mixins/constants'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { required, minLength, maxLength, numeric, sameAs } from 'vuelidate/lib/validators'
+import CallRecordCard from '../../components/Home/CallRecordCard'
+import HelpTooltip from '../../components/UI Components/HelpTooltip'
+import PageTitle from '../PageTitle'
+import Container from '../Wrappers/Container'
+import ContainerOutlined from '../Wrappers/ContainerOutlined'
 import {
+  handleDELETEActiveDonors, handlePOSTActiveDonors, isGuestEnabled,
   handlePATCHDonorsDesignation,
   handlePATCHUsersPassword,
   handleDELETEDonors,
   handlePOSTDonorsPasswordRequest,
   handleDELETEPublicContacts,
-  handlePOSTPublicContacts,
-} from "../../api";
-import DonationCard from "./DonationCard";
-import Dialog from "../Dialog";
-import Button from "../UI Components/Button";
-import {fixBackSlash} from "../../mixins/helpers"
+  handlePOSTPublicContacts
+} from '../../api'
+import DonationCard from './DonationCard'
+import Dialog from '../Dialog'
+import Button from '../UI Components/Button'
+import { fixBackSlash } from '../../mixins/helpers'
 
 export default {
-  name: "PersonDetails",
-  props: ["donorId"],
+  name: 'PersonDetails',
+  props: ['donorId'],
   components: {
     Button,
     Dialog,
     DonationCard,
     ContainerOutlined,
     Container,
-    ShareProfileButton,
+
     CallRecordCard,
     HelpTooltip,
     PageTitle
   },
   data: function () {
     return {
-      //form fields
+      // form fields
       fav: true,
       activeDonorMenu: false,
       message: false,
       hints: true,
 
-      _id: null,
-      name: "",
-      oldPhone: "",
-      phone: "",
-      studentId: "",
-      email: "",
-      bloodGroup: "",
-      availableIn: "",
-      designation: "",
-      hall: "",
-      room: "",
-      address: "",
-      lastDonation: "",
+      id: null,
+      name: '',
+      oldPhone: '',
+      phone: '',
+      studentId: '',
+      email: '',
+      bloodGroup: '',
+      availableIn: '',
+      designation: '',
+      hall: '',
+      room: '',
+      address: '',
+      lastDonation: '',
       donationCount: 0,
       commentTime: 0,
 
-      dateToBeDeleted: "",
+      dateToBeDeleted: '',
 
       halls,
       bloodGroups,
       showDetails: false,
       oldPassword: null,
       newPassword: null,
-      confirmPassword: "",
-      comment: "",
+      confirmPassword: '',
+      comment: '',
       availableToAll: false,
 
-      //history flag
+      // history flag
       showHistory: false,
 
-      //spinner controller flags
+      // spinner controller flags
 
-      //vuetify modal
+      // vuetify modal
       dialog: false,
 
-      //person detail collapse and settings collapse
+      // person detail collapse and settings collapse
       personDetailCollapseFlag: false,
       settingsCollapseFlag: false,
 
-      //password field flag
+      // password field flag
       confirmPasswordFlag: false,
       newPasswordFlag: false,
 
-      newDonationDate: "",
+      newDonationDate: '',
       menu: false,
 
       dataLoaded: false,
@@ -522,11 +520,11 @@ export default {
 
       publicContacts: [],
       publicContactBloodGroups: [
-        {name: "A+", code: 0},
-        {name: "B+", code: 2},
-        {name: "O+", code: 4},
-        {name: "AB+", code: 6},
-        {name: "All Negative", code: -1}
+        { name: 'A+', code: 0 },
+        { name: 'B+', code: 2 },
+        { name: 'O+', code: 4 },
+        { name: 'AB+', code: 6 },
+        { name: 'All Negative', code: -1 }
       ],
       selectedNewPublicContact: null,
       newPublicContactLoader: false,
@@ -538,15 +536,15 @@ export default {
 
       markedAsActiveDonor: false,
       markedBy: null,
-      activeDonorLoader: false,
-    };
+      activeDonorLoader: false
+    }
   },
   validations: {
     phone: {
       required,
       minLength: minLength(11),
       maxLength: maxLength(11),
-      numeric,
+      numeric
     },
     studentId: {
       minLength: minLength(7),
@@ -555,10 +553,12 @@ export default {
       required
     },
     email: {
-      validEmail(email) {
-        if (email === "") return true;
-        let emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-        return emailRegex.test(email);
+      validEmail (email) {
+        if (email === '') return true
+        /* eslint-disable no-useless-escape */
+        const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+        /* eslint-enable no-useless-escape */ //
+        return emailRegex.test(email)
       }
     },
     name: {
@@ -566,18 +566,18 @@ export default {
     },
     newPassword: {
       required,
-      minLength: minLength(6),
+      minLength: minLength(6)
     },
     confirmPassword: {
       sameAs: sameAs('newPassword')
     }
   },
   watch: {
-    dialog(to, from) {
+    dialog (to, from) {
       if (to === false) {
-        this.$router.push("/home");
+        this.$router.push('/home')
       }
-    },
+    }
   },
   computed: {
     ...mapGetters('details', ['getDonorLoaderFlag', 'getProfile']),
@@ -589,24 +589,24 @@ export default {
     ...mapGetters('donate', ['getDonationLoaderFlag']),
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
     ...mapGetters(['getName']),
-    isAllowedToPromoteToVolunteer() {
+    isAllowedToPromoteToVolunteer () {
       return this.designation === 0 && halls.indexOf(this.hall) <= 6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
-    isAllowedToDemoteToDonor() {
+    isAllowedToDemoteToDonor () {
       return this.designation === 1 && halls.indexOf(this.hall) <= 6 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation === 2))
     },
-    isPasswordLinkResetable() {
-      return !isGuestEnabled() && !this.$isMe(this._id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
+    isPasswordLinkResetable () {
+      return !isGuestEnabled() && !this.$isMe(this.id) && this.designation !== 0 && (this.getDesignation === 3 || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation))
     },
-    isDeletable() {
-      return !this.$isMe(this._id) && this.designation <= 1 && (this.getDesignation === 3 || halls.indexOf(this.hall) === 8 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)));
-    },
-
-    isDetailsEditable() {
-      return this.getDesignation === 3 || this.$isMe(this._id) || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation) || halls.indexOf(this.hall) === 8
+    isDeletable () {
+      return !this.$isMe(this.id) && this.designation <= 1 && (this.getDesignation === 3 || halls.indexOf(this.hall) === 8 || (this.getDesignation > this.designation && this.getHall === halls.indexOf(this.hall)))
     },
 
-    phoneErrors() {
+    isDetailsEditable () {
+      return this.getDesignation === 3 || this.$isMe(this.id) || (this.getHall === halls.indexOf(this.hall) && this.getDesignation > this.designation) || halls.indexOf(this.hall) === 8
+    },
+
+    phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
       !this.$v.phone.minLength && errors.push('Phone must be at least 11 digits long')
@@ -615,7 +615,7 @@ export default {
       !this.$v.phone.required && errors.push('Phone is required.')
       return errors
     },
-    studentIdErrors() {
+    studentIdErrors () {
       const errors = []
       if (!this.$v.studentId.$dirty) return errors
       !this.$v.studentId.minLength && errors.push('Student ID must be of 7 digits')
@@ -624,44 +624,42 @@ export default {
       !this.$v.studentId.required && errors.push('Student ID is required')
       return errors
     },
-    emailErrors() {
+    emailErrors () {
       const errors = []
       if (!this.$v.email.$dirty) return errors
       !this.$v.email.validEmail && errors.push('Email not valid')
       return errors
     },
-    nameErrors() {
+    nameErrors () {
       const errors = []
       if (!this.$v.name.$dirty) return errors
       !this.$v.name.required && errors.push('Name is required')
       return errors
     },
-    newPasswordErrors() {
+    newPasswordErrors () {
       const errors = []
       if (!this.$v.newPassword.$dirty) return errors
       !this.$v.newPassword.required && errors.push('Specify a password')
       !this.$v.newPassword.minLength && errors.push('Password must be at least 6 characters long')
       return errors
     },
-    confirmPasswordErrors() {
+    confirmPasswordErrors () {
       const errors = []
       if (!this.$v.confirmPassword.$dirty) return errors
       !this.$v.confirmPassword.sameAs && errors.push('Password does not match')
       return errors
     },
 
-    donorLoaderFlag() {
-      return this.getDonorLoaderFlag;
-    },
-    availableHalls() {
+    availableHalls () {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return [...halls.slice(0, 7), halls[8]];
+          return [...halls.slice(0, 7), halls[8]]
         } else {
-          return [halls[this.getHall], halls[8]];
+          return [halls[this.getHall], halls[8]]
         }
       }
-    },
+      return halls
+    }
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
@@ -676,226 +674,222 @@ export default {
     ...mapMutations(['setToken', 'saveTokenToLocalStorage']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
     ...mapActions('notification', ['notifySuccess']),
-    async markAsActiveDonorHandler(markFlag) {
-      this.activeDonorLoader=true;
+    async markAsActiveDonorHandler (markFlag) {
+      this.activeDonorLoader = true
       if (markFlag) {
-        let result = await handlePOSTActiveDonors({donorId: this._id});
-        this.activeDonorLoader = false;
-        if (result.status !== 201) return;
-        this.markedBy = this.getName;
-        this.notifySuccess('Donor marked as active donor');
-        return;
+        const result = await handlePOSTActiveDonors({ donorId: this.id })
+        this.activeDonorLoader = false
+        if (result.status !== 201) return
+        this.markedBy = this.getName
+        this.notifySuccess('Donor marked as active donor')
+        return
       }
 
-      let result = await handleDELETEActiveDonors({donorId: this._id});
-      this.activeDonorLoader = false;
-      if (result.status !== 200) return;
-      this.markedBy = null;
+      const result = await handleDELETEActiveDonors({ donorId: this.id })
+      this.activeDonorLoader = false
+      if (result.status !== 200) return
+      this.markedBy = null
       this.notifySuccess('Donor unmarked')
     },
 
-    callRecordDeleted(id) {
-      this.callRecords = this.callRecords.filter((callRecord) => callRecord._id !== id);
+    callRecordDeleted (id) {
+      this.callRecords = this.callRecords.filter((callRecord) => callRecord._id !== id)
     },
-    async publishToPublicContactClicked() {
-      console.log(this.selectedNewPublicContact);
-      this.newPublicContactLoader = true;
-      let response = await handlePOSTPublicContacts({donorId: this._id, bloodGroup: this.selectedNewPublicContact.code})
-      this.newPublicContactLoader = false;
-      if (response.status !== 201) return;
-      this.publicContacts.push({_id: response.data.publicContact._id, bloodGroup: this.selectedNewPublicContact.code})
-      this.notifySuccess('Public Contacts Updated');
+    async publishToPublicContactClicked () {
+      console.log(this.selectedNewPublicContact)
+      this.newPublicContactLoader = true
+      const response = await handlePOSTPublicContacts({ donorId: this.id, bloodGroup: this.selectedNewPublicContact.code })
+      this.newPublicContactLoader = false
+      if (response.status !== 201) return
+      this.publicContacts.push({ _id: response.data.publicContact._id, bloodGroup: this.selectedNewPublicContact.code })
+      this.notifySuccess('Public Contacts Updated')
     },
 
-    async deletePublicContactClicked(contactId) {
-      this.deletePublicContactLoader = true;
-      let response = await handleDELETEPublicContacts({donorId: this._id, contactId});
-      this.deletePublicContactLoader = false;
-      if (response.status !== 200) return;
+    async deletePublicContactClicked (contactId) {
+      this.deletePublicContactLoader = true
+      const response = await handleDELETEPublicContacts({ donorId: this.id, contactId })
+      this.deletePublicContactLoader = false
+      if (response.status !== 200) return
 
       this.publicContacts = this.publicContacts.filter((publicContact) => {
         return publicContact._id !== contactId
-      });
+      })
 
-      this.notifySuccess('Public Contacts Updated');
+      this.notifySuccess('Public Contacts Updated')
     },
 
-    async createPasswordRecoveryLink() {
-      this.passwordRecoveryFlag = true;
-      let token = await handlePOSTDonorsPasswordRequest({donorId: this._id});
-      this.passwordRecoveryFlag = false;
+    async createPasswordRecoveryLink () {
+      this.passwordRecoveryFlag = true
+      const token = await handlePOSTDonorsPasswordRequest({ donorId: this.id })
+      this.passwordRecoveryFlag = false
       if (!token) {
-        return;
+        return
       }
-      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '#/passwordReset?token=' + token;
+      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '#/passwordReset?token=' + token
     },
-    async passwordRecoveryLinkCopyClicked() {
-      await this.$copyText(this.passwordRecoveryLink);
-      this.passwordRecoveryTooltip = true;
+    async passwordRecoveryLinkCopyClicked () {
+      await this.$copyText(this.passwordRecoveryLink)
+      this.passwordRecoveryTooltip = true
       setTimeout(() => {
         this.passwordRecoveryTooltip = false
-      }, 2000);
-
+      }, 2000)
     },
-    shareClicked() {
-      let routeData = this.$router.resolve({
+    shareClicked () {
+      const routeData = this.$router.resolve({
         name: 'Details',
         query: {
-          id: this._id,
+          id: this.id
         }
-      });
+      })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
       this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
-        this.showTooltip = true;
+        this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
-        }, 2000);
+        }, 2000)
       }, (e) => {
       })
     },
-    async changeHallAdminClicked() {
-      let response = await this.changeHallAdmin({donorId: this._id});
-      console.log(response);
+    async changeHallAdminClicked () {
+      const response = await this.changeHallAdmin({ donorId: this.id })
+      console.log(response)
       if (response) {
         this.designation = 2
       }
     },
-    deleteDonorPrompt() {
-      this.deleteDonorDialogFlag = true;
+    deleteDonorPrompt () {
+      this.deleteDonorDialogFlag = true
     },
-    async deleteDonorConfirmed() {
-      this.deleteDonorDialogFlag = false;
-      this.deleteDonorFlag = true;
-      let response = await handleDELETEDonors({donorId: this._id});
-      this.deleteDonorFlag = false;
-      if (response.status !== 200) return;
-      this.deletePerson({_id: this._id, studentId: this.studentId});
-      this.notifySuccess('Deleted donor successfully');
-      await this.$router.push('/home');
+    async deleteDonorConfirmed () {
+      this.deleteDonorDialogFlag = false
+      this.deleteDonorFlag = true
+      const response = await handleDELETEDonors({ donorId: this.id })
+      this.deleteDonorFlag = false
+      if (response.status !== 200) return
+      this.deletePerson({ _id: this.id, studentId: this.studentId })
+      this.notifySuccess('Deleted donor successfully')
+      await this.$router.push('/home')
     },
-    async deleteDonorCanceled() {
-      this.deleteDonorDialogFlag = false;
+    async deleteDonorCanceled () {
+      this.deleteDonorDialogFlag = false
     },
-    async callFromDialer() {
-      await this.postCallRecord({donorId: this._id});
-      document.location.href = "tel:+88" + this.phone;
-      this.$forceUpdate();
+    async callFromDialer () {
+      await this.postCallRecord({ donorId: this.id })
+      document.location.href = 'tel:+88' + this.phone
+      this.$forceUpdate()
     },
-    datePrint(date) {
-      let dateObj = new Date(date);
+    datePrint (date) {
+      const dateObj = new Date(date)
       return (
-          dateObj.getDate() +
-          "/" +
+        dateObj.getDate() +
+          '/' +
           (dateObj.getMonth() + 1) +
-          "/" +
+          '/' +
           dateObj.getFullYear()
-      );
+      )
     },
-    hideDetails() {
-      this.showHistory = false;
+    hideDetails () {
+      this.showHistory = false
     },
 
-    async saveCommentClicked() {
-      let comment = this.comment;
-      if (this.comment === "") {
-        comment = "(Unknown)"
+    async saveCommentClicked () {
+      let comment = this.comment
+      if (this.comment === '') {
+        comment = '(Unknown)'
       }
       await this.saveComment({
-        donorId: this._id,
+        donorId: this.id,
         comment: comment
       })
-      this.commentTime = new Date().getTime();
-
+      this.commentTime = new Date().getTime()
     },
 
-    async deleteDonationClicked(date) {
-      let lastDonation = await this.deleteDonation({
-        donorId: this._id,
-        date: date,
-      });
-      this.donationCount = this.donationCount - 1;
+    async deleteDonationClicked (date) {
+      const lastDonation = await this.deleteDonation({
+        donorId: this.id,
+        date: date
+      })
+      this.donationCount = this.donationCount - 1
 
-      let newDate = new Date(lastDonation);
+      const newDate = new Date(lastDonation)
       this.availableIn =
           120 -
           Math.round(
-              (Math.round(new Date().getTime()) - newDate.getTime()) /
+            (Math.round(new Date().getTime()) - newDate.getTime()) /
               (1000 * 3600 * 24)
-          );
+          )
       if (lastDonation === 0) {
-        this.lastDonation = "(Unknown)";
-        return;
+        this.lastDonation = '(Unknown)'
+        return
       }
       this.lastDonation =
           newDate.getDate() +
-          "/" +
+          '/' +
           (newDate.getMonth() + 1) +
-          "/" +
-          newDate.getFullYear();
-
-
+          '/' +
+          newDate.getFullYear()
     },
 
-    async promoteClicked() {
-      this.promoteFlag = true;
+    async promoteClicked () {
+      this.promoteFlag = true
       if (await handlePATCHDonorsDesignation({
-        donorId: this._id,
-        promoteFlag: true,
+        donorId: this.id,
+        promoteFlag: true
       })) {
         this.designation = 1
       }
-      this.promoteFlag = false;
+      this.promoteFlag = false
     },
-    async demoteClicked() {
-      this.promoteFlag = true;
+    async demoteClicked () {
+      this.promoteFlag = true
       if (await handlePATCHDonorsDesignation({
-        donorId: this._id,
-        promoteFlag: false,
+        donorId: this.id,
+        promoteFlag: false
       })) {
         this.designation = 0
       }
-      this.promoteFlag = false;
+      this.promoteFlag = false
     },
-    async savePasswordClicked() {
-      await this.$v.newPassword.$touch();
-      await this.$v.confirmPassword.$touch();
+    async savePasswordClicked () {
+      await this.$v.newPassword.$touch()
+      await this.$v.confirmPassword.$touch()
       if (this.$v.newPassword.$error || this.$v.confirmPassword.$error) {
-        return;
+        return
       }
-      this.passwordChangeFlag = true;
-      let data = await handlePATCHUsersPassword({
-        donorId: this._id,
-        password: this.newPassword,
-      });
+      this.passwordChangeFlag = true
+      const data = await handlePATCHUsersPassword({
+        donorId: this.id,
+        password: this.newPassword
+      })
       if (data && !isGuestEnabled()) {
-        this.setToken(data.token);
-        this.saveTokenToLocalStorage();
+        this.setToken(data.token)
+        this.saveTokenToLocalStorage()
       }
-      this.passwordChangeFlag = false;
+      this.passwordChangeFlag = false
     },
-    async saveDetailsClicked() {
-      await this.$v.name.$touch();
-      await this.$v.phone.$touch();
-      await this.$v.studentId.$touch();
-      await this.$v.email.$touch();
+    async saveDetailsClicked () {
+      await this.$v.name.$touch()
+      await this.$v.phone.$touch()
+      await this.$v.studentId.$touch()
+      await this.$v.email.$touch()
 
       if (this.$v.name.$error || this.$v.phone.$error || this.$v.studentId.$error || this.$v.email.$error) {
-        return;
+        return
       }
 
-      let room = this.room;
-      let address = this.address;
-      if (room === "") {
-        room = "(Unknown)";
+      let room = this.room
+      let address = this.address
+      if (room === '') {
+        room = '(Unknown)'
       }
-      if (address === "") {
-        address = "(Unknown)";
+      if (address === '') {
+        address = '(Unknown)'
       }
 
-      let sendData = {
-        donorId: this._id,
+      const sendData = {
+        donorId: this.id,
         name: this.name,
-        phone: parseInt("88" + this.phone),
+        phone: parseInt('88' + this.phone),
         studentId: this.studentId,
         email: this.email,
         bloodGroup: bloodGroups.indexOf(this.bloodGroup),
@@ -903,100 +897,97 @@ export default {
         roomNumber: room,
         address: address,
         availableToAll: this.availableToAll
-      };
-      await this.saveUserDetails(sendData);
+      }
+      await this.saveUserDetails(sendData)
     },
-    async donateClicked() {
-      let success = await this.donate({
-        donorId: this._id,
+    async donateClicked () {
+      const success = await this.donate({
+        donorId: this.id,
         newDonationDate: this.newDonationDate
-      });
+      })
 
       if (success) {
-        let newAvailableIn =
+        const newAvailableIn =
             120 -
             Math.round(
-                (Math.round(new Date().getTime()) -
+              (Math.round(new Date().getTime()) -
                     new Date(this.newDonationDate).getTime()) /
                 (1000 * 3600 * 24)
-            );
-        this.addDonation(new Date(this.newDonationDate).getTime());
+            )
+        this.addDonation(new Date(this.newDonationDate).getTime())
         if (newAvailableIn > this.availableIn) {
-          this.availableIn = newAvailableIn;
-          this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime());
+          this.availableIn = newAvailableIn
+          this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime())
         }
-        this.newDonationDate = "";
-        this.donationCount++;
+        this.newDonationDate = ''
+        this.donationCount++
       }
-
-    },
+    }
   },
-  async mounted() {
-
-    this.donorErrorHappened = false;
-    this.dataLoaded = false;
+  async mounted () {
+    this.donorErrorHappened = false
+    this.dataLoaded = false
 
     // let success = await this.getDetails(this.$route.query.id);
-    let success = await this.getDetails(this.$props.donorId);
+    const success = await this.getDetails(this.$props.donorId)
 
     if (!success) {
-      this.donorErrorHappened = true;
-      return;
+      this.donorErrorHappened = true
+      return
     }
 
+    const profile = this.getProfile
+    this.id = profile._id
+    this.name = profile.name
+    this.phone = profile.phone.toString().substr(2)
+    this.oldPhone = profile.phone
+    this.studentId = profile.studentId
+    this.bloodGroup = bloodGroups[profile.bloodGroup]
+    this.email = profile.email
+    this.hall = halls[profile.hall]
+    this.room = profile.roomNumber
+    this.address = profile.address
+    this.address = profile.address
+    this.comment = fixBackSlash(profile.comment)
+    this.designation = profile.designation
+    this.donationCount = this.getDonationList.length
+    this.commentTime = profile.commentTime
+    this.availableToAll = profile.availableToAll
+    this.publicContacts = profile.publicContacts
+    this.callRecords = profile.callRecords
+    this.markedBy = profile.markedBy ? profile.markedBy.markerId.name : null
+    this.markedAsActiveDonor = !!this.markedBy
 
-    let profile = this.getProfile;
-    this._id = profile._id;
-    this.name = profile.name;
-    this.phone = profile.phone.toString().substr(2);
-    this.oldPhone = profile.phone;
-    this.studentId = profile.studentId;
-    this.bloodGroup = bloodGroups[profile.bloodGroup];
-    this.email = profile.email;
-    this.hall = halls[profile.hall];
-    this.room = profile.roomNumber;
-    this.address = profile.address;
-    this.address = profile.address;
-    this.comment = fixBackSlash(profile.comment);
-    this.designation = profile.designation;
-    this.donationCount = this.getDonationList.length;
-    this.commentTime = profile.commentTime;
-    this.availableToAll = profile.availableToAll;
-    this.publicContacts = profile.publicContacts;
-    this.callRecords = profile.callRecords;
-    this.markedBy = profile.markedBy?profile.markedBy.markerId.name:null;
-    this.markedAsActiveDonor = !!this.markedBy;
-
-    let date = new Date(profile.lastDonation);
+    const date = new Date(profile.lastDonation)
     this.lastDonation =
         date.getDate() +
-        "/" +
+        '/' +
         (date.getMonth() + 1) +
-        "/" +
-        date.getFullYear();
+        '/' +
+        date.getFullYear()
     if (profile.lastDonation === 0) {
-      this.lastDonation = "(Unknown)";
+      this.lastDonation = '(Unknown)'
     }
 
     this.availableIn =
         120 -
         Math.round(
-            (Math.round(new Date().getTime()) - date.getTime()) /
+          (Math.round(new Date().getTime()) - date.getTime()) /
             (1000 * 3600 * 24)
-        );
+        )
 
-    this.dataLoaded = true;
+    this.dataLoaded = true
 
-    this.$forceUpdate();
-    this.personDetailCollapseFlag = !this.$isMobile();
-  },
+    this.$forceUpdate()
+    this.personDetailCollapseFlag = !this.$isMobile()
+  }
   // beforeRouteLeave(to,from,next){
   //   next();
   // },
   // beforeDestroy() {
   //   console.log("before destroy")
   // }
-};
+}
 </script>
 <style>
 

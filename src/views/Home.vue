@@ -1,6 +1,5 @@
 <template>
   <div :key="'home'">
-<!--    <PageTitle :title="$route.meta.title"></PageTitle>-->
     <v-fab-transition >
       <v-btn
           v-scroll="onScroll"
@@ -74,7 +73,6 @@
                     @blur="$v.batch.$touch()"
                     :error-messages="batchErrors"
                 ></v-text-field>
-
 
                 <!--        Input field for hall-->
                 <v-text-field
@@ -254,7 +252,7 @@
                 </v-alert>
 
                 <person-card
-                    v-for="(person, personIndex) in obj.people"
+                    v-for="(person) in obj.people"
                     :key="person._id"
                     :person="person"
                 ></person-card>
@@ -274,43 +272,40 @@
 </template>
 
 <script>
-import PersonDetails from "../components/Home/PersonDetails";
-import PageTitle from "../components/PageTitle";
-import PersonCard from "../components/Home/PersonCard";
-import {isNative} from '../plugins/android_support';
-import {bloodGroups, halls} from "../mixins/constants";
-import {mapActions, mapGetters, mapMutations} from "vuex";
-import {minLength, maxLength, numeric, required} from 'vuelidate/lib/validators'
-import {isGuestEnabled} from "../api";
-import HelpTooltip from "../components/UI Components/HelpTooltip";
-import SkeletonPersonCard from "../components/Home/SkeletonPersonCard";
-import {convertObjectToCSV, textFileDownloadInWeb,processPersonsForReport} from "../mixins/helpers";
-import {downloadTextFile} from "../plugins/android_support";
-import MessageBox from "../components/MessageBox";
+import PersonCard from '../components/Home/PersonCard'
+import { isNative, downloadTextFile } from '../plugins/android_support'
+import { bloodGroups, halls } from '../mixins/constants'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
+import { isGuestEnabled } from '../api'
+import HelpTooltip from '../components/UI Components/HelpTooltip'
+import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
+import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
 
 export default {
-  name: "ActiveSearch",
+  name: 'ActiveSearch',
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
-    showScroll(){
-      return window.screenY>1000;
+    showScroll () {
+      return window.screenY > 1000
     },
-    isGuestEnabled() {
-      return isGuestEnabled();
+    isGuestEnabled () {
+      return isGuestEnabled()
     },
-    isNative() {
-      return isNative();
+    isNative () {
+      return isNative()
     },
-    availableHalls() {
+    availableHalls () {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return halls.slice(0, 7);
+          return halls.slice(0, 7)
         } else {
-          return [halls[this.getHall]];
+          return [halls[this.getHall]]
         }
       }
+      return halls
     },
-    batchErrors() {
+    batchErrors () {
       const errors = []
       if (!this.$v.batch.$dirty) return errors
       !this.$v.batch.minLength && errors.push('Batch number must be of 2 digits')
@@ -318,37 +313,34 @@ export default {
       !this.$v.batch.numeric && errors.push('Batch number must be numeric')
       return errors
     },
-    hallErrors() {
+    hallErrors () {
       const errors = []
       if (!this.$v.hall.$dirty) return errors
-      !this.$v.hall.required && errors.push('Hall is required');
+      !this.$v.hall.required && errors.push('Hall is required')
       !this.$v.hall.permission && errors.push('You are not allowed to create donor for this hall')
       return errors
-    },
+    }
 
   },
   components: {
-    MessageBox,
-    'person-details': PersonDetails,
-    PageTitle,
-    "person-card": PersonCard,
+    'person-card': PersonCard,
     HelpTooltip,
     SkeletonPersonCard
   },
   data: function () {
     return {
-      name: "",
+      name: '',
       bloodGroup: -1,
-      batch: "",
-      address: "",
+      batch: '',
+      address: '',
       hall: halls[this.$store.getters.getHall],
       availability: true,
       notAvailability: false,
 
-      //GUI flags
+      // GUI flags
       filterShown: true,
 
-      //imported constants
+      // imported constants
       halls,
       bloodGroups,
 
@@ -358,8 +350,8 @@ export default {
       radios: 'AvailableToAll',
       showFab: false,
 
-      downloadCSVMessageFlag: false,
-    };
+      downloadCSVMessageFlag: false
+    }
   },
   validations: () => {
     return {
@@ -370,93 +362,92 @@ export default {
       },
       hall: {
         required,
-        permission(hall) {
-          //COVID DATABASE
-          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3);
+        permission (hall) {
+          // COVID DATABASE
+          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3)
         }
-      },
+      }
     }
   },
-  mounted() {
-    let query = this.$route.query;
+  mounted () {
+    const query = this.$route.query
 
-    this.name = query.name ? query.name : "";
-    this.bloodGroup = query.bloodGroup ? query.bloodGroup : -1;
-    this.batch = query.batch ? query.batch : "";
-    this.address = query.address ? query.address : "";
-    this.hall = query.hall ? query.hall : halls[this.$store.getters.getHall];
-    this.availability = query.availability !== "false";
-    this.notAvailability = query.notAvailability === "true";
-    this.radios = query.radios==="SpecifyHall"?"SpecifyHall":"AvailableToAll";
+    this.name = query.name ? query.name : ''
+    this.bloodGroup = query.bloodGroup ? query.bloodGroup : -1
+    this.batch = query.batch ? query.batch : ''
+    this.address = query.address ? query.address : ''
+    this.hall = query.hall ? query.hall : halls[this.$store.getters.getHall]
+    this.availability = query.availability !== 'false'
+    this.notAvailability = query.notAvailability === 'true'
+    this.radios = query.radios === 'SpecifyHall' ? 'SpecifyHall' : 'AvailableToAll'
 
     if (Object.keys(this.$route.query).length === 8) {
-      this.searchClicked();
+      this.searchClicked()
     }
   },
-  beforeRouteLeave(to,from,next){
-    this.resetSearchResults();
-    next();
+  beforeRouteLeave (to, from, next) {
+    this.resetSearchResults()
+    next()
   },
   methods: {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
-    ...mapMutations(['hideSearchResults','resetSearchResults']),
+    ...mapMutations(['hideSearchResults', 'resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
-    ...mapMutations('errorStore', ['addError',]),
-    ...mapMutations('messageBox',['setMessage']),
-    async downloadInAndroid(){
-      let processedPersons = processPersonsForReport(this.getPersons)
-      let csv = convertObjectToCSV(processedPersons,["name","Hall","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
-      try{
-        await downloadTextFile(csv,'badhan_'+this.getSearchedHall+'.csv');
-        this.setMessage('CSV downloaded to Documents folder');
-      }catch (e) {
-        this.addError({name:"Download CSV Failure",message:"Count not save csv file to android storage",stack:e});
+    ...mapMutations('errorStore', ['addError']),
+    ...mapMutations('messageBox', ['setMessage']),
+    async downloadInAndroid () {
+      const processedPersons = processPersonsForReport(this.getPersons)
+      const csv = convertObjectToCSV(processedPersons, ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count'], ',')
+      try {
+        await downloadTextFile(csv, 'badhan_' + this.getSearchedHall + '.csv')
+        this.setMessage('CSV downloaded to Documents folder')
+      } catch (e) {
+        this.addError({ name: 'Download CSV Failure', message: 'Count not save csv file to android storage', stack: e })
       }
     },
-    downloadInWeb(){
+    downloadInWeb () {
       // console.log(jsonToCSV(this.getPersons));
-      let processedPersons = processPersonsForReport(this.getPersons)
-      let csv = convertObjectToCSV(processedPersons,["name","Hall","studentId","Last Donation","Blood Group","address","roomNumber","Donation Count"],',');
-      textFileDownloadInWeb(csv,'badhan_'+this.getSearchedHall+'.csv');
-      this.setMessage('CSV downloaded');
+      const processedPersons = processPersonsForReport(this.getPersons)
+      const csv = convertObjectToCSV(processedPersons, ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count'], ',')
+      textFileDownloadInWeb(csv, 'badhan_' + this.getSearchedHall + '.csv')
+      this.setMessage('CSV downloaded')
     },
 
     onScroll (e) {
       if (typeof window === 'undefined') return
-      const top = window.pageYOffset ||   e.target.scrollTop || 0
+      const top = window.pageYOffset || e.target.scrollTop || 0
       this.showFab = top > 20
     },
-    async searchClicked() {
-      await this.$v.$touch();
+    async searchClicked () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
 
-      let inputBatch = 0;
+      let inputBatch = 0
       if (this.batch === null) {
-        this.batch = "";
+        this.batch = ''
       }
 
-      inputBatch = parseInt(this.batch);
+      inputBatch = parseInt(this.batch)
       if (this.batch.length === 0) {
-        inputBatch = "";
+        inputBatch = ''
       }
 
-      //name input validation
-      let inputName = this.processName(this.name);
+      // name input validation
+      let inputName = this.processName(this.name)
       if (inputName.length === 0) {
-        inputName = "";
+        inputName = ''
       }
 
-
-      let inputAddress = this.processName(this.address);
+      let inputAddress = this.processName(this.address)
       if (inputAddress.length === 0) {
-        inputAddress = "";
+        inputAddress = ''
       }
 
-      this.$vuetify.goTo('#results');
-      this.showFab=true;
+      this.$vuetify.goTo('#results')
+      this.showFab = true
 
       this.search({
         inputName: inputName,
@@ -466,12 +457,12 @@ export default {
         availability: this.availability,
         notAvailability: this.notAvailability,
         inputAddress: inputAddress,
-        availableToAll: this.radios === "AvailableToAll"
-      });
+        availableToAll: this.radios === 'AvailableToAll'
+      })
     },
 
-    shareClicked() {
-      let routeData = this.$router.resolve({
+    shareClicked () {
+      const routeData = this.$router.resolve({
         name: 'Home',
         query: {
           name: this.name,
@@ -481,16 +472,16 @@ export default {
           hall: this.hall,
           availability: this.availability,
           notAvailability: this.notAvailability,
-          radios:this.radios,
+          radios: this.radios
 
         }
-      });
+      })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
       this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
-        this.showTooltip = true;
+        this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
-        }, 2000);
+        }, 2000)
       }, (e) => {
       })
     },
@@ -519,43 +510,42 @@ export default {
     //   window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
     // },
 
-    clearFields() {
-      this.$v.$reset();
-      this.batch = "";
-      this.hall = halls[this.getHall];
-      this.bloodGroup = -1;
-      this.name = "";
-      this.error = "";
-      this.address = "";
-      this.hideSearchResults();
-      this.showFab=false;
+    clearFields () {
+      this.$v.$reset()
+      this.batch = ''
+      this.hall = halls[this.getHall]
+      this.bloodGroup = -1
+      this.name = ''
+      this.error = ''
+      this.address = ''
+      this.hideSearchResults()
+      this.showFab = false
     },
 
-    fabClicked(){
-      this.$vuetify.goTo(0);
-      this.showFab = false;
+    fabClicked () {
+      this.$vuetify.goTo(0)
+      this.showFab = false
     },
 
-    processName(name) {
+    processName (name) {
       if (name === null) {
-        return "";
+        return ''
       }
-      let newName = name.toLowerCase();
-      let nameWithoutWs = "";
+      const newName = name.toLowerCase()
+      let nameWithoutWs = ''
       for (let i = 0; i < newName.length; i++) {
-        let currentChar = newName.charAt(i);
-        if (currentChar < "a" || currentChar > "z") {
-          continue;
+        const currentChar = newName.charAt(i)
+        if (currentChar < 'a' || currentChar > 'z') {
+          continue
         }
-        nameWithoutWs += currentChar;
+        nameWithoutWs += currentChar
       }
-      return nameWithoutWs;
-    },
-  },
+      return nameWithoutWs
+    }
+  }
 
 }
 </script>
-
 
 <style scoped>
 

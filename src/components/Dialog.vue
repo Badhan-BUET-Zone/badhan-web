@@ -33,29 +33,29 @@
 export default {
   props: {
     message: {
-      type:String,
+      type: String,
       required: true
     },
     dialogOpened: {
-      type:Boolean,
+      type: Boolean,
       required: true
     },
     confirmed: {
-      type:Function,
+      type: Function,
       required: true
     },
     canceled: {
-      type:Function,
+      type: Function,
       required: true
-    },
+    }
 
   },
-  name: "Dialog",
-  data() {
+  name: 'Dialog',
+  data () {
     return {
-      dialog: false,
+      dialog: false
     }
-  },
+  }
 }
 </script>
 

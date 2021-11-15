@@ -25,7 +25,7 @@
     </v-card-subtitle>
 
     <v-card-text class="text--primary">
-      <div v-for="(description, index) in person.contributions">{{ description }}</div>
+      <div v-for="(description, index) in person.contributions" :key="index">{{ description }}</div>
     </v-card-text>
 
     <v-card-actions>
@@ -50,19 +50,17 @@
 </template>
 
 <script>
-import Container from "../Wrappers/Container";
-import ContainerOutlined from "../Wrappers/ContainerOutlined";
+import ContainerOutlined from '../Wrappers/ContainerOutlined'
 
 export default {
   props: ['person'],
   components: {
-    ContainerOutlined,
-    Container
+    ContainerOutlined
   },
-  name: "PersonCredit",
+  name: 'PersonCredit',
   methods: {
-    goTo(url) {
-      window.open(url, '_blank');
+    goTo (url) {
+      window.open(url, '_blank')
     }
   }
 }

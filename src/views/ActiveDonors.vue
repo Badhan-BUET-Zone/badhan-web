@@ -35,7 +35,6 @@
       </v-card-text>
     </ContainerFlat>
 
-
     <div ref="noPostFoundHolder" id="noPostFoundHolder">
 
     </div>
@@ -58,97 +57,95 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-
-import Container from "../components/Wrappers/Container";
-import ContainerFlat from "../components/Wrappers/ContainerFlat";
-import {mapActions, mapGetters} from "vuex";
-import PersonCardNew from "../components/PersonCardNew";
-import Filters from "../components/Filters";
-import {bloodGroups, halls} from "../mixins/constants";
-import PersonCardNewSkeleton from "../components/PersonCardNewSkeleton";
-import Button from "../components/UI Components/Button";
-import NoticeCard from "../components/UI Components/NoticeCard";
-import Vue from "vue";
+import PageTitle from '../components/PageTitle'
+import ContainerFlat from '../components/Wrappers/ContainerFlat'
+import { mapActions, mapGetters } from 'vuex'
+import PersonCardNew from '../components/PersonCardNew'
+import Filters from '../components/Filters'
+import { bloodGroups, halls } from '../mixins/constants'
+import PersonCardNewSkeleton from '../components/PersonCardNewSkeleton'
+import Button from '../components/UI Components/Button'
+import NoticeCard from '../components/UI Components/NoticeCard'
+import Vue from 'vue'
 export default {
-  name: "ActiveDonors",
-  components: {PersonCardNewSkeleton, Filters, PersonCardNew, PageTitle, ContainerFlat, Container, Button},
+  name: 'ActiveDonors',
+  components: { PersonCardNewSkeleton, Filters, PersonCardNew, PageTitle, ContainerFlat, Button },
   methods: {
     ...mapActions('activeDonors', ['fetchActiveDonors']),
     ...mapActions('activeDonors', ['fetchActiveDonors']),
-    async checkBoxChanged(lastValueOfCheckbox) {
+    async checkBoxChanged (lastValueOfCheckbox) {
       await this.search({
         ...this.lastSearched,
-        markedByMe: lastValueOfCheckbox,
-      });
+        markedByMe: lastValueOfCheckbox
+      })
     },
-    processName(name) {
+    processName (name) {
       if (name === null) {
-        return "";
+        return ''
       }
-      let newName = name.toLowerCase();
-      let nameWithoutWs = "";
+      const newName = name.toLowerCase()
+      let nameWithoutWs = ''
       for (let i = 0; i < newName.length; i++) {
-        let currentChar = newName.charAt(i);
-        if (currentChar < "a" || currentChar > "z") {
-          continue;
+        const currentChar = newName.charAt(i)
+        if (currentChar < 'a' || currentChar > 'z') {
+          continue
         }
-        nameWithoutWs += currentChar;
+        nameWithoutWs += currentChar
       }
-      return nameWithoutWs;
+      return nameWithoutWs
     },
 
-    createNoDonorComponent() {
-      let NoticeCardClass = Vue.extend(NoticeCard);
-      let instance = new NoticeCardClass();
+    createNoDonorComponent () {
+      const NoticeCardClass = Vue.extend(NoticeCard)
+      const instance = new NoticeCardClass()
       instance.$mount() // pass nothing
       this.$refs.noPostFoundHolder.appendChild(instance.$el)
     },
-    clearNoDonorComponent(){
-      if(this.$refs.noPostFoundHolder.children.length!==0){
-        this.$refs.noPostFoundHolder.removeChild(this.$refs.noPostFoundHolder.children[0]);
+    clearNoDonorComponent () {
+      if (this.$refs.noPostFoundHolder.children.length !== 0) {
+        this.$refs.noPostFoundHolder.removeChild(this.$refs.noPostFoundHolder.children[0])
       }
     },
-    async getAllActiveDonors() {
-      this.markedByMe=false;
-      let payloadForGetActiveDonors = {
+    async getAllActiveDonors () {
+      this.markedByMe = false
+      const payloadForGetActiveDonors = {
         bloodGroup: -1,
         hall: 5,
-        batch: "",
-        name: "",
-        address: "",
+        batch: '',
+        name: '',
+        address: '',
         isAvailable: true,
         isNotAvailable: true,
         availableToAll: true,
         markedByMe: false,
-        availableToAllOrHall: true,
+        availableToAllOrHall: true
       }
-      this.lastSearched = payloadForGetActiveDonors;
-      await this.search(payloadForGetActiveDonors);
+      this.lastSearched = payloadForGetActiveDonors
+      await this.search(payloadForGetActiveDonors)
     },
-    async searchClicked(searchQueries) {
-      let inputBatch = 0;
+    async searchClicked (searchQueries) {
+      let inputBatch = 0
 
       if (searchQueries.batch === null) {
-        searchQueries.batch = "";
+        searchQueries.batch = ''
       }
 
-      inputBatch = parseInt(searchQueries.batch);
+      inputBatch = parseInt(searchQueries.batch)
       if (searchQueries.batch.length === 0) {
-        inputBatch = "";
+        inputBatch = ''
       }
 
-      //name input validation
-      let inputName = this.processName(searchQueries.name);
+      // name input validation
+      let inputName = this.processName(searchQueries.name)
       if (inputName.length === 0) {
-        inputName = "";
+        inputName = ''
       }
 
-      let inputAddress = this.processName(searchQueries.address);
+      let inputAddress = this.processName(searchQueries.address)
       if (inputAddress.length === 0) {
-        inputAddress = "";
+        inputAddress = ''
       }
-      let payloadForGetActiveDonors = {
+      const payloadForGetActiveDonors = {
         name: inputName,
         bloodGroup: bloodGroups.indexOf(searchQueries.bloodGroup),
         batch: inputBatch.toString(),
@@ -158,29 +155,29 @@ export default {
         address: inputAddress,
         availableToAll: searchQueries.availableToAll === 'AvailableToAll',
         markedByMe: this.markedByMe,
-        availableToAllOrHall: false,
+        availableToAllOrHall: false
       }
-      this.lastSearched = payloadForGetActiveDonors;
-      this.filterListMenu = false;
-      await this.search(payloadForGetActiveDonors);
+      this.lastSearched = payloadForGetActiveDonors
+      this.filterListMenu = false
+      await this.search(payloadForGetActiveDonors)
     },
-    async search(payloadForGetActiveDonors) {
-      this.activeDonorsLoader = true;
-      this.clearNoDonorComponent();
-      await this.fetchActiveDonors(payloadForGetActiveDonors);
-      this.activeDonors = this.getActiveDonors;
-      if(this.activeDonors.length===0){
-        this.createNoDonorComponent();
+    async search (payloadForGetActiveDonors) {
+      this.activeDonorsLoader = true
+      this.clearNoDonorComponent()
+      await this.fetchActiveDonors(payloadForGetActiveDonors)
+      this.activeDonors = this.getActiveDonors
+      if (this.activeDonors.length === 0) {
+        this.createNoDonorComponent()
       }
-      this.activeDonorsLoader = false;
+      this.activeDonorsLoader = false
     }
   },
   computed: {
-    ...mapGetters('activeDonors', ['getActiveDonors']),
+    ...mapGetters('activeDonors', ['getActiveDonors'])
 
   },
-  mounted() {
-    this.getAllActiveDonors();
+  mounted () {
+    this.getAllActiveDonors()
   },
   data: () => {
     return {
@@ -188,7 +185,7 @@ export default {
       activeDonorsLoader: false,
       filterListMenu: false,
       markedByMe: false,
-      lastSearched: null,
+      lastSearched: null
     }
   }
 }

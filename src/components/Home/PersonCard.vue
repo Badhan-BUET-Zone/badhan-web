@@ -155,28 +155,28 @@
 </template>
 
 <script>
-import {departments} from "../../mixins/constants";
-import {fixBackSlash} from '../../mixins/helpers'
-import {mapActions, mapGetters} from "vuex";
+import { departments } from '../../mixins/constants'
+import { fixBackSlash } from '../../mixins/helpers'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "PersonCard",
+  name: 'PersonCard',
   props: [
-    "person"
+    'person'
   ],
   components: {},
   filters: {
-    idToDept(studentId) {
-      return departments[Number(studentId.toString().substr(2, 2))];
-    },
+    idToDept (studentId) {
+      return departments[Number(studentId.toString().substr(2, 2))]
+    }
   },
   data: function () {
     return {
-      newDonationDate: "",
-      error: "",
-      success: "",
+      newDonationDate: '',
+      error: '',
+      success: '',
 
-      //vuetify date picker
+      // vuetify date picker
       menu: false,
 
       showExtensionFlag: false,
@@ -195,111 +195,109 @@ export default {
       availableIn: null,
       studentId: null,
       lastDonation: 0,
-      comment: "(Unknown)",
-      address: "(Unknown)",
-      roomNumber: "(Unknown)",
+      comment: '(Unknown)',
+      address: '(Unknown)',
+      roomNumber: '(Unknown)',
       id: null,
       hall: null,
       commentTime: 0,
       callRecords: [],
       donationCount: 0,
 
-      markedBy: null,
+      markedBy: null
 
-    };
+    }
   },
   computed: {
     ...mapGetters('donate', ['getDonationLoaderFlag']),
-    getLastCallRecordDate() {
-      let lastDate = 0;
+    getLastCallRecordDate () {
+      let lastDate = 0
       this.callRecords.forEach((callRecord) => {
         if (callRecord.date > lastDate) {
-          lastDate = callRecord.date;
+          lastDate = callRecord.date
         }
-      });
-      return lastDate;
+      })
+      return lastDate
     },
-    getCallCountInRange() {
-      let count = 0;
-      let todayDate = new Date().getTime();
+    getCallCountInRange () {
+      let count = 0
+      const todayDate = new Date().getTime()
       this.callRecords.forEach((callRecord) => {
         if (callRecord.date > todayDate - 3 * 24 * 3600 * 1000) {
-          count++;
+          count++
         }
-      });
-      return count;
+      })
+      return count
     }
   },
-  mounted() {
-    this.setInformation(this.person);
+  mounted () {
+    this.setInformation(this.person)
   },
   methods: {
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord', ['postCallRecordFromCard']),
-    async callFromDialer() {
-      document.location.href = "tel:+" + this.phone;
-      this.newCallRecordLoader = true;
-      await this.postCallRecordFromCard({donorId: this.id});
-      this.newCallRecordLoader = false;
-      this.callRecords.push({date: new Date().getTime()})
+    async callFromDialer () {
+      document.location.href = 'tel:+' + this.phone
+      this.newCallRecordLoader = true
+      await this.postCallRecordFromCard({ donorId: this.id })
+      this.newCallRecordLoader = false
+      this.callRecords.push({ date: new Date().getTime() })
     },
-    async loadPersonDetails() {
+    async loadPersonDetails () {
       await this.$router.push({
-        path: "/home/details",
-        query: {id: this.id},
-      });
-
+        path: '/home/details',
+        query: { id: this.id }
+      })
     },
-    async donateClicked() {
-      let success = await this.donate({
+    async donateClicked () {
+      const success = await this.donate({
         donorId: this.id,
         newDonationDate: this.newDonationDate
-      });
+      })
 
       if (success) {
-        this.setAvailableIn(this.newDonationDate);
+        this.setAvailableIn(this.newDonationDate)
 
-        this.newDonationDate = "";
+        this.newDonationDate = ''
       }
-
     },
-    async expansionClicked() {
-      this.showExtensionFlag = !this.showExtensionFlag;
+    async expansionClicked () {
+      this.showExtensionFlag = !this.showExtensionFlag
     },
 
-    setAvailableIn(donationDate) {
-      let newAvailableIn =
+    setAvailableIn (donationDate) {
+      const newAvailableIn =
           120 -
           Math.round(
-              (Math.round(new Date().getTime()) -
+            (Math.round(new Date().getTime()) -
                   new Date(donationDate).getTime()) /
               (1000 * 3600 * 24)
-          );
+          )
       if (newAvailableIn > this.availableInRendered) {
-        this.availableInRendered = newAvailableIn;
+        this.availableInRendered = newAvailableIn
       }
     },
 
-    setInformation(person) {
-      this.setAvailableIn(person.lastDonation);
-      this.phone = person.phone;
-      this.name = person.name;
-      this.hall = person.hall;
-      this.bloodGroup = person.bloodGroup;
-      this.studentId = person.studentId;
-      this.lastDonation = person.lastDonation;
-      this.comment = fixBackSlash(person.comment);
-      this.address = person.address;
-      this.roomNumber = person.roomNumber;
-      this.id = person._id;
-      this.commentTime = person.commentTime;
-      this.callRecords = person.callRecords;
-      this.donationCount = person.donationCountOptimized;
-      this.markedBy = person.markedBy;
-    },
+    setInformation (person) {
+      this.setAvailableIn(person.lastDonation)
+      this.phone = person.phone
+      this.name = person.name
+      this.hall = person.hall
+      this.bloodGroup = person.bloodGroup
+      this.studentId = person.studentId
+      this.lastDonation = person.lastDonation
+      this.comment = fixBackSlash(person.comment)
+      this.address = person.address
+      this.roomNumber = person.roomNumber
+      this.id = person._id
+      this.commentTime = person.commentTime
+      this.callRecords = person.callRecords
+      this.donationCount = person.donationCountOptimized
+      this.markedBy = person.markedBy
+    }
 
-  },
-};
+  }
+}
 </script>
 
 <style scoped>

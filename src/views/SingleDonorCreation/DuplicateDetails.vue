@@ -5,16 +5,14 @@
   </v-card>
 </template>
 <script>
-import ShareProfileButton from "../../components/ShareProfileButton";
-import PersonDetails from "../../components/Home/PersonDetails";
-import PageTitle from "../../components/PageTitle";
+import PersonDetails from '../../components/Home/PersonDetails'
+import PageTitle from '../../components/PageTitle'
 
 export default {
-  name: "DuplicateDetails",
+  name: 'DuplicateDetails',
   components: {
     PageTitle,
-    ShareProfileButton,
-    PersonDetails,
+    PersonDetails
   },
   data: () => {
     return {

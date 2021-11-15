@@ -66,7 +66,6 @@
               :error-messages="batchErrors"
           ></v-text-field>
 
-
           <!--        Input field for hall-->
           <v-text-field
               rounded
@@ -146,15 +145,15 @@
 </template>
 
 <script>
-import HelpTooltip from "../components/UI Components/HelpTooltip";
-import {bloodGroups, halls} from "../mixins/constants";
-import {maxLength, minLength, numeric, required} from "vuelidate/lib/validators";
-import {mapGetters} from "vuex";
+import HelpTooltip from '../components/UI Components/HelpTooltip'
+import { bloodGroups, halls } from '../mixins/constants'
+import { maxLength, minLength, numeric, required } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "Filters",
-  props:{
-    searchClicked:{
+  name: 'Filters',
+  props: {
+    searchClicked: {
       type: Function,
       required: true
     }
@@ -163,20 +162,20 @@ export default {
     HelpTooltip
   },
   methods: {
-    clearFields() {
-      this.$v.$reset();
-      this.batch = "";
-      this.hall = halls[this.getHall];
-      this.bloodGroup = -1;
-      this.name = "";
-      this.error = "";
-      this.address = "";
-      this.showFab = false;
+    clearFields () {
+      this.$v.$reset()
+      this.batch = ''
+      this.hall = halls[this.getHall]
+      this.bloodGroup = -1
+      this.name = ''
+      this.error = ''
+      this.address = ''
+      this.showFab = false
     },
-    async searchClickInsideComponent(){
-      await this.$v.$touch();
+    async searchClickInsideComponent () {
+      await this.$v.$touch()
       if (this.$v.$anyError) {
-        return;
+        return
       }
       this.searchClicked({
         name: this.name,
@@ -188,7 +187,7 @@ export default {
         address: this.address,
         availableToAll: this.radios
       })
-    },
+    }
   },
   validations: () => {
     return {
@@ -199,25 +198,26 @@ export default {
       },
       hall: {
         required,
-        permission(hall) {
-          //COVID DATABASE
-          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3);
+        permission (hall) {
+          // COVID DATABASE
+          return !(this.getHall !== this.halls.indexOf(hall) && this.halls.indexOf(hall) !== 7 && this.halls.indexOf(hall) !== 8 && this.getDesignation !== 3)
         }
-      },
+      }
     }
   },
   computed: {
     ...mapGetters(['getDesignation', 'getHall']),
-    availableHalls() {
+    availableHalls () {
       if (this.getDesignation !== null) {
         if (this.getDesignation === 3) {
-          return halls.slice(0, 7);
+          return halls.slice(0, 7)
         } else {
-          return [halls[this.getHall]];
+          return [halls[this.getHall]]
         }
       }
+      return halls
     },
-    batchErrors() {
+    batchErrors () {
       const errors = []
       if (!this.$v.batch.$dirty) return errors
       !this.$v.batch.minLength && errors.push('Batch number must be of 2 digits')
@@ -225,28 +225,28 @@ export default {
       !this.$v.batch.numeric && errors.push('Batch number must be numeric')
       return errors
     },
-    hallErrors() {
+    hallErrors () {
       const errors = []
       if (!this.$v.hall.$dirty) return errors
-      !this.$v.hall.required && errors.push('Hall is required');
+      !this.$v.hall.required && errors.push('Hall is required')
       !this.$v.hall.permission && errors.push('You are not allowed to create donor for this hall')
       return errors
-    },
+    }
   },
   data: function () {
     return {
-      name: "",
+      name: '',
       bloodGroup: -1,
-      batch: "",
-      address: "",
+      batch: '',
+      address: '',
       hall: halls[this.$store.getters.getHall],
       availability: true,
       notAvailability: false,
 
-      //GUI flags
+      // GUI flags
       filterShown: true,
 
-      //imported constants
+      // imported constants
       halls,
       bloodGroups,
 
@@ -257,9 +257,9 @@ export default {
       showFab: false,
 
       downloadCSVMessageFlag: false,
-      isSearchLoading: false,
-    };
-  },
+      isSearchLoading: false
+    }
+  }
 }
 </script>
 

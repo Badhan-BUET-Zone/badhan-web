@@ -1,35 +1,34 @@
 const state = {
-    messageFlag: false,
-    message: null,
-};
+  messageFlag: false,
+  message: null
+}
 
 const getters = {
-    getMessage(state){
-        return state.message
-    },
-    getNotificationFlag(state){
-        return state.messageFlag;
-    },
-};
+  getMessage (state) {
+    return state.message
+  },
+  getNotificationFlag (state) {
+    return state.messageFlag
+  }
+}
 const mutations = {
-    setMessage(state, payload){
-        state.message = payload;
-        state.messageFlag = true;
-    },
-    setMessageFlag(state,payload){
-        state.messageFlag = payload;
-    },
-};
+  setMessage (state, payload) {
+    state.message = payload
+    state.messageFlag = true
+  },
+  setMessageFlag (state, payload) {
+    state.messageFlag = payload
+  }
+}
 const actions = {
 
-};
-
+}
 
 export default {
-    state,
-    actions,
-    getters,
-    mutations,
-    namespaced: true,
+  state,
+  actions,
+  getters,
+  mutations,
+  namespaced: true
 
 }

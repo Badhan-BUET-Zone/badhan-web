@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import ArchivedPerson from "./ArchivedPerson";
+import ArchivedPerson from './ArchivedPerson'
 export default {
-    name: "ArchivedPersonList",
-    components:{
-        ArchivedPerson
-    }
+  name: 'ArchivedPersonList',
+  components: {
+    ArchivedPerson
+  }
 }
 </script>
 

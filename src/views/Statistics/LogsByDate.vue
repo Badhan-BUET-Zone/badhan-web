@@ -22,76 +22,59 @@
   </div>
 </template>
 
-
 <script>
-import PageTitle from "../../components/PageTitle";
-import {mapActions, mapGetters} from "vuex";
-import LogObject from "../../components/Statistics/LogObject";
-import {halls} from "../../mixins/constants";
-import {handleGETLogs} from "../../api";
-import DateLog from "../../components/Statistics/DateLog";
-import SkeletonDateLog from "../../components/Statistics/SkeletonDateLog";
-import Container from "../../components/Wrappers/Container";
-import ContainerFlat from "../../components/Wrappers/ContainerFlat";
-import Dialog from "../../components/Dialog";
+import { mapActions, mapGetters } from 'vuex'
+import { handleGETLogs } from '../../api'
+import DateLog from '../../components/Statistics/DateLog'
+import SkeletonDateLog from '../../components/Statistics/SkeletonDateLog'
+import Container from '../../components/Wrappers/Container'
 
 export default {
-  name: "LogsByDate",
-  components: {Dialog, ContainerFlat, Container, PageTitle, LogObject, DateLog, SkeletonDateLog},
+  name: 'LogsByDate',
+  components: { Container, DateLog, SkeletonDateLog },
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
-    ...mapGetters(['getDesignation']),
+    ...mapGetters(['getDesignation'])
 
   },
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions('statistics', ['fetchStatistics', 'removeAllLogs', 'getFilteredLogs', 'fetchAllVolunteers']),
-    deleteLogsPrompt() {
-      this.deleteLogsPromptFlag = true;
-    },
-    deleteLogsCanceled() {
-      this.deleteLogsPromptFlag = false;
-    },
-    async deleteLogsConfirmed() {
-      this.deleteLogsPromptFlag = false;
-      await this.removeAllLogs();
-      this.logCountPerDay = [];
-    },
 
-    async showStats() {
-      this.fetchStatistics();
-      this.statsShown = true;
-    },
+    async showStats () {
+      this.fetchStatistics()
+      this.statsShown = true
+    }
   },
-  async mounted() {
+  async mounted () {
     // this.notifyInfo('Page under construction');
     if (this.getDesignation !== 3) {
-      this.$router.push({name: 'NotFound'});
-      return;
+      this.$router.push({ name: 'NotFound' })
+      return
     }
 
-    this.logCountLoader = true;
-    let logs = await handleGETLogs();
-    this.logCountLoader = false;
-    if (!logs) return;
-    this.logCountPerDay = logs;
+    this.logCountLoader = true
+    const logs = await handleGETLogs()
+    this.logCountLoader = false
+    if (!logs) return
+    this.logCountPerDay = logs
   },
-  data() {
+  data () {
     return {
       tabs: null,
       deleteLogsPromptFlag: false,
       headers: [
-        {text: 'Time', value: 'date'},
-        {text: 'Name', value: 'donorId.name'},
-        {text: 'Hall', value: 'donorId.hall'},
-        {text: "Details", value: 'details'},
-        {text: "Operation", value: 'operation'}
+        { text: 'Time', value: 'date' },
+        { text: 'Name', value: 'donorId.name' },
+        { text: 'Hall', value: 'donorId.hall' },
+        { text: 'Details', value: 'details' },
+        { text: 'Operation', value: 'operation' }
       ],
       volunteerListHeaders: [
-        {text: 'Name', value: 'name'},
-        {text: 'Hall', value: 'hall'},
-        {text: 'Student ID', value: 'studentId'},
-        {text: 'Activity Count', value: 'logCount'}
+        { text: 'Name', value: 'name' },
+        { text: 'Hall', value: 'hall' },
+        { text: 'Student ID', value: 'studentId' },
+        { text: 'Activity Count', value: 'logCount' }
       ],
 
       statsShown: false,
@@ -99,10 +82,10 @@ export default {
       volunteersShown: false,
 
       logCountLoader: false,
-      logCountPerDay: [],
+      logCountPerDay: []
 
     }
-  },
+  }
 
 }
 </script>

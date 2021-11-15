@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import Container from "../components/Wrappers/Container";
+import PageTitle from '../components/PageTitle'
+import Container from '../components/Wrappers/Container'
 
 export default {
-  name: "Release.vue",
+  name: 'Release.vue',
   components: {
     Container,
     PageTitle

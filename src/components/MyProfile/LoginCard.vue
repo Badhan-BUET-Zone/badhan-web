@@ -17,78 +17,78 @@
 </template>
 
 <script>
-import ContainerOutlined from "../Wrappers/ContainerOutlined";
-import Button from "../UI Components/Button";
+import ContainerOutlined from '../Wrappers/ContainerOutlined'
+import Button from '../UI Components/Button'
 export default {
-  name: "LoginCard",
-  props:{
+  name: 'LoginCard',
+  props: {
     click: {
       type: Function,
-      required: true,
+      required: true
     },
-    _id:{
+    _id: {
       type: String,
-      required: true,
+      required: true
     },
     os: {
       type: String,
-      required: true,
+      required: true
     },
     ipAddress: {
       type: String,
-      required: true,
+      required: true
     },
     browserFamily: {
       type: String,
-      required: true,
+      required: true
     },
     device: {
       type: String,
-      required: true,
+      required: true
     },
     showDelete: {
       type: Boolean,
-      required: true,
+      required: true
     }
   },
-  computed:{
-    loginInformation(){
-      let infoString = "";
-      let device = this.device.split(' ')[0];
-      let os = this.os.split(' ')[0];
-      if(os!=='Other'){
-        infoString += "OS: "+os+"\n";
+  computed: {
+    loginInformation () {
+      let infoString = ''
+      const device = this.device.split(' ')[0]
+      const os = this.os.split(' ')[0]
+      if (os !== 'Other') {
+        infoString += 'OS: ' + os + '\n'
       }
-      if(device!=='Other'){
-        infoString += "Device: "+device+"\n";
+      if (device !== 'Other') {
+        infoString += 'Device: ' + device + '\n'
       }
-      if(this.ipAddress!=="::1" && this.ipAddress!=="0.0.0.0"){
-        infoString += "IP Address: "+this.ipAddress+ "\n";
+      if (this.ipAddress !== '::1' && this.ipAddress !== '0.0.0.0') {
+        infoString += 'IP Address: ' + this.ipAddress + '\n'
       }
-      if(this.browserFamily!=="Other" ){
-        if(this.browserFamily==="Chrome Mobile WebView"){
-          infoString += "Client App: Badhan App\n";
-        }else{
-          infoString += "Client App: "+this.browserFamily+"\n";
+      if (this.browserFamily !== 'Other') {
+        if (this.browserFamily === 'Chrome Mobile WebView') {
+          infoString += 'Client App: Badhan App\n'
+        } else {
+          infoString += 'Client App: ' + this.browserFamily + '\n'
         }
       }
-      if(infoString===""){
-        infoString = "Unknown device";
+      if (infoString === '') {
+        infoString = 'Unknown device'
       }
-      return infoString;
+      return infoString
     }
   },
-  components: {Button, ContainerOutlined},
+  components: { Button, ContainerOutlined },
   data: () => {
     return {
-      deleteLoaderFlag: false,
+      deleteLoaderFlag: false
     }
   },
-  methods:{
-    async deleteClicked(){
-      this.deleteLoaderFlag = true;
-      await this.click(this._id);
-      this.deleteLoaderFlag = false;
+  methods: {
+    async deleteClicked () {
+      this.deleteLoaderFlag = true
+      await this.click(this._id)
+      this.deleteLoaderFlag = false
     }
   }
 }

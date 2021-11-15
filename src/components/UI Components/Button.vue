@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: "Button",
+  name: 'Button',
   props: {
     color: {
       type: String,
@@ -15,25 +15,25 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     loading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     click: {
       type: Function,
-      required: true,
+      required: true
     },
     text: {
       type: String,
-      required: true,
+      required: true
     },
     icon: {
       type: String,
-      required: true,
+      required: true
     }
-  },
+  }
 }
 </script>
 

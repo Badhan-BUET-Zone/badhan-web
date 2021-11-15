@@ -39,7 +39,7 @@
           </v-card-text>
           <v-card-text>
             <v-row>
-              <v-col v-for="(login,index) in logins" :key="login._id" cols="12" sm="6">
+              <v-col v-for="(login) in logins" :key="login._id" cols="12" sm="6">
                 <LoginCard
                     :show-delete="true"
                     :click="deleteLogin"
@@ -71,80 +71,78 @@
 </template>
 
 <script>
-import PersonDetails from "../components/Home/PersonDetails";
-import {mapActions, mapGetters} from "vuex";
-import PageTitle from "../components/PageTitle";
-import ShareProfileButton from "../components/ShareProfileButton";
-import Container from "../components/Wrappers/Container";
-import ldb from "../localDatabase";
-import Button from "../components/UI Components/Button";
-import ContainerOutlined from "../components/Wrappers/ContainerOutlined";
-import LoginCard from "../components/MyProfile/LoginCard";
-import {handleGETLogins, handleDELETELogins} from "../api";
+import PersonDetails from '../components/Home/PersonDetails'
+import { mapActions, mapGetters } from 'vuex'
+import PageTitle from '../components/PageTitle'
+import ShareProfileButton from '../components/ShareProfileButton'
+import Container from '../components/Wrappers/Container'
+import ldb from '../localDatabase'
+import Button from '../components/UI Components/Button'
+import LoginCard from '../components/MyProfile/LoginCard'
+import { handleGETLogins, handleDELETELogins } from '../api'
 
 export default {
-  name: "MyProfile",
+  name: 'MyProfile',
   data: () => {
     return {
       showTooltip: false,
       getLoginsLoader: false,
       logins: [],
       loginsFetched: false,
-      currentLogin: null,
+      currentLogin: null
     }
   },
   computed: {
     ...mapGetters(['getID']),
     darkTheme: {
       // getter
-      get() {
-        return this.$vuetify.theme.dark;
+      get () {
+        return this.$vuetify.theme.dark
       },
       // setter
-      set(newValue) {
+      set (newValue) {
         this.$vuetify.theme.dark = newValue
         ldb.theme.save(newValue)
       }
-    },
+    }
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
-    async getLogins() {
-      this.getLoginsLoader = true;
-      let response = await handleGETLogins();
-      this.getLoginsLoader = false;
-      if (response.status !== 200) return;
-      this.logins = response.data.logins;
-      this.currentLogin = response.data.currentLogin;
-      this.loginsFetched = true;
+    async getLogins () {
+      this.getLoginsLoader = true
+      const response = await handleGETLogins()
+      this.getLoginsLoader = false
+      if (response.status !== 200) return
+      this.logins = response.data.logins
+      this.currentLogin = response.data.currentLogin
+      this.loginsFetched = true
     },
-    async deleteLogin(tokenId) {
-      let response = await handleDELETELogins({tokenId});
-      if (response.status !== 200) return;
-      this.logins = this.logins.filter(login => login._id !== tokenId);
-      this.notifySuccess(response.data.message);
+    async deleteLogin (tokenId) {
+      const response = await handleDELETELogins({ tokenId })
+      if (response.status !== 200) return
+      this.logins = this.logins.filter(login => login._id !== tokenId)
+      this.notifySuccess(response.data.message)
     },
-    shareClicked() {
-      let routeData = this.$router.resolve({
+    shareClicked () {
+      const routeData = this.$router.resolve({
         name: 'Details',
         query: {
-          id: this.getID,
+          id: this.getID
         }
-      });
+      })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
       this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
-        this.showTooltip = true;
+        this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
-        }, 2000);
+        }, 2000)
       }, (e) => {
       })
-    },
+    }
   },
 
   components: {
     LoginCard,
-    ContainerOutlined,
     Button,
     Container,
     ShareProfileButton,

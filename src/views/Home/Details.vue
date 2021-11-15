@@ -6,16 +6,14 @@
 </template>
 
 <script>
-import PersonDetails from "../../components/Home/PersonDetails";
-import ShareProfileButton from "../../components/ShareProfileButton";
-import PageTitle from "../../components/PageTitle";
+import PersonDetails from '../../components/Home/PersonDetails'
+import PageTitle from '../../components/PageTitle'
 
 export default {
-  name: "Details",
+  name: 'Details',
   components: {
     PageTitle,
-    ShareProfileButton,
-    PersonDetails,
+    PersonDetails
   },
   data: () => {
     return {

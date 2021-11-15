@@ -8,29 +8,28 @@
 </template>
 
 <script>
-import PageTitle from "../components/PageTitle";
-import {mapActions, mapGetters} from "vuex";
-import SignInDialog from "../components/SignInDialog";
-import Container from "../components/Wrappers/Container";
+import PageTitle from '../components/PageTitle'
+import { mapActions, mapGetters } from 'vuex'
+import Container from '../components/Wrappers/Container'
 
 export default {
-  name: "Redirection",
+  name: 'Redirection',
   computed: {
-    ...mapGetters(['getIsLoggedIn', 'getSignInLoaderFlag','getToken']),
+    ...mapGetters(['getIsLoggedIn', 'getSignInLoaderFlag', 'getToken'])
   },
   components: {
     Container,
-    PageTitle,SignInDialog
+    PageTitle
   },
-  methods:{
+  methods: {
     ...mapActions(['redirectionLogin']),
-    ...mapActions('notification',['notifyInfo'])
+    ...mapActions('notification', ['notifyInfo'])
   },
-  async mounted() {
-    if(!this.getIsLoggedIn && !await this.redirectionLogin(this.$route.query.token)){
+  async mounted () {
+    if (!this.getIsLoggedIn && !await this.redirectionLogin(this.$route.query.token)) {
       await this.$router.push('/')
-    }else{
-      await this.$router.push(this.$route.query.payload);
+    } else {
+      await this.$router.push(this.$route.query.payload)
     }
   }
 }
