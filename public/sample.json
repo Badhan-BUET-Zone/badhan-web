@@ -266,7 +266,7 @@
         ]
     },
     "frontendSettings": {
-        "version": "4.6.0",
+        "version": "4.6.1",
         "backendBaseURL": "https://badhan-web.herokuapp.com",
         "backendTestBaseURL": "https://badhan-web-test.herokuapp.com"
     }
