@@ -1,4 +1,4 @@
-import { handleGETDonors } from '/src/api'
+import { handleGETDonors } from '../../api'
 
 const state = {
   // SEE DONOR DETAILS

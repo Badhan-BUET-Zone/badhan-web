@@ -70,7 +70,7 @@ const mutations = {
 
     const groupedPersons = persons.reduce(function (obj, person) {
       const batch = person.studentId.substr(0, 2)
-      if (!obj.hasOwnProperty(batch)) {
+      if (!Object.prototype.hasOwnProperty.call(obj, batch)) {
         obj[batch] = []
       }
       obj[batch].push(person)
