@@ -398,7 +398,11 @@ export default {
     ...mapMutations('messageBox', ['setMessage']),
     async downloadInAndroid () {
       const processedPersons = processPersonsForReport(this.getPersons)
-      const csv = convertObjectToCSV(processedPersons, ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count'], ',')
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
+      if (this.getDesignation === 3) {
+        keys.push('phone')
+      }
+      const csv = convertObjectToCSV(processedPersons, keys, ',')
       try {
         await downloadTextFile(csv, 'badhan_' + this.getSearchedHall + '.csv')
         this.setMessage('CSV downloaded to Documents folder')
@@ -407,9 +411,12 @@ export default {
       }
     },
     downloadInWeb () {
-      // console.log(jsonToCSV(this.getPersons));
       const processedPersons = processPersonsForReport(this.getPersons)
-      const csv = convertObjectToCSV(processedPersons, ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count'], ',')
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
+      if (this.getDesignation === 3) {
+        keys.push('phone')
+      }
+      const csv = convertObjectToCSV(processedPersons, keys, ',')
       textFileDownloadInWeb(csv, 'badhan_' + this.getSearchedHall + '.csv')
       this.setMessage('CSV downloaded')
     },
