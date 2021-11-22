@@ -54,6 +54,22 @@
               </v-card-actions>
             </v-card>
           </v-menu>
+          <v-spacer>
+          </v-spacer>
+            <v-tooltip
+              v-model="showTooltip"
+              top
+            >
+              <template v-slot:activator="{}">
+                <v-btn color="secondary" icon @click="shareClicked">
+                  <v-icon>
+                    mdi-share
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span>Donor copied to clipboard</span>
+            </v-tooltip>
+
         </v-card-title>
         <v-card-text class="mb-5">
           <v-chip color="secondary" class="mr-1 mb-1">
