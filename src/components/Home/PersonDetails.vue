@@ -54,8 +54,6 @@
               </v-card-actions>
             </v-card>
           </v-menu>
-          <v-spacer>
-          </v-spacer>
             <v-tooltip
               v-model="showTooltip"
               top
