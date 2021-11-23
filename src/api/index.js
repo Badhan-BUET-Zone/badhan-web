@@ -270,9 +270,9 @@ const handleGETDonors = async (payload) => {
     return e.response
   }
 }
-const handleGETSearchOptimized = async (payload) => {
+const handleGETSearchV3 = async (payload) => {
   try {
-    return await badhanAxios.get('/search/v2', { params: payload })
+    return await badhanAxios.get('/search/v3', { params: payload })
   } catch (e) {
     return e.response
   }
@@ -478,7 +478,7 @@ export {
   handlePOSTDonors,
   handlePOSTDonations,
   handleGETDonors,
-  handleGETSearchOptimized,
+  handleGETSearchV3,
   handleGETAppVersion,
   handleGETStatistics,
   handleDELETELogs,

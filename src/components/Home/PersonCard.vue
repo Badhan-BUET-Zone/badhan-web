@@ -69,12 +69,12 @@
             <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{
                 commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString()
               }} )<br></span>
-              <span><b>Last called: </b>
-              <span v-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>
-              <span v-else>Unknown</span>
-              <br>
-            </span>
-              <span>Called {{ getCallCountInRange }} times in last 3 days</span>
+<!--              <span><b>Last called: </b>-->
+<!--              <span v-if="getLastCallRecordDate!==0">{{ new Date(getLastCallRecordDate).toLocaleString() }}</span>-->
+<!--              <span v-else>Unknown</span>-->
+<!--              <br>-->
+<!--            </span>-->
+              <span>Called {{ callRecordCount }} times in last 3 days</span>
             </v-col>
           </v-row>
           <div class="mt-1">
@@ -201,7 +201,7 @@ export default {
       id: null,
       hall: null,
       commentTime: 0,
-      callRecords: [],
+      callRecordCount: 0,
       donationCount: 0,
 
       markedBy: null
@@ -209,26 +209,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('donate', ['getDonationLoaderFlag']),
-    getLastCallRecordDate () {
-      let lastDate = 0
-      this.callRecords.forEach((callRecord) => {
-        if (callRecord.date > lastDate) {
-          lastDate = callRecord.date
-        }
-      })
-      return lastDate
-    },
-    getCallCountInRange () {
-      let count = 0
-      const todayDate = new Date().getTime()
-      this.callRecords.forEach((callRecord) => {
-        if (callRecord.date > todayDate - 3 * 24 * 3600 * 1000) {
-          count++
-        }
-      })
-      return count
-    }
+    ...mapGetters('donate', ['getDonationLoaderFlag'])
   },
   mounted () {
     this.setInformation(this.person)
@@ -241,7 +222,8 @@ export default {
       this.newCallRecordLoader = true
       await this.postCallRecordFromCard({ donorId: this.id })
       this.newCallRecordLoader = false
-      this.callRecords.push({ date: new Date().getTime() })
+      // this.callRecords.push({ date: new Date().getTime() })
+      this.callRecordCount++
     },
     async loadPersonDetails () {
       await this.$router.push({
@@ -291,9 +273,9 @@ export default {
       this.roomNumber = person.roomNumber
       this.id = person._id
       this.commentTime = person.commentTime
-      this.callRecords = person.callRecords
-      this.donationCount = person.donationCountOptimized
-      this.markedBy = person.markedBy
+      this.callRecordCount = person.callRecordCount
+      this.donationCount = person.donationCount
+      this.markedBy = person.marker.name
     }
 
   }

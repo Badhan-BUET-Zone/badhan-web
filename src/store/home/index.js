@@ -1,4 +1,4 @@
-import { handleGETSearchOptimized } from '../../api'
+import { handleGETSearchV3 } from '../../api'
 import { bloodGroups, halls } from '../../mixins/constants'
 import donate from '../../store/home/donate'
 
@@ -126,7 +126,7 @@ const actions = {
     }
 
     commit('searchLoaderFlagOn')
-    const response = await handleGETSearchOptimized(sendData)
+    const response = await handleGETSearchV3(sendData)
     commit('searchLoaderFlagOff')
     if (response.status !== 200) {
       return false
