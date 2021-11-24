@@ -398,8 +398,9 @@ export default {
     ...mapMutations('messageBox', ['setMessage']),
     async downloadInAndroid () {
       const processedPersons = processPersonsForReport(this.getPersons)
-      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count', 'comment']
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
       if (this.getDesignation === 3) {
+        keys.push('comment')
         keys.push('phone')
       }
       const csv = convertObjectToCSV(processedPersons, keys, ',')
@@ -412,8 +413,9 @@ export default {
     },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)
-      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count', 'comment']
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
       if (this.getDesignation === 3) {
+        keys.push('comment')
         keys.push('phone')
       }
       const csv = convertObjectToCSV(processedPersons, keys, ',')
