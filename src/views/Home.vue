@@ -398,7 +398,7 @@ export default {
     ...mapMutations('messageBox', ['setMessage']),
     async downloadInAndroid () {
       const processedPersons = processPersonsForReport(this.getPersons)
-      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count', 'comment']
       if (this.getDesignation === 3) {
         keys.push('phone')
       }
@@ -412,7 +412,7 @@ export default {
     },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)
-      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
+      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count', 'comment']
       if (this.getDesignation === 3) {
         keys.push('phone')
       }
