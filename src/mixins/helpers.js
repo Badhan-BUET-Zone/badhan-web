@@ -15,7 +15,7 @@ export const convertObjectToCSV = (objArray, keys, delimiter) => {
   for (let i = 0; i < array.length; i++) {
     let line = ''
     keys.forEach((key) => {
-      line += array[i][key] + delimiter
+      line += (array[i][key] ? (String(array[i][key]).replace(',', ';')) : '') + delimiter
     })
     str += line + '\r\n'
   }
