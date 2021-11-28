@@ -15,7 +15,7 @@ export const convertObjectToCSV = (objArray, keys, delimiter) => {
   for (let i = 0; i < array.length; i++) {
     let line = ''
     keys.forEach((key) => {
-      line += (array[i][key] ? (String(array[i][key]).replace(',', ';')) : '') + delimiter
+      line += (array[i][key] !== undefined ? (String(array[i][key]).replace(/,|;|\n/gi, '.')) : '') + delimiter
     })
     str += line + '\r\n'
   }
@@ -30,7 +30,7 @@ export const textFileDownloadInWeb = (text, fileName) => {
 export const processPersonsForReport = (persons) => {
   persons.forEach((person) => {
     person['Blood Group'] = bloodGroups[person.bloodGroup]
-    person['Donation Count'] = person.donationCountOptimized
+    person['Donation Count'] = person.donationCount
     person.Hall = halls[person.hall]
     const date = new Date(person.lastDonation)
     person['Last Donation'] = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
