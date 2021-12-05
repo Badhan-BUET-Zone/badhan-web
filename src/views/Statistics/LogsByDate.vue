@@ -11,6 +11,17 @@
           </v-row>
         </v-card-text>
         <v-card-text v-else :key="'logLoaded'">
+          <v-sparkline
+            :value="valuesForSparkLine"
+            color="rgba(255, 0, 0, 1)"
+            height="100"
+            stroke-linecap="round"
+            smooth
+          >
+<!--            <template v-slot:label="item">-->
+<!--              {{ item.value }}-->
+<!--            </template>-->
+          </v-sparkline>
           <v-row>
             <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="i">
               <DateLog :log-count="logCount" :key="i"></DateLog>
@@ -58,6 +69,9 @@ export default {
     this.logCountLoader = false
     if (!logs) return
     this.logCountPerDay = logs
+
+    this.labelsForSparkLine = logs.map(a => a.dateString.split('-')[2])
+    this.valuesForSparkLine = logs.map(a => a.count)
   },
   data () {
     return {
@@ -82,8 +96,9 @@ export default {
       volunteersShown: false,
 
       logCountLoader: false,
-      logCountPerDay: []
-
+      logCountPerDay: [],
+      valuesForSparkLine: [],
+      labelsForSparkLine: []
     }
   }
 
