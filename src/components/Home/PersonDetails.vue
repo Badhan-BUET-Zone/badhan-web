@@ -372,9 +372,11 @@
                 <transition name="slide-fade-down">
                   <v-card-text v-if="!callRecordsCollapseFlag">
                     <p v-if="callRecords.length===0">No call history</p>
-                    <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord"
-                                    :deleted="callRecordDeleted">
-                    </CallRecordCard>
+                    <transition-group name="slide-fade-down" tag="p">
+                      <CallRecordCard v-for="callRecord in callRecords" :key="callRecord._id" :call-record="callRecord"
+                                      :deleted="callRecordDeleted">
+                      </CallRecordCard>
+                    </transition-group>
                   </v-card-text>
                 </transition>
               </ContainerOutlined>
@@ -386,13 +388,17 @@
                 <v-card-text>
                   <p class="mt-2 h6 font-weight-bold">Existing Public Contacts:</p>
                   <p v-if="publicContacts.length===0">This contact is not published for the public to see</p>
+                  <transition-group name="slide-fade-down" tag="p">
                   <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts"
                           :key="publicContact._id"
                           color="secondary" close
                           @click:close="()=>{deletePublicContactClicked(publicContact._id)}">
                     {{ publicContact.bloodGroup | getBloodGroupString }}
                   </v-chip>
-                  <v-progress-linear indeterminate v-if="deletePublicContactLoader"></v-progress-linear>
+                  </transition-group>
+                  <transition name="slide-fade-down" mode="out-in">
+                    <v-progress-linear indeterminate v-if="deletePublicContactLoader"></v-progress-linear>
+                  </transition>
                   <p class="mt-4 h6 font-weight-bold">New Public Contact</p>
                   <v-select
                     rounded
