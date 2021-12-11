@@ -16,17 +16,17 @@
       <Container v-else :key="'donorLoaded'">
         <v-card-title>{{ name }}
           <v-menu
-              v-model="activeDonorMenu"
-              :close-on-content-click="false"
-              :nudge-width="200"
-              offset-x
+            v-model="activeDonorMenu"
+            :close-on-content-click="false"
+            :nudge-width="200"
+            offset-x
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                  color="primary"
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
+                color="primary"
+                icon
+                v-bind="attrs"
+                v-on="on"
               >
                 <v-icon v-if="markedBy">
                   mdi-bookmark
@@ -41,32 +41,33 @@
               <v-card-text>
                 <span v-if="markedBy">Marked by: {{ markedBy }}</span>
                 <v-switch
-                    :disabled="activeDonorLoader"
-                    :loading="activeDonorLoader"
-                    v-model="markedAsActiveDonor"
-                    @change="markAsActiveDonorHandler"
-                    label="Active donor"
-                    dense>
+                  :disabled="activeDonorLoader"
+                  :loading="activeDonorLoader"
+                  v-model="markedAsActiveDonor"
+                  @change="markAsActiveDonorHandler"
+                  label="Active donor"
+                  dense>
                 </v-switch>
-                <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.activeDonorMenu=false;}" :color="'secondary'"></Button>
+                <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.activeDonorMenu=false;}"
+                        :color="'secondary'"></Button>
               </v-card-text>
               <v-card-actions>
               </v-card-actions>
             </v-card>
           </v-menu>
-            <v-tooltip
-              v-model="showTooltip"
-              top
-            >
-              <template v-slot:activator="{}">
-                <v-btn color="secondary" icon @click="shareClicked">
-                  <v-icon>
-                    mdi-share
-                  </v-icon>
-                </v-btn>
-              </template>
-              <span>Donor copied to clipboard</span>
-            </v-tooltip>
+          <v-tooltip
+            v-model="showTooltip"
+            top
+          >
+            <template v-slot:activator="{}">
+              <v-btn color="secondary" icon @click="shareClicked">
+                <v-icon>
+                  mdi-share
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>Donor copied to clipboard</span>
+          </v-tooltip>
 
         </v-card-title>
         <v-card-text class="mb-5">
@@ -76,7 +77,7 @@
             <span v-else-if="designation === 2">Hall Admin</span>
             <span v-else>Super Admin</span>
           </v-chip>
-          <v-chip class="mr-1 mb-1" color="secondary">{{ donationCount }} Donations</v-chip>
+          <v-chip class="mr-1 mb-1" color="secondary">{{ donationList.length }} Donations</v-chip>
           <v-chip class="mr-1 mb-1" v-if="availableIn > 0" color="warning">{{ availableIn }} Days remaining</v-chip>
           <v-chip class="mr-1 mb-1" dark v-else color="green">Available</v-chip>
           <br>
@@ -105,12 +106,12 @@
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
                       <v-text-field
-                          :hint="(designation!==0 && !$isMe(id))?'You cannot edit this email':'Password Recovery Email'"
-                          :persistent-hint="(designation!==0 && !$isMe(id))" rounded dense outlined :label="'Email'"
-                          v-model="email"
-                          :disabled="!isDetailsEditable || (designation!==0 && !$isMe(id)) "
-                          @blur="$v.email.$touch()"
-                          :error-messages="emailErrors">
+                        :hint="(designation!==0 && !$isMe(id))?'You cannot edit this email':'Password Recovery Email'"
+                        :persistent-hint="(designation!==0 && !$isMe(id))" rounded dense outlined :label="'Email'"
+                        v-model="email"
+                        :disabled="!isDetailsEditable || (designation!==0 && !$isMe(id)) "
+                        @blur="$v.email.$touch()"
+                        :error-messages="emailErrors">
                       </v-text-field>
                       <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!isDetailsEditable"></v-select>
@@ -193,8 +194,8 @@
                           </v-col>
                           <v-col cols="3">
                             <v-tooltip
-                                v-model="passwordRecoveryTooltip"
-                                top
+                              v-model="passwordRecoveryTooltip"
+                              top
                             >
                               <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
@@ -276,25 +277,25 @@
                   <!--              NEW DONATION SECTION-->
                   <div>
                     <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        :return-value.sync="newDonationDate"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :return-value.sync="newDonationDate"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            rounded
-                            v-model="newDonationDate"
-                            label="Add a donation date"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            outlined
-                            v-bind="attrs"
-                            v-on="on"
-                            dense
+                          rounded
+                          v-model="newDonationDate"
+                          label="Add a donation date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          outlined
+                          v-bind="attrs"
+                          v-on="on"
+                          dense
                         ></v-text-field>
                       </template>
                       <v-date-picker v-model="newDonationDate" no-title scrollable>
@@ -305,13 +306,13 @@
                     </v-menu>
                   </div>
                   <v-btn
-                      color="primary"
-                      rounded
-                      small
-                      style="width: 100%"
-                      @click="donateClicked()"
-                      :loading="getDonationLoaderFlag"
-                      :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
+                    color="primary"
+                    rounded
+                    small
+                    style="width: 100%"
+                    @click="donateClicked()"
+                    :loading="newDonationLoader"
+                    :disabled="newDonationLoader || newDonationDate.length === 0"
                   >
                     <v-icon left>
                       mdi-check
@@ -332,24 +333,24 @@
                     <p>{{ lastDonation }}</p>
                     <p class="h6 font-weight-bold">Donation History:</p>
                     <Button
-                        :icon="donationsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
-                        :text="donationsCollapseFlag?'Show '+getDonationList.length+' donations':'Hide donations'"
-                        :click="()=>{this.donationsCollapseFlag=!this.donationsCollapseFlag}"
-                        :color="'info'"></Button>
+                      :icon="donationsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
+                      :text="donationsCollapseFlag?'Show '+donationList.length+' donations':'Hide donations'"
+                      :click="()=>{this.donationsCollapseFlag=!this.donationsCollapseFlag}"
+                      :color="'info'"></Button>
                     <transition name="slide-fade-down">
                     <span v-if="!donationsCollapseFlag">
-                    <div v-if="getDonationList.length!==0">
-                      <DonationCard
-                          v-for="(date,index) in getDonationList"
-                          :key="index"
-                          :date="date"
-                          :delete-donation="deleteDonationClicked">
-                      </DonationCard>
+                      <transition-group name="slide-fade-down" tag="p">
+                          <DonationCard
+                            v-for="date in donationList"
+                            :key="date._id"
+                            :date-object="date"
+                            :delete-donation="deleteDonationClicked">
+                          </DonationCard>
+                      </transition-group>
                       <br/>
-                    </div>
-                    <div v-else>
+                    <p v-if="donationList.length===0">
                       No donations found
-                    </div>
+                    </p>
                     </span>
                     </transition>
                   </template>
@@ -362,10 +363,10 @@
                 <v-card-text>
                   <p class="h6 font-weight-bold">List of calls made to this donor:</p>
                   <Button
-                      :icon="callRecordsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
-                      :text="callRecordsCollapseFlag?'Show '+callRecords.length+' calls':'Hide calls'"
-                      :click="()=>{this.callRecordsCollapseFlag=!this.callRecordsCollapseFlag}"
-                      :color="'info'">
+                    :icon="callRecordsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
+                    :text="callRecordsCollapseFlag?'Show '+callRecords.length+' calls':'Hide calls'"
+                    :click="()=>{this.callRecordsCollapseFlag=!this.callRecordsCollapseFlag}"
+                    :color="'info'">
                   </Button>
                 </v-card-text>
                 <transition name="slide-fade-down">
@@ -394,22 +395,22 @@
                   <v-progress-linear indeterminate v-if="deletePublicContactLoader"></v-progress-linear>
                   <p class="mt-4 h6 font-weight-bold">New Public Contact</p>
                   <v-select
-                      rounded
-                      dense
-                      outlined
-                      v-model="selectedNewPublicContact"
-                      :items="publicContactBloodGroups"
-                      item-text="name"
-                      item-value="code"
-                      label="Blood Group"
-                      return-object
+                    rounded
+                    dense
+                    outlined
+                    v-model="selectedNewPublicContact"
+                    :items="publicContactBloodGroups"
+                    item-text="name"
+                    item-value="code"
+                    label="Blood Group"
+                    return-object
                   ></v-select>
 
                   <Button
-                      :click="publishToPublicContactClicked"
-                      :loading="newPublicContactLoader"
-                      :disabled="newPublicContactLoader || selectedNewPublicContact===null"
-                      :color="'primary'" :text="'Publish'" :icon="'mdi-content-save'">
+                    :click="publishToPublicContactClicked"
+                    :loading="newPublicContactLoader"
+                    :disabled="newPublicContactLoader || selectedNewPublicContact===null"
+                    :color="'primary'" :text="'Publish'" :icon="'mdi-content-save'">
                   </Button>
                 </v-card-text>
               </ContainerOutlined>
@@ -420,10 +421,10 @@
 
     </transition>
     <Dialog
-        :message="'Delete donor?'"
-        :canceled="deleteDonorCanceled"
-        :confirmed="deleteDonorConfirmed"
-        :dialog-opened="deleteDonorDialogFlag"
+      :message="'Delete donor?'"
+      :canceled="deleteDonorCanceled"
+      :confirmed="deleteDonorConfirmed"
+      :dialog-opened="deleteDonorDialogFlag"
     ></Dialog>
   </div>
 </template>
@@ -444,7 +445,7 @@ import {
   handleDELETEDonors,
   handlePOSTDonorsPasswordRequest,
   handleDELETEPublicContacts,
-  handlePOSTPublicContacts
+  handlePOSTPublicContacts, handlePOSTDonations
 } from '../../api'
 import DonationCard from './DonationCard'
 import Dialog from '../Dialog'
@@ -486,7 +487,6 @@ export default {
       room: '',
       address: '',
       lastDonation: '',
-      donationCount: 0,
       commentTime: 0,
 
       dateToBeDeleted: '',
@@ -550,7 +550,9 @@ export default {
 
       markedAsActiveDonor: false,
       markedBy: null,
-      activeDonorLoader: false
+      activeDonorLoader: false,
+      donationList: [],
+      newDonationLoader: false
     }
   },
   validations: {
@@ -599,7 +601,6 @@ export default {
     ...mapGetters('userDetails', ['getDetailsLoaderFlag']),
     ...mapGetters(['getChangeAdminLoaderFlag']),
     ...mapGetters('comment', ['getCommentLoaderFlag']),
-    ...mapGetters('donation', ['getDonationList']),
     ...mapGetters('donate', ['getDonationLoaderFlag']),
     ...mapGetters('callrecord', ['getNewCallRecordLoaderFlag', 'getCallRecords', 'getCallRecordsLoader', 'getDeleteCallRecordLoaderFlag']),
     ...mapGetters(['getName']),
@@ -712,7 +713,10 @@ export default {
     async publishToPublicContactClicked () {
       console.log(this.selectedNewPublicContact)
       this.newPublicContactLoader = true
-      const response = await handlePOSTPublicContacts({ donorId: this.id, bloodGroup: this.selectedNewPublicContact.code })
+      const response = await handlePOSTPublicContacts({
+        donorId: this.id,
+        bloodGroup: this.selectedNewPublicContact.code
+      })
       this.newPublicContactLoader = false
       if (response.status !== 201) return
       this.publicContacts.push({ _id: response.data.publicContact._id, bloodGroup: this.selectedNewPublicContact.code })
@@ -796,10 +800,10 @@ export default {
       const dateObj = new Date(date)
       return (
         dateObj.getDate() +
-          '/' +
-          (dateObj.getMonth() + 1) +
-          '/' +
-          dateObj.getFullYear()
+        '/' +
+        (dateObj.getMonth() + 1) +
+        '/' +
+        dateObj.getFullYear()
       )
     },
     hideDetails () {
@@ -819,29 +823,41 @@ export default {
     },
 
     async deleteDonationClicked (date) {
-      const lastDonation = await this.deleteDonation({
+      await this.deleteDonation({
         donorId: this.id,
         date: date
       })
-      this.donationCount = this.donationCount - 1
 
+      for (let i = 0; i < this.donationList.length; i++) {
+        if (this.donationList[i].date === date) {
+          this.donationList.splice(i, 1)
+          break
+        }
+      }
+
+      let lastDonation = 0
+      this.donationList.forEach((donationObject) => {
+        if (lastDonation < donationObject.date) {
+          lastDonation = donationObject.date
+        }
+      })
       const newDate = new Date(lastDonation)
       this.availableIn =
-          120 -
-          Math.round(
-            (Math.round(new Date().getTime()) - newDate.getTime()) /
-              (1000 * 3600 * 24)
-          )
+        120 -
+        Math.round(
+          (Math.round(new Date().getTime()) - newDate.getTime()) /
+          (1000 * 3600 * 24)
+        )
       if (lastDonation === 0) {
         this.lastDonation = '(Unknown)'
         return
       }
       this.lastDonation =
-          newDate.getDate() +
-          '/' +
-          (newDate.getMonth() + 1) +
-          '/' +
-          newDate.getFullYear()
+        newDate.getDate() +
+        '/' +
+        (newDate.getMonth() + 1) +
+        '/' +
+        newDate.getFullYear()
     },
 
     async promoteClicked () {
@@ -915,27 +931,27 @@ export default {
       await this.saveUserDetails(sendData)
     },
     async donateClicked () {
-      const success = await this.donate({
+      this.newDonationLoader = true
+      const newDonationTimestamp = new Date(this.newDonationDate).getTime()
+      const donationResponse = await handlePOSTDonations({
         donorId: this.id,
-        newDonationDate: this.newDonationDate
+        date: newDonationTimestamp
       })
-
-      if (success) {
-        const newAvailableIn =
-            120 -
-            Math.round(
-              (Math.round(new Date().getTime()) -
-                    new Date(this.newDonationDate).getTime()) /
-                (1000 * 3600 * 24)
-            )
-        this.addDonation(new Date(this.newDonationDate).getTime())
-        if (newAvailableIn > this.availableIn) {
-          this.availableIn = newAvailableIn
-          this.lastDonation = this.datePrint(new Date(this.newDonationDate).getTime())
-        }
-        this.newDonationDate = ''
-        this.donationCount++
+      this.newDonationLoader = false
+      if (donationResponse.status !== 201) return
+      const newAvailableIn =
+        120 -
+        Math.round(
+          (Math.round(new Date().getTime()) -
+            newDonationTimestamp) /
+          (1000 * 3600 * 24)
+        )
+      this.donationList.push(donationResponse.data.newDonation)
+      if (newAvailableIn > this.availableIn) {
+        this.availableIn = newAvailableIn
+        this.lastDonation = this.datePrint(newDonationTimestamp)
       }
+      this.newDonationDate = ''
     }
   },
   async mounted () {
@@ -964,31 +980,31 @@ export default {
     this.address = profile.address
     this.comment = fixBackSlash(profile.comment)
     this.designation = profile.designation
-    this.donationCount = this.getDonationList.length
     this.commentTime = profile.commentTime
     this.availableToAll = profile.availableToAll
     this.publicContacts = profile.publicContacts
     this.callRecords = profile.callRecords
+    this.donationList = profile.donations
     this.markedBy = profile.markedBy ? profile.markedBy.markerId.name : null
     this.markedAsActiveDonor = !!this.markedBy
 
     const date = new Date(profile.lastDonation)
     this.lastDonation =
-        date.getDate() +
-        '/' +
-        (date.getMonth() + 1) +
-        '/' +
-        date.getFullYear()
+      date.getDate() +
+      '/' +
+      (date.getMonth() + 1) +
+      '/' +
+      date.getFullYear()
     if (profile.lastDonation === 0) {
       this.lastDonation = '(Unknown)'
     }
 
     this.availableIn =
-        120 -
-        Math.round(
-          (Math.round(new Date().getTime()) - date.getTime()) /
-            (1000 * 3600 * 24)
-        )
+      120 -
+      Math.round(
+        (Math.round(new Date().getTime()) - date.getTime()) /
+        (1000 * 3600 * 24)
+      )
 
     this.dataLoaded = true
 

@@ -8,7 +8,7 @@
       <v-row>
         <v-col cols="9">
           <span>
-            {{ date === 0 ? 'Unknown date' : new Date(date).toDateString() }}
+            {{ dateObject.date === 0 ? 'Unknown date' : new Date(dateObject.date).toDateString() }}
           </span>
         </v-col>
         <v-col cols="3">
@@ -33,8 +33,8 @@ import Dialog from '../Dialog'
 export default {
   components: { Dialog },
   props: {
-    date: {
-      type: Number,
+    dateObject: {
+      type: Object,
       required: true
     },
     deleteDonation: {
@@ -59,7 +59,7 @@ export default {
     async confirmDonationDeletion () {
       this.donationDeletionPromptDialog = false
       this.donationDeletionLoader = true
-      await this.deleteDonation(this.date)
+      await this.deleteDonation(this.dateObject.date)
       this.donationDeletionLoader = false
     }
   }

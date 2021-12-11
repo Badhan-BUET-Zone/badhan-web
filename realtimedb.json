@@ -117,7 +117,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/mhrahat01"
                     },
                     {
@@ -135,7 +135,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/Showrov1996"
                     },
                     {
@@ -163,7 +163,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/aniruddhags3927"
                     },
                     {
@@ -193,7 +193,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/profile.php?id=100010509641367"
                     },
                     {
@@ -223,7 +223,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/anisha.islam.1690"
                     },
                     {
@@ -243,7 +243,7 @@
                 "links": [
                     {
                         "icon": "facebook",
-                        "color": "primary",
+                        "color": "blue",
                         "link": "https://www.facebook.com/Shiroe041"
                     },
                     {
@@ -266,7 +266,7 @@
         ]
     },
     "frontendSettings": {
-        "version": "4.6.3",
+        "version": "4.6.4",
         "backendBaseURL": "https://badhan-buet.uc.r.appspot.com",
         "backendTestBaseURL": "https://badhan-web-test.herokuapp.com"
     }
