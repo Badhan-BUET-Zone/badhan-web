@@ -66,15 +66,14 @@
               {{ roomNumber }}</span>
             </v-col>
             <v-col cols="12" sm="6">
-              <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> <VueMarkdown>{{ comment }}</VueMarkdown> (Last Updated: {{
-                commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString()
-              }} )<br></span>
               <span><b>Last called: </b>
               <span v-if="lastCalled">{{ new Date(lastCalled).toLocaleString() }}</span>
               <span v-else>Unknown</span>
               <br>
             </span>
               <span>Called {{ callRecordCount }} times in last 3 days</span>
+              <span v-if="comment!==undefined && comment!==null && comment.length !==0"><VueMarkdown>**Comment:** {{comment }} (Last Updated:
+                {{commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString() }} )</VueMarkdown> </span>
             </v-col>
           </v-row>
           <div class="mt-1">
