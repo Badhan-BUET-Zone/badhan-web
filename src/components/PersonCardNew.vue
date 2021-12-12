@@ -57,10 +57,10 @@
         </div>
         <span><b>Department: </b>{{department}}</span><br>
         <span><b>Address: </b>{{address}}</span><br>
-        <span><b>Comment: </b>{{comment}} (Last updated: {{commentTime}})</span><br>
         <span><b>Marked by: </b>{{markerName}} (On {{markedTime}})</span><br>
         <span><b>Last called: </b>On {{lastCallRecord}}</span><br>
-        <span>Called {{callRecordCount}} times in last 3 days</span>
+        <span>Called {{callRecordCount}} times in last 3 days</span><br>
+        <span><VueMarkdown>**Comment:** {{comment }} (Last Updated:{{commentTime === 0 ? 'Unknown' : new Date(commentTime).toLocaleString() }} )</VueMarkdown></span>
       </v-card-text>
     </v-card>
   </div>
@@ -69,6 +69,7 @@
 <script>
 import { halls, departments } from '../mixins/constants'
 import { mapActions } from 'vuex'
+import VueMarkdown from 'vue-markdown'
 
 export default {
   props: {
@@ -76,6 +77,7 @@ export default {
       type: Object
     }
   },
+  components: { VueMarkdown },
   name: 'PersonCardNew',
   mounted () {
     const donor = this.$props.donor
