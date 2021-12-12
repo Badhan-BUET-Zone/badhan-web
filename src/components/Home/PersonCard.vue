@@ -66,7 +66,7 @@
               {{ roomNumber }}</span>
             </v-col>
             <v-col cols="12" sm="6">
-            <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> {{ comment }} (Last Updated: {{
+              <span v-if="comment!==undefined && comment!==null && comment.length !==0"><b>Comment:</b> <VueMarkdown>{{ comment }}</VueMarkdown> (Last Updated: {{
                 commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString()
               }} )<br></span>
               <span><b>Last called: </b>
@@ -158,13 +158,14 @@
 import { departments } from '../../mixins/constants'
 import { fixBackSlash } from '../../mixins/helpers'
 import { mapActions, mapGetters } from 'vuex'
+import VueMarkdown from 'vue-markdown'
 
 export default {
   name: 'PersonCard',
   props: [
     'person'
   ],
-  components: {},
+  components: { VueMarkdown },
   filters: {
     idToDept (studentId) {
       return departments[Number(studentId.toString().substr(2, 2))]
