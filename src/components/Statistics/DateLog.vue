@@ -4,7 +4,8 @@
       {{ logCount.dateString }}
     </v-card-title>
     <v-card-subtitle>
-      Activity count: {{ logCount.count }}
+      Activity count: {{ logCount.totalLogCount }}<br>
+      Active user count: {{logCount.activeUserCount}}
     </v-card-subtitle>
     <v-card-text>
       <v-btn rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
