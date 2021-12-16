@@ -11,7 +11,7 @@
                     :items="getVolunteers"
                     :items-per-page="10"
                     class="elevation-1 mt-2"
-                    sort-by="hall"
+                    sort-by="logCount"
                     sort-desc
       >
         <template v-slot:item.hall="{ item }">

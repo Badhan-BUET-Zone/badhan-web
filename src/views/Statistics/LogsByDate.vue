@@ -70,7 +70,7 @@ export default {
     this.logCountPerDay = logs
     const reverseLogs = logs.slice(0, 14).reverse()
     this.labelsForSparkLine = reverseLogs.map(a => a.dateString.split('-')[2])
-    this.valuesForSparkLine = reverseLogs.map(a => a.count)
+    this.valuesForSparkLine = reverseLogs.map(a => a.totalLogCount)
   },
   data () {
     return {
