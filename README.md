@@ -4,7 +4,7 @@
 **Developers** : https://badhan-buet.web.app/#/credits
 
 **Figma Prototype** : https://www.figma.com/file/Z1zoTdP4oGoRwQcCz3s2rm/badhan </br>
-**Backend Documentation** : https://badhan-web-test.herokuapp.com/doc/ </br>
+**Backend Documentation** : https://badhan-doc.herokuapp.com/ </br>
 **Active Issue List** : https://github.com/mirmahathir1/badhan-backup/issues </br>
 **Database Backup and Restore Repository** : https://github.com/mirmahathir1/badhan-backup </br>
 **Automated Backend Test Repository** : https://github.com/mirmahathir1/badhan-test </br>
