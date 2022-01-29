@@ -2,12 +2,16 @@
 **Website** : https://badhan-buet.web.app <br/>
 **App Link** : https://play.google.com/store/apps/details?id=com.mmmbadhan <br/>
 **Developers** : https://badhan-buet.web.app/#/credits
+**Organization github** : https://github.com/Badhan-BUET-Zone
+<hr>
 
+**Frontend Repository**: https://github.com/Badhan-BUET-Zone/badhan-web </br>
+**Backend Repository**: https://github.com/Badhan-BUET-Zone/badhan-backend
 **Figma Prototype** : https://www.figma.com/file/Z1zoTdP4oGoRwQcCz3s2rm/badhan </br>
 **Backend Documentation** : https://badhan-doc.herokuapp.com/ </br>
-**Active Issue List** : https://github.com/mirmahathir1/badhan-backup/issues </br>
-**Database Backup and Restore Repository** : https://github.com/mirmahathir1/badhan-backup </br>
-**Automated Backend Test Repository** : https://github.com/mirmahathir1/badhan-test </br>
+**Active Issue List** : https://github.com/Badhan-BUET-Zone/badhan-backup/issues </br>
+**Database Backup and Restore Repository** : https://github.com/Badhan-BUET-Zone/badhan-backup </br>
+**Automated Backend Test Repository** : https://github.com/Badhan-BUET-Zone/badhan-test </br>
 ## Description
 
 BADHAN is a Voluntary Blood Donors’ Orgnanization. It is totally a non-political, non-communal, non-regional, non-racial, secular and voluntary social organization. It operates with objective of Initiating social movement to build up a healthy society through motivating voluntary blood donation, donating blood voluntarily and others services and awareness programs throughout the whole country 
