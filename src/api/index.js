@@ -222,7 +222,7 @@ const handlePATCHRedirectedAuthentication = async (payload) => {
 }
 const handleGETDonorsMe = async () => {
   try {
-    return await badhanAxios.get('/donors/me')
+    return await badhanAxios.get('/users/me')
   } catch (e) {
     if (axios.isCancel(e)) {
       return {
