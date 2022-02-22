@@ -266,7 +266,7 @@
         ]
     },
     "frontendSettings": {
-        "version": "4.7.1",
+        "version": "4.7.2",
         "backendBaseURL": "https://badhan-buet.uc.r.appspot.com",
         "backendTestBaseURL": "https://badhan-web-test.herokuapp.com"
     }
