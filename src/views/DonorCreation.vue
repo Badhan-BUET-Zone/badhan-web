@@ -62,7 +62,7 @@
       </v-card-actions>
       <v-alert type="error" dense v-if="invalidJSONError!==null">{{ invalidJSONError }}</v-alert>
     </Container>
-    <Container v-if="(isNative || $isDevelopmentEnv()) && !isGuestEnabled">
+    <Container v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled">
       <v-card-text>
         <v-icon left>
           mdi-upload

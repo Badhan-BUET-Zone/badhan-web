@@ -8,7 +8,7 @@
         <v-card-text>
           <p><b>App Version on Google Play:</b> {{ getGooglePlayAppVersion }}</p>
           <p><b>Local App Version:</b> {{ nativeAppVersion }}</p>
-          <p><b>Database:</b> {{ $isDevelopmentEnv() ? 'Test' : 'Production' }}</p>
+          <p><b>Database:</b> {{ $getEnvironmentName() }}</p>
           <p><b>Last Updated:</b> {{getBuildTime}}</p>
         </v-card-text>
       </Container>

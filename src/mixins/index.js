@@ -14,8 +14,8 @@ export default {
     $isLargeScreen () {
       return window.innerWidth > 500
     },
-    $isDevelopmentEnv () {
-      return process.env.NODE_ENV === 'development'
+    $getEnvironmentName () {
+      return process.env.NODE_ENV
     },
     $isMe (id) {
       return store.getters.getID === id
