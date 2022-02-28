@@ -207,9 +207,9 @@ const handleDELETESignOutAll = async () => {
 const handlePOSTRedirection = async () => {
   try {
     const response = await badhanAxios.post('/users/redirection')
-    return response.data.token
+    return response
   } catch (e) {
-    return null
+    return e.response
   }
 }
 const handlePATCHRedirectedAuthentication = async (payload) => {

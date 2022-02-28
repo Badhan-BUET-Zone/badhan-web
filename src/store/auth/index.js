@@ -124,10 +124,9 @@ const actions = {
   },
   async requestRedirectionToken ({ commit }) {
     commit('setLoadingTrue')
-    const token = await handlePOSTRedirection()
+    const postRedirectionTokenResponse = await handlePOSTRedirection()
     commit('setLoadingFalse')
-    if (!token) return null
-    return token
+    return postRedirectionTokenResponse
   },
   async redirectionLogin ({ getters, commit, dispatch }, payload) {
     ldb.reset()

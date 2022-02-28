@@ -482,8 +482,9 @@ export default {
 
     async downloadInMobileClicked () {
       this.downloadCSVLoader = true
-      const redirectionToken = await this.requestRedirectionToken()
+      const redirectionTokenResponse = await this.requestRedirectionToken()
       this.downloadCSVLoader = false
+      if (redirectionTokenResponse.status !== 201) return
       const searchRouteData = this.$router.resolve({
         name: 'Home',
         query: {
@@ -501,7 +502,7 @@ export default {
       const redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
       const routeData = this.$router.resolve({
         name: 'Redirection',
-        query: { token: redirectionToken, payload: redirectionURL }
+        query: { token: redirectionTokenResponse.data.token, payload: redirectionURL }
       })
       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
     },
