@@ -35,7 +35,7 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
-import { getDeviceInfo, isNative, exitApp } from './plugins/android_support'
+import { getDeviceInfo, isNative, exitApp, getAppVersion } from './plugins/android_support'
 import Dialog from './components/Dialog'
 import MessageBox from './components/MessageBox'
 
@@ -109,6 +109,7 @@ export default {
   },
 
   async mounted () {
+    console.log('Native App Version: ', await getAppVersion())
     document.addEventListener('backbutton', this.androidBackButtonHandler, false)
     this.versionCheck()
   },
