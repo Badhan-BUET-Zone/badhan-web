@@ -215,9 +215,9 @@ const handlePOSTRedirection = async () => {
 const handlePATCHRedirectedAuthentication = async (payload) => {
   try {
     const response = await badhanAxios.patch('/users/redirection', payload)
-    return response.data.token
+    return response
   } catch (e) {
-    return null
+    return e.response
   }
 }
 const handleGETDonorsMe = async () => {

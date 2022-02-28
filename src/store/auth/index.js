@@ -132,21 +132,13 @@ const actions = {
   async redirectionLogin ({ getters, commit, dispatch }, payload) {
     ldb.reset()
     commit('signInLoaderFlagOn')
-    const token = await handlePATCHRedirectedAuthentication({ token: payload })
-
-    if (!token) {
-      commit('signInLoaderFlagOff')
+    const patchRedirectionResponse = await handlePATCHRedirectedAuthentication({ token: payload })
+    commit('signInLoaderFlagOff')
+    if (patchRedirectionResponse.status !== 201) {
       return false
     }
-
-    commit('setToken', token)
-    const response = await handleGETDonorsMe()
-    commit('signInLoaderFlagOff')
-
-    if (response.status !== 200) return false
-
-    const donor = response.data.donor
-    commit('setMyProfile', donor)
+    commit('setToken', patchRedirectionResponse.data.token)
+    commit('setMyProfile', patchRedirectionResponse.data.donor)
     commit('setLoginFlag')
     commit('saveTokenToLocalStorage')
     return true

@@ -13,7 +13,7 @@
         </template>
 
         <v-list rounded>
-          <v-list-item @click="goToWebClicked" v-if="(isNative || $getEnvironmentName === 'development')&& !isGuestEnabled ">
+          <v-list-item @click="goToWebClicked" v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled ">
             <v-list-item-icon>
               <v-icon>
                 mdi-web
