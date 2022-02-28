@@ -1,7 +1,4 @@
-import { Plugins } from '@capacitor/core'
-
 import gradleString from '../../android/app/build.gradle'
-const { App } = Plugins
 
 const g2js = require('gradle-to-js/lib/parser')
 
@@ -16,6 +13,7 @@ export const getIsNative = () => {
   return window.origin.includes('localhost') && window.origin.split(':').length !== 3
 }
 
+// custom android support
 export const exitApp = () => {
-  App.exitApp()
+  navigator.app.exitApp()
 }
