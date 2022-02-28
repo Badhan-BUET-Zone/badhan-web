@@ -204,15 +204,15 @@
               <div>
                 <v-row no-gutters>
                   <v-col>
-                    <v-btn @click="downloadInAndroid" small
-                           v-if="isNative"
+                    <v-btn @click="downloadInMobileClicked" small
+                           v-if="isNative || $getEnvironmentName() === 'development'"
                            color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
                         mdi-download
                       </v-icon>
                       Download Report
                     </v-btn>
-                    <v-btn v-else @click="downloadInWeb" small
+                    <v-btn v-if="!isNative" @click="downloadInWeb" small
                            color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
                         mdi-download
@@ -266,7 +266,7 @@
 
 <script>
 import PersonCard from '../components/Home/PersonCard'
-import { getIsNative, downloadTextFile } from '../plugins/android_support'
+import { getIsNative } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
@@ -329,6 +329,7 @@ export default {
       hall: halls[this.$store.getters.getHall],
       availability: true,
       notAvailability: false,
+      download: false,
 
       // GUI flags
       filterShown: true,
@@ -362,7 +363,7 @@ export default {
       }
     }
   },
-  mounted () {
+  async mounted () {
     const query = this.$route.query
 
     this.name = query.name ? query.name : ''
@@ -373,9 +374,14 @@ export default {
     this.availability = query.availability !== 'false'
     this.notAvailability = query.notAvailability === 'true'
     this.radios = query.radios === 'SpecifyHall' ? 'SpecifyHall' : 'AvailableToAll'
+    this.download = query.download === 'true'
 
-    if (Object.keys(this.$route.query).length === 8) {
-      this.searchClicked()
+    if (Object.keys(this.$route.query).length === 9) {
+      await this.searchClicked()
+      if (this.download) {
+        console.log('DOWNLOAD DETECTED')
+        this.downloadInWeb()
+      }
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -389,21 +395,21 @@ export default {
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('errorStore', ['addError']),
     ...mapMutations('messageBox', ['setMessage']),
-    async downloadInAndroid () {
-      const processedPersons = processPersonsForReport(this.getPersons)
-      const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
-      if (this.getDesignation === 3) {
-        keys.push('comment')
-        keys.push('phone')
-      }
-      const csv = convertObjectToCSV(processedPersons, keys, ',')
-      try {
-        await downloadTextFile(csv, 'badhan_' + this.getSearchedHall + '.csv')
-        this.setMessage('CSV downloaded to Documents folder')
-      } catch (e) {
-        this.addError({ name: 'Download CSV Failure', message: 'Count not save csv file to android storage', stack: e })
-      }
-    },
+    // async downloadInAndroid () {
+    //   const processedPersons = processPersonsForReport(this.getPersons)
+    //   const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
+    //   if (this.getDesignation === 3) {
+    //     keys.push('comment')
+    //     keys.push('phone')
+    //   }
+    //   const csv = convertObjectToCSV(processedPersons, keys, ',')
+    //   try {
+    //     await downloadTextFile(csv, 'badhan_' + this.getSearchedHall + '.csv')
+    //     this.setMessage('CSV downloaded to Documents folder')
+    //   } catch (e) {
+    //     this.addError({ name: 'Download CSV Failure', message: 'Count not save csv file to android storage', stack: e })
+    //   }
+    // },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)
       const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
@@ -451,7 +457,7 @@ export default {
       this.$vuetify.goTo('#results')
       this.showFab = true
 
-      this.search({
+      await this.search({
         inputName: inputName,
         bloodGroup: this.bloodGroup,
         inputBatch: inputBatch,
@@ -474,8 +480,8 @@ export default {
           hall: this.hall,
           availability: this.availability,
           notAvailability: this.notAvailability,
-          radios: this.radios
-
+          radios: this.radios,
+          download: false
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
@@ -488,29 +494,29 @@ export default {
       })
     },
 
-    // async downloadInMobileClicked() {
-    //   let redirectionToken = await this.requestRedirectionToken();
-    //   let searchRouteData = this.$router.resolve({
-    //     name: 'Home',
-    //     query: {
-    //       name: this.name,
-    //       bloodGroup: this.bloodGroup,
-    //       batch: this.batch,
-    //       address: this.address,
-    //       hall: this.hall,
-    //       availability: this.availability,
-    //       notAvailability: this.notAvailability,
-    //       radios:this.radios,
-    //     }
-    //   });
-    //   let redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
-    //   let routeData;
-    //   routeData = this.$router.resolve({
-    //     name: 'Redirection',
-    //     query: {token: redirectionToken, payload: redirectionURL}
-    //   });
-    //   window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank');
-    // },
+    async downloadInMobileClicked () {
+      const redirectionToken = await this.requestRedirectionToken()
+      const searchRouteData = this.$router.resolve({
+        name: 'Home',
+        query: {
+          name: this.name,
+          bloodGroup: this.bloodGroup,
+          batch: this.batch,
+          address: this.address,
+          hall: this.hall,
+          availability: this.availability,
+          notAvailability: this.notAvailability,
+          radios: this.radios,
+          download: true
+        }
+      })
+      const redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
+      const routeData = this.$router.resolve({
+        name: 'Redirection',
+        query: { token: redirectionToken, payload: redirectionURL }
+      })
+      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
+    },
 
     clearFields () {
       this.$v.$reset()
