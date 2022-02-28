@@ -206,6 +206,7 @@
                   <v-col>
                     <v-btn @click="downloadInMobileClicked" small
                            v-if="isNative || $getEnvironmentName() === 'development'"
+                           :disabled="downloadCSVLoader" :loading="downloadCSVLoader"
                            color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
                         mdi-download
@@ -344,7 +345,8 @@ export default {
       radios: 'AvailableToAll',
       showFab: false,
 
-      downloadCSVMessageFlag: false
+      downloadCSVMessageFlag: false,
+      downloadCSVLoader: false
     }
   },
   validations: () => {
@@ -379,7 +381,6 @@ export default {
     if (Object.keys(this.$route.query).length === 9) {
       await this.searchClicked()
       if (this.download) {
-        console.log('DOWNLOAD DETECTED')
         this.downloadInWeb()
       }
     }
@@ -395,21 +396,6 @@ export default {
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('errorStore', ['addError']),
     ...mapMutations('messageBox', ['setMessage']),
-    // async downloadInAndroid () {
-    //   const processedPersons = processPersonsForReport(this.getPersons)
-    //   const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
-    //   if (this.getDesignation === 3) {
-    //     keys.push('comment')
-    //     keys.push('phone')
-    //   }
-    //   const csv = convertObjectToCSV(processedPersons, keys, ',')
-    //   try {
-    //     await downloadTextFile(csv, 'badhan_' + this.getSearchedHall + '.csv')
-    //     this.setMessage('CSV downloaded to Documents folder')
-    //   } catch (e) {
-    //     this.addError({ name: 'Download CSV Failure', message: 'Count not save csv file to android storage', stack: e })
-    //   }
-    // },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)
       const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']
@@ -495,7 +481,9 @@ export default {
     },
 
     async downloadInMobileClicked () {
+      this.downloadCSVLoader = true
       const redirectionToken = await this.requestRedirectionToken()
+      this.downloadCSVLoader = false
       const searchRouteData = this.$router.resolve({
         name: 'Home',
         query: {
