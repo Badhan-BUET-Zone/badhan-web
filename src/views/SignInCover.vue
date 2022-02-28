@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import { getDeviceInfo, isNative } from '../plugins/android_support'
+import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -211,7 +211,7 @@ export default {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
     isMobile () {
-      return isNative()
+      return getIsNative()
     },
 
     phoneErrors () {
@@ -270,8 +270,8 @@ export default {
     }
   },
   async mounted () {
-    const info = await getDeviceInfo()
-    this.version = info.appVersion
+    // const info = await getDeviceInfo()
+    this.version = await getLocalAppVersion()
   },
 
   components: {

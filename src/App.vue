@@ -35,7 +35,7 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
-import { getDeviceInfo, isNative, exitApp, getAppVersion } from './plugins/android_support'
+import { exitApp, getLocalAppVersion, getIsNative } from './plugins/android_support'
 import Dialog from './components/Dialog'
 import MessageBox from './components/MessageBox'
 
@@ -98,10 +98,11 @@ export default {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
 
-      const info = await getDeviceInfo()
+      // const info = await getDeviceInfo()
+      // console.log('DEVICE INFO: ', info)
       // const deployedAppInfo = await this.fetchtAppDetails();
 
-      if (isNative() && googlePlayAppVersion !== info.appVersion) {
+      if (getIsNative() && googlePlayAppVersion !== await getLocalAppVersion()) {
         this.updatedVersion = googlePlayAppVersion
         this.updatePrompt()
       }
@@ -109,7 +110,7 @@ export default {
   },
 
   async mounted () {
-    console.log('Native App Version: ', await getAppVersion())
+    console.log('Native App Version: ', await getLocalAppVersion())
     document.addEventListener('backbutton', this.androidBackButtonHandler, false)
     this.versionCheck()
   },

@@ -29,18 +29,21 @@ import VueMarkdown from 'vue-markdown'
 import readme from '../../README.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getNativeAppVersion, isNative } from '../plugins/android_support'
+import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
 
 export default {
   name: 'About',
   computed: {
     ...mapGetters('release', ['getAppVersion', 'getAppDetailsLoader']),
     ...mapGetters('frontendSettings', ['getSettings']),
+    isAndroidApp () {
+      return getIsNative()
+    },
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
     isMobile () {
-      return isNative()
+      return getIsNative()
     },
     getGooglePlayAppVersion () {
       return this.getSettings.version
@@ -55,8 +58,8 @@ export default {
     }
   },
   async mounted () {
-    if (isNative()) {
-      this.nativeAppVersion = await getNativeAppVersion()
+    if (getIsNative()) {
+      this.nativeAppVersion = await getLocalAppVersion()
     }
   }
 }

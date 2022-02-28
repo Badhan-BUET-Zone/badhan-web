@@ -144,7 +144,7 @@
 import PageTitle from '../components/PageTitle'
 import { required } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
-import { isNative } from '../plugins/android_support'
+import { getIsNative } from '../plugins/android_support'
 import HelpTooltip from '../components/UI Components/HelpTooltip'
 
 import NewPersonCard from '../components/BatchInsertion/NewPersonCard'
@@ -180,7 +180,7 @@ export default {
       return errors
     },
     isNative () {
-      return isNative()
+      return getIsNative()
     }
   },
   methods: {

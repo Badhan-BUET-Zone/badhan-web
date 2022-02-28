@@ -202,13 +202,6 @@
             </div>
             <div>
               <div>
-<!--                <v-btn v-if="(isNative || $isDevelopmentEnv())&& !isGuestEnabled" @click="downloadInMobileClicked" small-->
-<!--                       color="secondary" rounded class="mb-4" style="width: 100%">-->
-<!--                  <v-icon left>-->
-<!--                    mdi-web-->
-<!--                  </v-icon>-->
-<!--                  Download From Web-->
-<!--                </v-btn>-->
                 <v-row no-gutters>
                   <v-col>
                     <v-btn @click="downloadInAndroid" small
@@ -273,7 +266,7 @@
 
 <script>
 import PersonCard from '../components/Home/PersonCard'
-import { isNative, downloadTextFile } from '../plugins/android_support'
+import { getIsNative, downloadTextFile } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
@@ -293,7 +286,7 @@ export default {
       return isGuestEnabled()
     },
     isNative () {
-      return isNative()
+      return getIsNative()
     },
     availableHalls () {
       if (this.getDesignation !== null) {

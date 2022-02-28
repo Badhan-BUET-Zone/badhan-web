@@ -110,7 +110,7 @@
 <script>
 
 import { mapActions, mapGetters } from 'vuex'
-import { isNative } from '../plugins/android_support'
+import { getIsNative } from '../plugins/android_support'
 import { isGuestEnabled } from '../api'
 import Dialog from './Dialog'
 import ldb from '../localDatabase'
@@ -154,7 +154,7 @@ export default {
     },
 
     isNative () {
-      return isNative()
+      return getIsNative()
     },
     isGuestEnabled () {
       return isGuestEnabled()
