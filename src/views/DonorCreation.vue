@@ -15,8 +15,8 @@
       </v-card-title>
       <v-card-text>
         <Button
-          :loading="false"
-          :disabled="false"
+          :loading="excelUploadRedirectionFlag"
+          :disabled="excelUploadRedirectionFlag"
           :color="'primary'"
           :icon="'mdi-upload'"
           :text="'Upload Excel File'" :click="redirectExcelUpload"></Button>
@@ -30,7 +30,7 @@ import PageTitle from '../components/PageTitle'
 import { required } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
 import { getIsNative } from '../plugins/android_support'
-import { isGuestEnabled } from '../api'
+import { isGuestEnabled, handlePOSTRedirection } from '../api'
 import Container from '../components/Wrappers/Container'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import Button from '../components/UI Components/Button'
@@ -42,7 +42,8 @@ export default {
       jsonFile: null,
       invalidJSONError: null,
       listOfDonors: [],
-      donorPage: 1
+      donorPage: 1,
+      excelUploadRedirectionFlag: false
     }
   },
 
@@ -63,8 +64,12 @@ export default {
   methods: {
     ...mapActions('notification', ['notifyError', 'notifySuccess', 'notifyInfo']),
     ...mapActions(['requestRedirectionToken']),
-    redirectExcelUpload () {
-      console.log('Not implemented')
+    async redirectExcelUpload () {
+      this.excelUploadRedirectionFlag = true
+      const redirectionTokenResponse = await handlePOSTRedirection()
+      this.excelUploadRedirectionFlag = false
+      if (redirectionTokenResponse.status !== 201) return
+      window.open(`https://badhan-datainput-test1.netlify.app/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
     }
   },
   mounted () {

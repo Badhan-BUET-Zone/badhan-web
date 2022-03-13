@@ -27,9 +27,9 @@ export default {
   },
   async mounted () {
     if (!this.getIsLoggedIn && !await this.redirectionLogin(this.$route.query.token)) {
-      await this.$router.push('/')
+      await this.$router.replace('/')
     } else {
-      await this.$router.push(this.$route.query.payload)
+      await this.$router.replace(this.$route.query.payload)
     }
   }
 }

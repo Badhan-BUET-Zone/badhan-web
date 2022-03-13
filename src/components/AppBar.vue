@@ -13,7 +13,7 @@
         </template>
 
         <v-list rounded>
-          <v-list-item @click="goToWebClicked" v-if="(isNative || $getEnvironmentName === 'development')&& !isGuestEnabled ">
+          <v-list-item @click="goToWebClicked" v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled ">
             <v-list-item-icon>
               <v-icon>
                 mdi-web
@@ -196,10 +196,11 @@ export default {
       await this.$router.push('/')
     },
     async goToWebClicked () {
-      const redirectionToken = await this.requestRedirectionToken()
+      const redirectionTokenResponse = await this.requestRedirectionToken()
+      if (redirectionTokenResponse.status !== 201) return
       const routeData = this.$router.resolve({
         name: 'Redirection',
-        query: { token: redirectionToken, payload: this.$route.fullPath }
+        query: { token: redirectionTokenResponse.data.token, payload: this.$route.fullPath }
       })
       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
     }

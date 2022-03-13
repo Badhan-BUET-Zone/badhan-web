@@ -122,7 +122,6 @@ export default {
   },
 
   async mounted () {
-    console.log('Native App Version: ', await getLocalAppVersion())
     document.addEventListener('backbutton', this.androidBackButtonHandler, false)
     this.versionCheck()
   },
