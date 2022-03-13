@@ -18,20 +18,13 @@
         </v-col>
       </v-row>
     </v-card-text>
-    <Dialog
-        :message="'Delete this donation?'"
-        :dialog-opened="donationDeletionPromptDialog"
-        :canceled="cancelDonationDeletion"
-        :confirmed="confirmDonationDeletion">
-    </Dialog>
   </v-card>
 </template>
 
 <script>
-import Dialog from '../Dialog'
+import { mapMutations } from 'vuex'
 
 export default {
-  components: { Dialog },
   props: {
     dateObject: {
       type: Object,
@@ -50,14 +43,15 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
+
     promptDonationDeletion () {
-      this.donationDeletionPromptDialog = true
-    },
-    cancelDonationDeletion () {
-      this.donationDeletionPromptDialog = false
+      this.setConfirmationMessage({
+        confirmationMessage: 'Delete this donation?',
+        confirmationAction: this.confirmDonationDeletion
+      })
     },
     async confirmDonationDeletion () {
-      this.donationDeletionPromptDialog = false
       this.donationDeletionLoader = true
       await this.deleteDonation(this.dateObject.date)
       this.donationDeletionLoader = false

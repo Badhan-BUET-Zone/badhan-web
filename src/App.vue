@@ -11,19 +11,20 @@
     </transition>
     <Notification></Notification>
     <MessageBox></MessageBox>
+    <ConfirmationBox></ConfirmationBox>
 
-    <Dialog
-        :message="'Exit App?'"
-        :canceled="exitAppCanceled"
-        :confirmed="exitAppConfirmed"
-        :dialog-opened="exitPromptFlag">
-    </Dialog>
-    <Dialog
-        :message="'New version ' + updatedVersion+ ' available. Please download the latest update.'"
-        :canceled="updateCanceled"
-        :confirmed="updateConfirmed"
-        :dialog-opened="updatePromptFlag">
-    </Dialog>
+<!--    <Dialog-->
+<!--        :message="'Exit App?'"-->
+<!--        :canceled="exitAppCanceled"-->
+<!--        :confirmed="exitAppConfirmed"-->
+<!--        :dialog-opened="exitPromptFlag">-->
+<!--    </Dialog>-->
+<!--    <Dialog-->
+<!--        :message="'New version ' + updatedVersion+ ' available. Please download the latest update.'"-->
+<!--        :canceled="updateCanceled"-->
+<!--        :confirmed="updateConfirmed"-->
+<!--        :dialog-opened="updatePromptFlag">-->
+<!--    </Dialog>-->
 
   </v-app>
 </template>
@@ -32,12 +33,13 @@
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
 import { exitApp, getLocalAppVersion, getIsNative } from './plugins/android_support'
-import Dialog from './components/Dialog'
+// import Dialog from './components/Dialog'
 import MessageBox from './components/MessageBox'
+import ConfirmationBox from './components/ConfirmationBox'
 
 export default {
   name: 'app',
@@ -52,8 +54,9 @@ export default {
     }
   },
   components: {
+    ConfirmationBox,
     MessageBox,
-    Dialog,
+    // Dialog,
     'app-bar': AppBar,
     Notification,
     SignInDialog
@@ -65,31 +68,35 @@ export default {
   methods: {
     ...mapActions('release', ['fetchtAppDetails']),
     ...mapActions('frontendSettings', ['fetchSettings']),
-
-    exitAppPrompt () {
-      this.exitPromptFlag = true
-    },
-    exitAppConfirmed () {
-      this.exitPromptFlag = false
-      exitApp()
-    },
-    exitAppCanceled () {
-      this.exitPromptFlag = false
-    },
-    updatePrompt () {
-      this.updatePromptFlag = true
-    },
-    updateConfirmed () {
-      this.updatePromptFlag = false
-      window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
-    },
-    updateCanceled () {
-      this.updatePromptFlag = false
-    },
+    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
+    // exitAppPrompt () {
+    //   this.exitPromptFlag = true
+    // },
+    // exitAppConfirmed () {
+    //   this.exitPromptFlag = false
+    //   exitApp()
+    // },
+    // exitAppCanceled () {
+    //   this.exitPromptFlag = false
+    // },
+    // updatePrompt () {
+    //   this.updatePromptFlag = true
+    // },
+    // updateConfirmed () {
+    //   this.updatePromptFlag = false
+    //   window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
+    // },
+    // updateCanceled () {
+    //   this.updatePromptFlag = false
+    // },
 
     androidBackButtonHandler () {
       if (this.$route.path === '/home' || this.$route.path === '/') {
-        this.exitAppPrompt()
+        // this.exitAppPrompt()
+        this.setConfirmationMessage({
+          confirmationMessage: 'Exit app?',
+          confirmationAction: exitApp
+        })
       } else {
         this.$router.go(-1)
       }
@@ -103,7 +110,12 @@ export default {
       // const deployedAppInfo = await this.fetchtAppDetails();
 
       if (getIsNative() && googlePlayAppVersion !== await getLocalAppVersion()) {
-        this.updatedVersion = googlePlayAppVersion
+        this.setConfirmationMessage({
+          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available. Please download the latest update.',
+          confirmationAction: () => {
+            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
+          }
+        })
         this.updatePrompt()
       }
     }
