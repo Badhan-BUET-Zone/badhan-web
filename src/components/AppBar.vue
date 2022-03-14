@@ -68,14 +68,18 @@
             <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
             <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
           </v-list-item>
+        </v-list-item-group>
+        <v-list-group prepend-icon="mdi-star" no-action v-if="getDesignation===3">
+          <template v-slot:activator>
+            <v-list-item-title>Super Admin</v-list-item-title>
+          </template>
           <span v-for="(menu) in menusForSuperAdmin" :key="menu.icon">
-            <v-list-item v-if="getDesignation===3"  link :to="menu.to" style="text-decoration: none">
+            <v-list-item link :to="menu.to" style="text-decoration: none">
               <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
               <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
             </v-list-item>
           </span>
-
-        </v-list-item-group>
+        </v-list-group>
       </v-list>
       <v-list>
         <v-list-item>
@@ -91,32 +95,18 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <Dialog
-        :message="'Sign out?'"
-        :canceled="signOutModalCanceled"
-        :dialog-opened="signOutModalFlag"
-        :confirmed="signOutModalConfirmed">
-    </Dialog>
-    <Dialog
-        :message="'Sign out from all devices?'"
-        :canceled="signOutAllModalCanceled"
-        :dialog-opened="signOutAllModalFlag"
-        :confirmed="signOutAllModalConfirmed">
-    </Dialog>
-
   </div>
 </template>
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { getIsNative } from '../plugins/android_support'
 import { isGuestEnabled } from '../api'
-import Dialog from './Dialog'
 import ldb from '../localDatabase'
 
 export default {
-  components: { Dialog },
+
   data: function () {
     return {
       theme: this.$vuetify.theme.dark,
@@ -165,6 +155,7 @@ export default {
   methods: {
     ...mapActions('notification', ['notifySuccess']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
+    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
     toggleTheme () {
       this.theme = !this.theme
       this.$vuetify.theme.dark = this.theme
@@ -174,13 +165,12 @@ export default {
       await this.$router.push({ path: '/home/details', query: { id: this.getID } })
     },
     async signOutModalPrompted () {
-      this.signOutModalFlag = true
-    },
-    async signOutModalCanceled () {
-      this.signOutModalFlag = false
+      this.setConfirmationMessage({
+        confirmationMessage: 'Sign out?',
+        confirmationAction: this.signOutModalConfirmed
+      })
     },
     async signOutModalConfirmed () {
-      this.signOutModalFlag = false
       await this.logout()
       await this.$router.push('/')
     },

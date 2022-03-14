@@ -424,14 +424,7 @@
           </div>
         </v-card-text>
       </Container>
-
     </transition>
-    <Dialog
-      :message="'Delete donor?'"
-      :canceled="deleteDonorCanceled"
-      :confirmed="deleteDonorConfirmed"
-      :dialog-opened="deleteDonorDialogFlag"
-    ></Dialog>
   </div>
 </template>
 
@@ -454,7 +447,6 @@ import {
   handlePOSTPublicContacts, handlePOSTDonations
 } from '../../api'
 import DonationCard from './DonationCard'
-import Dialog from '../Dialog'
 import Button from '../UI Components/Button'
 import { fixBackSlash } from '../../mixins/helpers'
 
@@ -463,7 +455,6 @@ export default {
   props: ['donorId'],
   components: {
     Button,
-    Dialog,
     DonationCard,
     ContainerOutlined,
     Container,
@@ -695,6 +686,7 @@ export default {
     ...mapMutations(['setToken', 'saveTokenToLocalStorage']),
     ...mapActions('callrecord', ['postCallRecord', 'deleteCallRecord']),
     ...mapActions('notification', ['notifySuccess']),
+    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
     async markAsActiveDonorHandler (markFlag) {
       this.activeDonorLoader = true
       if (markFlag) {
@@ -782,10 +774,12 @@ export default {
       }
     },
     deleteDonorPrompt () {
-      this.deleteDonorDialogFlag = true
+      this.setConfirmationMessage({
+        confirmationMessage: 'Delete this donor?',
+        confirmationAction: this.deleteDonorConfirmed
+      })
     },
     async deleteDonorConfirmed () {
-      this.deleteDonorDialogFlag = false
       this.deleteDonorFlag = true
       const response = await handleDELETEDonors({ donorId: this.id })
       this.deleteDonorFlag = false
@@ -793,9 +787,6 @@ export default {
       this.deletePerson({ _id: this.id, studentId: this.studentId })
       this.notifySuccess('Deleted donor successfully')
       await this.$router.push('/home')
-    },
-    async deleteDonorCanceled () {
-      this.deleteDonorDialogFlag = false
     },
     async callFromDialer () {
       await this.postCallRecord({ donorId: this.id })

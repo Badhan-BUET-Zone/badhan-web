@@ -22,14 +22,12 @@
         </v-col>
       </v-row>
     </v-card-text>
-    <Dialog :dialogOpened="deletePromptFlag" :message="'Delete this call record?'" :canceled="deletionCanceled" :confirmed="deletionConfirmed"></Dialog>
   </v-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { designations } from '../../mixins/constants'
-import Dialog from '../Dialog'
 
 export default {
   name: 'CallRecordCard',
@@ -47,18 +45,23 @@ export default {
     }
   },
   components: {
-    Dialog
+    // Dialog
   },
   methods: {
     ...mapActions('callrecord', ['deleteCallRecord']),
+    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
     async deletePrompt () {
-      this.deletePromptFlag = true
+      this.setConfirmationMessage({
+        confirmationMessage: 'Delete this call record?',
+        confirmationAction: this.deletionConfirmed
+      })
+      // this.deletePromptFlag = true
     },
-    async deletionCanceled () {
-      this.deletePromptFlag = false
-    },
+    // async deletionCanceled () {
+    //   this.deletePromptFlag = false
+    // },
     async deletionConfirmed () {
-      this.deletePromptFlag = false
+      // this.deletePromptFlag = false
       this.deleteLoaderFlag = true
       await this.deleteCallRecord({ donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id })
       this.deleteLoaderFlag = false
