@@ -30,7 +30,6 @@ const actions = {
   async fetchSettings ({ commit, dispatch, getters }) {
     const response = await handleGETFrontendSettings()
     if (response.status !== 200) return
-    console.log(response.data)
     commit('setSettings', response.data)
   }
 }

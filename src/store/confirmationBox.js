@@ -1,8 +1,9 @@
+import { myConsole } from '../mixins/myConsole'
 const state = {
   confirmationFlag: false,
   confirmationMessage: null,
   confirmationAction: () => {
-    console.log('No confirmation action set in confirmation box')
+    myConsole.log('No confirmation action set in confirmation box')
   }
 }
 
@@ -25,7 +26,7 @@ const mutations = {
   },
   resetConfirmationBox (state) {
     state.confirmationAction = () => {
-      console.log('No confirmation action set in confirmation box')
+      myConsole.log('No confirmation action set in confirmation box')
     }
     state.confirmationFlag = false
   },

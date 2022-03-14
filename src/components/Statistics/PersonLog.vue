@@ -46,7 +46,6 @@ export default {
       this.personLogLoading = false
       if (response.status !== 200) return
       this.personLogs = response.data.logs
-      console.log(response.data)
     }
   }
 }

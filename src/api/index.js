@@ -7,13 +7,14 @@ import axios from 'axios'
 import { store } from '../store/store'
 import { processError } from '../mixins/helpers'
 import ldb from '../localDatabase'
+import { myConsole } from '../mixins/myConsole'
 
 let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
 const ldbSettings = ldb.frontendSettings.load()
-console.log('Environment: ', process.env.NODE_ENV)
+myConsole.log('Environment: ', process.env.NODE_ENV)
 if (ldbSettings.status !== 'ERROR' && process.env.NODE_ENV !== 'development') {
   baseURL = process.env.NODE_ENV === 'production' ? ldbSettings.data.backendBaseURL : ldbSettings.data.backendTestBaseURL
-  console.log('USING CACHED BASEURL')
+  myConsole.log('USING CACHED BASEURL')
 }
 
 const badhanAxios = axios.create({
@@ -40,7 +41,7 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  console.log('%cREQUEST TO ' + config.method + ' ' + config.url + ': ', 'color: #ff00ff', config.data, config.params)
+  myConsole.log('%cREQUEST TO ' + config.method + ' ' + config.url + ': ', 'color: #ff00ff', config.data, config.params)
 
   store.dispatch('notification/clearNotification')
 
@@ -72,8 +73,7 @@ badhanAxios.interceptors.request.use((config) => {
 
 badhanAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  console.log('%cRESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', 'color: #00ff00', response)
-
+  myConsole.log('%cRESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', 'color: #00ff00', response)
   return response
 }, (error) => {
   // Do something with request error
@@ -90,7 +90,7 @@ badhanAxios.interceptors.response.use((response) => {
   } else {
     errorNotification = 'Unknown Error Occurred'
   }
-  console.log('Axios Error:', errorNotification)
+  myConsole.log('Axios Error:', errorNotification)
 
   store.dispatch('notification/notifyError', errorNotification)
   return Promise.reject(error)
@@ -98,7 +98,7 @@ badhanAxios.interceptors.response.use((response) => {
 
 firebaseAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  console.log('%cREQUEST TO ' + config.url + ': ', 'color: #ff00ff', config.data)
+  myConsole.log('%cREQUEST TO ' + config.url + ': ', 'color: #ff00ff', config.data)
 
   store.dispatch('notification/clearNotification')
 
@@ -110,7 +110,7 @@ firebaseAxios.interceptors.request.use((config) => {
 
 firebaseAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  console.log('%cRESPONSE FROM ' + response.config.url + ': ', 'color: #00ff00', response)
+  myConsole.log('%cRESPONSE FROM ' + response.config.url + ': ', 'color: #00ff00', response)
   return response
 }, (error) => {
   // Do something with request error

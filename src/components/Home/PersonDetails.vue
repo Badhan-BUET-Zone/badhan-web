@@ -709,7 +709,6 @@ export default {
       this.callRecords = this.callRecords.filter((callRecord) => callRecord._id !== id)
     },
     async publishToPublicContactClicked () {
-      console.log(this.selectedNewPublicContact)
       this.newPublicContactLoader = true
       const response = await handlePOSTPublicContacts({
         donorId: this.id,
@@ -768,7 +767,6 @@ export default {
     },
     async changeHallAdminClicked () {
       const response = await this.changeHallAdmin({ donorId: this.id })
-      console.log(response)
       if (response) {
         this.designation = 2
       }
@@ -1008,12 +1006,6 @@ export default {
     this.$forceUpdate()
     this.personDetailCollapseFlag = !this.$isMobile()
   }
-  // beforeRouteLeave(to,from,next){
-  //   next();
-  // },
-  // beforeDestroy() {
-  //   console.log("before destroy")
-  // }
 }
 </script>
 <style>
