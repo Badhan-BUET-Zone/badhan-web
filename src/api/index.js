@@ -12,6 +12,7 @@ import { myConsole } from '../mixins/myConsole'
 let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
 const ldbSettings = ldb.frontendSettings.load()
 myConsole.log('Environment: ', process.env.NODE_ENV)
+
 if (ldbSettings.status !== 'ERROR' && process.env.NODE_ENV !== 'development') {
   baseURL = process.env.NODE_ENV === 'production' ? ldbSettings.data.backendBaseURL : ldbSettings.data.backendTestBaseURL
   myConsole.log('USING CACHED BASEURL')

@@ -23,9 +23,10 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
-import { exitApp, getLocalAppVersion, getIsNative } from './plugins/android_support'
+import { exitApp, getLocalAppVersion, getIsNative, getAndroidInfo } from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
+import { myConsole } from './mixins/myConsole'
 
 export default {
   name: 'app',
@@ -83,6 +84,7 @@ export default {
 
   async mounted () {
     document.addEventListener('backbutton', this.androidBackButtonHandler, false)
+    myConsole.log('Android info: ', await getAndroidInfo())
     await this.versionCheck()
   },
 

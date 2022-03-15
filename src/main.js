@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-// router for handling routing in vuejs
-import router from './router'
-
 // to keep session information in vuex that are not required to be kept even after a reload
 import { store } from './store/store'
+
+// router for handling routing in vuejs
+import router from './router'
 
 // to keep long lived data in vuejs that are required even after a reload
 import ldb from './localDatabase'
