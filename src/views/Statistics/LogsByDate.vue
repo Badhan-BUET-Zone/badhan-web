@@ -57,7 +57,6 @@ export default {
     }
   },
   async mounted () {
-    // this.notifyInfo('Page under construction');
     if (this.getDesignation !== 3) {
       this.$router.push({ name: 'NotFound' })
       return

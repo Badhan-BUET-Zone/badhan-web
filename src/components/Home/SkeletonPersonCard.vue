@@ -17,7 +17,6 @@
           >
             <v-card-text>
               <v-skeleton-loader type="text@2"></v-skeleton-loader>
-<!--              <v-skeleton-loader type="text"></v-skeleton-loader>-->
             </v-card-text>
           </v-card>
         </v-col>

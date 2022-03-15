@@ -10,9 +10,6 @@
       <v-tab to="/statistics/logsByDate" style="text-decoration: none">
         Logs by Date
       </v-tab>
-<!--      <v-tab to="/statistics/recentLogs" style="text-decoration: none">-->
-<!--        Recent Logs-->
-<!--      </v-tab>-->
       <v-tab to="/statistics/volunteersAll" style="text-decoration: none">
         All Volunteers
       </v-tab>

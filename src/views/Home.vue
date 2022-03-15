@@ -251,12 +251,9 @@
                     :person="person"
                 ></person-card>
               </div>
-<!--              <v-btn x-small rounded disabled v-if="getDesignation ===3 || getDesignation ===2">Archive these donors-->
-<!--              </v-btn>-->
             </div>
           </div>
         </v-col>
-        <!--        <person-details></person-details>-->
       </v-row>
       <transition name="slide-fade" mode="out-in">
       <router-view></router-view>

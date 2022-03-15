@@ -3,8 +3,6 @@
       class="d-flex justify-center"
       style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;"
   >
-    <!--          <v-img style="position: fixed" src="../assets/leaf.gif">-->
-    <!--          </v-img>-->
     <v-container>
       <v-row
           class="fill-height"

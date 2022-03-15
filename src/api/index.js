@@ -59,13 +59,6 @@ badhanAxios.interceptors.request.use((config) => {
     ...config,
     cancelToken: new CancelToken((cancel) => cancel('Network Unavailable'))
   }
-  // return {
-  //     headers: {},
-  //     method: config.method,
-  //     url: ""
-  // };
-
-  // return Promise.reject("Network not available");
 }, function (error) {
   // Do something with request error
   return Promise.reject(error)

@@ -36,7 +36,6 @@ const actions = {
     } else if (cachedPublicContactResult.status === 'EXPIRED') {
       commit('setPublicContacts', cachedPublicContactResult.data)
     }
-    // commit('publicContactsLoaderFlagOn');
     const response = await handleGETPublicContacts()
     commit('publicContactsLoaderFlagOff')
     if (response.status !== 200) return

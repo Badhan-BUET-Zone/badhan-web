@@ -33,16 +33,6 @@
               <v-list-item-title>Sign Out</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-<!--          <v-list-item @click="signOutAllModalPrompted">-->
-<!--            <v-list-item-icon>-->
-<!--              <v-icon>-->
-<!--                mdi-logout-->
-<!--              </v-icon>-->
-<!--            </v-list-item-icon>-->
-<!--            <v-list-item-content>-->
-<!--              <v-list-item-title>Sign Out From All Devices</v-list-item-title>-->
-<!--            </v-list-item-content>-->
-<!--          </v-list-item>-->
         </v-list>
       </v-menu>
     </v-app-bar>

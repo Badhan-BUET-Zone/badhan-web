@@ -130,7 +130,6 @@ export default {
           id: this.getID
         }
       })
-      // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
       this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
