@@ -3,7 +3,7 @@ import {
   handleDELETELogs,
   handleGETVolunteersAll,
   handleGETCredits
-} from '../../api'
+} from '../api'
 
 const state = {
   statistics: null,

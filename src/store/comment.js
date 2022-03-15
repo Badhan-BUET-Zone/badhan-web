@@ -1,4 +1,4 @@
-import { handlePATCHDonorsComment } from '../../api'
+import { handlePATCHDonorsComment } from '../api'
 
 const state = {
   comment: null,

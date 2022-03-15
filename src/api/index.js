@@ -72,10 +72,9 @@ badhanAxios.interceptors.response.use((response) => {
   // Do something with request error
   let errorNotification
   if (error.response && error.response.data) {
-    store.commit('errorStore/addError', {
-      name: 'Backend error',
-      message: error.response.data.message,
-      stack: error.response.config.method + ' ' + error.response.config.url
+    store.commit('consoleStore/addConsoleLog', {
+      text: error.response,
+      time: new Date().getTime()
     })
     errorNotification = processError(error)
   } else if (axios.isCancel(error)) {
@@ -199,16 +198,14 @@ const handleDELETESignOutAll = async () => {
 }
 const handlePOSTRedirection = async () => {
   try {
-    const response = await badhanAxios.post('/users/redirection')
-    return response
+    return await badhanAxios.post('/users/redirection')
   } catch (e) {
     return e.response
   }
 }
 const handlePATCHRedirectedAuthentication = async (payload) => {
   try {
-    const response = await badhanAxios.patch('/users/redirection', payload)
-    return response
+    return await badhanAxios.patch('/users/redirection', payload)
   } catch (e) {
     return e.response
   }

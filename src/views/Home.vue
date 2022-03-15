@@ -391,7 +391,6 @@ export default {
     ...mapActions('notification', ['notifyError']),
     ...mapMutations(['hideSearchResults', 'resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
-    ...mapMutations('errorStore', ['addError']),
     ...mapMutations('messageBox', ['setMessage']),
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)

@@ -1,4 +1,4 @@
-import { handleGETAdmins, handlePATCHAdmins } from '../../api'
+import { handleGETAdmins, handlePATCHAdmins } from '../api'
 
 const state = {
   hallAdmins: null,

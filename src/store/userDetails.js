@@ -1,4 +1,4 @@
-import { handlePATCHDonors } from '../../api'
+import { handlePATCHDonors } from '../api'
 
 const state = {
   detailsLoaderFlag: false

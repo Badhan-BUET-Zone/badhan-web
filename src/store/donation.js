@@ -1,4 +1,4 @@
-import { handleDELETEDonations } from '../../api'
+import { handleDELETEDonations } from '../api'
 
 const state = {
   lastDonation: 0,

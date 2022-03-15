@@ -1,4 +1,4 @@
-import { handleGETVolunteers, handlePOSTDonors, handlePOSTDonations } from '../../api'
+import { handleGETVolunteers, handlePOSTDonors, handlePOSTDonations } from '../api'
 
 const state = {
   volunteers: [],

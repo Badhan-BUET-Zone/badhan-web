@@ -310,7 +310,7 @@
                     rounded
                     small
                     style="width: 100%"
-                    @click="donateClicked()"
+                    @click="donateClicked"
                     :loading="newDonationLoader"
                     :disabled="newDonationLoader || newDonationDate.length === 0"
                   >
@@ -947,6 +947,7 @@ export default {
         this.lastDonation = this.datePrint(newDonationTimestamp)
       }
       this.newDonationDate = ''
+      this.notifySuccess('Added donation')
     }
   },
   async mounted () {

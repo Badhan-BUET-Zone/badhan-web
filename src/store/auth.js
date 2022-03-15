@@ -7,9 +7,9 @@ import {
   handlePOSTRedirection,
   handlePOSTSignIn,
   resetBaseURL
-} from '../../api'
+} from '../api'
 
-import ldb from '../../localDatabase'
+import ldb from '../localDatabase'
 
 const state = {
   token: null,

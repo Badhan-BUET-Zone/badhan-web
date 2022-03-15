@@ -1,4 +1,4 @@
-import { handleGETAppVersion } from '../../api'
+import { handleGETAppVersion } from '../api'
 
 const state = {
   appDetailsLoader: false,

@@ -1,4 +1,4 @@
-import { handleDELETECallRecord, handlePOSTCallRecord } from '../../api'
+import { handleDELETECallRecord, handlePOSTCallRecord } from '../api'
 
 const state = {
   callRecords: [],

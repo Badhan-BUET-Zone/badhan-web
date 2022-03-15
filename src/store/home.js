@@ -1,6 +1,5 @@
-import { handleGETSearchV3 } from '../../api'
-import { bloodGroups, halls } from '../../mixins/constants'
-import donate from '../../store/home/donate'
+import { handleGETSearchV3 } from '../api'
+import { bloodGroups, halls } from '../mixins/constants'
 
 const compareObject = (a, b) => {
   if (a.batch < b.batch) {
@@ -140,8 +139,5 @@ export default {
   state,
   actions,
   getters,
-  mutations,
-  modules: {
-    donate
-  }
+  mutations
 }
