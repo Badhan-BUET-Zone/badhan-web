@@ -43,6 +43,7 @@
                         outlined
                         rounded
                         label="Phone"
+                        id="signInPhoneTextBox"
                         class="input-group--focused"
                         dense
                         :hint="'Enter your 11 digit phone number'"
@@ -51,6 +52,7 @@
                         :error-messages="phoneErrors"
                     ></v-text-field>
                     <v-text-field
+                        id="signInPasswordTextBox"
                         rounded
                         outlined
                         label="Password"
@@ -71,6 +73,7 @@
                         @click="signInClicked()"
                         :disabled="getSignInLoaderFlag || $v.$anyError"
                         :loading="getSignInLoaderFlag"
+                        id="signInButton"
                     >
                       <v-icon left>
                         mdi-login

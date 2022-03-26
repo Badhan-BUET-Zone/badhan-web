@@ -55,8 +55,8 @@
                 "name": "Hasan Masum",
                 "image": "https://firebasestorage.googleapis.com/v0/b/badhan-buet.appspot.com/o/profilepics%2Fhasanmasum.jpg?alt=media",
                 "contributions": [
+                    "Excel-sheet Processing Frontend",
                     "Prototyping and UX Design",
-                    "Database Management",
                     "Testing and Bug Report"
                 ],
                 "calender": "July 2021 - Present",
@@ -266,7 +266,7 @@
         ]
     },
     "frontendSettings": {
-        "version": "4.7.3",
+        "version": "4.7.5",
         "backendBaseURL": "https://badhan-buet.uc.r.appspot.com",
         "backendTestBaseURL": "https://badhan-web-test.herokuapp.com"
     }

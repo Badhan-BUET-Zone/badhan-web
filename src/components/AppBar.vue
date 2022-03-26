@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-menu right rounded>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" :loading="getLoadingFlag">
+          <v-btn icon v-bind="attrs" v-on="on" :loading="getLoadingFlag" id="topBarVerticalDotsId">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
@@ -23,7 +23,7 @@
               <v-list-item-title>Go to Web</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item @click="signOutModalPrompted">
+          <v-list-item @click="signOutModalPrompted" id="signOutButtonId">
             <v-list-item-icon>
               <v-icon>
                 mdi-logout
