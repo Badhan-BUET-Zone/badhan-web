@@ -28,6 +28,8 @@ import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
 import { myConsole } from './mixins/myConsole'
 
+import { isAppVersionBackdated } from './mixins/helpers'
+
 export default {
   name: 'app',
   data () {
@@ -52,7 +54,6 @@ export default {
     ...mapGetters('frontendSettings', ['getSettings'])
   },
   methods: {
-    ...mapActions('release', ['fetchtAppDetails']),
     ...mapActions('frontendSettings', ['fetchSettings']),
     ...mapMutations('confirmationBox', ['setConfirmationMessage']),
 
@@ -70,8 +71,7 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-
-      if (getIsNative() && googlePlayAppVersion !== await getLocalAppVersion()) {
+      if (getIsNative() && isAppVersionBackdated(await getLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available. Please download the latest update.',
           confirmationAction: () => {

@@ -4,10 +4,36 @@
     <transition-group name="slide-fade-down-snapout" mode="out-in">
       <Container :key="'versionLoaded'">
         <v-card-text>
-          <p><b>App Version on Google Play:</b> {{ getGooglePlayAppVersion }}</p>
-          <p><b>Local App Version:</b> {{ nativeAppVersion }}</p>
-          <p><b>Database:</b> {{ $getEnvironmentName() }}</p>
-          <p><b>Last Updated:</b> {{getBuildTime}}</p>
+          <v-simple-table>
+            <template v-slot:default>
+              <tbody>
+              <tr>
+                <td><b>App Version on Google Play: </b></td>
+                <td>{{ getGooglePlayAppVersion }}</td>
+              </tr>
+              <tr>
+                <td><b>Local App Version: </b></td>
+                <td>{{ nativeAppVersion }}</td>
+              </tr>
+              <tr>
+                <td><b>Github Release Version: </b></td>
+                <td><span v-if="versionLoaderFlag"><v-skeleton-loader type="text"></v-skeleton-loader></span><span v-else>{{githubVersion}}</span></td>
+              </tr>
+              <tr>
+                <td><b>Download from Github: </b></td>
+                <td><v-btn rounded :loading="versionLoaderFlag" x-small :href="githubLink" style="text-decoration: none"><v-icon left>mdi-download</v-icon>Download</v-btn></td>
+              </tr>
+              <tr>
+                <td><b>Database:</b></td>
+                <td>{{ $getEnvironmentName() }}</td>
+              </tr>
+              <tr>
+                <td><b>Last Updated:</b></td>
+                <td>{{getBuildTime}}</td>
+              </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-card-text>
       </Container>
       <Container :key="'aboutPage'">
@@ -28,6 +54,7 @@ import readme from '../../README.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
 import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
+import { handleGETAppVersions } from '../api'
 
 export default {
   name: 'About',
@@ -52,13 +79,22 @@ export default {
   data () {
     return {
       text: readme,
-      nativeAppVersion: 'Web'
+      nativeAppVersion: 'Web',
+      versionLoaderFlag: false,
+      githubVersion: 'None',
+      githubLink: 'https://github.com'
     }
   },
   async mounted () {
     if (getIsNative()) {
       this.nativeAppVersion = await getLocalAppVersion()
     }
+    this.versionLoaderFlag = true
+    const appVersionResponse = await handleGETAppVersions()
+    this.versionLoaderFlag = false
+    if (appVersionResponse.status !== 200) return
+    this.githubVersion = appVersionResponse.data.githubReleaseVersion
+    this.githubLink = appVersionResponse.data.githubReleaseDownloadURL
   }
 }
 </script>

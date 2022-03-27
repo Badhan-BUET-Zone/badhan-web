@@ -30,9 +30,7 @@
                   >
                       Badhan
                     </span>
-                  <p class="subtitle-2">BUET Zone<br>
-
-                  </p>
+                  <p class="subtitle-2">BUET Zone</p>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"

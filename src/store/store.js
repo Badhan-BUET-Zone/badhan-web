@@ -9,7 +9,6 @@ import superadmin from './superadmin'
 import details from './details'
 import userDetails from './userDetails'
 import notification from './notification'
-import release from './release'
 import statistics from './statistics'
 import consoleStore from './consoleStore'
 import messageBox from './messageBox'
@@ -53,7 +52,6 @@ export const store = new Vuex.Store({
     details,
     userDetails,
     notification,
-    release,
     statistics,
     consoleStore,
     messageBox,

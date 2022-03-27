@@ -268,13 +268,7 @@ const handleGETSearchV3 = async (payload) => {
     return e.response
   }
 }
-const handleGETAppVersion = async () => {
-  try {
-    return await badhanAxios('/log/version')
-  } catch (e) {
-    return e.response
-  }
-}
+
 const handleGETStatistics = async () => {
   try {
     return await badhanAxios.get('/log/statistics')
@@ -428,7 +422,13 @@ const handleGETActiveDonors = async (payload) => {
     return e.response
   }
 }
-
+const handleGETAppVersions = async () => {
+  try {
+    return await badhanAxios.get('/log/version/v5')
+  } catch (e) {
+    return e.response
+  }
+}
 /// ///////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
   try {
@@ -444,6 +444,7 @@ const handleGETFrontendSettings = async () => {
     return e.response
   }
 }
+
 export {
   badhanAxios,
   firebaseAxios,
@@ -470,7 +471,6 @@ export {
   handlePOSTDonations,
   handleGETDonors,
   handleGETSearchV3,
-  handleGETAppVersion,
   handleGETStatistics,
   handleDELETELogs,
   handleGETVolunteersAll,
@@ -493,6 +493,7 @@ export {
   handlePOSTActiveDonors,
   handleDELETEActiveDonors,
   handleGETActiveDonors,
+  handleGETAppVersions,
 
   // firebase methods
   handleGETFrontendSettings
