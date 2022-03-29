@@ -5,6 +5,7 @@
   </v-card-text>
   <v-card-actions v-if="showDelete">
     <Button
+        :id="'loginDeleteButtonId'+_id"
         :click="deleteClicked"
         :loading="deleteLoaderFlag"
         :disabled="deleteLoaderFlag"

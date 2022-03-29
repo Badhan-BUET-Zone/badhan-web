@@ -55,6 +55,7 @@
         </div>
         <v-card-actions v-if="!loginsFetched" :key="'loginFetchAction'">
           <Button
+            id="getListOfLoginButtonId"
               :color="'primary'"
               :disabled="getLoginsLoader"
               :icon="'mdi-refresh'"
