@@ -80,7 +80,7 @@
                     </v-btn>
                     <br>
                     <div class="d-flex">
-                    <v-btn x-small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
+                    <v-btn id="forgotPasswordButtonId" x-small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
                            style="text-decoration: none">
                       Forgot Password?
                     </v-btn>

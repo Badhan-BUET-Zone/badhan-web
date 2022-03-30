@@ -7,9 +7,10 @@
         Password Recovery
       </v-card-title>
       <v-card-text>
-        <v-text-field :disabled="recoveryCalledLoader" @blur="$v.phone.$touch()"
+        <v-text-field id="forgotPasswordPhoneId" :disabled="recoveryCalledLoader" @blur="$v.phone.$touch()"
                       :error-messages="phoneErrors" class="required" rounded outlined label="Enter your phone number" dense v-model="phone"></v-text-field>
         <Button
+            id="forgotPasswordButtonConfirmedId"
             :click="recoveryClicked"
             :color="'primary'"
             :disabled="recoveryCalledLoader|| emailTimeCoolDownTime<4*60 || $v.$anyError"

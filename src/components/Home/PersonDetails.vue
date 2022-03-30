@@ -70,6 +70,7 @@
           </v-tooltip>
 
         </v-card-title>
+        <v-card-subtitle>Donor Profile</v-card-subtitle>
         <v-card-text class="mb-5">
           <v-chip color="secondary" class="mr-1 mb-1">
             <span v-if="designation === 0">Donor</span>
@@ -160,6 +161,7 @@
               <ContainerOutlined v-if="getDesignation >= designation || $isMe(id)">
                 <v-card-title>
                   <v-btn rounded
+                         id="profileSettingsId"
                          @click="settingsCollapseFlag = !settingsCollapseFlag">
                     Settings
                   </v-btn>
@@ -219,7 +221,7 @@
                       </v-btn>
 
                       <div key="passwordChange" v-if="$isMe(id)">
-                        <v-text-field rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                        <v-text-field id="newPasswordFieldId" rounded dense :append-icon="newPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="newPasswordFlag ? 'text' : 'password'" outlined
                                       label="New Password" v-model="newPassword"
                                       class="input-group--focused"
@@ -227,7 +229,7 @@
                                       :disabled="!isDetailsEditable"
                                       @blur="$v.newPassword.$touch()"
                                       :error-messages="newPasswordErrors"></v-text-field>
-                        <v-text-field rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
+                        <v-text-field id="confirmPasswordFieldId" rounded dense :append-icon="confirmPasswordFlag ? 'mdi-eye' : 'mdi-eye-off'"
                                       :type="confirmPasswordFlag ? 'text' : 'password'" outlined
                                       label="Confirm Password" v-model="confirmPassword" class="input-group--focused"
                                       @click:append="confirmPasswordFlag = !confirmPasswordFlag"
@@ -238,7 +240,7 @@
                           <v-icon left>mdi-window-close</v-icon>
                           Cancel
                         </v-btn>
-                        <v-btn class="ma-1" color="primary" rounded small
+                        <v-btn id="passwordChangeConfirmedId" class="ma-1" color="primary" rounded small
                                :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
                                :loading="passwordChangeFlag"
                                @click="savePasswordClicked"
