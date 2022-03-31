@@ -3,7 +3,6 @@
   <div class="mb-2" style="width: 100%">
     <v-card
         style="width: 100%; height: 100%;"
-
         @click="expansionClicked" rounded
     >
       <v-row no-gutters>
@@ -78,6 +77,7 @@
           </v-row>
           <div class="mt-1">
             <v-btn
+                :id="'personCardSeeProfileButtonId_'+id"
                 small
                 rounded
                 color="primary"

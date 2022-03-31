@@ -18,137 +18,7 @@
     <div>
       <v-row>
         <v-col cols="12" sm="4">
-          <v-card class="rounded-xl">
-            <v-card-title>
-              Filters
-              <HelpTooltip>
-                <div>
-                  You may choose any one of the following options.
-                  <ul>
-                    <li><b>Name: </b>Search any donor by name</li>
-                    <li><b>Blood group: </b>Search any donor by blood group</li>
-                    <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit batch number (e.g. 16, 17 etc.)</li>
-                    <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written text</li>
-                    <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched. Donors who were previously in "Attached/Covid" database are in this search criteria</li>
-                    <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only search your own hall for donors in such case.</li>
-                    <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be fetched. These donors are basically available for donations.</li>
-                    <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will be shown</li>
-                  </ul>
-                </div>
-              </HelpTooltip>
-            </v-card-title>
-
-            <!--    Main Filters-->
-
-            <v-form>
-              <v-container>
-                <!--        Input field for name-->
-                <v-text-field
-                    rounded
-                    v-model="name"
-                    :hint="'Search any donor by name'"
-                    outlined
-                    label="Name of Donor"
-                    clearable
-                    dense
-                ></v-text-field>
-
-                <v-select
-                    rounded
-                    v-model="bloodGroup"
-                    :items="bloodGroups"
-                    label="Blood Group"
-                    outlined
-                    dense
-                ></v-select>
-
-                <!--        Input field for batch-->
-                <v-text-field
-                    rounded
-                    v-model="batch"
-                    outlined
-                    label="Batch"
-                    clearable
-                    dense
-                    @blur="$v.batch.$touch()"
-                    :error-messages="batchErrors"
-                ></v-text-field>
-
-                <!--        Input field for hall-->
-                <v-text-field
-                    rounded
-                    outlined
-                    label="Address/ Comment"
-                    clearable
-                    v-model="address"
-                    dense
-                ></v-text-field>
-
-                <v-radio-group row v-model="radios" dense>
-                  <v-radio value="AvailableToAll">
-                    <template v-slot:label>
-                      Public Data
-                    </template>
-                  </v-radio>
-                  <v-radio value="SpecifyHall">
-                    <template v-slot:label>
-                      Specify hall
-                    </template>
-                  </v-radio>
-                </v-radio-group>
-                <v-select
-                    :disabled="radios!== 'SpecifyHall'"
-                    rounded
-                    v-model="hall"
-                    :items="availableHalls"
-                    label="Select Hall"
-                    outlined
-                    dense
-                    @blur="$v.hall.$touch()" :error-messages="hallErrors"
-                ></v-select>
-                <v-row>
-                  <v-col>
-                    <v-checkbox
-                        dense
-                        v-model="availability"
-                        :label="'Available'"
-                    ></v-checkbox>
-                  </v-col>
-                  <v-col>
-                    <v-checkbox
-                        dense
-                        v-model="notAvailability"
-                        :label="'Not Available'"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-
-                <!--        A button to reset the form fields-->
-                <v-btn rounded color="secondary" @click="clearFields">
-                  <v-icon left>
-                    mdi-refresh
-                  </v-icon>
-                  Reset
-                </v-btn>
-
-                <!--        The button for executing search-->
-                <v-btn
-                    rounded
-                    color="primary"
-                    :disabled="isSearchLoading || $v.$anyError"
-                    :loading="isSearchLoading"
-                    @click="searchClicked()"
-                    class="ml-2"
-                >
-                  <v-icon left>
-                    mdi-magnify
-                  </v-icon>
-
-                  Search
-                </v-btn>
-              </v-container>
-            </v-form>
-          </v-card>
+          <Filters :reset-clicked="clearFields" :search-clicked="searchClickedFromFilterComponent"></Filters>
         </v-col>
         <v-col cols="12" sm="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
@@ -246,6 +116,7 @@
                 </v-alert>
 
                 <person-card
+                    :id="'personCardId_'+person._id"
                     v-for="(person) in obj.people"
                     :key="person._id"
                     :person="person"
@@ -269,9 +140,10 @@ import { bloodGroups, halls } from '../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
 import { isGuestEnabled } from '../api'
-import HelpTooltip from '../components/UI Components/HelpTooltip'
+// import HelpTooltip from '../components/UI Components/HelpTooltip'
 import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
 import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
+import Filters from '../components/Filters'
 
 export default {
   name: 'ActiveSearch',
@@ -314,8 +186,9 @@ export default {
 
   },
   components: {
+    Filters,
     'person-card': PersonCard,
-    HelpTooltip,
+    // HelpTooltip,
     SkeletonPersonCard
   },
   data: function () {
@@ -392,6 +265,17 @@ export default {
     ...mapMutations(['hideSearchResults', 'resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('messageBox', ['setMessage']),
+    searchClickedFromFilterComponent (filterValues) {
+      this.name = filterValues.name
+      this.batch = filterValues.batch
+      this.address = filterValues.address
+      this.bloodGroup = filterValues.bloodGroup
+      this.hall = filterValues.hall
+      this.radios = filterValues.availableToAll
+      this.availability = filterValues.availability
+      this.notAvailability = filterValues.notAvailability
+      this.searchClicked()
+    },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)
       const keys = ['name', 'Hall', 'studentId', 'Last Donation', 'Blood Group', 'address', 'roomNumber', 'Donation Count']

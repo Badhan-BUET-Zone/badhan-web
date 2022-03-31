@@ -1,41 +1,43 @@
 <template>
-  <v-card rounded>
+  <v-card rounded class="d-flex justify-center">
     <!--    Main Filters-->
     <v-card-text>
-      <v-form>
+      <div style="text-align: center" class="ma-auto h5">
+        Filters
+        <HelpTooltip>
+      <div>
+        You may choose any one of the following options.
+        <ul>
+          <li><b>Name: </b>Search any donor by name</li>
+          <li><b>Blood group: </b>Search any donor by blood group</li>
+          <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit
+            batch number (e.g. 16, 17 etc.)
+          </li>
+          <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written
+            text
+          </li>
+          <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched.
+            Donors who were previously in "Attached/Covid" database are in this search criteria
+          </li>
+          <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only
+            search your own hall for donors in such case.
+          </li>
+          <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be
+            fetched. These donors are basically available for donations.
+          </li>
+          <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will
+            be shown
+          </li>
+        </ul>
+      </div>
+      </HelpTooltip>
+      </div>
+
+<!--      </v-card-subtitle>-->
         <v-container>
-          <v-card-title class="font-weight-bold">
-          Filters
-          <HelpTooltip>
-            <div>
-              You may choose any one of the following options.
-              <ul>
-                <li><b>Name: </b>Search any donor by name</li>
-                <li><b>Blood group: </b>Search any donor by blood group</li>
-                <li><b>Batch: </b>Donors from the specified batch will be fetched. Please enter a valid numeric two digit
-                  batch number (e.g. 16, 17 etc.)
-                </li>
-                <li><b>Address/ Comment: </b>Those donors will be shown whose comment or address field consists your written
-                  text
-                </li>
-                <li><b>Public Data: </b>If you choose this option, donors who are marked as public data will be fetched.
-                  Donors who were previously in "Attached/Covid" database are in this search criteria
-                </li>
-                <li><b>Specify Hall: </b>If you choose this option, donors of specified hall will be fetched. You can only
-                  search your own hall for donors in such case.
-                </li>
-                <li><b>Available: </b>If you specify this option, donors who have given blood before 120 days will be
-                  fetched. These donors are basically available for donations.
-                </li>
-                <li><b>Not Available: </b>If you specify this option, donors who have given blood in a span of 120 days will
-                  be shown
-                </li>
-              </ul>
-            </div>
-          </HelpTooltip>
-          </v-card-title>
           <!--        Input field for name-->
           <v-text-field
+            id="filterNameTextboxId"
               rounded
               v-model="name"
               :hint="'Search any donor by name'"
@@ -46,6 +48,7 @@
           ></v-text-field>
 
           <v-select
+            id="filterBloodgroupDropdownId"
               rounded
               v-model="bloodGroup"
               :items="bloodGroups"
@@ -56,6 +59,7 @@
 
           <!--        Input field for batch-->
           <v-text-field
+              id="filterBatchTextboxId"
               rounded
               v-model="batch"
               outlined
@@ -68,6 +72,7 @@
 
           <!--        Input field for hall-->
           <v-text-field
+              id="filterAddressTextboxId"
               rounded
               outlined
               label="Address/ Comment"
@@ -77,18 +82,19 @@
           ></v-text-field>
 
           <v-radio-group row v-model="radios" dense>
-            <v-radio value="AvailableToAll">
+            <v-radio value="AvailableToAll" id="filterPublicDataRadioId">
               <template v-slot:label>
                 Public Data
               </template>
             </v-radio>
-            <v-radio value="SpecifyHall">
+            <v-radio value="SpecifyHall" id="filterSpecifyHallRadioId">
               <template v-slot:label>
                 Specify hall
               </template>
             </v-radio>
           </v-radio-group>
           <v-select
+              id="filterSpecifyHallDropdownId"
               :disabled="radios!== 'SpecifyHall'"
               rounded
               v-model="hall"
@@ -101,6 +107,7 @@
           <v-row>
             <v-col>
               <v-checkbox
+                  id="filterAvailableCheckboxId"
                   dense
                   v-model="availability"
                   :label="'Available'"
@@ -108,6 +115,7 @@
             </v-col>
             <v-col>
               <v-checkbox
+                  id="filterNotAvailableCheckboxId"
                   dense
                   v-model="notAvailability"
                   :label="'Not Available'"
@@ -125,6 +133,7 @@
 
           <!--        The button for executing search-->
           <v-btn
+              id="filterSearchButtonId"
               rounded
               color="primary"
               :disabled="isSearchLoading || $v.$anyError"
@@ -135,11 +144,9 @@
             <v-icon left>
               mdi-magnify
             </v-icon>
-
             Search
           </v-btn>
         </v-container>
-      </v-form>
     </v-card-text>
   </v-card>
 </template>
@@ -154,6 +161,10 @@ export default {
   name: 'Filters',
   props: {
     searchClicked: {
+      type: Function,
+      required: true
+    },
+    resetClicked: {
       type: Function,
       required: true
     }
@@ -171,6 +182,7 @@ export default {
       this.error = ''
       this.address = ''
       this.showFab = false
+      this.resetClicked()
     },
     async searchClickInsideComponent () {
       await this.$v.$touch()

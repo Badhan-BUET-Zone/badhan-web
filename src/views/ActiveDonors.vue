@@ -26,7 +26,7 @@
           <Button :icon="'mdi-close'" :text="'Close'" :click="()=>{this.filterListMenu = false}"
                   :color="'secondary'"></Button>
           <div style="height: 75vh;overflow-y: scroll;">
-            <Filters :search-clicked="searchClicked"></Filters>
+            <Filters :reset-clicked="resetClicked" :search-clicked="searchClicked"></Filters>
           </div>
         </v-sheet>
       </v-bottom-sheet>
@@ -170,7 +170,8 @@ export default {
         this.createNoDonorComponent()
       }
       this.activeDonorsLoader = false
-    }
+    },
+    resetClicked () {}
   },
   computed: {
     ...mapGetters('activeDonors', ['getActiveDonors'])

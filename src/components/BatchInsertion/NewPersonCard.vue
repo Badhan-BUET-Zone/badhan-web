@@ -1,10 +1,10 @@
 <template>
   <Container>
     <v-card-text>
-      <v-text-field class="required" rounded outlined label="Name of Donor" dense v-model="name"
+      <v-text-field id="newDonorNameTextBoxId" class="required" rounded outlined label="Name of Donor" dense v-model="name"
                     @blur="$v.name.$touch()"
                     :error-messages="nameErrors"></v-text-field>
-      <v-text-field :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded
+      <v-text-field id="newDonorPhoneTextBoxId" :loading="phoneDuplicateCheckLoader" :disabled="phoneDuplicateCheckLoader" class="required" rounded
                     outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
       <transition name="slide-fade-down">
@@ -16,7 +16,7 @@
         </v-btn>
       </transition>
 
-      <v-text-field class="required" rounded outlined label="Student ID" dense v-model="studentId"
+      <v-text-field id="newDonorStudentIdTextBoxId" class="required" rounded outlined label="Student ID" dense v-model="studentId"
                     @blur="$v.studentId.$touch()"
                     :error-messages="studentIdErrors"
                     hint="If the department is unknown, give 00 as dept. code"
@@ -51,21 +51,21 @@
         </template>
       </v-text-field>
 
-      <v-select class="required" rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
+      <v-select id="newDonorBloodGroupDropDownId" class="required" rounded v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined dense
                 @blur="$v.bloodGroup.$touch()"
                 :error-messages="bloodGroupErrors"></v-select>
 
-      <v-text-field rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
-      <v-text-field rounded outlined label="Address" dense v-model="address"></v-text-field>
-      <v-text-field rounded outlined label="Comment" dense v-model="comment"></v-text-field>
-      <v-text-field class="required" type="number" rounded outlined label="Donation count" dense v-model="donationCount"
+      <v-text-field id="newDonorRoomNumberTextFieldId" rounded outlined label="Room" dense v-model="roomNumber"></v-text-field>
+      <v-text-field id="newDonorAddressTextFieldId" rounded outlined label="Address" dense v-model="address"></v-text-field>
+      <v-text-field id="newDonorCommentTextFieldId" rounded outlined label="Comment" dense v-model="comment"></v-text-field>
+      <v-text-field id="newDonorDonationCountTextFieldId" class="required" type="number" rounded outlined label="Donation count" dense v-model="donationCount"
                     @blur="$v.donationCount.$touch()"
                     :error-messages="donationCountErrors"></v-text-field>
       <v-card outlined class="rounded-xl">
         <v-card-text>
-          <v-select class="required" rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
+          <v-select id="newDonorHallDropdownId" class="required" rounded :items="availableHalls" label="Select Hall" outlined dense v-model="hall"
                     @blur="$v.hall.$touch()" :error-messages="hallErrors"></v-select>
-          <v-checkbox :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll"
+          <v-checkbox id="newDonorPublicDataCheckboxId" :disabled="halls.indexOf(hall)===8" dense v-model="availableToAll"
                       @blur="$v.availableToAll.$touch()" :error-messages="availableToAllErrors"
                       label="Public Data"></v-checkbox>
         </v-card-text>
@@ -82,6 +82,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
+              id="newDonorLastDonationTextFieldId"
               v-model="lastDonation"
               label="Last Donation"
               prepend-icon="mdi-calendar"
@@ -104,6 +105,7 @@
             Cancel
           </v-btn>
           <v-btn
+              id="newDonorLastDonationOkButtonId"
               text
               color="primary"
               @click="$refs.menu.save(lastDonation)"
@@ -120,7 +122,7 @@
         </v-icon>
         Discard
       </v-btn>
-      <v-btn small color="primary" rounded @click="createDonorClicked"
+      <v-btn id="newDonorCreateButtonId" small color="primary" rounded @click="createDonorClicked"
              :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
              :loading="donorCreationLoader">
         <v-icon left>

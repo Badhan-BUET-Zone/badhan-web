@@ -249,7 +249,7 @@
                           Save
                         </v-btn>
                       </div>
-                      <v-btn key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorPrompt"
+                      <v-btn id="personDetailsDeleteButtonId" key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorPrompt"
                              rounded
                              color="warning"
                              :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
