@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="notificationSnackbarId">
         <v-snackbar
             v-model="notification"
             :color="getNotificationColor"

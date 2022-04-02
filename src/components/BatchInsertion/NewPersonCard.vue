@@ -8,7 +8,7 @@
                     outlined label="Phone" dense v-model="computedPhone" @blur="$v.phone.$touch()"
                     :error-messages="phoneErrors"></v-text-field>
       <transition name="slide-fade-down">
-        <v-btn v-if="duplicateDonorId!==null" small class="mb-2" color="primary" rounded @click="goToDuplicateProfile">
+        <v-btn id="donorCreationSeeDuplicateButtonId" v-if="duplicateDonorId!==null" small class="mb-2" color="primary" rounded @click="goToDuplicateProfile">
           <v-icon left>
             mdi-content-duplicate
           </v-icon>

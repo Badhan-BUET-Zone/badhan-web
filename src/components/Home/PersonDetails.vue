@@ -100,13 +100,14 @@
                 <transition name="slide-fade-down-snapout" mode="out-in">
                   <v-card-text v-if="personDetailCollapseFlag">
                     <div>
-                      <v-text-field rounded dense type="'text'" outlined label="Name" v-model="name"
+                      <v-text-field id="donorDetailsNameTextBoxId" rounded dense type="'text'" outlined label="Name" v-model="name"
                                     :disabled="!isDetailsEditable" @blur="$v.name.$touch()"
                                     :error-messages="nameErrors"></v-text-field>
-                      <v-text-field rounded dense type="'text'" outlined label="Phone" v-model="phone"
+                      <v-text-field id="donorDetailsPhoneTextBoxId" rounded dense type="'text'" outlined label="Phone" v-model="phone"
                                     :disabled="!isDetailsEditable" @blur="$v.phone.$touch()"
                                     :error-messages="phoneErrors"></v-text-field>
                       <v-text-field
+                        id="donorDetailsEmailTextBoxId"
                         :hint="(designation!==0 && !$isMe(id))?'You cannot edit this email':'Password Recovery Email'"
                         :persistent-hint="(designation!==0 && !$isMe(id))" rounded dense outlined :label="'Email'"
                         v-model="email"
@@ -114,23 +115,27 @@
                         @blur="$v.email.$touch()"
                         :error-messages="emailErrors">
                       </v-text-field>
-                      <v-select rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
+                      <span id="donorDetailsBloodGroupSpanId">
+                      <v-select id="donorDetailsBloodGroupDropDownId" rounded dense v-model="bloodGroup" :items="bloodGroups" label="Blood Group" outlined
                                 :disabled="!isDetailsEditable"></v-select>
-                      <v-text-field rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
+                      </span>
+                      <v-text-field id="donorDetailsStudentIdTextBoxId" rounded dense type="'text'" outlined label="Student ID: " v-model="studentId"
                                     :disabled="!isDetailsEditable" @blur="$v.studentId.$touch()"
                                     :error-messages="studentIdErrors"></v-text-field>
-                      <v-text-field rounded dense type="'text'" outlined label="Room" v-model="room"
+                      <v-text-field id="donorDetailsRoomTextBoxId" rounded dense type="'text'" outlined label="Room" v-model="room"
                                     :disabled="!isDetailsEditable"></v-text-field>
-                      <v-text-field rounded dense type="'text'" outlined label="Address" v-model="address"
+                      <v-text-field id="donorDetailsAddressTextBoxId" rounded dense type="'text'" outlined label="Address" v-model="address"
                                     :disabled="!isDetailsEditable"></v-text-field>
-                      <v-select rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
+                      <span id="donorDetailsHallDropDownSpan">
+                      <v-select id="donorDetailsHallDropDownId" rounded dense v-model="hall" :items="availableHalls" label="Hall" outlined
                                 :disabled="!isDetailsEditable || designation === 2 || designation === 1"></v-select>
-                      <v-checkbox :disabled="!isDetailsEditable || halls.indexOf(hall)===8" v-model="availableToAll"
+                      </span>
+                      <v-checkbox id="donorDetailsPublicDataCheckboxId" :disabled="!isDetailsEditable || halls.indexOf(hall)===8" v-model="availableToAll"
                                   dense
                                   label="Public Data"></v-checkbox>
 
                       <div v-if="getDesignation > designation || $isMe(id)">
-                        <v-btn color="primary" rounded class="white--text ml-2" small
+                        <v-btn id="donorDetailsSaveButtonId" color="primary" rounded class="white--text ml-2" small
                                :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error || $v.email.$error"
                                :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
                           <v-icon left>
@@ -140,13 +145,13 @@
                         </v-btn>
                       </div>
                     </div>
-                    <v-textarea rounded dense class="mt-5" name="comment" outlined v-model="comment"
+                    <v-textarea id="donorDetailsCommentTextBoxId" rounded dense class="mt-5" name="comment" outlined v-model="comment"
                                 label="Comment" auto-grow
                                 :disabled="getCommentLoaderFlag" :rows="1"
                                 :messages="'Last Updated: '+ (commentTime==0?'Unknown':new Date(commentTime).toDateString()+' on '+new Date(commentTime).toLocaleTimeString())">
                     </v-textarea>
 
-                    <v-btn color="primary" rounded small
+                    <v-btn id="donorDetailsCommentSaveButtonId" color="primary" rounded small
                            :disabled="getCommentLoaderFlag"
                            :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
                       <v-icon left>

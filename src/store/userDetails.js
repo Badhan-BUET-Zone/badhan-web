@@ -23,7 +23,7 @@ const actions = {
     const response = await handlePATCHDonors(payload)
     commit('detailsLoaderFlagOff')
     if (response.status !== 200) return
-    dispatch('notification/notifySuccess', 'Successfully saved details', { root: true })
+    dispatch('notification/notifySuccess', 'Saved details successfully', { root: true })
     commit('setPhone', parseInt(payload.newPhone), { root: true })
   }
 }
