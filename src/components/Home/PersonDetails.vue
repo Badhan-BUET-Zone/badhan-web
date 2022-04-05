@@ -174,7 +174,7 @@
                 <transition name="slide-fade-down-snapout" mode="out-in">
                   <v-card-text v-if="settingsCollapseFlag">
                     <transition-group name="slide-fade-down" mode="out-in">
-                      <v-btn key="promoteToVolunteer"
+                      <v-btn id="promoteToVolunteerButtonId" key="promoteToVolunteer"
                              small
                              class="ma-1"
                              color="primary"
@@ -218,7 +218,7 @@
                         </v-row>
                       </div>
 
-                      <v-btn key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
+                      <v-btn id="demoteToDonorButtonId" key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
                              :disabled="promoteFlag"
                              v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
                         <v-icon left>mdi-arrow-down</v-icon>
@@ -261,7 +261,7 @@
                         <v-icon left dark>mdi-delete</v-icon>
                         Delete this person
                       </v-btn>
-                      <v-btn key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
+                      <v-btn id="promoteToHallAdminButtonId" key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
                              v-if="getDesignation===3 && designation===1"
                              :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
                              :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">

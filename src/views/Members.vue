@@ -34,8 +34,8 @@
                   :key="index"
                   :id="`volunteerId_${volunteer._id}`"
                 >
-                  <td>{{ volunteer.name }}<span v-if="index<3"><v-icon style="color: gold">mdi-star</v-icon></span></td>
-                  <td>{{ volunteer.studentId.substr(0, 2) }}</td>
+                  <td><span :id="`volunteerNameId_${volunteer._id}`">{{ volunteer.name }}</span><span v-if="index<3"><v-icon style="color: gold">mdi-star</v-icon></span></td>
+                  <td :id="`volunteerBatchId_${volunteer._id}`">{{ volunteer.studentId.substr(0, 2) }}</td>
                   <td>{{ volunteer.studentId | idToDept }}</td>
                 </tr>
                 </tbody>
