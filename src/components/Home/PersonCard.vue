@@ -70,7 +70,7 @@
               <span v-else>Unknown</span>
               <br>
             </span>
-              <span>Called {{ callRecordCount }} times in last 3 days</span>
+              <span>Called <span :id="`callCountId_${id}`">{{ callRecordCount }}</span> times in last 3 days</span>
               <span v-if="comment!==undefined && comment!==null && comment.length !==0"><VueMarkdown>**Comment:** {{comment }} (Last Updated:
                 {{commentTime == 0 ? 'Unknown' : new Date(commentTime).toLocaleString() }} )</VueMarkdown> </span>
             </v-col>
@@ -91,7 +91,7 @@
               </v-icon>
               See profile
             </v-btn>
-            <v-btn :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
+            <v-btn :id="'personCardCallButtonId_'+id" :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
                    class="ml-2" @click="callFromDialer"
             >
               <v-icon left>
@@ -219,7 +219,8 @@ export default {
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord', ['postCallRecordFromCard']),
     async callFromDialer () {
-      document.location.href = 'tel:+' + this.phone
+      // document.location.href = 'tel:+' + this.phone
+      window.open('tel:+' + this.phone, '_blank')
       this.newCallRecordLoader = true
       await this.postCallRecordFromCard({ donorId: this.id })
       this.newCallRecordLoader = false
