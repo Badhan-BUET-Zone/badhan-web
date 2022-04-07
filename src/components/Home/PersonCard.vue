@@ -113,6 +113,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
+                    :id="`personCardDatePickerId_${id}`"
                     rounded
                     v-model="newDonationDate"
                     label="Add a donation date"
@@ -124,10 +125,11 @@
                     dense
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="newDonationDate" no-title scrollable>
+              <v-date-picker :id="`personCardDatePickerCalenderId_${id}`" v-model="newDonationDate" no-title scrollable>
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                 <v-btn
+                    :id="`personCardDatePickerOkButtonId_${id}`"
                     text
                     color="primary"
                     @click="$refs.menu.save(newDonationDate)"
@@ -138,6 +140,7 @@
             </v-menu>
           </div>
           <v-btn
+              :id="`personCardDonationButtonId_${id}`"
               color="primary"
               rounded
               small

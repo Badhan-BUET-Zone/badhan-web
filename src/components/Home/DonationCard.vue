@@ -12,7 +12,7 @@
           </span>
         </v-col>
         <v-col cols="3">
-          <v-btn :loading="donationDeletionLoader" :disabled="donationDeletionLoader" @click="promptDonationDeletion" color="warning" x-small fab depressed>
+          <v-btn :id="`donationCardDeleteButtonId_${dateObject.date}`" :loading="donationDeletionLoader" :disabled="donationDeletionLoader" @click="promptDonationDeletion" color="warning" x-small fab depressed>
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-col>

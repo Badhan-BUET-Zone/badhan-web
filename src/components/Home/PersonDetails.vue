@@ -294,6 +294,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
+                          id="personDetailsNewDonationTextboxId"
                           rounded
                           v-model="newDonationDate"
                           label="Add a donation date"
@@ -305,14 +306,15 @@
                           dense
                         ></v-text-field>
                       </template>
-                      <v-date-picker v-model="newDonationDate" no-title scrollable>
+                      <v-date-picker id="personDetailsNewDonationDatePickerId" v-model="newDonationDate" no-title scrollable>
                         <v-spacer></v-spacer>
                         <v-btn small rounded text color="primary" @click="menu = false">Cancel</v-btn>
-                        <v-btn small rounded text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
+                        <v-btn id="personDetailsNewDonationDatePickerOkButtonId" small rounded text color="primary" @click="$refs.menu.save(newDonationDate)">OK</v-btn>
                       </v-date-picker>
                     </v-menu>
                   </div>
                   <v-btn
+                    id="personDetailsNewDonationOkButtonId"
                     color="primary"
                     rounded
                     small
@@ -340,6 +342,7 @@
                     <p>{{ lastDonation }}</p>
                     <p class="h6 font-weight-bold">Donation History:</p>
                     <Button
+                      :id="`personDetailsDonationHistoryButtonId`"
                       :icon="donationsCollapseFlag?'mdi-arrow-down':'mdi-arrow-up'"
                       :text="donationsCollapseFlag?'Show '+donationList.length+' donations':'Hide donations'"
                       :click="()=>{this.donationsCollapseFlag=!this.donationsCollapseFlag}"
@@ -942,6 +945,7 @@ export default {
       })
       this.newDonationLoader = false
       if (donationResponse.status !== 201) return
+      this.notifySuccess('Added donation')
       const newAvailableIn =
         120 -
         Math.round(
@@ -955,7 +959,6 @@ export default {
         this.lastDonation = this.datePrint(newDonationTimestamp)
       }
       this.newDonationDate = ''
-      this.notifySuccess('Added donation')
     }
   },
   async mounted () {
