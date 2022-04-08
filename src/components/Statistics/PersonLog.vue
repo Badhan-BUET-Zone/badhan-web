@@ -4,7 +4,7 @@
     Hall: {{ dateLog.hall | getHallName }} <br>
     Count: {{ dateLog.count }}
     <br>
-    <v-btn @click="getPersonActivities" v-if="personLogs.length===0 && !personLogLoading" x-small rounded
+    <v-btn :id="`personLogExpandButtonId_${dateString}`" @click="getPersonActivities" v-if="personLogs.length===0 && !personLogLoading" x-small rounded
            color="primary">Expand
     </v-btn>
     <v-skeleton-loader type="text@3" v-if="personLogLoading"></v-skeleton-loader>
@@ -14,7 +14,7 @@
       {{ new Date(personLog.date).toDateString() + ' ' + new Date(personLog.date).toLocaleTimeString() }} <br>
       Operation: {{ personLog.operation }} <br>
       Details:
-      <LogObject :object="personLog.details"></LogObject>
+      <LogObject :date="personLog.date" :object="personLog.details"></LogObject>
     </div>
     <hr>
   </div>

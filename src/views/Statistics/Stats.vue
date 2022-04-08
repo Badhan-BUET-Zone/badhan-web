@@ -16,7 +16,7 @@
           </p>
         </v-card-text>
         <v-card-text :key="'loadedStats'" v-if="getStatistics!==null">
-          <p><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
+          <p id="statsNumberOfDonors"><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
           <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
           <p><b>Number of volunteers: </b><br>{{ getStatistics.volunteerCount }}</p>
         </v-card-text>

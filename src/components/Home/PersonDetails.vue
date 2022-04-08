@@ -401,18 +401,25 @@
                   <p class="mt-2 h6 font-weight-bold">Existing Public Contacts:</p>
                   <p v-if="publicContacts.length===0">This contact is not published for the public to see</p>
                   <transition-group name="slide-fade-down" tag="p">
-                  <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts"
-                          :key="publicContact._id"
-                          color="secondary" close
-                          @click:close="()=>{deletePublicContactClicked(publicContact._id)}">
-                    {{ publicContact.bloodGroup | getBloodGroupString }}
-                  </v-chip>
+<!--                  <v-chip :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts"-->
+<!--                          :key="publicContact._id"-->
+<!--                          color="secondary" close-->
+<!--                          @click:close="()=>{deletePublicContactClicked(publicContact._id)}">-->
+<!--                    {{ publicContact.bloodGroup | getBloodGroupString }}-->
+<!--                  </v-chip>-->
+                    <v-btn :id="`publicContactButtonId_${publicContact._id}`" rounded :disabled="deletePublicContactLoader" class="ma-1" v-for="publicContact in publicContacts" :key="publicContact._id" color="secondary" x-small @click="()=>{deletePublicContactClicked(publicContact._id)}">
+                      {{ publicContact.bloodGroup | getBloodGroupString }}
+                      <v-icon right>
+                        mdi-delete
+                      </v-icon>
+                    </v-btn>
                   </transition-group>
                   <transition name="slide-fade-down" mode="out-in">
                     <v-progress-linear indeterminate v-if="deletePublicContactLoader"></v-progress-linear>
                   </transition>
                   <p class="mt-4 h6 font-weight-bold">New Public Contact</p>
                   <v-select
+                    id="personDetailsPublicContactSelectId"
                     rounded
                     dense
                     outlined
@@ -425,6 +432,7 @@
                   ></v-select>
 
                   <Button
+                    id="profileDetailsPublicContactButtonId"
                     :click="publishToPublicContactClicked"
                     :loading="newPublicContactLoader"
                     :disabled="newPublicContactLoader || selectedNewPublicContact===null"

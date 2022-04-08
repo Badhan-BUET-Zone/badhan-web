@@ -8,7 +8,7 @@
       Active user count: {{logCount.activeUserCount}}
     </v-card-subtitle>
     <v-card-text>
-      <v-btn rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
+      <v-btn :id="`dateLogDetailsButtonId_${logCount.dateString}`" rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
         Details
       </v-btn>
       <v-skeleton-loader type="text@3" v-if="dateLogsLoading"></v-skeleton-loader>

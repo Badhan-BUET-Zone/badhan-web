@@ -4,7 +4,7 @@
     <transition name="slide-fade-down-snapout" mode="out-in">
       <v-data-table :key="'volunteerLoading'" v-if="getVolunteerLoaderFlag" :loading="true">
       </v-data-table>
-      <v-data-table :key="'volunteerLoaded'"
+      <v-data-table id="statisticsAllVolunteersTableId" :key="'volunteerLoaded'"
                     v-if="volunteersShown"
                     dense
                     :headers="volunteerListHeaders"

@@ -5,6 +5,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          :id="`logObjectClickMeButtonId_${date}`"
             x-small
             text
             v-bind="attrs"
@@ -19,7 +20,7 @@
           <VueJsonPretty style="overflow-x: scroll ;max-width: 500px;" :path="'res'" :data="object"> </VueJsonPretty>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="dialog=false">
+          <v-btn :id="`logObjectClickMeCloseButtonId_${date}`" @click="dialog=false">
             Close
           </v-btn>
         </v-card-actions>
@@ -32,7 +33,7 @@ import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 export default {
   name: 'LogObject',
-  props: ['object'],
+  props: ['object', 'date'],
   components: {
     VueJsonPretty
   },
