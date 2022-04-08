@@ -22,7 +22,7 @@
             offset-x
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn
+              <v-btn id="personDetailsActiveDonorButtonId"
                 color="primary"
                 icon
                 v-bind="attrs"
@@ -41,6 +41,7 @@
               <v-card-text>
                 <span v-if="markedBy">Marked by: {{ markedBy }}</span>
                 <v-switch
+                  id="personDetailsActiveDonorSwitchId"
                   :disabled="activeDonorLoader"
                   :loading="activeDonorLoader"
                   v-model="markedAsActiveDonor"
