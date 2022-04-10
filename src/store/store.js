@@ -21,6 +21,7 @@ import donation from './donation'
 import donate from './donate'
 import comment from './comment'
 import callrecord from './callrecord'
+import githubRelease from './githubRelease'
 
 Vue.use(Vuex)
 
@@ -63,6 +64,7 @@ export const store = new Vuex.Store({
     donation,
     comment,
     callrecord,
-    donate
+    donate,
+    githubRelease
   }
 })

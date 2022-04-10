@@ -6,8 +6,8 @@ android {
         applicationId "com.mmmbadhan"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 70
-        versionName "4.7.6"
+        versionCode 71
+        versionName "4.8.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

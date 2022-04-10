@@ -51,10 +51,12 @@ export default {
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn']),
-    ...mapGetters('frontendSettings', ['getSettings'])
+    ...mapGetters('frontendSettings', ['getSettings']),
+    ...mapGetters('githubRelease', ['getGithubVersion', 'getGithubLink'])
   },
   methods: {
     ...mapActions('frontendSettings', ['fetchSettings']),
+    ...mapActions('githubRelease', ['fetchGithubRelease']),
     ...mapMutations('confirmationBox', ['setConfirmationMessage']),
 
     androidBackButtonHandler () {
@@ -71,11 +73,20 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-      if (getIsNative() && isAppVersionBackdated(await getLocalAppVersion(), googlePlayAppVersion)) {
+      if (getIsNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(await getLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
-          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available. Please download the latest update.',
+          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {
             window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
+          }
+        })
+      }
+      await this.fetchGithubRelease()
+      if (getIsNative() && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(await getLocalAppVersion(), this.getGithubVersion)) {
+        this.setConfirmationMessage({
+          confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
+          confirmationAction: () => {
+            window.open(this.getGithubLink)
           }
         })
       }
