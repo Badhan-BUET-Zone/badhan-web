@@ -85,12 +85,13 @@
                       Forgot Password?
                     </v-btn>
                     <v-btn
+                      id="guestSignInButtonId"
                         x-small
                         text
                         color="primary"
                         rounded
                         class="ma-1"
-                        @click="guestSignInClicked()"
+                        @click="guestSignInClicked"
                         :disabled="getSignInLoaderFlag"
                         :loading="getSignInLoaderFlag"
                     >

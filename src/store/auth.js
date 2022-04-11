@@ -213,7 +213,6 @@ const actions = {
     }
 
     const donor = response.data.donor
-    dispatch('notification/notifySuccess', data.message)
     commit('setMyProfile', donor)
 
     if (payload.rememberFlag) {
@@ -222,6 +221,7 @@ const actions = {
       ldb.token.clear()
     }
     commit('setLoginFlag')
+    dispatch('notification/notifySuccess', data.message)
     return true
   }
 }
