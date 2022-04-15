@@ -1,7 +1,7 @@
 import {
   handleGETStatistics,
   handleDELETELogs,
-  handleGETVolunteersAll,
+  handleGETDonorDesignatedAll,
   handleGETCredits
 } from '../api'
 
@@ -130,7 +130,7 @@ const actions = {
   async fetchAllVolunteers ({ commit }) {
     commit('setVolunteerLoaderFlag')
     commit('unsetVolunteers')
-    const response = await handleGETVolunteersAll()
+    const response = await handleGETDonorDesignatedAll()
     commit('unsetVolunteerLoaderFlag')
     if (response.status !== 200) return
     commit('setVolunteers', response.data.data)

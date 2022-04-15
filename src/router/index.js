@@ -136,10 +136,10 @@ const routes = [
       },
       {
         name: 'VolunteersAll',
-        path: 'volunteersAll',
+        path: 'membersAll',
         component: () => import('../views/Statistics/VolunteersAll'),
         meta: {
-          title: 'All Volunteers',
+          title: 'All Members',
           requiresAuth: true,
           designation: 3,
           reRouteIfAuthorized: false

@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <v-card-title>List of all volunteers</v-card-title>
+    <v-card-title>List of all members</v-card-title>
     <transition name="slide-fade-down-snapout" mode="out-in">
       <v-data-table :key="'volunteerLoading'" v-if="getVolunteerLoaderFlag" :loading="true">
       </v-data-table>

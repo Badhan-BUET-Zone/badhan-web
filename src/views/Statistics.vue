@@ -10,8 +10,8 @@
       <v-tab id="statisticsLogsByDateTabId" to="/statistics/logsByDate" style="text-decoration: none">
         Logs by Date
       </v-tab>
-      <v-tab id="statisticsAllVolunteersTabId" to="/statistics/volunteersAll" style="text-decoration: none">
-        All Volunteers
+      <v-tab id="statisticsAllVolunteersTabId" to="/statistics/membersAll" style="text-decoration: none">
+        All Members
       </v-tab>
       <v-tab id="statisticsStatsTabId" to="/statistics/stats" style="text-decoration: none">
         Stats

@@ -283,9 +283,9 @@ const handleDELETELogs = async () => {
     return e.response
   }
 }
-const handleGETVolunteersAll = async () => {
+const handleGETDonorDesignatedAll = async () => {
   try {
-    return await badhanAxios.get('/volunteers/all')
+    return await badhanAxios.get('/donors/designation/all')
   } catch (e) {
     return e.response
   }
@@ -473,7 +473,7 @@ export {
   handleGETSearchV3,
   handleGETStatistics,
   handleDELETELogs,
-  handleGETVolunteersAll,
+  handleGETDonorDesignatedAll,
   handleGETCredits,
   handleGETLogsByDateAndDonor,
   handlePATCHDonorsComment,
