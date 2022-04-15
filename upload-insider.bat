@@ -1,3 +1,3 @@
-npm run build -- --mode insider
-npx cap sync
-npx cap open android
+call npm run build -- --mode insider
+call npx cap sync
+call npx cap open android

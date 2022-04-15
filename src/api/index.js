@@ -14,7 +14,7 @@ const ldbSettings = ldb.frontendSettings.load()
 myConsole.log('Environment: ', process.env.NODE_ENV)
 
 if (ldbSettings.status !== 'ERROR' && process.env.NODE_ENV !== 'development') {
-  baseURL = process.env.NODE_ENV === 'production' ? ldbSettings.data.backendBaseURL : ldbSettings.data.backendTestBaseURL
+  baseURL = process.env.NODE_ENV !== 'development' ? ldbSettings.data.backendBaseURL : ldbSettings.data.backendTestBaseURL
   myConsole.log('USING CACHED BASEURL')
 }
 
