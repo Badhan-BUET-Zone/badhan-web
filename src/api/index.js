@@ -13,8 +13,8 @@ let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
 const ldbSettings = ldb.frontendSettings.load()
 myConsole.log('Environment: ', process.env.NODE_ENV)
 
-if (ldbSettings.status !== 'ERROR' && process.env.NODE_ENV !== 'development') {
-  baseURL = process.env.NODE_ENV !== 'development' ? ldbSettings.data.backendBaseURL : ldbSettings.data.backendTestBaseURL
+if (ldbSettings.status !== 'ERROR') {
+  baseURL = (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') ? ldbSettings.data.backendTestBaseURL : ldbSettings.data.backendBaseURL
   myConsole.log('USING CACHED BASEURL')
 }
 
