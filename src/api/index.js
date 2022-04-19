@@ -6,17 +6,17 @@ import axios from 'axios'
 
 import { store } from '../store/store'
 import { processError } from '../mixins/helpers'
-import ldb from '../localDatabase'
+// import ldb from '../localDatabase'
 import { myConsole } from '../mixins/myConsole'
 
-let baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
-const ldbSettings = ldb.frontendSettings.load()
+const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
+// const ldbSettings = ldb.frontendSettings.load()
 myConsole.log('Environment: ', process.env.NODE_ENV)
-
-if (ldbSettings.status !== 'ERROR') {
-  baseURL = (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') ? ldbSettings.data.backendTestBaseURL : ldbSettings.data.backendBaseURL
-  myConsole.log('USING CACHED BASEURL')
-}
+//
+// if (ldbSettings.status !== 'ERROR') {
+//   baseURL = (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') ? ldbSettings.data.backendTestBaseURL : ldbSettings.data.backendBaseURL
+//   myConsole.log('USING CACHED BASEURL')
+// }
 
 const badhanAxios = axios.create({
   baseURL
