@@ -13,14 +13,14 @@
             class="text-center primary--text"
             cols="12"
         >
-          Loading... Please wait...
+          <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 50px; width: 50px">
         </v-col>
-        <v-col cols="6">
+        <v-col cols="3">
           <v-progress-linear
               color="primary"
               indeterminate
               rounded
-              height="6"
+              height="10"
           ></v-progress-linear>
         </v-col>
       </v-row>
