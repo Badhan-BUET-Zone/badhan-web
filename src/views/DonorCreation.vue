@@ -11,16 +11,20 @@
     </ContainerFlat>
     <Container>
       <v-card-title>
-        Upload Excel File
+        Advanced Donor Creation
       </v-card-title>
       <v-card-text>
+        You will be securely redirected to a supporting website for advanced options for creating donors
+      </v-card-text>
+      <v-card-actions>
         <Button
           :loading="excelUploadRedirectionFlag"
           :disabled="excelUploadRedirectionFlag"
           :color="'primary'"
           :icon="'mdi-upload'"
-          :text="'Upload Excel File'" :click="redirectExcelUpload"></Button>
-      </v-card-text>
+          :text="'Go to Advanced Donor Creation'" :click="redirectExcelUpload">
+        </Button>
+      </v-card-actions>
     </Container>
   </div>
 </template>

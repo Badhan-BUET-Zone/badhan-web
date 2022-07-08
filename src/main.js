@@ -33,8 +33,12 @@ import './mixins/filters'
 // to catch any runtime errors, similar to a try catch block in programming
 import errorHandlers from './mixins/errorHandlers'
 
+// to use rootless components
+import Fragment from 'vue-fragment'
+
 Vue.prototype.$myldb = ldb
 
+Vue.use(Fragment.Plugin)
 Vue.use(VueClipboard)
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)

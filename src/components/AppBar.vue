@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <fragment>
     <v-app-bar color="primary" dark app clipped-left collapse-on-scroll class="rounded-b-xl">
       <v-app-bar-nav-icon id="hamburgerButtonId" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 40px; width: 40px" class="mr-4">
@@ -13,7 +13,8 @@
         </template>
 
         <v-list rounded>
-          <v-list-item id="gotoWebButtonId" @click="goToWebClicked" v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled ">
+          <v-list-item id="gotoWebButtonId" @click="goToWebClicked"
+                       v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled ">
             <v-list-item-icon>
               <v-icon>
                 mdi-web
@@ -53,23 +54,35 @@
 
       <v-divider></v-divider>
       <v-list nav dense rounded>
-        <v-list-item-group active-class="primary--text text--accent-4">
-          <v-list-item v-for="(menu) in menusForAll" :key="menu.icon" link :to="menu.to" :id="menu.id" style="text-decoration: none">
-            <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
-            <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-        <v-list-group prepend-icon="mdi-star" no-action v-if="getDesignation===3" id="superAdminNavigationId">
-          <template v-slot:activator>
-            <v-list-item-title>Super Admin</v-list-item-title>
-          </template>
-          <span v-for="(menu) in menusForSuperAdmin" :key="menu.icon">
-            <v-list-item link :to="menu.to" style="text-decoration: none" :id="menu.id">
-              <v-list-item-icon><v-icon>{{menu.icon}}</v-icon></v-list-item-icon>
-              <v-list-item-content><v-list-item-title>{{menu.text}}</v-list-item-title></v-list-item-content>
-            </v-list-item>
-          </span>
-        </v-list-group>
+        <fragment v-for="(menu) in menusForAll" :key="menu.icon">
+          <fragment v-if="!menu.subLinks && getDesignation >= menu.designation">
+            <v-list-item-group active-class="primary--text text--accent-4">
+              <v-list-item link :to="menu.to" :id="menu.id" style="text-decoration: none">
+                <v-list-item-icon>
+                  <v-icon>{{ menu.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ menu.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </fragment>
+          <fragment v-else-if="getDesignation >= menu.designation">
+            <v-list-group prepend-icon="mdi-star" no-action :id="menu.id">
+              <template v-slot:activator>
+                <v-list-item-title>{{ menu.text }}</v-list-item-title>
+              </template>
+              <fragment v-for="(subLink) in menu.subLinks" :key="subLink.to">
+                <span v-if="getDesignation >= subLink.designation">
+                  <v-list-item link :to="subLink.to" style="text-decoration: none" :id="subLink.id">
+                    <v-list-item-icon><v-icon>{{ subLink.icon }}</v-icon></v-list-item-icon>
+                    <v-list-item-content><v-list-item-title>{{ subLink.text }}</v-list-item-title></v-list-item-content>
+                  </v-list-item>
+                </span>
+              </fragment>
+            </v-list-group>
+          </fragment>
+        </fragment>
       </v-list>
       <v-list>
         <v-list-item>
@@ -80,12 +93,12 @@
             <v-icon left v-else>
               mdi-brightness-5
             </v-icon>
-            Activate {{darkTheme?'Day':'Night'}} Mode
+            Activate {{ darkTheme ? 'Day' : 'Night' }} Mode
           </v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </div>
+  </fragment>
 </template>
 
 <script>
@@ -104,18 +117,98 @@ export default {
       signOutModalFlag: false,
       signOutAllModalFlag: false,
       menusForAll: [
-        { icon: 'mdi-home', text: 'Home', to: '/home', id: 'homeNavigationId' },
-        { icon: 'mdi-bookmark', text: 'Active Donors', to: '/activeDonors', id: 'activeDonorNavigationId' },
-        { icon: 'mdi-plus', text: 'Donor Creation', to: '/singleDonorCreation', id: 'donorCreationNavigationId' },
-        { icon: 'mdi-account-group', text: 'Members', to: '/members', id: 'membersNavigationId' },
-        { icon: 'mdi-earth', text: 'Public Contacts', to: '/contacts', id: 'publicContactsNavigationId' },
-        { icon: 'mdi-account', text: 'My Profile', to: '/myProfile', id: 'myProfileNavigationId' },
-        { icon: 'mdi-hand-heart', text: 'Credits', to: '/credits', id: 'creditsNavigationId' },
-        { icon: 'mdi-information', text: 'About', to: '/about', id: 'aboutNavigationId' }
-      ],
-      menusForSuperAdmin: [
-        { icon: 'mdi-chart-bar', text: 'Statistics', to: '/statistics/logsByDate', id: 'statisticsNavigationId' },
-        { icon: 'mdi-developer-board', text: 'Dev Console', to: '/devconsole', id: 'devConsoleNavigationId' }
+        {
+          icon: 'mdi-home',
+          text: 'Home',
+          to: '/home',
+          id: 'homeNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-bookmark',
+          text: 'Active Donors',
+          to: '/activeDonors',
+          id: 'activeDonorNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-plus',
+          text: 'Donor Creation',
+          to: '/singleDonorCreation',
+          id: 'donorCreationNavigationId',
+          designation: 1,
+          subLinks: [{
+            icon: 'mdi-shape-square-plus',
+            text: 'Single Donor Creation',
+            to: '/singleDonorCreation',
+            id: 'singleDonorCreationId',
+            designation: 1
+          },
+          {
+            icon: 'mdi-shape-rectangle-plus',
+            text: 'Advanced Donor Creation',
+            to: '/donorCreation',
+            id: 'donorCreationId',
+            designation: 1
+          }
+          ]
+        },
+        {
+          icon: 'mdi-account-group',
+          text: 'Members',
+          to: '/members',
+          id: 'membersNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-earth',
+          text: 'Public Contacts',
+          to: '/contacts',
+          id: 'publicContactsNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-account',
+          text: 'My Profile',
+          to: '/myProfile',
+          id: 'myProfileNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-hand-heart',
+          text: 'Credits',
+          to: '/credits',
+          id: 'creditsNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-information',
+          text: 'About',
+          to: '/about',
+          id: 'aboutNavigationId',
+          designation: 1
+        },
+        {
+          icon: 'mdi-star',
+          text: 'Super Admin',
+          id: 'superAdminId',
+          designation: 3,
+          subLinks: [
+            {
+              icon: 'mdi-chart-bar',
+              text: 'Statistics',
+              to: '/statistics/logsByDate',
+              id: 'statisticsNavigationId',
+              designation: 3
+            },
+            {
+              icon: 'mdi-developer-board',
+              text: 'Dev Console',
+              to: '/devconsole',
+              id: 'devConsoleNavigationId',
+              designation: 3
+            }]
+        }
       ]
     }
   },
@@ -152,7 +245,10 @@ export default {
       ldb.theme.save(this.theme)
     },
     async myProfileclicked () {
-      await this.$router.push({ path: '/home/details', query: { id: this.getID } })
+      await this.$router.push({
+        path: '/home/details',
+        query: { id: this.getID }
+      })
     },
     async signOutModalPrompted () {
       this.setConfirmationMessage({
@@ -180,7 +276,10 @@ export default {
       if (redirectionTokenResponse.status !== 201) return
       const routeData = this.$router.resolve({
         name: 'Redirection',
-        query: { token: redirectionTokenResponse.data.token, payload: this.$route.fullPath }
+        query: {
+          token: redirectionTokenResponse.data.token,
+          payload: this.$route.fullPath
+        }
       })
       window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
     }
