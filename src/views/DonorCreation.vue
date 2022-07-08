@@ -73,7 +73,7 @@ export default {
       const redirectionTokenResponse = await handlePOSTRedirection()
       this.excelUploadRedirectionFlag = false
       if (redirectionTokenResponse.status !== 201) return
-      window.open(`https://badhan-datainput-test1.netlify.app/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
+      window.open(`${process.env.VUE_APP_DATAINPUT_URL}/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
     }
   },
   mounted () {

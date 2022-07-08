@@ -11,5 +11,3 @@ npx cap sync
 firebase deploy
 rm -r ./dist
 git checkout test-branch
-cd ../secrets
-bash ./push.sh
