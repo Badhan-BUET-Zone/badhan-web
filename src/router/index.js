@@ -260,6 +260,17 @@ const routes = [
     }
   },
   {
+    name: 'AdminConsole',
+    path: '/adminconsole',
+    component: () => import('../views/AdminConsole'),
+    meta: {
+      requiresAuth: true,
+      title: 'Admin Console',
+      designation: 3,
+      reRouteIfAuthorized: false
+    }
+  },
+  {
     name: 'NotFound',
     path: '/*',
     component: () => import('../views/NotFound.vue'),

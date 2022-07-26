@@ -31,7 +31,6 @@
 
 <script>
 import PageTitle from '../components/PageTitle'
-import { required } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
 import { getIsNative } from '../plugins/android_support'
 import { isGuestEnabled, handlePOSTRedirection } from '../api'
@@ -43,17 +42,7 @@ export default {
   name: 'BatchInsertion',
   data: () => {
     return {
-      jsonFile: null,
-      invalidJSONError: null,
-      listOfDonors: [],
-      donorPage: 1,
       excelUploadRedirectionFlag: false
-    }
-  },
-
-  validations: {
-    jsonFile: {
-      required
     }
   },
   computed: {
