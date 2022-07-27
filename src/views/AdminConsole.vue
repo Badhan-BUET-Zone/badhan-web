@@ -2,9 +2,25 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <transition-group name="slide-fade-down-snapout" mode="out-in">
-      <Container :key="'versionLoaded'">
+      <Container v-if="$isEnvProductionOrInsider()" :key="'versionLoaded'">
         <v-card-text>
-          You will be redirected to the admin console
+          You will be redirected to the admin console.
+        </v-card-text>
+        <v-card-actions>
+          <Button
+            text="Go to Admin Console"
+            :loading="redirectionLoaderFlag"
+            color="primary"
+            :click="redirectToAdminConsole"
+            :icon="'mdi-upload'"
+            :disabled="redirectionLoaderFlag"
+          ></Button>
+        </v-card-actions>
+      </Container>
+      <Container v-else :key="'redirectionNotAllowed'">
+        <v-card-text>
+          The test deployment does not support direct redirection to admin console.
+          You will be redirected to the main website and then to the admin console.
         </v-card-text>
         <v-card-actions>
           <Button
@@ -42,6 +58,14 @@ export default {
       this.redirectionLoaderFlag = false
       if (redirectionTokenResponse.status !== 201) return
       window.open(`${process.env.VUE_APP_ADMIN_CONSOLE_URL}/redirection?token=${redirectionTokenResponse.data.token}`, '_blank')
+    },
+    async redirectToMainWebsite () {
+      window.open('https://badhan-buet.web.app/#/adminConsole?go=true', '_blank')
+    },
+    async mounted () {
+      if (this.$route.query.go === 'true') {
+        await this.redirectToAdminConsole()
+      }
     }
   }
 }

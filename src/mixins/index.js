@@ -19,6 +19,9 @@ export default {
     },
     $isMe (id) {
       return store.getters.getID === id
+    },
+    $isEnvProductionOrInsider () {
+      return process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'insider'
     }
   }
 }
