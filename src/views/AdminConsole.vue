@@ -50,7 +50,7 @@ export default {
       this.redirectionLoaderFlag = false
       if (redirectionTokenResponse.status !== 201) return
       window.open(`${process.env.VUE_APP_ADMIN_CONSOLE_URL}/redirection?token=${redirectionTokenResponse.data.token}`, '_blank')
-    },
+    }
   },
   async mounted () {
     if (this.$route.query.go === 'true') {
