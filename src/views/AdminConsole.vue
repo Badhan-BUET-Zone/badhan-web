@@ -42,7 +42,7 @@ export default {
   methods: {
     async redirectToAdminConsole () {
       if (!this.$isEnvProductionOrInsider()) {
-        window.open('https://badhan-buet.web.app/#/adminConsole?go=true', '_blank')
+        window.open('https://badhan-buet.web.app/#/adminconsole?go=true', '_blank')
         return
       }
       this.redirectionLoaderFlag = true
@@ -53,8 +53,10 @@ export default {
     },
     async mounted () {
       if (this.$route.query.go === 'true') {
+        console.log('automated redirection')
         await this.redirectToAdminConsole()
       }
+      console.log('no automated redirection')
     }
   }
 }
