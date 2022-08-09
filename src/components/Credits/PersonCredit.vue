@@ -5,7 +5,7 @@
         color="grey"
         class="ma-2"
     >
-      <v-img :src="person.image" lazy-src="../../assets/account.png">
+      <v-img :src="person.imageUrl" lazy-src="../../assets/account.png">
         <template v-slot:placeholder>
           <v-row
               class="fill-height ma-0"
@@ -25,7 +25,7 @@
     </v-card-subtitle>
 
     <v-card-text class="text--primary">
-      <div v-for="(description, index) in person.contributions" :key="index">{{ description }}</div>
+      <div v-for="(description, index) in person.contribution" :key="index">{{ description }}</div>
     </v-card-text>
 
     <v-card-actions>

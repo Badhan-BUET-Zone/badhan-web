@@ -15,7 +15,7 @@
       </Container>
 
       <transition name="slide-fade-down-snapout" mode="out-in">
-      <Container v-if="getCreditsLoaderFlag" :key="'creditedLoading'">
+      <Container v-if="contributorsLoader" :key="'creditedLoading'">
         <v-card-title class="grey--text">
           Active Developers
         </v-card-title>
@@ -27,14 +27,14 @@
           </v-row>
         </v-card-text>
       </Container>
-      <Container v-else-if="getCredits!==null" :key="'creditedLoaded'">
+      <Container v-else-if="activeDevelopers.length!==0" :key="'creditedLoaded'">
         <v-card-title>
           Active Developers
         </v-card-title>
 
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="6" v-for="(person, index) in getCredits['Active Developers']" :key="index">
+            <v-col cols="12" sm="6" v-for="(person, index) in activeDevelopers" :key="index">
               <PersonCredit :person="person">
               </PersonCredit>
             </v-col>
@@ -45,7 +45,7 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="6" v-for="(person, index) in getCredits['Contributors of Badhan']" :key="index">
+            <v-col cols="12" sm="6" v-for="(person, index) in contributorsFromBadhan" :key="index">
               <PersonCredit :person="person"></PersonCredit>
             </v-col>
           </v-row>
@@ -55,7 +55,7 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" sm="6" v-for="(person, index) in getCredits['Legacy Developers']" :key="index">
+            <v-col cols="12" sm="6" v-for="(person, index) in legacyDevelopers" :key="index">
               <PersonCredit :person="person"></PersonCredit>
             </v-col>
           </v-row>
@@ -71,6 +71,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Container from '../components/Wrappers/Container'
 import PersonCredit from '../components/Credits/PersonCredit'
 import SkeletonPersonCredit from '../components/Credits/SkeletonPersonCredit'
+import { handleGETContributors } from '../api'
 
 export default {
   name: 'Credits',
@@ -80,7 +81,10 @@ export default {
   },
   data () {
     return {
-
+      contributorsLoader: false,
+      activeDevelopers: [],
+      contributorsFromBadhan: [],
+      legacyDevelopers: []
     }
   },
   methods: {
@@ -89,9 +93,28 @@ export default {
       window.open(url, '_blank')
     }
   },
-  mounted () {
+  async mounted () {
     this.$vuetify.goTo(0)
-    this.fetchCredits()
+    // this.fetchCredits()
+    this.contributorsLoader = true
+    const response = await handleGETContributors()
+    this.contributorsLoader = false
+    if (response.status !== 200) return
+    const rawContributors = response.data
+    const groupedContributors = Object.entries(rawContributors).reduce(function (obj, singleElement) {
+      const type = singleElement[1].type
+      if (!Object.prototype.hasOwnProperty.call(obj, type)) {
+        obj[type] = []
+      }
+      obj[type].push(singleElement[1])
+      return obj
+    }, {})
+    this.activeDevelopers = groupedContributors['Active Developers']
+    this.legacyDevelopers = groupedContributors['Legacy Developers']
+    this.contributorsFromBadhan = groupedContributors['Contributors of Badhan']
+    console.log(this.activeDevelopers)
+    console.log(this.legacyDevelopers)
+    console.log(this.contributorsFromBadhan)
   }
 }
 </script>

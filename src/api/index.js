@@ -437,6 +437,13 @@ const handleGETCredits = async () => {
     return e.response
   }
 }
+const handleGETContributors = async () => {
+  try {
+    return await firebaseAxios.get('/data.json')
+  } catch (e) {
+    return e.response
+  }
+}
 const handleGETFrontendSettings = async () => {
   try {
     return await firebaseAxios.get('/frontendSettings.json')
@@ -496,5 +503,6 @@ export {
   handleGETAppVersions,
 
   // firebase methods
-  handleGETFrontendSettings
+  handleGETFrontendSettings,
+  handleGETContributors
 }
