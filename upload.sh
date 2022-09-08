@@ -1,11 +1,3 @@
-git checkout master
-git merge test-branch
-echo "Enter commit message: "
-read -r message
-echo "The commit message is: $message"
-git add .
-git commit -am "$message"
-git push origin master
 npm run build
 npx cap sync
-git checkout test-branch
+npx cap open android
