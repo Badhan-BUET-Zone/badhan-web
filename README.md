@@ -1,7 +1,7 @@
 # Introduction
 badhan-web repository consists of the code for the main
 frontend for the [android app](https://play.google.com/store/apps/details?id=com.mmmbadhan)
-and [website](https://badhan-buet.web.app) of Badhan, BUET Zone.
+and [website](https://badhan-buet.web.app) of Badhan, BUET Zone. This repository is a part of the [Badhan, BUET Zone Github Organization](https://github.com/Badhan-BUET-Zone).
 # Developers Involved
 * [Mir Mahathir Mohammad](https://github.com/mirmahathir1)
 # Technology Stack
