@@ -50,7 +50,7 @@
 <script>
 import PageTitle from '../components/PageTitle'
 import VueMarkdown from 'vue-markdown'
-import readme from '../../README.md'
+import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
 import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
@@ -77,7 +77,7 @@ export default {
   components: { Container, PageTitle, VueMarkdown },
   data () {
     return {
-      text: readme,
+      text: overview,
       nativeAppVersion: 'Web'
     }
   },
