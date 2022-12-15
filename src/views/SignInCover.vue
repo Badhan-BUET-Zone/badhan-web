@@ -103,6 +103,7 @@
                 </v-col>
 
                 <br>
+                <div style="display: flex; justify-content: center;">
                 <v-btn
                     x-small
                     color="primary"
@@ -152,7 +153,6 @@
                 >
                   Know the Developers
                 </v-btn>
-                <br>
                 <v-btn x-small class="align-self-end ma-1"
                        color="primary"
                        rounded
@@ -161,6 +161,7 @@
                        :to="'/contacts'">
                   Emergency Contacts
                 </v-btn>
+                </div>
               </v-row>
             </v-container>
           </v-theme-provider>
