@@ -57,6 +57,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import { mapActions, mapGetters } from 'vuex'

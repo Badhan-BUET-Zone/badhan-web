@@ -22,6 +22,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

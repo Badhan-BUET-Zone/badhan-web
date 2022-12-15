@@ -48,6 +48,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'

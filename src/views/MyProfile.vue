@@ -72,6 +72,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PersonDetails from '../components/Home/PersonDetails'
 import { mapActions, mapGetters } from 'vuex'
 import PageTitle from '../components/PageTitle'

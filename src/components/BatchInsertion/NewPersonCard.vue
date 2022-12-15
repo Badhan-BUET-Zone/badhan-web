@@ -137,6 +137,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { halls, bloodGroups, departments } from '../../mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'

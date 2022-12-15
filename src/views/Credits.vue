@@ -66,6 +66,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapGetters, mapActions } from 'vuex'
 import Container from '../components/Wrappers/Container'

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div :key="'home'">
     <v-fab-transition >
       <v-btn
@@ -134,6 +135,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
 import { getIsNative } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'

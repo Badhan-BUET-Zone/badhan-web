@@ -12,6 +12,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+
 import PageTitle from '../components/PageTitle'
 import Container from '../components/Wrappers/Container'
 

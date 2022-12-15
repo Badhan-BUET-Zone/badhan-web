@@ -17,7 +17,8 @@
 
       <v-card>
         <v-card-text>
-          <VueJsonPretty style="overflow-x: scroll ;max-width: 500px;" :path="'res'" :data="object"> </VueJsonPretty>
+<!--          <VueJsonPretty style="overflow-x: scroll ;max-width: 500px;" :path="'res'" :data="object"> </VueJsonPretty>-->
+          under construction...
         </v-card-text>
         <v-card-actions>
           <v-btn :id="`logObjectClickMeCloseButtonId_${date}`" @click="dialog=false">
@@ -29,13 +30,14 @@
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty'
-import 'vue-json-pretty/lib/styles.css'
+/* eslint-disable */
+// import VueJsonPretty from 'vue-json-pretty'
+// import 'vue-json-pretty/lib/styles.css'
 export default {
   name: 'LogObject',
   props: ['object', 'date'],
   components: {
-    VueJsonPretty
+    // VueJsonPretty
   },
   data () {
     return {

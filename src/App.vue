@@ -12,11 +12,11 @@
     <Notification></Notification>
     <MessageBox></MessageBox>
     <ConfirmationBox></ConfirmationBox>
-
   </v-app>
 </template>
 
 <script>
+/* eslint-disable */
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'

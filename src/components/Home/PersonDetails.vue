@@ -205,6 +205,7 @@
                               v-model="passwordRecoveryTooltip"
                               top
                             >
+                              <!-- eslint-disable -->
                               <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
                                        color="secondary">
@@ -449,6 +450,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { halls, bloodGroups } from '../../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength, numeric, sameAs } from 'vuelidate/lib/validators'
