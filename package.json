@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "android": "npm run build && npx cap sync && npx cap open android"
   },
   "browser": {
     "fs": false,
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^4.6.1",
+    "@capacitor/app": "^4.1.1",
     "@capacitor/cli": "^4.6.1",
     "@capacitor/core": "^4.6.1",
     "@mdi/font": "5.9.55",
