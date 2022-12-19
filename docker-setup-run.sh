@@ -1,0 +1,1 @@
+MSYS_NO_PATHCONV=1 docker run --rm -v `pwd`:/badhan-web -it badhan-web-docker-setup
