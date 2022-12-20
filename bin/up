@@ -1,0 +1,1 @@
+docker-compose run badhan-web-docker-service npm run serve

@@ -3,7 +3,7 @@ module.exports = defineConfig({
   devServer: {
     client: {
       progress: false,
-    }
+    },
   },
   transpileDependencies: [
     'vuetify'
