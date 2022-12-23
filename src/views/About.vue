@@ -54,7 +54,7 @@ import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
+import { getIsNative, getLocalAppVersion } from '@/plugins/android_support'
 
 export default {
   name: 'About',

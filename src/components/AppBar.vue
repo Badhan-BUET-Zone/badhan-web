@@ -104,8 +104,8 @@
 <script>
 /* eslint-disable */
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { getIsNative } from '../plugins/android_support'
-import { isGuestEnabled } from '../api'
+import { getIsNative } from '@/plugins/android_support'
+import { isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
 
 export default {
