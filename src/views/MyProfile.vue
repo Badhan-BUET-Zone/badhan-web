@@ -132,7 +132,7 @@ export default {
           id: this.getID
         }
       })
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false

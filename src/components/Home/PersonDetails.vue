@@ -762,7 +762,7 @@ export default {
       if (!token) {
         return
       }
-      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '#/passwordReset?token=' + token
+      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '/#/passwordReset?token=' + token
     },
     async passwordRecoveryLinkCopyClicked () {
       await this.$copyText(this.passwordRecoveryLink)
@@ -779,7 +779,7 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
