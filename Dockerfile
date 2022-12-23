@@ -5,5 +5,5 @@ RUN npm i -g npm
 RUN npm install -g @vue/cli
 RUN npm install -g firebase-tools
 
-EXPOSE 8080
 EXPOSE 9005
+CMD ["npm", "run", "serve"]
