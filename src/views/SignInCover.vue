@@ -263,7 +263,7 @@ export default {
   },
   async mounted () {
     // const info = await getDeviceInfo()
-    this.version = await getLocalAppVersion()
+    this.version = getLocalAppVersion()
   },
 
   components: {}

@@ -84,7 +84,7 @@ export default {
   },
   async mounted () {
     if (getIsNative()) {
-      this.nativeAppVersion = await getLocalAppVersion()
+      this.nativeAppVersion = getLocalAppVersion()
     }
   }
 }

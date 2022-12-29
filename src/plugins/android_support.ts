@@ -1,15 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 /* eslint-disable */
-// import gradleString from '../../android/app/build.gradle'
-
-// import g2js from 'gradle-to-js/lib/parser'
+import gradleString from '../../android/app/build.gradle'
 
 // custom android support
-export const getLocalAppVersion = async () => {
-  // const representation = await g2js.parseText(gradleString)
-  // return representation.android.defaultConfig.versionName
-  return '4.10.1'
+export const getLocalAppVersion = () => {
+  return gradleString.match(/\d+\.\d+\.\d+/)[0]
 }
 
 // custom android support
