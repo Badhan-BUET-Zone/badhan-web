@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 78,
-      "versionName": "4.10.2",
-      "outputFile": "Badhan-release-4.10.2.apk"
+      "versionCode": 79,
+      "versionName": "4.10.3",
+      "outputFile": "Badhan-release-4.10.3.apk"
     }
   ],
   "elementType": "File"
