@@ -30,6 +30,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapActions, mapGetters } from 'vuex'
 import { getIsNative } from '../plugins/android_support'

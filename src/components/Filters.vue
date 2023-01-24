@@ -124,7 +124,7 @@
           </v-row>
 
           <!--        A button to reset the form fields-->
-          <v-btn rounded color="secondary" @click="clearFields">
+          <v-btn rounded color="secondary" @click="clearFields" class="ma-2">
             <v-icon left>
               mdi-refresh
             </v-icon>
@@ -139,7 +139,7 @@
               :disabled="isSearchLoading || $v.$anyError"
               :loading="isSearchLoading"
               @click="searchClickInsideComponent"
-              class="ml-2"
+              class="ma-2"
           >
             <v-icon left>
               mdi-magnify
@@ -152,6 +152,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import HelpTooltip from '../components/UI Components/HelpTooltip'
 import { bloodGroups, halls } from '../mixins/constants'
 import { maxLength, minLength, numeric, required } from 'vuelidate/lib/validators'

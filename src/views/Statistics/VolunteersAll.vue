@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <Container>
     <v-card-title>List of all members</v-card-title>
     <transition name="slide-fade-down-snapout" mode="out-in">

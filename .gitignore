@@ -23,6 +23,3 @@ pnpm-debug.log*
 *.sw?
 
 .firebase
-.firebaserc
-firebase.json
-signature.jks

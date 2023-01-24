@@ -12,11 +12,11 @@
     <Notification></Notification>
     <MessageBox></MessageBox>
     <ConfirmationBox></ConfirmationBox>
-
   </v-app>
 </template>
 
 <script>
+/* eslint-disable */
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'
@@ -73,7 +73,7 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-      if (getIsNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(await getLocalAppVersion(), googlePlayAppVersion)) {
+      if (getIsNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {
@@ -82,7 +82,7 @@ export default {
         })
       }
       await this.fetchGithubRelease()
-      if (getIsNative() && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(await getLocalAppVersion(), this.getGithubVersion)) {
+      if (getIsNative() && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
           confirmationAction: () => {

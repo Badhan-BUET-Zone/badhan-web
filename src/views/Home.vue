@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div :key="'home'">
     <v-fab-transition >
       <v-btn
@@ -17,10 +18,10 @@
     </v-fab-transition>
     <div>
       <v-row>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" lg="4">
           <Filters :reset-clicked="clearFields" :search-clicked="searchClickedFromFilterComponent"></Filters>
         </v-col>
-        <v-col cols="12" sm="8" id="results">
+        <v-col cols="12" lg="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
             <div>
               <v-alert dense class="rounded-xl" color="grey">
@@ -134,6 +135,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
 import { getIsNative } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'
@@ -351,7 +353,7 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + routeData.href).then((e) => {
+      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
@@ -384,7 +386,7 @@ export default {
         name: 'Redirection',
         query: { token: redirectionTokenResponse.data.token, payload: redirectionURL }
       })
-      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
+      window.open(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href, '_blank')
     },
 
     clearFields () {

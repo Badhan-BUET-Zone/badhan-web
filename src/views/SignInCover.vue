@@ -80,87 +80,86 @@
                     </v-btn>
                     <br>
                     <div class="d-flex">
-                    <v-btn id="forgotPasswordButtonId" x-small text color="primary" rounded class="ma-1" :to="'/forgotPassword'"
-                           style="text-decoration: none">
-                      Forgot Password?
-                    </v-btn>
-                    <v-btn
-                      id="guestSignInButtonId"
-                        x-small
-                        text
-                        color="primary"
-                        rounded
-                        class="ma-1"
-                        @click="guestSignInClicked"
-                        :disabled="getSignInLoaderFlag"
-                        :loading="getSignInLoaderFlag"
-                    >
-                      Or, login as guest
-                    </v-btn>
+                      <v-btn id="forgotPasswordButtonId" x-small text color="primary" rounded class="ma-1"
+                             :to="'/forgotPassword'"
+                             style="text-decoration: none">
+                        Forgot Password?
+                      </v-btn>
+                      <v-btn
+                          id="guestSignInButtonId"
+                          x-small
+                          text
+                          color="primary"
+                          rounded
+                          class="ma-1"
+                          @click="guestSignInClicked"
+                          :disabled="getSignInLoaderFlag"
+                          :loading="getSignInLoaderFlag"
+                      >
+                        Or, login as guest
+                      </v-btn>
                     </div>
                   </div>
-
                 </v-col>
+                <v-col class="text-center" cols="12" sm="4">
+                  <v-btn
+                      x-small
+                      color="primary"
+                      class="align-self-end ma-1"
+                      outlined
+                      rounded
+                      style="text-decoration: none"
+                      :to="'/about'"
+                  >
+                    About the App
+                  </v-btn>
+                  <v-btn
+                      x-small
+                      color="primary"
+                      rounded
+                      class="align-self-end ma-1"
+                      outlined
+                      style="text-decoration: none"
+                      v-if="!isMobile"
+                      href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
+                  >
+                    Download App
+                    <v-icon right>mdi-google-play</v-icon>
+                  </v-btn>
+                  <v-btn
+                      x-small
+                      color="primary"
+                      rounded
+                      class="align-self-end ma-1"
+                      outlined
+                      style="text-decoration: none"
+                      v-else
+                      href="https://badhan-buet.web.app"
+                  >
+                    Web Version
+                    <v-icon right>mdi-web</v-icon>
+                  </v-btn>
 
-                <br>
-                <v-btn
-                    x-small
-                    color="primary"
-                    class="align-self-end ma-1"
-                    outlined
-                    rounded
-                    style="text-decoration: none"
-                    :to="'/about'"
-                >
-                  About the App
-                </v-btn>
-                <v-btn
-                    x-small
-                    color="primary"
-                    rounded
-                    class="align-self-end ma-1"
-                    outlined
-                    style="text-decoration: none"
-                    v-if="!isMobile"
-                    href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
-                >
-                  Download App
-                  <v-icon right>mdi-google-play</v-icon>
-                </v-btn>
-                <v-btn
-                    x-small
-                    color="primary"
-                    rounded
-                    class="align-self-end ma-1"
-                    outlined
-                    style="text-decoration: none"
-                    v-else
-                    href="https://badhan-buet.web.app"
-                >
-                  Web Version
-                  <v-icon right>mdi-web</v-icon>
-                </v-btn>
-
-                <v-btn
-                    x-small
-                    color="primary"
-                    class="align-self-end ma-1"
-                    outlined
-                    rounded
-                    style="text-decoration: none"
-                    :to="'/credits'"
-                >
-                  Know the Developers
-                </v-btn>
-                <br>
-                <v-btn x-small class="align-self-end ma-1"
-                       color="primary"
-                       rounded
-                       outlined
-                       style="text-decoration: none"
-                       :to="'/contacts'">
-                  Emergency Contacts
-                </v-btn>
+                  <v-btn
+                      x-small
+                      color="primary"
+                      class="align-self-end ma-1"
+                      outlined
+                      rounded
+                      style="text-decoration: none"
+                      :to="'/credits'"
+                  >
+                    Know the Developers
+                  </v-btn>
+                  <v-btn x-small class="align-self-end ma-1"
+                         color="primary"
+                         rounded
+                         outlined
+                         style="text-decoration: none"
+                         :to="'/contacts'">
+                    Emergency Contacts
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-container>
           </v-theme-provider>
@@ -264,12 +263,10 @@ export default {
   },
   async mounted () {
     // const info = await getDeviceInfo()
-    this.version = await getLocalAppVersion()
+    this.version = getLocalAppVersion()
   },
 
-  components: {
-
-  }
+  components: {}
 }
 </script>
 

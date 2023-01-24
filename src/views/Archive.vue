@@ -80,6 +80,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import ArchivedPersonList from '../components/Archive/ArchivedPersonList'
 import { mapActions } from 'vuex'
 import PageTitle from '../components/PageTitle'

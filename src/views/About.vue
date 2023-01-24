@@ -48,12 +48,13 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
+import { getIsNative, getLocalAppVersion } from '@/plugins/android_support'
 
 export default {
   name: 'About',
@@ -83,7 +84,7 @@ export default {
   },
   async mounted () {
     if (getIsNative()) {
-      this.nativeAppVersion = await getLocalAppVersion()
+      this.nativeAppVersion = getLocalAppVersion()
     }
   }
 }

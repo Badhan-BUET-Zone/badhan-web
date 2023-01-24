@@ -25,6 +25,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 
 export default {

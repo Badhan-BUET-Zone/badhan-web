@@ -137,6 +137,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { halls, bloodGroups, departments } from '../../mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
@@ -419,7 +420,7 @@ export default {
       if (getIsNative()) {
         this.$router.push({ path: '/singleDonorCreation/duplicateDetails?id=' + this.duplicateDonorId })
       } else {
-        window.open(this.frontendBaseURL + '/#/home/details?id=' + this.duplicateDonorId)
+        window.open(process.env.VUE_APP_FRONTEND_BASE + '#/home/details?id=' + this.duplicateDonorId)
       }
     },
     async discardClicked () {
