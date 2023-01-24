@@ -18,10 +18,10 @@
     </v-fab-transition>
     <div>
       <v-row>
-        <v-col cols="12" sm="4">
+        <v-col cols="12" lg="4">
           <Filters :reset-clicked="clearFields" :search-clicked="searchClickedFromFilterComponent"></Filters>
         </v-col>
-        <v-col cols="12" sm="8" id="results">
+        <v-col cols="12" lg="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
             <div>
               <v-alert dense class="rounded-xl" color="grey">
