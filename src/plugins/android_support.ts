@@ -14,7 +14,7 @@ export const getIsNative = () => {
 }
 
 export const getIsWebview = () => {
-  return window.navigator.userAgent.toLowerCase().includes('wv')
+  return window.navigator.userAgent.toLowerCase()
 }
 
 const getMethodNames = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
