@@ -13,6 +13,10 @@ export const getIsNative = () => {
   return window.origin.includes('localhost') && window.origin.split(':').length !== 3
 }
 
+export const getIsWebview = () => {
+  return window.navigator.userAgent.toLowerCase().includes('wv')
+}
+
 const getMethodNames = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
 
 export const getAndroidInfo = async () => {
