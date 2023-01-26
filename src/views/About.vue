@@ -29,7 +29,7 @@
               </tr>
               <tr>
                 <td><b>Webview: </b></td>
-                <td>{{ isRunningOnWebview }}</td>
+                <td>{{ isRunningOnWebview? "True":"False" }}</td>
               </tr>
               <tr>
                 <td><b>Last Updated:</b></td>

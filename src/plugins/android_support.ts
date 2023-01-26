@@ -14,7 +14,7 @@ export const getIsNative = () => {
 }
 
 export const getIsWebview = () => {
-  return navigator.userAgent
+  return navigator.userAgent.includes("Droid Build")
 }
 
 const getMethodNames = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
