@@ -23,7 +23,7 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
-import { exitApp, getLocalAppVersion, getIsNative, getAndroidInfo } from './plugins/android_support'
+import { exitApp, getLocalAppVersion, getIsNative, getAndroidInfo, getIsWebview } from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
 import { myConsole } from './mixins/myConsole'
@@ -73,7 +73,7 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-      if (getIsNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getLocalAppVersion(), googlePlayAppVersion)) {
+      if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {
@@ -82,7 +82,7 @@ export default {
         })
       }
       await this.fetchGithubRelease()
-      if (getIsNative() && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
+      if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
           confirmationAction: () => {
