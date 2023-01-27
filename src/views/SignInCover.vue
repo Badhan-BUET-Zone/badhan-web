@@ -28,9 +28,14 @@
                   <span
                       class="font-weight-bold"
                   >
-                      Badhan
-                    </span>
+                    Badhan
+                  </span>
                   <p class="subtitle-2">BUET Zone</p>
+                  <v-chip
+                      color="secondary"
+                  >
+                    {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
+                  </v-chip>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"

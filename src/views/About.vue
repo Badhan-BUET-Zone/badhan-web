@@ -15,14 +15,14 @@
                 <td><b>Local App Version: </b></td>
                 <td>{{ nativeAppVersion }}</td>
               </tr>
-              <tr>
-                <td><b>Github Release Version: </b></td>
-                <td><span v-if="getGithubReleaseLoader"><v-skeleton-loader type="text"></v-skeleton-loader></span><span v-else>{{ getGithubVersion }}</span></td>
-              </tr>
-              <tr>
-                <td><b>Download from Github: </b></td>
-                <td><v-btn rounded :loading="getGithubReleaseLoader" x-small :href="getGithubLink" style="text-decoration: none"><v-icon left>mdi-download</v-icon>Download</v-btn></td>
-              </tr>
+<!--              <tr>-->
+<!--                <td><b>Github Release Version: </b></td>-->
+<!--                <td><span v-if="getGithubReleaseLoader"><v-skeleton-loader type="text"></v-skeleton-loader></span><span v-else>{{ getGithubVersion }}</span></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td><b>Download from Github: </b></td>-->
+<!--                <td><v-btn rounded :loading="getGithubReleaseLoader" x-small :href="getGithubLink" style="text-decoration: none"><v-icon left>mdi-download</v-icon>Download</v-btn></td>-->
+<!--              </tr>-->
               <tr>
                 <td><b>Build Type:</b></td>
                 <td>{{ $getEnvironmentName() }}</td>

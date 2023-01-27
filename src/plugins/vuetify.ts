@@ -5,6 +5,7 @@ import Vuetify from 'vuetify/lib/framework'
 import ldb from '../localDatabase'
 import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify)
+
 export default new Vuetify({
   theme: {
     dark: ldb.theme.load(),

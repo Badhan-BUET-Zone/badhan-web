@@ -82,14 +82,14 @@ export default {
         })
       }
       await this.fetchGithubRelease()
-      if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
-        this.setConfirmationMessage({
-          confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
-          confirmationAction: () => {
-            window.open(this.getGithubLink)
-          }
-        })
-      }
+      // if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
+      //   this.setConfirmationMessage({
+      //     confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
+      //     confirmationAction: () => {
+      //       window.open(this.getGithubLink)
+      //     }
+      //   })
+      // }
     }
   },
 
