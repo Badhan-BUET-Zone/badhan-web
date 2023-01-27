@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebHistoryItem;
@@ -17,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends FragmentActivity {
     private WebView mWebView;
@@ -24,6 +26,9 @@ public class MainActivity extends FragmentActivity {
     private static final String internalRedirectionString = BuildConfig.DEBUG?"badhan-buet-test.netlify.app":"badhan-buet.web.app";
 
     private static final String noInternetHTML = "file:///android_asset/landing.html";
+
+    private SwipeRefreshLayout mySwipeRefreshLayout;
+    private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
 
     private static String appendBase(String subdomain) {
         return baseURL+subdomain;
@@ -53,6 +58,19 @@ public class MainActivity extends FragmentActivity {
         webSettings.setUserAgentString("Mozilla/5.0 (Linux; U;` Android 2.0; en-us; Droid Build/ESD20) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17");
         loadCorrectUrl();
 
+        mySwipeRefreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.swipeContainer);
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mWebView.clearCache(true);
+                        mWebView.reload();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
         mWebView.addJavascriptInterface(new Object()
         {
             @JavascriptInterface
@@ -68,6 +86,24 @@ public class MainActivity extends FragmentActivity {
             }
         }, "browser");
     }
+
+//    @Override
+//    protected void onStart() {
+//        mySwipeRefreshLayout.getViewTreeObserver().addOnScrollChangedListener(mOnScrollChangedListener =
+//                new ViewTreeObserver.OnScrollChangedListener() {
+//                    @Override
+//                    public void onScrollChanged() {
+//                        mySwipeRefreshLayout.setEnabled(mWebView.getScrollY() == 0);
+//                    }
+//                });
+//        super.onStart();
+//    }
+
+//    @Override
+//    protected void onStop() {
+//        mySwipeRefreshLayout.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
+//        super.onStop();
+//    }
 
     private void loadCorrectUrl() {
         if (!DetectConnection.checkInternetConnection(this)) {
