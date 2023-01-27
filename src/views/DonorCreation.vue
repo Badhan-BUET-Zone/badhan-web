@@ -33,7 +33,7 @@
 /* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapActions, mapGetters } from 'vuex'
-import { getIsNative } from '../plugins/android_support'
+import { getIsCapacitorNative } from '../plugins/android_support'
 import { isGuestEnabled, handlePOSTRedirection } from '../api'
 import Container from '../components/Wrappers/Container'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
@@ -52,7 +52,7 @@ export default {
       return isGuestEnabled()
     },
     isNative () {
-      return getIsNative()
+      return getIsCapacitorNative()
     }
   },
   methods: {

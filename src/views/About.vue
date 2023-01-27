@@ -58,7 +58,7 @@ import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getIsNative, getIsWebview, getLocalAppVersion } from '@/plugins/android_support'
+import { getIsCapacitorNative, getIsWebview, getCapacitorLocalAppVersion } from '@/plugins/android_support'
 
 export default {
   name: 'About',
@@ -66,13 +66,13 @@ export default {
     ...mapGetters('frontendSettings', ['getSettings']),
     ...mapGetters('githubRelease', ['getGithubVersion', 'getGithubLink', 'getGithubReleaseLoader']),
     isAndroidApp () {
-      return getIsNative()
+      return getIsCapacitorNative()
     },
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
     isMobile () {
-      return getIsNative()
+      return getIsCapacitorNative()
     },
     isRunningOnWebview() {
       return getIsWebview()
@@ -90,8 +90,8 @@ export default {
     }
   },
   async mounted () {
-    if (getIsNative()) {
-      this.nativeAppVersion = getLocalAppVersion()
+    if (getIsCapacitorNative() || getIsWebview()) {
+      this.nativeAppVersion = getCapacitorLocalAppVersion()
     }
   }
 }

@@ -137,7 +137,7 @@
 <script>
 /* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
-import { getIsNative } from '../plugins/android_support'
+import { getIsCapacitorNative } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
@@ -158,7 +158,7 @@ export default {
       return isGuestEnabled()
     },
     isNative () {
-      return getIsNative()
+      return getIsCapacitorNative()
     },
     availableHalls () {
       if (this.getDesignation !== null) {
