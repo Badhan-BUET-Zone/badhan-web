@@ -59,6 +59,7 @@ public class MainActivity extends FragmentActivity {
                     mWebView.clearCache(true);
                     mWebView.reload();
                     mySwipeRefreshLayout.setRefreshing(false);
+
                 }
         );
 
