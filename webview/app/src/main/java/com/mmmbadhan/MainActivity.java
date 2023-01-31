@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebHistoryItem;
@@ -22,14 +21,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends FragmentActivity {
     private WebView mWebView;
-    private static final String baseURL=BuildConfig.DEBUG?"https://badhan-buet-test.netlify.app/#":"https://badhan-buet.web.app/#";
-    private static final String internalRedirectionString = BuildConfig.DEBUG?"badhan-buet-test.netlify.app":"badhan-buet.web.app";
-
+    private static final String baseURL=BuildConfig.DEBUG?WrapperConfig.developmentBaseURL:WrapperConfig.productionBaseURL;
     private static final String noInternetHTML = "file:///android_asset/landing.html";
-
     private SwipeRefreshLayout mySwipeRefreshLayout;
-    private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
-
     private static String appendBase(String subdomain) {
         return baseURL+subdomain;
     }
@@ -40,7 +34,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView = (WebView) findViewById(R.id.webView);
 
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -61,13 +55,10 @@ public class MainActivity extends FragmentActivity {
         mySwipeRefreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.swipeContainer);
 
         mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        mWebView.clearCache(true);
-                        mWebView.reload();
-                        mySwipeRefreshLayout.setRefreshing(false);
-                    }
+                () -> {
+                    mWebView.clearCache(true);
+                    mWebView.reload();
+                    mySwipeRefreshLayout.setRefreshing(false);
                 }
         );
 
@@ -86,24 +77,6 @@ public class MainActivity extends FragmentActivity {
             }
         }, "browser");
     }
-
-//    @Override
-//    protected void onStart() {
-//        mySwipeRefreshLayout.getViewTreeObserver().addOnScrollChangedListener(mOnScrollChangedListener =
-//                new ViewTreeObserver.OnScrollChangedListener() {
-//                    @Override
-//                    public void onScrollChanged() {
-//                        mySwipeRefreshLayout.setEnabled(mWebView.getScrollY() == 0);
-//                    }
-//                });
-//        super.onStart();
-//    }
-
-//    @Override
-//    protected void onStop() {
-//        mySwipeRefreshLayout.getViewTreeObserver().removeOnScrollChangedListener(mOnScrollChangedListener);
-//        super.onStop();
-//    }
 
     private void loadCorrectUrl() {
         if (!DetectConnection.checkInternetConnection(this)) {
@@ -127,7 +100,7 @@ public class MainActivity extends FragmentActivity {
         public boolean handleUri(final Uri uri) {
             final String host = uri.getHost();
             final String scheme = uri.getScheme();
-            if (host.contains(internalRedirectionString)) {
+            if (host.contains(baseURL)) {
                 return false;
             } else {
                 final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -152,11 +125,19 @@ public class MainActivity extends FragmentActivity {
             return;
         }
 
-        boolean isPageExitable = currentItem.getUrl().equals(appendBase("/")) || currentItem.getUrl().equals(appendBase("/home"));
-        if(!isPageExitable) {
+        boolean isPageExitable = false;
+        for(String exitURL: WrapperConfig.listOfURLsForClosingApp){
+            if(currentItem.getUrl().equals(appendBase(exitURL))){
+                isPageExitable = true;
+                break;
+            }
+        }
+
+        if(!isPageExitable){
             mWebView.goBack();
             return;
         }
+
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
@@ -168,6 +149,6 @@ public class MainActivity extends FragmentActivity {
             public void run() {
                 doubleBackToExitPressedOnce=false;
             }
-            }, 2000);
+            }, WrapperConfig.backButtonWaitTimeForExit);
     }
 }
