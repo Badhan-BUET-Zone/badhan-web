@@ -41,7 +41,7 @@ public class MainActivity extends FragmentActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setEnableSmoothTransition(true);
@@ -51,17 +51,6 @@ public class MainActivity extends FragmentActivity {
         mWebView.setWebViewClient(webViewClient);
         webSettings.setUserAgentString("Mozilla/5.0 (Linux; U;` Android 2.0; en-us; Droid Build/ESD20) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17");
         loadCorrectUrl();
-
-        mySwipeRefreshLayout = (SwipeRefreshLayout)this.findViewById(R.id.swipeContainer);
-
-        mySwipeRefreshLayout.setOnRefreshListener(
-                () -> {
-                    mWebView.clearCache(true);
-                    mWebView.reload();
-                    mySwipeRefreshLayout.setRefreshing(false);
-
-                }
-        );
 
         mWebView.addJavascriptInterface(new Object()
         {
