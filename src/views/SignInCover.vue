@@ -28,9 +28,14 @@
                   <span
                       class="font-weight-bold"
                   >
-                      Badhan
-                    </span>
+                    Badhan
+                  </span>
                   <p class="subtitle-2">BUET Zone</p>
+                  <v-chip
+                      color="secondary"
+                  >
+                    {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
+                  </v-chip>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"
@@ -170,7 +175,7 @@
 </template>
 
 <script>
-import { getIsNative, getLocalAppVersion } from '../plugins/android_support'
+import { getIsCapacitorNative, getCapacitorLocalAppVersion } from '../plugins/android_support'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -203,7 +208,7 @@ export default {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
     isMobile () {
-      return getIsNative()
+      return getIsCapacitorNative()
     },
 
     phoneErrors () {
@@ -263,7 +268,7 @@ export default {
   },
   async mounted () {
     // const info = await getDeviceInfo()
-    this.version = getLocalAppVersion()
+    this.version = getCapacitorLocalAppVersion()
   },
 
   components: {}

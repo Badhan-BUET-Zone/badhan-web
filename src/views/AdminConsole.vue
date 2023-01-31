@@ -3,7 +3,7 @@
     <PageTitle :title="$route.meta.title"></PageTitle>
     <transition-group name="slide-fade-down-snapout" mode="out-in">
       <Container :key="'versionLoaded'">
-        <v-card-text v-if="$isEnvProductionOrInsider()">
+        <v-card-text v-if="$isEnvProduction()">
           You will be redirected to the admin console.
         </v-card-text>
         <v-card-text v-else>
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     async redirectToAdminConsole () {
-      if (!this.$isEnvProductionOrInsider()) {
+      if (!this.$isEnvProduction()) {
         window.open('https://badhan-buet.web.app/#/adminconsole?go=true', '_blank')
         return
       }

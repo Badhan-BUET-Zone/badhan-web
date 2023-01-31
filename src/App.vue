@@ -23,7 +23,14 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 
-import { exitApp, getLocalAppVersion, getIsNative, getAndroidInfo, getIsWebview } from './plugins/android_support'
+import {
+  exitApp,
+  getCapacitorLocalAppVersion,
+  getIsCapacitorNative,
+  getAndroidInfo,
+  getIsWebview,
+  getWebViewLocalAppVersion
+} from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
 import { myConsole } from './mixins/myConsole'
@@ -73,7 +80,16 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-      if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getLocalAppVersion(), googlePlayAppVersion)) {
+      if (getIsCapacitorNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getCapacitorLocalAppVersion(), googlePlayAppVersion)) {
+        this.setConfirmationMessage({
+          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
+          confirmationAction: () => {
+            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
+          }
+        })
+      }
+
+      if (getIsWebview() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getWebViewLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {
@@ -82,14 +98,14 @@ export default {
         })
       }
       await this.fetchGithubRelease()
-      if ((getIsNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getLocalAppVersion(), this.getGithubVersion)) {
-        this.setConfirmationMessage({
-          confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
-          confirmationAction: () => {
-            window.open(this.getGithubLink)
-          }
-        })
-      }
+      // if ((getIsCapacitorNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getCapacitorLocalAppVersion(), this.getGithubVersion)) {
+      //   this.setConfirmationMessage({
+      //     confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
+      //     confirmationAction: () => {
+      //       window.open(this.getGithubLink)
+      //     }
+      //   })
+      // }
     }
   },
 

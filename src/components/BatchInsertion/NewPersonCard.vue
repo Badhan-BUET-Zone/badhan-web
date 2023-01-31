@@ -141,7 +141,7 @@
 import { halls, bloodGroups, departments } from '../../mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
-import { getIsNative } from '../../plugins/android_support'
+import { getIsCapacitorNative } from '../../plugins/android_support'
 import { handleGETDonorsDuplicate } from '../../api'
 import Container from '../Wrappers/Container'
 
@@ -245,7 +245,7 @@ export default {
     },
 
     isNative () {
-      return getIsNative()
+      return getIsCapacitorNative()
     },
     phoneErrors () {
       const errors = []
@@ -417,7 +417,7 @@ export default {
       this.donorCreationLoader = false
     },
     goToDuplicateProfile () {
-      if (getIsNative()) {
+      if (getIsCapacitorNative()) {
         this.$router.push({ path: '/singleDonorCreation/duplicateDetails?id=' + this.duplicateDonorId })
       } else {
         window.open(process.env.VUE_APP_FRONTEND_BASE + '#/home/details?id=' + this.duplicateDonorId)
