@@ -42,6 +42,7 @@ public class MainActivity extends FragmentActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setEnableSmoothTransition(true);
@@ -90,7 +91,7 @@ public class MainActivity extends FragmentActivity {
         public boolean handleUri(final Uri uri) {
             final String host = uri.getHost();
             final String scheme = uri.getScheme();
-            if (host.contains(baseURL)) {
+            if (host!=null && host.contains(baseURL)) {
                 return false;
             } else {
                 final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
