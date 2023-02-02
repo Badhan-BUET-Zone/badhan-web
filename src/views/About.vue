@@ -58,7 +58,7 @@ import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getIsCapacitorNative, getIsWebview, getCapacitorLocalAppVersion } from '@/plugins/android_support'
+import { getIsCapacitorNative, getIsWebview, getCapacitorLocalAppVersion, getWebViewLocalAppVersion } from '@/plugins/android_support'
 
 export default {
   name: 'About',
@@ -90,8 +90,11 @@ export default {
     }
   },
   async mounted () {
-    if (getIsCapacitorNative() || getIsWebview()) {
+    if (getIsCapacitorNative()) {
       this.nativeAppVersion = getCapacitorLocalAppVersion()
+    }
+    if (getIsWebview()) {
+      this.nativeAppVersion = getWebViewLocalAppVersion()
     }
   }
 }
