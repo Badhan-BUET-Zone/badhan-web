@@ -1,12 +1,15 @@
 package com.mmmbadhan;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebHistoryItem;
@@ -16,6 +19,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -24,6 +28,27 @@ public class MainActivity extends FragmentActivity {
     private static final String baseURL=BuildConfig.DEBUG?WrapperConfig.developmentBaseURL:WrapperConfig.productionBaseURL;
     private static final String noInternetHTML = "file:///android_asset/landing.html";
     private SwipeRefreshLayout mySwipeRefreshLayout;
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
     private static String appendBase(String subdomain) {
         return baseURL+subdomain;
     }
@@ -42,7 +67,6 @@ public class MainActivity extends FragmentActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setEnableSmoothTransition(true);
@@ -53,6 +77,13 @@ public class MainActivity extends FragmentActivity {
         webSettings.setUserAgentString("Mozilla/5.0 (Linux; U;` Android 2.0; en-us; Droid Build/ESD20) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17");
         loadCorrectUrl();
 
+        mWebView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimeType, long contentLength) {
+                mWebView.loadUrl(JavaScriptInterface.getBase64StringFromBlobUrl(url,"text/csv"));
+            }
+        });
+        mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView.getContext()), "Android");
         mWebView.addJavascriptInterface(new Object()
         {
             @JavascriptInterface
@@ -67,6 +98,8 @@ public class MainActivity extends FragmentActivity {
                 });
             }
         }, "browser");
+
+        verifyStoragePermissions(this);
     }
 
     private void loadCorrectUrl() {
