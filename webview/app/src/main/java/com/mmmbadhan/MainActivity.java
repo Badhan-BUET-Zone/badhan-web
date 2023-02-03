@@ -15,15 +15,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
 import androidx.fragment.app.FragmentActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends FragmentActivity {
     private WebView mWebView;
     private static final String baseURL=BuildConfig.DEBUG?WrapperConfig.developmentBaseURL:WrapperConfig.productionBaseURL;
     private static final String noInternetHTML = "file:///android_asset/landing.html";
-    private SwipeRefreshLayout mySwipeRefreshLayout;
+
     private static String appendBase(String subdomain) {
         return baseURL+subdomain;
     }
@@ -52,6 +50,8 @@ public class MainActivity extends FragmentActivity {
         webSettings.setUserAgentString("Mozilla/5.0 (Linux; U;` Android 2.0; en-us; Droid Build/ESD20) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17");
         loadCorrectUrl();
 
+        mWebView.setDownloadListener(JavaScriptInterface.getDownloadListener(this,mWebView));
+        mWebView.addJavascriptInterface(new JavaScriptInterface(mWebView.getContext()), "Android");
         mWebView.addJavascriptInterface(new Object()
         {
             @JavascriptInterface
@@ -66,6 +66,9 @@ public class MainActivity extends FragmentActivity {
                 });
             }
         }, "browser");
+
+        JavaScriptInterface.verifyStoragePermissions(this);
+
     }
 
     private void loadCorrectUrl() {
@@ -90,7 +93,7 @@ public class MainActivity extends FragmentActivity {
         public boolean handleUri(final Uri uri) {
             final String host = uri.getHost();
             final String scheme = uri.getScheme();
-            if (host.contains(baseURL)) {
+            if (host!=null && host.contains(baseURL)) {
                 return false;
             } else {
                 final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
