@@ -25,15 +25,8 @@ export const convertObjectToCSV = (objArray, keys, delimiter) => {
 }
 
 export const textFileDownloadInWeb = (text, fileName) => {
-  const element = document.createElement('a');
-  element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', fileName);
-  element.style.display = 'none';
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
-  // const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
-  // saveAs(blob, fileName)
+  const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
+  saveAs(blob, fileName)
 }
 
 export const processPersonsForReport = (persons) => {
