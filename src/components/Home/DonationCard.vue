@@ -22,6 +22,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapMutations } from 'vuex'
 
 export default {

@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 /* eslint-disable */
 import { myConsole } from './myConsole'

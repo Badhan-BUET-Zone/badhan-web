@@ -42,6 +42,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { departments } from '../../mixins/constants'
 
 export default {

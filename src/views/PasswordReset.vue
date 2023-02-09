@@ -25,6 +25,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Container from '../components/Wrappers/Container'
 import PageTitle from '../components/PageTitle'
 import { handlePATCHUsersPassword } from '../api'

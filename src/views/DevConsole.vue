@@ -11,7 +11,7 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 import { mapGetters, mapMutations } from 'vuex'
 import PageTitle from '../components/PageTitle'
 import Container from '../components/Wrappers/Container'

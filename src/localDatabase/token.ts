@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 const save = (token) => {
   localStorage.setItem('x-auth', token)

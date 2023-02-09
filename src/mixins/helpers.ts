@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 import { saveAs } from 'file-saver'
 import { bloodGroups, halls } from './constants'

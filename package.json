@@ -6,8 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "android": "npm run build && npx cap sync && npx cap open android"
+    "lint": "vue-cli-service lint"
   },
   "browser": {
     "fs": false,

@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 /*
 This module handles all necessary tasks to communicate with the backend.

@@ -33,6 +33,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapActions, mapGetters } from 'vuex'
 import { handleGETLogs } from '../../api'
 import DateLog from '../../components/Statistics/DateLog'

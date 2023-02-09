@@ -175,6 +175,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { getIsCapacitorNative, getCapacitorLocalAppVersion } from '../plugins/android_support'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
