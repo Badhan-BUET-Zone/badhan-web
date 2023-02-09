@@ -9,6 +9,8 @@ import { store } from './store/store'
 // router for handling routing in vuejs
 import router from './router'
 
+import './registerServiceWorker'
+
 // to keep long lived data in vuejs that are required even after a reload
 import ldb from './localDatabase'
 
