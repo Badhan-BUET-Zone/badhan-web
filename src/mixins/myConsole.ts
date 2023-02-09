@@ -5,9 +5,8 @@ import { store } from '../store/store'
 
 export const myConsole = (function () {
   return {
-    log: function () {
-      const args = Array.prototype.slice.call(arguments)
-      console.log.apply(console, args)
+    log: function (...args: any[]) {
+      console.log(...args)
       store.commit('consoleStore/addConsoleLog', {
         text: args,
         time: new Date().getTime()
