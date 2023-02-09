@@ -1,7 +1,7 @@
 /* eslint-disable */ 
 // @ts-nocheck
 /* eslint-disable */
-import { store } from '../store/store'
+import { store } from '@/store/store'
 
 export const myConsole = (function () {
   return {
