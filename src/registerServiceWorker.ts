@@ -21,9 +21,6 @@ if (environmentService.isEnvironmentProduction() || environmentService.isEnviron
     updatefound () {
       console.log('New content is downloading.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
     },
-    // updated () {
-    //   console.log('New content is available; please refresh.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
-    // },
     updated(registration){
       console.log('New content is available; please refresh.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
       const waitingServiceWorker = registration.waiting;
