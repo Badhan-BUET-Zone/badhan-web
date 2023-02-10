@@ -12,10 +12,6 @@
     <Notification></Notification>
     <MessageBox></MessageBox>
     <ConfirmationBox></ConfirmationBox>
-    <v-snackbar v-model="showUpdateUI">
-      Update PWA
-      <template v-slot:action="{ attrs }"><v-btn color="red" text v-bind="attrs" @click="accept">Update</v-btn></template>
-    </v-snackbar>
   </v-app>
 </template>
 
@@ -50,9 +46,7 @@ export default {
 
       exitPromptFlag: false,
       updatePromptFlag: false,
-      updatedVersion: '',
-
-      showUpdateUI: false,
+      updatedVersion: ''
     }
   },
   components: {
@@ -112,10 +106,6 @@ export default {
       //     }
       //   })
       // }
-    },
-    async accept() {
-      this.showUpdateUI = false;
-      await this.$workbox.messageSW({ type: "SKIP_WAITING" });
     }
   },
 
@@ -127,14 +117,6 @@ export default {
 
   beforeDestroy () {
     document.removeEventListener('backbutton', this.androidBackButtonHandler)
-  },
-
-  created() {
-    if (this.$workbox) {
-      this.$workbox.addEventListener("waiting", () => {
-        this.showUpdateUI = true;
-      });
-    }
   }
 }
 </script>
