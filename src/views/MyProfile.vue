@@ -82,6 +82,7 @@ import ldb from '../localDatabase'
 import Button from '../components/UI Components/Button'
 import LoginCard from '../components/MyProfile/LoginCard'
 import { handleGETLogins, handleDELETELogins } from '../api'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'MyProfile',
@@ -132,7 +133,7 @@ export default {
           id: this.getID
         }
       })
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL() + '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false

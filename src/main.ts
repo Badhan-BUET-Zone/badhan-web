@@ -11,6 +11,8 @@ import router from './router'
 
 import './registerServiceWorker'
 
+import './mixins/environment'
+
 // to keep long lived data in vuejs that are required even after a reload
 import ldb from './localDatabase'
 

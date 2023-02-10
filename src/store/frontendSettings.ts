@@ -3,15 +3,16 @@
 /* eslint-disable */
 import { handleGETFrontendSettings } from '../api'
 import ldb from '../localDatabase'
+import {environmentService} from "@/mixins/environment";
+
 const state = {
   settings: {
     version: '4.5.1',
-    backendBaseURL: process.env.VUE_APP_BADHAN_API_BASE_URL,
-    backendTestBaseURL: process.env.VUE_APP_BADHAN_API_BASE_URL,
+    backendBaseURL: environmentService.getAPIBaseURL(),
+    backendTestBaseURL: environmentService.getAPIBaseURL(),
     defaultExists: true
   }
 }
-
 const getters = {
   getSettings (state) {
     if (state.settings.defaultExists) {

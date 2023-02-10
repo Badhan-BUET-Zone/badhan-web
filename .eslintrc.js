@@ -12,8 +12,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': process.env.VUE_APP_ENVIRONMENT === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.VUE_APP_ENVIRONMENT === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     "@typescript-eslint/explicit-function-return-type": "error",
     '@typescript-eslint/no-explicit-any': "error",

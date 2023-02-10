@@ -1,6 +1,7 @@
 /* eslint-disable */ 
 // @ts-nocheck
 import { store } from '../store/store'
+import {environmentService} from "@/mixins/environment";
 
 export default {
   methods: {
@@ -17,13 +18,13 @@ export default {
       return window.innerWidth > 500
     },
     $getEnvironmentName () {
-      return process.env.NODE_ENV
+      return environmentService.getEnvironmentName()
     },
     $isMe (id) {
       return store.getters.getID === id
     },
     $isEnvProduction () {
-      return process.env.NODE_ENV === 'production'
+      return environmentService.isEnvironmentProduction()
     }
   }
 }

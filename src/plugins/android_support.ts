@@ -27,7 +27,7 @@ export const getAndroidInfo = async () => {
   // const representation = await g2js.parseText(gradleString)
   return {
     windowOrigin: window.origin,
-    versionInGradle: getCapacitorLocalAppVersion(),
+    versionInCapacitorGradle: getCapacitorLocalAppVersion(),
     navigatorAppExitApp: navigator.app ? getMethodNames(navigator.app) : 'navigator.app undefined'
   }
 }

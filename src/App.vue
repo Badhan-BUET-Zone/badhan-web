@@ -36,6 +36,7 @@ import ConfirmationBox from './components/ConfirmationBox'
 import { myConsole } from './mixins/myConsole'
 
 import { isAppVersionBackdated } from './mixins/helpers'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'app',
@@ -80,7 +81,7 @@ export default {
     async versionCheck () {
       await this.fetchSettings()
       const googlePlayAppVersion = this.getSettings.version
-      if (getIsCapacitorNative() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getCapacitorLocalAppVersion(), googlePlayAppVersion)) {
+      if (getIsCapacitorNative() && environmentService.isEnvironmentProduction() && isAppVersionBackdated(getCapacitorLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {
@@ -89,7 +90,7 @@ export default {
         })
       }
 
-      if (getIsWebview() && process.env.NODE_ENV === 'production' && isAppVersionBackdated(getWebViewLocalAppVersion(), googlePlayAppVersion)) {
+      if (getIsWebview() && environmentService.isEnvironmentProduction() && isAppVersionBackdated(getWebViewLocalAppVersion(), googlePlayAppVersion)) {
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {

@@ -471,6 +471,7 @@ import {
 import DonationCard from './DonationCard'
 import Button from '../UI Components/Button'
 import { fixBackSlash } from '../../mixins/helpers'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'PersonDetails',
@@ -762,7 +763,7 @@ export default {
       if (!token) {
         return
       }
-      this.passwordRecoveryLink = process.env.VUE_APP_FRONTEND_BASE + '/#/passwordReset?token=' + token
+      this.passwordRecoveryLink = environmentService.getFrontendBaseURL() + '/#/passwordReset?token=' + token
     },
     async passwordRecoveryLinkCopyClicked () {
       await this.$copyText(this.passwordRecoveryLink)
@@ -779,7 +780,7 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
