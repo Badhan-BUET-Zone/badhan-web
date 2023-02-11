@@ -67,7 +67,7 @@ import {
   getIsWebview,
   getCapacitorLocalAppVersion,
   getWebViewLocalAppVersion,
-  getIsTWA
+  getIsTWA,getTWAAppVersion
 } from '@/plugins/android_support'
 
 export default {
@@ -104,10 +104,13 @@ export default {
   },
   async mounted () {
     if (getIsCapacitorNative()) {
-      this.nativeAppVersion = getCapacitorLocalAppVersion()
+      this.nativeAppVersion = 'Capacitor:'+getCapacitorLocalAppVersion()
     }
     if (getIsWebview()) {
-      this.nativeAppVersion = getWebViewLocalAppVersion()
+      this.nativeAppVersion = 'Webview:'+getWebViewLocalAppVersion()
+    }
+    if (getIsTWA()) {
+      this.nativeAppVersion = 'TWA:'+getTWAAppVersion()
     }
   }
 }

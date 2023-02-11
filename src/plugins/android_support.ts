@@ -41,7 +41,7 @@ export const exitApp = () => {
 
 // TWA support
 let isAndroidTwaSession;
-if (document.referrer.includes('android-app://app.netlify.badhan_buet_test.twa')) {
+if (document.referrer.includes('android-app://com.mmmbadhan')) {
   isAndroidTwaSession = true;
   sessionStorage.setItem('has_android_twa_referrer', 'yes');
 } else {
