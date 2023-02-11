@@ -2,7 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "Badhan",
-    "package_name": "com.mmmbadhan",
+    "package_name": "app.netlify.badhan_buet_test.twa",
     "sha256_cert_fingerprints": [
       "B6:BF:01:80:19:86:B9:E1:DE:1C:07:43:EE:76:E7:99:1B:52:C5:4B:A5:18:40:C9:0F:F3:43:D9:A4:5A:C6:4F"
     ]
