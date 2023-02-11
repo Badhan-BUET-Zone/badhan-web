@@ -2,9 +2,18 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "app.netlify.badhan_buet_test.twa",
+    "package_name": "com.mmmbadhan",
     "sha256_cert_fingerprints": [
-      "B6:BF:01:80:19:86:B9:E1:DE:1C:07:43:EE:76:E7:99:1B:52:C5:4B:A5:18:40:C9:0F:F3:43:D9:A4:5A:C6:4F"
+      "D1:79:9D:89:86:63:64:AE:3B:BD:2E:60:43:A7:2B:99:8D:33:C9:5C:64:56:52:04:22:7F:CF:DD:2C:3E:1B:2E"
+    ]
+  }
+},{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.mmmbadhan",
+    "sha256_cert_fingerprints": [
+      "42:5C:DC:29:18:EE:61:72:89:53:3D:C9:F5:F8:73:04:28:C7:33:C9:7E:18:8C:0C:C3:A0:A0:AC:F9:E8:52:60"
     ]
   }
 }]
