@@ -1,5 +1,17 @@
-# Ignore everything
-*
+.gradle
+gradle
+android.keystore
+app-release-bundle.aab
+app-release-signed.apk
+app-release-signed.apk.idsig
+app-release-unsigned-aligned.apk
+build.gradle
+gradle.properties
+gradlew
+gradlew.bat
+manifest-checksum.txt
+settings.gradle
+store_icon.png
+twa-manifest.json
 
-# But not these files...
-!.gitignore
+!app/build.gradle
