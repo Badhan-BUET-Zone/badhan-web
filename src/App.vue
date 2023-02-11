@@ -29,7 +29,7 @@ import {
   getIsCapacitorNative,
   getAndroidInfo,
   getIsWebview,
-  getWebViewLocalAppVersion, getIsTWA, getTWAAppVersion
+  getWebViewLocalAppVersion, getIsTWA, getTWALocalAppVersion
 } from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
@@ -99,7 +99,7 @@ export default {
         })
       }
 
-      if (getIsTWA() && isAppVersionBackdated(getTWAAppVersion(), googlePlayAppVersion)){
+      if (getIsTWA() && isAppVersionBackdated(getTWALocalAppVersion(), googlePlayAppVersion)){
         this.setConfirmationMessage({
           confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
           confirmationAction: () => {

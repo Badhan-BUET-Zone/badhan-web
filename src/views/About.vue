@@ -2,38 +2,35 @@
   <div>
     <PageTitle :title="$route.meta.title"></PageTitle>
     <transition-group name="slide-fade-down-snapout" mode="out-in">
+      <Container :key="'aboutPage'">
+        <v-card-text>
+          <VueMarkdown>{{ text }}</VueMarkdown>
+        </v-card-text>
+      </Container>
       <Container :key="'versionLoaded'">
         <v-card-text>
           <v-simple-table>
             <template v-slot:default>
               <tbody>
               <tr>
-                <td><b>App Version on Google Play: </b></td>
+                <td><b>Google Play Version: </b></td>
                 <td>{{ getGooglePlayAppVersion }}</td>
               </tr>
               <tr>
-                <td><b>Local App Version: </b></td>
+                <td><b>App Loader: </b></td>
                 <td>{{ nativeAppVersion }}</td>
               </tr>
-<!--              <tr>-->
-<!--                <td><b>Github Release Version: </b></td>-->
-<!--                <td><span v-if="getGithubReleaseLoader"><v-skeleton-loader type="text"></v-skeleton-loader></span><span v-else>{{ getGithubVersion }}</span></td>-->
-<!--              </tr>-->
-<!--              <tr>-->
-<!--                <td><b>Download from Github: </b></td>-->
-<!--                <td><v-btn rounded :loading="getGithubReleaseLoader" x-small :href="getGithubLink" style="text-decoration: none"><v-icon left>mdi-download</v-icon>Download</v-btn></td>-->
-<!--              </tr>-->
               <tr>
-                <td><b>Build Type:</b></td>
+                <td><b>Build:</b></td>
                 <td>{{ $getEnvironmentName() }}</td>
               </tr>
               <tr>
                 <td><b>Webview: </b></td>
-                <td>{{ isRunningOnWebview? "True":"False" }}</td>
+                <td>{{ getWebviewAppVersion }}</td>
               </tr>
               <tr>
                 <td><b>TWA: </b></td>
-                <td>{{ isRunningOnTWA? "True":"False" }}</td>
+                <td>{{ getTWAAppVersion }} </td>
               </tr>
               <tr>
                 <td><b>Last Updated:</b></td>
@@ -42,11 +39,6 @@
               </tbody>
             </template>
           </v-simple-table>
-        </v-card-text>
-      </Container>
-      <Container :key="'aboutPage'">
-        <v-card-text>
-          <VueMarkdown>{{ text }}</VueMarkdown>
         </v-card-text>
       </Container>
     </transition-group>
@@ -67,8 +59,9 @@ import {
   getIsWebview,
   getCapacitorLocalAppVersion,
   getWebViewLocalAppVersion,
-  getIsTWA,getTWAAppVersion
+  getIsTWA,getTWALocalAppVersion
 } from '@/plugins/android_support'
+import { isAppVersionBackdated } from '@/mixins/helpers'
 
 export default {
   name: 'About',
@@ -84,16 +77,15 @@ export default {
     isMobile () {
       return getIsCapacitorNative()
     },
-    isRunningOnWebview() {
-      return getIsWebview()
-    },
     getGooglePlayAppVersion () {
       return this.getSettings.version
     },
-    isRunningOnTWA() {
-      return getIsTWA()
-    }
-
+    getWebviewAppVersion (){
+      return `${getIsWebview()?"detected":"not detected"} v: ${getWebViewLocalAppVersion()} u: ${isAppVersionBackdated(getWebViewLocalAppVersion(),this.getSettings.version)?"required":"not required"}`
+    },
+    getTWAAppVersion () {
+      return `${getIsTWA()?"detected":"not detected"} v: ${getTWALocalAppVersion()} u: ${isAppVersionBackdated(getTWALocalAppVersion(), this.getSettings.version)?"required":"not required"}`
+    },
   },
   components: { Container, PageTitle, VueMarkdown },
   data () {
@@ -104,13 +96,15 @@ export default {
   },
   async mounted () {
     if (getIsCapacitorNative()) {
-      this.nativeAppVersion = 'Capacitor:'+getCapacitorLocalAppVersion()
+      this.nativeAppVersion = 'Capacitor'
+      return
     }
     if (getIsWebview()) {
-      this.nativeAppVersion = 'Webview:'+getWebViewLocalAppVersion()
+      this.nativeAppVersion = 'Webview'
+      return
     }
     if (getIsTWA()) {
-      this.nativeAppVersion = 'TWA:'+getTWAAppVersion()
+      this.nativeAppVersion = 'TWA'
     }
   }
 }

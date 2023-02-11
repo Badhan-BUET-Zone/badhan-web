@@ -1,0 +1,46 @@
+{
+  "packageId": "com.mmmbadhan",
+  "host": "badhan-buet.web.app",
+  "name": "Badhan",
+  "launcherName": "Badhan",
+  "display": "standalone",
+  "themeColor": "#B71C1C",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#B71C1C",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://badhan-buet.web.app/img/icons/android-chrome-512x512.png",
+  "maskableIconUrl": "https://badhan-buet.web.app/img/icons/android-chrome-maskable-512x512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "E:\\Documents\\Git\\badhan-web\\bubblewrap\\signature.jks",
+    "alias": "key0"
+  },
+  "appVersionName": "87",
+  "appVersionCode": 87,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://badhan-buet.web.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://badhan-buet.web.app/",
+  "minSdkVersion": 19,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "87"
+}

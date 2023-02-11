@@ -52,6 +52,6 @@ export const getIsTWA = () => {
   return isAndroidTwaSession
 }
 
-export const getTWAAppVersion = () => {
-  return twaGradleString.match(/\d+\.\d+\.\d+/)[0]
+export const getTWALocalAppVersion = () => {
+  return twaGradleString.match(/"\d+"/)[0].replaceAll("\"","")
 }
