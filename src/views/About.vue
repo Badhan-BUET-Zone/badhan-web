@@ -32,6 +32,10 @@
                 <td>{{ isRunningOnWebview? "True":"False" }}</td>
               </tr>
               <tr>
+                <td><b>TWA: </b></td>
+                <td>{{ isRunningOnTWA? "True":"False" }}</td>
+              </tr>
+              <tr>
                 <td><b>Last Updated:</b></td>
                 <td>{{getBuildTime}}</td>
               </tr>
@@ -58,7 +62,13 @@ import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
 import { mapGetters } from 'vuex'
-import { getIsCapacitorNative, getIsWebview, getCapacitorLocalAppVersion, getWebViewLocalAppVersion } from '@/plugins/android_support'
+import {
+  getIsCapacitorNative,
+  getIsWebview,
+  getCapacitorLocalAppVersion,
+  getWebViewLocalAppVersion,
+  getIsTWA
+} from '@/plugins/android_support'
 
 export default {
   name: 'About',
@@ -79,6 +89,9 @@ export default {
     },
     getGooglePlayAppVersion () {
       return this.getSettings.version
+    },
+    isRunningOnTWA() {
+      return getIsTWA()
     }
 
   },
