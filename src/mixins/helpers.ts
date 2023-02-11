@@ -49,9 +49,16 @@ export const fixBackSlash = (text) => {
 }
 
 export const isAppVersionBackdated = (appVersion, remoteVersion) => {
-  const appVersionSegments = appVersion.split('.')
-  const remoteVersionSegments = remoteVersion.split('.')
-  const appVersionNumber = parseInt(appVersionSegments[0]) * 10000 + parseInt(appVersionSegments[1]) * 100 + parseInt(appVersionSegments[2])
-  const remoteVersionNumber = parseInt(remoteVersionSegments[0]) * 10000 + parseInt(remoteVersionSegments[1]) * 100 + parseInt(remoteVersionSegments[2])
-  return remoteVersionNumber > appVersionNumber
+  if(appVersion.includes(".")){
+    return true
+  }
+  if(remoteVersion.includes(".")){
+    return false
+  }
+  return parseInt(remoteVersion) > parseInt(appVersion)
+  // const appVersionSegments = appVersion.split('.')
+  // const remoteVersionSegments = remoteVersion.split('.')
+  // const appVersionNumber = parseInt(appVersionSegments[0]) * 10000 + parseInt(appVersionSegments[1]) * 100 + parseInt(appVersionSegments[2])
+  // const remoteVersionNumber = parseInt(remoteVersionSegments[0]) * 10000 + parseInt(remoteVersionSegments[1]) * 100 + parseInt(remoteVersionSegments[2])
+  // return remoteVersionNumber > appVersionNumber
 }
