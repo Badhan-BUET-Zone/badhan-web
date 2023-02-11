@@ -3,6 +3,7 @@
 /* eslint-disable */
 import gradleString from '../../android/app/build.gradle'
 import webviewGradleString from '../../webview/app/build.gradle'
+import twaGradleString from '../../bubblewrap/app/build.gradle'
 
 // custom android support
 export const getCapacitorLocalAppVersion = () => {
@@ -35,4 +36,22 @@ export const getAndroidInfo = async () => {
 // custom android support
 export const exitApp = () => {
   navigator.app.exitApp()
+}
+
+
+// TWA support
+let isAndroidTwaSession;
+if (document.referrer.includes('android-app://app.netlify.badhan_buet_test.twa')) {
+  isAndroidTwaSession = true;
+  sessionStorage.setItem('has_android_twa_referrer', 'yes');
+} else {
+  isAndroidTwaSession = sessionStorage.getItem('has_android_twa_referrer') === 'yes';
+}
+
+export const getIsTWA = () => {
+  return isAndroidTwaSession
+}
+
+export const getTWAAppVersion = () => {
+  return twaGradleString.match(/\d+\.\d+\.\d+/)[0]
 }

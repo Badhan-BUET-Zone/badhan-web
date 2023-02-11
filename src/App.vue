@@ -29,7 +29,7 @@ import {
   getIsCapacitorNative,
   getAndroidInfo,
   getIsWebview,
-  getWebViewLocalAppVersion
+  getWebViewLocalAppVersion, getIsTWA, getTWAAppVersion
 } from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
@@ -98,6 +98,16 @@ export default {
           }
         })
       }
+
+      if (getIsTWA() && isAppVersionBackdated(getTWAAppVersion(), googlePlayAppVersion)){
+        this.setConfirmationMessage({
+          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
+          confirmationAction: () => {
+            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
+          }
+        })
+      }
+
       await this.fetchGithubRelease()
       // if ((getIsCapacitorNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getCapacitorLocalAppVersion(), this.getGithubVersion)) {
       //   this.setConfirmationMessage({
