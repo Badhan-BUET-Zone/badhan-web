@@ -4,3 +4,5 @@ app-release-signed.apk.idsig
 app-release-unsigned-aligned.apk
 signature.jks
 .gradle
+manifest-checksum.txt
+app/build
