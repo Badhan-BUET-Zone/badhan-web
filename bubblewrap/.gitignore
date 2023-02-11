@@ -13,5 +13,6 @@ manifest-checksum.txt
 settings.gradle
 store_icon.png
 twa-manifest.json
-
+signature.jks
+signature.jks.old
 !app/build.gradle

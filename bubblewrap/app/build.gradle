@@ -55,7 +55,7 @@ android {
         applicationId "com.mmmbadhan"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 82
+        versionCode 83
         versionName "4.12.0"
 
         // The name for the application
