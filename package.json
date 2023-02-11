@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:testing": "npm run build:testing && http-server dist",
+    "serve:production": "npm run build && http-server dist",
     "build": "vue-cli-service build",
+    "build:testing": "vue-cli-service build --mode testing",
+    "build:development": "vue-cli-service build --mode development",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "android": "npm run build && npx cap sync && npx cap open android"
+    "lint": "vue-cli-service lint"
   },
   "browser": {
     "fs": false,
@@ -28,6 +31,7 @@
     "file-saver": "^2.0.5",
     "gradle-to-js": "^2.0.1",
     "lodash": "^4.17.21",
+    "register-service-worker": "^1.7.2",
     "roboto-fontface": "*",
     "stream": "^0.0.2",
     "vue": "^2.6.14",
@@ -45,6 +49,7 @@
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-plugin-unit-jest": "~5.0.0",

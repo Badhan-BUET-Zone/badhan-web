@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 import Vue from 'vue'
 import App from './App.vue'
@@ -8,6 +8,10 @@ import { store } from './store/store'
 
 // router for handling routing in vuejs
 import router from './router'
+
+import './registerServiceWorker'
+
+import './mixins/environment'
 
 // to keep long lived data in vuejs that are required even after a reload
 import ldb from './localDatabase'

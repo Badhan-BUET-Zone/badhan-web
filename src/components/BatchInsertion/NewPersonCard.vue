@@ -144,6 +144,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { getIsCapacitorNative } from '../../plugins/android_support'
 import { handleGETDonorsDuplicate } from '../../api'
 import Container from '../Wrappers/Container'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'NewPersonCard',
@@ -225,7 +226,7 @@ export default {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
     frontendBaseURL () {
-      return process.env.VUE_APP_FRONTEND_BASE
+      return environmentService.getFrontendBaseURL()
     },
 
     computedPhone: {
@@ -420,7 +421,7 @@ export default {
       if (getIsCapacitorNative()) {
         this.$router.push({ path: '/singleDonorCreation/duplicateDetails?id=' + this.duplicateDonorId })
       } else {
-        window.open(process.env.VUE_APP_FRONTEND_BASE + '#/home/details?id=' + this.duplicateDonorId)
+        window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId)
       }
     },
     async discardClicked () {

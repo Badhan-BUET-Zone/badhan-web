@@ -1,8 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 /* eslint-disable */
 import gradleString from '../../android/app/build.gradle'
 import webviewGradleString from '../../webview/app/build.gradle'
+import twaGradleString from '../../bubblewrap/app/build.gradle'
 
 // custom android support
 export const getCapacitorLocalAppVersion = () => {
@@ -27,7 +28,7 @@ export const getAndroidInfo = async () => {
   // const representation = await g2js.parseText(gradleString)
   return {
     windowOrigin: window.origin,
-    versionInGradle: getCapacitorLocalAppVersion(),
+    versionInCapacitorGradle: getCapacitorLocalAppVersion(),
     navigatorAppExitApp: navigator.app ? getMethodNames(navigator.app) : 'navigator.app undefined'
   }
 }
@@ -35,4 +36,22 @@ export const getAndroidInfo = async () => {
 // custom android support
 export const exitApp = () => {
   navigator.app.exitApp()
+}
+
+
+// TWA support
+let isAndroidTwaSession;
+if (document.referrer.includes('android-app://com.mmmbadhan')) {
+  isAndroidTwaSession = true;
+  sessionStorage.setItem('has_android_twa_referrer', 'yes');
+} else {
+  isAndroidTwaSession = sessionStorage.getItem('has_android_twa_referrer') === 'yes';
+}
+
+export const getIsTWA = () => {
+  return isAndroidTwaSession
+}
+
+export const getTWAAppVersion = () => {
+  return twaGradleString.match(/\d+\.\d+\.\d+/)[0]
 }

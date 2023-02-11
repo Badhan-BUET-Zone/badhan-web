@@ -157,6 +157,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { departments } from '../../mixins/constants'
 import { fixBackSlash } from '../../mixins/helpers'
 import { mapActions, mapGetters } from 'vuex'

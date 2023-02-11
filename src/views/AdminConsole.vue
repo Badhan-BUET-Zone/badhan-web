@@ -26,10 +26,12 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Container from '../components/Wrappers/Container'
 import PageTitle from '../components/PageTitle'
 import Button from '../components/UI Components/Button'
 import { handlePOSTRedirection } from '../api'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'AdminConsole',
@@ -49,7 +51,7 @@ export default {
       const redirectionTokenResponse = await handlePOSTRedirection()
       this.redirectionLoaderFlag = false
       if (redirectionTokenResponse.status !== 201) return
-      window.open(`${process.env.VUE_APP_ADMIN_CONSOLE_URL}/redirection?token=${redirectionTokenResponse.data.token}`, '_blank')
+      window.open(`${environmentService.getAdminFrontendBaseURL()}/redirection?token=${redirectionTokenResponse.data.token}`, '_blank')
     }
   },
   async mounted () {

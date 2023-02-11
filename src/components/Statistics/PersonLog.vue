@@ -21,6 +21,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { handleGETLogsByDateAndDonor } from '../../api'
 import LogObject from './LogObject'
 

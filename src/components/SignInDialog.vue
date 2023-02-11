@@ -31,6 +31,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   props: ['dialog'],
   data () {

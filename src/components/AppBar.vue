@@ -107,6 +107,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { getIsCapacitorNative } from '@/plugins/android_support'
 import { isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
+import { environmentService } from '@/mixins/environment'
 
 export default {
 
@@ -288,7 +289,7 @@ export default {
           payload: this.$route.fullPath
         }
       })
-      window.open(process.env.VUE_APP_FRONTEND_BASE + routeData.href, '_blank')
+      window.open(environmentService.getFrontendBaseURL() + routeData.href, '_blank')
     }
   },
   watch: {

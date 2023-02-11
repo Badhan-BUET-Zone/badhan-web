@@ -1,5 +1,13 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  pwa: {
+    themeColor: "#ee0000",
+    msTileColor: '#000000',
+    manifestOptions: {
+      name: "Badhan",
+      short_name: "Badhan",
+    },
+  },
   devServer: {
     client: {
       progress: false,

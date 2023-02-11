@@ -1,18 +1,16 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { halls, designations, bloodGroups, departments } from './constants'
 import Vue from 'vue'
-const getHallName = (hallCode) => {
+const getHallName = (hallCode: number): string => {
   return halls[hallCode]
 }
-const getDesignationString = (designationCode) => {
+const getDesignationString = (designationCode: number): string => {
   return designations[designationCode]
 }
-const getBloodGroupString = (bloodGroupCode) => {
+const getBloodGroupString = (bloodGroupCode: number): string => {
   if (bloodGroupCode === -1) return 'All Negative'
   return bloodGroups[bloodGroupCode]
 }
-const idToDept = (studentID) => {
+const idToDept = (studentID: string): string => {
   return departments[Number(studentID.toString().substr(2, 2))]
 }
 

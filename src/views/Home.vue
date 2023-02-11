@@ -146,6 +146,7 @@ import { isGuestEnabled } from '../api'
 import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
 import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
 import Filters from '../components/Filters'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'ActiveSearch',
@@ -353,7 +354,7 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
@@ -386,7 +387,7 @@ export default {
         name: 'Redirection',
         query: { token: redirectionTokenResponse.data.token, payload: redirectionURL }
       })
-      window.open(process.env.VUE_APP_FRONTEND_BASE + '/' + routeData.href, '_blank')
+      window.open(environmentService.getFrontendBaseURL() + '/' + routeData.href, '_blank')
     },
 
     clearFields () {

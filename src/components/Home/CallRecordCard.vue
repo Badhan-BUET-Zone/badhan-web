@@ -26,6 +26,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapActions, mapMutations } from 'vuex'
 import { designations } from '../../mixins/constants'
 

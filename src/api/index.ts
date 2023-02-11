@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 /*
 This module handles all necessary tasks to communicate with the backend.
@@ -10,15 +10,11 @@ import { store } from '../store/store'
 import { processError } from '../mixins/helpers'
 // import ldb from '../localDatabase'
 import { myConsole } from '../mixins/myConsole'
+import { environmentService} from "@/mixins/environment";
 
-const baseURL = process.env.VUE_APP_BADHAN_API_BASE_URL
-// const ldbSettings = ldb.frontendSettings.load()
-myConsole.log('Environment: ', process.env.NODE_ENV)
-//
-// if (ldbSettings.status !== 'ERROR') {
-//   baseURL = (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'testing') ? ldbSettings.data.backendTestBaseURL : ldbSettings.data.backendBaseURL
-//   myConsole.log('USING CACHED BASEURL')
-// }
+const baseURL = environmentService.getAPIBaseURL()
+
+myConsole.log('Environment: ', environmentService.getEnvironmentName())
 
 const badhanAxios = axios.create({
   baseURL

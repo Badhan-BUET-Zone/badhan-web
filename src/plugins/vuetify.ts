@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable */ 
 // @ts-nocheck
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib/framework'

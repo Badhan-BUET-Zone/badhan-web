@@ -38,6 +38,7 @@ import { isGuestEnabled, handlePOSTRedirection } from '../api'
 import Container from '../components/Wrappers/Container'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import Button from '../components/UI Components/Button'
+import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'BatchInsertion',
@@ -63,7 +64,7 @@ export default {
       const redirectionTokenResponse = await handlePOSTRedirection()
       this.excelUploadRedirectionFlag = false
       if (redirectionTokenResponse.status !== 201) return
-      window.open(`${process.env.VUE_APP_DATAINPUT_URL}/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
+      window.open(`${environmentService.getDataInputAPIBaseURL()}/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
     }
   },
   mounted () {

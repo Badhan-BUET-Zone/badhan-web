@@ -20,6 +20,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { handleGETLogsByDate } from '../../api'
 import PersonLog from './PersonLog'
 

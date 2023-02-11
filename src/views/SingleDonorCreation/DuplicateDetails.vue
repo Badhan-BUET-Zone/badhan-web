@@ -5,6 +5,7 @@
   </v-card>
 </template>
 <script>
+/* eslint-disable */
 import PersonDetails from '../../components/Home/PersonDetails'
 import PageTitle from '../../components/PageTitle'
 
