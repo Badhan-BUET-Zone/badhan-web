@@ -75,16 +75,7 @@
               <div>
                 <v-row no-gutters>
                   <v-col>
-                    <v-btn @click="downloadInMobileClicked" small
-                           v-if="isNative || $getEnvironmentName() === 'development'"
-                           :disabled="downloadCSVLoader" :loading="downloadCSVLoader"
-                           color="secondary" rounded class="mb-4" style="width: 100%">
-                      <v-icon left>
-                        mdi-download
-                      </v-icon>
-                      Download Report
-                    </v-btn>
-                    <v-btn v-if="!isNative" @click="downloadInWeb" small
+                    <v-btn @click="downloadInWeb" small
                            color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
                         mdi-download
@@ -137,12 +128,10 @@
 <script>
 /* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
-import { getIsCapacitorNative } from '../plugins/android_support'
 import { bloodGroups, halls } from '../mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
 import { isGuestEnabled } from '../api'
-// import HelpTooltip from '../components/UI Components/HelpTooltip'
 import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
 import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
 import Filters from '../components/Filters'
@@ -152,14 +141,8 @@ export default {
   name: 'ActiveSearch',
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
-    showScroll () {
-      return window.screenY > 1000
-    },
     isGuestEnabled () {
       return isGuestEnabled()
-    },
-    isNative () {
-      return getIsCapacitorNative()
     },
     availableHalls () {
       if (this.getDesignation !== null) {
@@ -191,7 +174,6 @@ export default {
   components: {
     Filters,
     'person-card': PersonCard,
-    // HelpTooltip,
     SkeletonPersonCard
   },
   data: function () {

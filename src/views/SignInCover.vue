@@ -125,26 +125,11 @@
                       class="align-self-end ma-1"
                       outlined
                       style="text-decoration: none"
-                      v-if="!isMobile"
                       href="https://play.google.com/store/apps/details?id=com.mmmbadhan"
                   >
                     Download App
                     <v-icon right>mdi-google-play</v-icon>
                   </v-btn>
-                  <v-btn
-                      x-small
-                      color="primary"
-                      rounded
-                      class="align-self-end ma-1"
-                      outlined
-                      style="text-decoration: none"
-                      v-else
-                      href="https://badhan-buet.web.app"
-                  >
-                    Web Version
-                    <v-icon right>mdi-web</v-icon>
-                  </v-btn>
-
                   <v-btn
                       x-small
                       color="primary"
@@ -176,7 +161,6 @@
 
 <script>
 /* eslint-disable */
-import { getIsCapacitorNative, getCapacitorLocalAppVersion } from '../plugins/android_support'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -188,7 +172,6 @@ export default {
       phone: '',
       password: '',
       passwordFlag: false,
-      version: ''
     }
   },
   validations: {
@@ -208,10 +191,6 @@ export default {
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
-    isMobile () {
-      return getIsCapacitorNative()
-    },
-
     phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -259,20 +238,7 @@ export default {
       await this.guestLogin()
       await this.$router.push('/home')
     },
-
-    clearClicked () {
-      this.$v.$reset()
-      this.phone = ''
-      this.password = ''
-      this.clearSignInError()
-    }
   },
-  async mounted () {
-    // const info = await getDeviceInfo()
-    this.version = getCapacitorLocalAppVersion()
-  },
-
-  components: {}
 }
 </script>
 

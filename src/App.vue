@@ -20,34 +20,15 @@
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import SignInDialog from './components/SignInDialog'
-
-import {
-  exitApp,
-  getCapacitorLocalAppVersion,
-  getIsCapacitorNative,
-  getAndroidInfo,
-  getIsWebview,
-  getWebViewLocalAppVersion, getIsTWA, getTWALocalAppVersion
-} from './plugins/android_support'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
-import { myConsole } from './mixins/myConsole'
-
-import { isAppVersionBackdated } from './mixins/helpers'
-import { environmentService } from '@/mixins/environment'
 
 export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      waitingForExitConfirmation: false,
-
-      exitPromptFlag: false,
-      updatePromptFlag: false,
-      updatedVersion: ''
     }
   },
   components: {
@@ -59,75 +40,19 @@ export default {
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn']),
-    ...mapGetters('frontendSettings', ['getSettings']),
-    ...mapGetters('githubRelease', ['getGithubVersion', 'getGithubLink'])
   },
   methods: {
     ...mapActions('frontendSettings', ['fetchSettings']),
     ...mapActions('githubRelease', ['fetchGithubRelease']),
-    ...mapMutations('confirmationBox', ['setConfirmationMessage']),
 
-    androidBackButtonHandler () {
-      if (this.$route.path === '/home' || this.$route.path === '/') {
-        // this.exitAppPrompt()
-        this.setConfirmationMessage({
-          confirmationMessage: 'Exit app?',
-          confirmationAction: exitApp
-        })
-      } else {
-        this.$router.go(-1)
-      }
-    },
     async versionCheck () {
       await this.fetchSettings()
-      const googlePlayAppVersion = this.getSettings.version
-      if (getIsCapacitorNative() && environmentService.isEnvironmentProduction() && isAppVersionBackdated(getCapacitorLocalAppVersion(), googlePlayAppVersion)) {
-        this.setConfirmationMessage({
-          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
-          confirmationAction: () => {
-            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
-          }
-        })
-      }
-
-      if (getIsWebview() && environmentService.isEnvironmentProduction() && isAppVersionBackdated(getWebViewLocalAppVersion(), googlePlayAppVersion)) {
-        this.setConfirmationMessage({
-          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
-          confirmationAction: () => {
-            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
-          }
-        })
-      }
-
-      if (getIsTWA() && isAppVersionBackdated(getTWALocalAppVersion(), googlePlayAppVersion)){
-        this.setConfirmationMessage({
-          confirmationMessage: 'New version ' + googlePlayAppVersion + ' available on Google Play. Please download the latest update.',
-          confirmationAction: () => {
-            window.open('https://play.google.com/store/apps/details?id=com.mmmbadhan')
-          }
-        })
-      }
-
       await this.fetchGithubRelease()
-      // if ((getIsCapacitorNative() || getIsWebview()) && process.env.NODE_ENV === 'insider' && isAppVersionBackdated(getCapacitorLocalAppVersion(), this.getGithubVersion)) {
-      //   this.setConfirmationMessage({
-      //     confirmationMessage: 'New insider version ' + this.getGithubVersion + ' available on Github. Please download the latest update.',
-      //     confirmationAction: () => {
-      //       window.open(this.getGithubLink)
-      //     }
-      //   })
-      // }
     }
   },
 
   async mounted () {
-    document.addEventListener('backbutton', this.androidBackButtonHandler, false)
-    myConsole.log('Android info: ', await getAndroidInfo())
     await this.versionCheck()
-  },
-
-  beforeDestroy () {
-    document.removeEventListener('backbutton', this.androidBackButtonHandler)
   }
 }
 </script>

@@ -13,17 +13,6 @@
         </template>
 
         <v-list rounded>
-          <v-list-item id="gotoWebButtonId" @click="goToWebClicked"
-                       v-if="(isNative || $getEnvironmentName() === 'development') && !isGuestEnabled ">
-            <v-list-item-icon>
-              <v-icon>
-                mdi-web
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Go to Web</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item @click="signOutModalPrompted" id="signOutButtonId">
             <v-list-item-icon>
               <v-icon>
@@ -104,7 +93,6 @@
 <script>
 /* eslint-disable */
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { getIsCapacitorNative } from '@/plugins/android_support'
 import { isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
 import { environmentService } from '@/mixins/environment'
@@ -232,10 +220,6 @@ export default {
         this.$vuetify.theme.dark = newValue
         ldb.theme.save(newValue)
       }
-    },
-
-    isNative () {
-      return getIsCapacitorNative()
     },
     isGuestEnabled () {
       return isGuestEnabled()

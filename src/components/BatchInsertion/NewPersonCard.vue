@@ -141,7 +141,6 @@
 import { halls, bloodGroups, departments } from '../../mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
-import { getIsCapacitorNative } from '../../plugins/android_support'
 import { handleGETDonorsDuplicate } from '../../api'
 import Container from '../Wrappers/Container'
 import { environmentService } from '@/mixins/environment'
@@ -188,13 +187,8 @@ export default {
         required,
         departmentCheck (studentId) {
           const indexOfDepartment = parseInt(String(studentId).substr(2, 2))
-          if (indexOfDepartment > 18) {
-            return false
-          }
-          // if(indexOfDepartment > 18 || this.departments[indexOfDepartment]==="NULL"){
-          //   return false;
-          // }
-          return true
+          return indexOfDepartment <= 18;
+
         }
       },
       hall: {
@@ -225,10 +219,6 @@ export default {
   computed: {
     ...mapGetters(['getHall', 'getDesignation']),
     ...mapGetters('halladmin', ['getNewDonorLoader']),
-    frontendBaseURL () {
-      return environmentService.getFrontendBaseURL()
-    },
-
     computedPhone: {
       get () {
         return this.phone
@@ -243,10 +233,6 @@ export default {
 
     availableHalls () {
       return [...halls.slice(0, 7), halls[8]]
-    },
-
-    isNative () {
-      return getIsCapacitorNative()
     },
     phoneErrors () {
       const errors = []
@@ -418,11 +404,7 @@ export default {
       this.donorCreationLoader = false
     },
     goToDuplicateProfile () {
-      if (getIsCapacitorNative()) {
-        this.$router.push({ path: '/singleDonorCreation/duplicateDetails?id=' + this.duplicateDonorId })
-      } else {
-        window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId)
-      }
+      window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId)
     },
     async discardClicked () {
       if (this.discardDonor !== null) {
