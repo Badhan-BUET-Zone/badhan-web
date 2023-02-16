@@ -6,10 +6,9 @@ Current active backends are- an express app and firebase realtime database
  */
 import axios from 'axios'
 
-import { store } from '../store/store'
-import { processError } from '../mixins/helpers'
-// import ldb from '../localDatabase'
-import { myConsole } from '../mixins/myConsole'
+import { store } from '@/store/store'
+import { processError } from '@/mixins/helpers'
+import { myConsole } from '@/mixins/myConsole'
 import { environmentService} from "@/mixins/environment";
 
 const baseURL = environmentService.getAPIBaseURL()
