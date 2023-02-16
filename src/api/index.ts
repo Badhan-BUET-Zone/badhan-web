@@ -14,7 +14,7 @@ import { environmentService} from "@/mixins/environment";
 
 const baseURL = environmentService.getAPIBaseURL()
 
-myConsole.log('Environment: ', environmentService.getEnvironmentName())
+myConsole.log('%cENVIRONMENT: ','color: #ffff00', 'name ' ,environmentService.getEnvironmentName())
 
 const badhanAxios = axios.create({
   baseURL
@@ -40,7 +40,7 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  myConsole.log('%cREQUEST TO ' + config.method + ' ' + config.url + ': ', 'color: #ff00ff', config.data, config.params)
+  myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.method + ' ' + config.url + ': ', config.data, config.params)
 
   store.dispatch('notification/clearNotification')
 
@@ -65,7 +65,7 @@ badhanAxios.interceptors.request.use((config) => {
 
 badhanAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  myConsole.log('%cRESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', 'color: #00ff00', response)
+  myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
@@ -89,7 +89,7 @@ badhanAxios.interceptors.response.use((response) => {
 
 firebaseAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  myConsole.log('%cREQUEST TO ' + config.url + ': ', 'color: #ff00ff', config.data)
+  myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.url + ': ', config.data)
 
   store.dispatch('notification/clearNotification')
 
@@ -101,7 +101,7 @@ firebaseAxios.interceptors.request.use((config) => {
 
 firebaseAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  myConsole.log('%cRESPONSE FROM ' + response.config.url + ': ', 'color: #00ff00', response)
+  myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
