@@ -16,7 +16,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'

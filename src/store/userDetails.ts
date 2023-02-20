@@ -1,27 +1,25 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handlePATCHDonors } from '../api'
+import { handlePATCHDonors } from '@/api'
+import {Commit, Dispatch} from 'vuex'
 
 const state = {
   detailsLoaderFlag: false
 }
 
 const getters = {
-  getDetailsLoaderFlag: state => {
+  getDetailsLoaderFlag: (state:{detailsLoaderFlag: boolean}) => {
     return state.detailsLoaderFlag
   }
 }
 const mutations = {
-  detailsLoaderFlagOn (state) {
+  detailsLoaderFlagOn (state:{detailsLoaderFlag: boolean}) {
     state.detailsLoaderFlag = true
   },
-  detailsLoaderFlagOff (state) {
+  detailsLoaderFlagOff (state:{detailsLoaderFlag: boolean}) {
     state.detailsLoaderFlag = false
   }
 }
 const actions = {
-  async saveUserDetails ({ commit, getters, rootState, rootGetters, dispatch }, payload) {
+  async saveUserDetails ({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, payload: {newPhone: string}) {
     commit('detailsLoaderFlagOn')
     const response = await handlePATCHDonors(payload)
     commit('detailsLoaderFlagOff')

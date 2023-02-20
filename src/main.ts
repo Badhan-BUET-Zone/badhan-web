@@ -1,5 +1,3 @@
-/* eslint-disable */ 
-// @ts-nocheck
 import Vue from 'vue'
 import App from './App.vue'
 
@@ -12,9 +10,6 @@ import router from './router'
 import './registerServiceWorker'
 
 import './mixins/environment'
-
-// to keep long lived data in vuejs that are required even after a reload
-import ldb from './localDatabase'
 
 // bootstrap, a well known UI component library along with it's vue.js compatible bootstrap-vue library
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -36,13 +31,8 @@ import vuetify from './plugins/vuetify'
 // filter functions used in <template> tags all across this vue.js project
 import './mixins/filters'
 
-// to catch any runtime errors, similar to a try catch block in programming
-import errorHandlers from './mixins/errorHandlers'
-
 // to use rootless components
 import Fragment from 'vue-fragment'
-
-Vue.prototype.$myldb = ldb
 
 Vue.use(Fragment.Plugin)
 Vue.use(VueClipboard)
@@ -50,17 +40,15 @@ Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
-Vue.config.errorHandler = errorHandlers.errorHandler
-Vue.config.warnHandler = errorHandlers.warnHandler
-
 Vue.mixin(Mixins)
 
 Vue.config.productionTip = false
-export const eventBus = new Vue()
 
 new Vue({
   router,
   store,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   vuetify,
   render: h => h(App)
 }).$mount('#app')
