@@ -1,6 +1,18 @@
-/* eslint-disable */ 
-// @ts-nocheck
-const state = {
+interface MyProfileStateInterface {
+  _id: string | null
+  name: string | null
+  studentId: string | null
+  lastDonation: number | null
+  bloodGroup: number | null
+  hall: number | null
+  phone: number | null
+  address: string | null
+  comment: string | null
+  designation: number | null
+  roomNumber: string | null
+}
+
+const state: MyProfileStateInterface = {
   _id: null,
   name: null,
   studentId: null,
@@ -15,91 +27,35 @@ const state = {
 }
 
 const getters = {
-  getRoomNumber: state => {
-    return state.roomNumber
-  },
-  getDesignation: state => {
+  getDesignation: (state: MyProfileStateInterface) => {
     return state.designation
   },
-  getPhone: state => {
+  getPhone: (state: MyProfileStateInterface) => {
     return state.phone
   },
-  getHall: state => {
+  getHall: (state: MyProfileStateInterface) => {
     return state.hall
   },
-  getName: state => {
+  getName: (state: MyProfileStateInterface) => {
     return state.name
   },
-  getStudentId: state => {
-    return state.studentId
-  },
-  getLastDonation: state => {
-    return state.lastDonation
-  },
-  getBloodGroup: state => {
-    return state.bloodGroup
-  },
-  getAddress: state => {
-    return state.address
-  },
-  getComment: state => {
-    return state.comment
-  },
-  getID: state => {
+  getID: (state: MyProfileStateInterface) => {
     return state._id
   },
-  getMyProfile: state => {
-    return {
-      name: state.name,
-      studentId: state.studentId,
-      lastDonation: state.lastDonation,
-      bloodGroup: state.bloodGroup,
-      hall: state.hall,
-      phone: state.phone,
-      address: state.address,
-      comment: state.comment,
-      designation: state.designation,
-      roomNumber: state.roomNumber,
-      _id: state._id
-    }
-  }
 }
 const mutations = {
-  setID (state, id) {
-    state._id = id
-  },
-  setName (state, name) {
-    state.name = name
-  },
-  setStudentId (state, studentId) {
-    state.studentId = studentId
-  },
-  setLastDonation (state, lastDonation) {
+  setLastDonation (state: MyProfileStateInterface, lastDonation: number) {
     state.lastDonation = lastDonation
   },
-  setBloodGroup (state, bloodGroup) {
-    state.bloodGroup = bloodGroup
-  },
-  setAddress (state, address) {
-    state.address = address
-  },
-  setComment (state, comment) {
+  setComment (state: MyProfileStateInterface, comment: string) {
     state.comment = comment
   },
-  setDesignation (state, designation) {
-    state.designation = designation
-  },
-  setPhone (state, phone) {
+
+  setPhone (state: MyProfileStateInterface, phone: number) {
     state.phone = phone
   },
-  setHall (state, hall) {
-    state.hall = hall
-  },
-  setRoomNumber (state, roomNumber) {
-    state.roomNumber = roomNumber
-  },
 
-  setMyProfile (state, payload) {
+  setMyProfile (state: MyProfileStateInterface, payload: MyProfileStateInterface) {
     state._id = payload._id
     state.name = payload.name
     state.studentId = payload.studentId
