@@ -112,13 +112,10 @@ const actions = {
     resetBaseURL()
   },
   async logoutAll ({ commit, dispatch }) {
-    commit('setLoadingTrue')
     const data = await handleDELETESignOutAll()
     if (data) {
       dispatch('notification/notifySuccess', data.message)
     }
-
-    commit('setLoadingFalse')
     commit('unsetLoginFlag')
     commit('removeToken')
     ldb.token.clear()

@@ -404,7 +404,7 @@ export default {
       this.donorCreationLoader = false
     },
     goToDuplicateProfile () {
-      window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId)
+      window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId, 'popup','width=600,height=600')
     },
     async discardClicked () {
       if (this.discardDonor !== null) {

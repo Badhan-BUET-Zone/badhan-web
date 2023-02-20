@@ -51,6 +51,15 @@
                 ></LoginCard>
               </v-col>
             </v-row>
+            <Button
+                id="logoutFromAllDevices"
+                :color="'primary'"
+                :disabled="logoutAllLoader"
+                :icon="'mdi-delete'"
+                :text="'Signout from all devices'"
+                :loading="logoutAllLoader"
+                :click="logoutFromAllDevices"
+            ></Button>
           </v-card-text>
         </div>
         <v-card-actions v-if="!loginsFetched" :key="'loginFetchAction'">
@@ -81,7 +90,7 @@ import Container from '../components/Wrappers/Container'
 import ldb from '../localDatabase'
 import Button from '../components/UI Components/Button'
 import LoginCard from '../components/MyProfile/LoginCard'
-import { handleGETLogins, handleDELETELogins } from '../api'
+import { handleGETLogins, handleDELETELogins, handleDELETESignOutAll } from '../api'
 import { environmentService } from '@/mixins/environment'
 
 export default {
@@ -92,7 +101,9 @@ export default {
       getLoginsLoader: false,
       logins: [],
       loginsFetched: false,
-      currentLogin: null
+      currentLogin: null,
+
+      logoutAllLoader: false
     }
   },
   computed: {
@@ -111,6 +122,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),
+    ...mapActions(['logoutAll']),
     async getLogins () {
       this.getLoginsLoader = true
       const response = await handleGETLogins()
@@ -140,6 +152,13 @@ export default {
         }, 2000)
       }, (e) => {
       })
+    },
+    async logoutFromAllDevices(){
+      this.logoutAllLoader = true
+      await this.logoutAll()
+      this.logoutAllLoader = false
+      await this.$router.push('/')
+
     }
   },
 
