@@ -1,8 +1,14 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETPublicContacts, isGuestEnabled } from '../api'
+import { handleGETPublicContacts, isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
+import {Commit} from "vuex";
+
+interface PublicContactInterface {
+  _id: string
+}
+interface PublicContactStoreStateInterface {
+  publicContacts: PublicContactInterface[]
+  publicContactsLoaderFlag: boolean
+}
 
 const state = {
   publicContacts: [],
@@ -10,26 +16,26 @@ const state = {
 }
 
 const getters = {
-  getPublicContacts (state) {
+  getPublicContacts (state: PublicContactStoreStateInterface) {
     return state.publicContacts
   },
-  getPublicContactsLoaderFlag (state) {
+  getPublicContactsLoaderFlag (state: PublicContactStoreStateInterface) {
     return state.publicContactsLoaderFlag
   }
 }
 const mutations = {
-  setPublicContacts (state, payload) {
+  setPublicContacts (state: PublicContactStoreStateInterface, payload: { publicContacts: PublicContactInterface[] }) {
     state.publicContacts = payload.publicContacts
   },
-  publicContactsLoaderFlagOn (state) {
+  publicContactsLoaderFlagOn (state: PublicContactStoreStateInterface) {
     state.publicContactsLoaderFlag = true
   },
-  publicContactsLoaderFlagOff (state) {
+  publicContactsLoaderFlagOff (state: PublicContactStoreStateInterface) {
     state.publicContactsLoaderFlag = false
   }
 }
 const actions = {
-  async fetchPublicContacts ({ commit, dispatch, getters }) {
+  async fetchPublicContacts ({ commit }: { commit: Commit}) {
     const cachedPublicContactResult = ldb.publicContacts.load()
     if (cachedPublicContactResult.status === 'OK') {
       commit('setPublicContacts', cachedPublicContactResult.data)
