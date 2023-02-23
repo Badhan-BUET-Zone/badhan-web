@@ -71,6 +71,7 @@
 import { halls, departments } from '../mixins/constants'
 import { mapActions } from 'vuex'
 import VueMarkdown from 'vue-markdown'
+import { directCall } from '@/mixins/helpers'
 
 export default {
   props: {
@@ -103,7 +104,7 @@ export default {
   methods: {
     ...mapActions('callrecord', ['postCallRecordFromCard']),
     async callFromDialer () {
-      document.location.href = 'tel:+' + this.phone
+      directCall(this.phone)
       this.newCallRecordLoader = true
       await this.postCallRecordFromCard({ donorId: this.id })
       this.newCallRecordLoader = false

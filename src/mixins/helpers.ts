@@ -41,24 +41,9 @@ export const processPersonsForReport = (persons) => {
 }
 
 export const directCall = (phoneNumber) => {
-  document.location.href = 'tel:+' + phoneNumber
+  window.open('tel:+' + phoneNumber, 'popup','width=600,height=600')
 }
 
 export const fixBackSlash = (text) => {
   return text.replaceAll('&#x2F;', '/')
-}
-
-export const isAppVersionBackdated = (appVersion, remoteVersion) => {
-  if(appVersion.includes(".")){
-    return true
-  }
-  if(remoteVersion.includes(".")){
-    return false
-  }
-  return parseInt(remoteVersion) > parseInt(appVersion)
-  // const appVersionSegments = appVersion.split('.')
-  // const remoteVersionSegments = remoteVersion.split('.')
-  // const appVersionNumber = parseInt(appVersionSegments[0]) * 10000 + parseInt(appVersionSegments[1]) * 100 + parseInt(appVersionSegments[2])
-  // const remoteVersionNumber = parseInt(remoteVersionSegments[0]) * 10000 + parseInt(remoteVersionSegments[1]) * 100 + parseInt(remoteVersionSegments[2])
-  // return remoteVersionNumber > appVersionNumber
 }

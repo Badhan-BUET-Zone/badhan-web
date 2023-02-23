@@ -8,8 +8,10 @@ interface FrontendSettingsStoreStateInterface {
   }
 }
 
-const state = {
-  version: '4.5.1',
+const state: FrontendSettingsStoreStateInterface = {
+  settings: {
+    version: '4.5.1'
+  }
 }
 const getters = {
   getSettings (state: FrontendSettingsStoreStateInterface) {

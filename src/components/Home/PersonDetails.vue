@@ -470,7 +470,7 @@ import {
 } from '../../api'
 import DonationCard from './DonationCard'
 import Button from '../UI Components/Button'
-import { fixBackSlash } from '../../mixins/helpers'
+import { directCall, fixBackSlash } from '../../mixins/helpers'
 import { environmentService } from '@/mixins/environment'
 
 export default {
@@ -811,7 +811,7 @@ export default {
     },
     async callFromDialer () {
       await this.postCallRecord({ donorId: this.id })
-      document.location.href = 'tel:+88' + this.phone
+      directCall('88'+this.phone)
       this.$forceUpdate()
     },
     datePrint (date) {
