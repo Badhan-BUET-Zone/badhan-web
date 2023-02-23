@@ -3,7 +3,7 @@ import ldb from '../localDatabase'
 import {Commit} from "vuex";
 
 interface PublicContactInterface {
-  _id: string
+  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 interface PublicContactStoreStateInterface {
   publicContacts: PublicContactInterface[]

@@ -1,40 +1,43 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETDonors } from '../api'
+import { handleGETDonors } from '@/api'
+import {Commit} from "vuex";
 
-const state = {
+interface ProfileInterface {
+  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+interface DetailsStoreStateInterface {
+  profile: null|ProfileInterface
+  donorLoaderFlag: boolean
+}
+
+const state: DetailsStoreStateInterface = {
   // SEE DONOR DETAILS
   profile: null,
   donorLoaderFlag: true
 }
 const getters = {
   // SEE DETAILS
-  getProfile: state => {
+  getProfile: (state: DetailsStoreStateInterface) => {
     return state.profile
   },
-  getDonorLoaderFlag: state => {
+  getDonorLoaderFlag: (state: DetailsStoreStateInterface) => {
     return state.donorLoaderFlag
   },
-  getDonorDetailsError: state => {
-    return state.donorDetailsError
-  }
 }
 const mutations = {
   // SEE DETAILS
-  setProfile (state, payload) {
+  setProfile (state: DetailsStoreStateInterface, payload: ProfileInterface) {
     state.profile = payload
   },
-  donorLoaderFlagOn (state) {
+  donorLoaderFlagOn (state: DetailsStoreStateInterface) {
     state.donorLoaderFlag = true
   },
-  donorLoaderFlagOff (state) {
+  donorLoaderFlagOff (state: DetailsStoreStateInterface) {
     state.donorLoaderFlag = false
   }
 
 }
 const actions = {
-  async getDetails ({ commit, getters, rootState, rootGetters, dispatch }, payload) {
+  async getDetails ({ commit }: {commit: Commit}, payload: {donorId: string}) {
     const params = {
       donorId: payload
     }
@@ -47,7 +50,7 @@ const actions = {
 
     commit('setProfile', response.data.donor)
     commit('callrecord/setCallRecords', response.data.donor.callRecords, { root: true })
-    commit('donation/setDonationList', response.data.donor.donations.map(a => a.date), { root: true })
+    commit('donation/setDonationList', response.data.donor.donations.map((a:{date:number}) => a.date), { root: true })
     return true
   }
 }
