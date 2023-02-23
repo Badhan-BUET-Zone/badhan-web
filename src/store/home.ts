@@ -1,10 +1,8 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETSearchV3 } from '../api'
-import { bloodGroups, halls } from '../mixins/constants'
+import { handleGETSearchV3 } from '@/api'
+import { bloodGroups, halls } from '@/mixins/constants'
+import {Commit} from "vuex";
 
-const compareObject = (a, b) => {
+const compareObject = (a: PersonGroupsInterface, b: PersonGroupsInterface) => {
   if (a.batch < b.batch) {
     return 1
   } else {
@@ -12,11 +10,29 @@ const compareObject = (a, b) => {
   }
 }
 
-const state = {
+interface PersonInterface {
+  _id: string
+  studentId: string
+}
+interface PersonGroupsInterface {
+  batch: string
+  people: PersonInterface[]
+}
+
+interface HomeStoreStateInterface {
+  searchLoaderFlag: boolean
+  searchResultShown: boolean
+  searchedHall: number
+  numOfDonor: number
+  persons: PersonInterface[]
+  personGroups: PersonGroupsInterface[]
+}
+
+const state: HomeStoreStateInterface = {
   // SEARCH DONORS
   searchLoaderFlag: false,
   searchResultShown: false,
-  personGroups: {},
+  personGroups: [],
   searchedHall: 0,
 
   persons: [],
@@ -25,44 +41,44 @@ const state = {
 }
 
 const getters = {
-  isSearchResultShown: state => {
+  isSearchResultShown: (state: HomeStoreStateInterface) => {
     return state.searchResultShown
   },
-  isSearchLoading: state => {
+  isSearchLoading: (state: HomeStoreStateInterface) => {
     return state.searchLoaderFlag
   },
-  getPersonGroups: state => {
+  getPersonGroups: (state: HomeStoreStateInterface) => {
     return state.personGroups
   },
-  getNumberOfDonors: state => {
+  getNumberOfDonors: (state: HomeStoreStateInterface) => {
     return state.numOfDonor
   },
-  getPersons: state => {
+  getPersons: (state: HomeStoreStateInterface) => {
     return state.persons
   },
-  getSearchedHall: state => {
+  getSearchedHall: (state: HomeStoreStateInterface) => {
     return state.searchedHall
   }
 }
 const mutations = {
 
   // SEARCH RESULTS
-  searchLoaderFlagOn (state) {
+  searchLoaderFlagOn (state: HomeStoreStateInterface) {
     state.searchLoaderFlag = true
   },
-  searchLoaderFlagOff (state) {
+  searchLoaderFlagOff (state: HomeStoreStateInterface) {
     state.searchLoaderFlag = false
   },
-  hideSearchResults (state) {
+  hideSearchResults (state: HomeStoreStateInterface) {
     state.searchResultShown = false
   },
-  resetSearchResults (state) {
-    state.personGroups = {}
+  resetSearchResults (state: HomeStoreStateInterface) {
+    state.personGroups = []
     state.persons = []
     state.searchResultShown = false
   },
 
-  setPersonGroups (state, payload) {
+  setPersonGroups (state: HomeStoreStateInterface, payload: PersonInterface[]) {
     state.personGroups = []
     state.numOfDonor = payload.length
 
@@ -70,7 +86,7 @@ const mutations = {
 
     state.persons = payload
 
-    const groupedPersons = persons.reduce(function (obj, person) {
+    const groupedPersons = persons.reduce(function (obj: { [key: string]: PersonInterface[] }, person: PersonInterface) {
       const batch = person.studentId.substr(0, 2)
       if (!Object.prototype.hasOwnProperty.call(obj, batch)) {
         obj[batch] = []
@@ -79,7 +95,7 @@ const mutations = {
       return obj
     }, {})
 
-    const sortedBatches = []
+    const sortedBatches: {batch: string, people: PersonInterface[]}[] = []
 
     Object.keys(groupedPersons).forEach(function (key) {
       sortedBatches.push({
@@ -92,11 +108,11 @@ const mutations = {
     state.searchResultShown = true
   },
 
-  setSearchedHall (state, payload) {
+  setSearchedHall (state: HomeStoreStateInterface, payload: number) {
     state.searchedHall = payload
   },
 
-  deletePerson (state, person) {
+  deletePerson (state: HomeStoreStateInterface, person: PersonInterface) {
     const batch = person.studentId.substr(0, 2)
     for (let j = 0; j < state.personGroups.length; j++) {
       if (state.personGroups[j].batch === batch) {
@@ -111,7 +127,16 @@ const mutations = {
   }
 }
 const actions = {
-  async search ({ getters, commit }, payload) {
+  async search ({ commit }: {commit: Commit}, payload:{
+    inputName: string,
+    bloodGroup: string,
+    inputBatch: string,
+    hall: string,
+    availability: boolean,
+    notAvailability: boolean,
+    inputAddress: string,
+    availableToAll: boolean
+  }) {
     // clear previous search results
     commit('hideSearchResults')
     commit('searchLoaderFlagOn')
@@ -131,7 +156,7 @@ const actions = {
     const response = await handleGETSearchV3(sendData)
     commit('searchLoaderFlagOff')
     if (response.status !== 200) {
-      return false
+      return
     }
     commit('setPersonGroups', response.data.filteredDonors)
     commit('setSearchedHall', payload.hall)

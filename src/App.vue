@@ -42,11 +42,8 @@ export default {
   },
   methods: {
     ...mapActions('frontendSettings', ['fetchSettings']),
-    ...mapActions('githubRelease', ['fetchGithubRelease']),
-
     async versionCheck () {
       await this.fetchSettings()
-      await this.fetchGithubRelease()
     }
   },
 

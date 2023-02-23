@@ -1,65 +1,48 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETVolunteers, handlePOSTDonors, handlePOSTDonations } from '../api'
+import { handlePOSTDonors, handlePOSTDonations } from '@/api'
+import {Commit, Dispatch} from "vuex";
+
+interface HallAdminStoreStateInterface {
+  newDonorLoader: boolean
+}
 
 const state = {
-  volunteers: [],
-  volunteerLoader: false,
   newDonorLoader: false
 }
 
 const getters = {
-  getVolunteers: state => {
-    return state.volunteers
-  },
-  getVolunteerLoader: state => {
-    return state.volunteerLoader
-  },
-  getNewDonorLoader: state => {
+  getNewDonorLoader: (state: HallAdminStoreStateInterface) => {
     return state.newDonorLoader
   }
 }
 const mutations = {
-  setVolunteers (state, payload) {
-    state.volunteers = payload
-  },
-  clearVolunteers (state) {
-    state.volunteers = []
-  },
-  volunteerLoaderOn (state) {
-    state.volunteerLoader = true
-  },
-  volunteerLoaderOff (state) {
-    state.volunteerLoader = false
-  },
-  newDonorLoaderOn (state) {
+  newDonorLoaderOn (state: HallAdminStoreStateInterface) {
     state.newDonorLoader = true
   },
-  newDonorLoaderOff (state) {
+  newDonorLoaderOff (state: HallAdminStoreStateInterface) {
     state.newDonorLoader = false
   }
 }
+
 const actions = {
-  async fetchVolunteers ({ commit, getters }) {
-    commit('clearVolunteers')
-    commit('volunteerLoaderOn')
-    const volunteers = await handleGETVolunteers()
-    commit('volunteerLoaderOff')
-    if (!volunteers) return
-    volunteers.sort((a, b) => (a.studentId > b.studentId) ? 1 : -1)
-    commit('setVolunteers', volunteers)
-  },
-  async saveDonor ({ commit, getters, dispatch }, payload) {
+  async saveDonor ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}, payload:{
+    name: string,
+    phone: number,
+    bloodGroup: number,
+    hall: number,
+    studentId: number,
+    address: string,
+    roomNumber: string,
+    comment: string,
+    lastDonation: number,
+    extraDonationCount: number,
+    availableToAll: boolean
+  }) {
     commit('newDonorLoaderOn')
-
     const response = await handlePOSTDonors(payload)
-
     if (response.status !== 201) {
       commit('newDonorLoaderOff')
       return response
     }
-
     if (payload.lastDonation !== 0) {
       const donationData = {
         donorId: response.data.newDonor._id,

@@ -52,7 +52,6 @@ export default {
   name: 'About',
   computed: {
     ...mapGetters('frontendSettings', ['getSettings']),
-    ...mapGetters('githubRelease', ['getGithubVersion', 'getGithubLink', 'getGithubReleaseLoader']),
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
