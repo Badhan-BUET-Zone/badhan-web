@@ -20,7 +20,6 @@ import MyConsoleLog from '../components/DevConsole/MyConsoleLog'
 export default {
   name: 'DevConsole',
   computed: {
-    ...mapGetters('errorStore', ['getErrors']),
     ...mapGetters(['getDesignation']),
     ...mapGetters('consoleStore', ['getConsoleLogs'])
   },

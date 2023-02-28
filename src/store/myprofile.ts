@@ -26,6 +26,14 @@ const state: MyProfileStateInterface = {
   roomNumber: null
 }
 
+export interface RootGetterInterface {
+  getDesignation: number
+  getPhone: number
+  getHall: number
+  getName: string
+  getID: string
+}
+
 const getters = {
   getDesignation: (state: MyProfileStateInterface) => {
     return state.designation

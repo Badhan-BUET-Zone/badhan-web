@@ -1,16 +1,20 @@
-/* eslint-disable */ 
-// @ts-nocheck
-const state = {
+interface LogInterface {
+  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+interface LogStoreStateInterface {
+  consoleLogs: LogInterface[]
+}
+const state: LogStoreStateInterface = {
   consoleLogs: []
 }
 
 const getters = {
-  getConsoleLogs (state) {
+  getConsoleLogs (state: LogStoreStateInterface) {
     return state.consoleLogs
   }
 }
 const mutations = {
-  addConsoleLog (state, consoleLog) {
+  addConsoleLog (state: LogStoreStateInterface, consoleLog: LogInterface) {
     state.consoleLogs.unshift(consoleLog)
   }
 }
