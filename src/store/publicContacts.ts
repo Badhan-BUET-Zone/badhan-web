@@ -2,7 +2,7 @@ import { handleGETPublicContacts, isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
 import {Commit} from "vuex";
 
-interface PublicContactInterface {
+export interface PublicContactInterface {
   _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 interface PublicContactStoreStateInterface {

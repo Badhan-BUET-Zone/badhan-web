@@ -2,7 +2,7 @@ import { handleGETFrontendSettings } from '@/api'
 import ldb from '../localDatabase'
 import {Commit} from "vuex";
 
-interface FrontendSettingsStoreStateInterface {
+export interface FrontendSettingsStoreStateInterface {
   settings: {
     version: string
   }

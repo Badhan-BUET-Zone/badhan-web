@@ -20,6 +20,8 @@ interface MemberStoreStateInterface {
   memberLoaderFlag: boolean
 }
 
+export interface MemberAPIResponseInterface {adminList: HallAdminInterface[], superAdminList: SuperAdminInterface[], volunteerList: VolunteerInterface[]}
+
 const state: MemberStoreStateInterface = {
   hallAdmins: [],
   volunteers: [],
@@ -42,7 +44,7 @@ const getters = {
   }
 }
 const mutations = {
-  assignMembers (state: MemberStoreStateInterface, payload: {adminList: HallAdminInterface[], superAdminList: SuperAdminInterface[], volunteerList: VolunteerInterface[]}) {
+  assignMembers (state: MemberStoreStateInterface, payload: MemberAPIResponseInterface) {
     state.hallAdmins = payload.adminList
     state.superAdmins = payload.superAdminList
     state.volunteers = payload.volunteerList

@@ -1,7 +1,6 @@
-/* eslint-disable */ 
-// @ts-nocheck
 import { setWithExpiry, getWithExpiry } from './helpers'
-const save = (members) => {
+import {MemberAPIResponseInterface} from "@/store/members";
+const save = (members: MemberAPIResponseInterface) => {
   setWithExpiry('members', members, 60 * 1000)
 }
 const load = () => {

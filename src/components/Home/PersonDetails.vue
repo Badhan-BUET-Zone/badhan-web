@@ -590,9 +590,8 @@ export default {
     email: {
       validEmail (email) {
         if (email === '') return true
-        /* eslint-disable no-useless-escape */
+        // eslint-disable-next-line
         const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
-        /* eslint-enable no-useless-escape */ //
         return emailRegex.test(email)
       }
     },
@@ -608,7 +607,7 @@ export default {
     }
   },
   watch: {
-    dialog (to, from) {
+    dialog (to, _from) {
       if (to === false) {
         this.$router.push('/home')
       }
@@ -779,12 +778,11 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((_e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
         }, 2000)
-      }, (e) => {
       })
     },
     async changeHallAdminClicked () {

@@ -1,6 +1,5 @@
-/* eslint-disable */ 
-// @ts-nocheck
-const setWithExpiry = (key, value, ttl) => {
+// eslint-disable-next-line
+export const setWithExpiry = (key: string, value: any, ttl: number) => {
   const now = new Date()
 
   // `item` is an object which contains the original value
@@ -12,7 +11,7 @@ const setWithExpiry = (key, value, ttl) => {
   localStorage.setItem(key, JSON.stringify(item))
 }
 
-const getWithExpiry = (key) => {
+export const getWithExpiry = (key: string) => {
   const itemStr = localStorage.getItem(key)
   // if the item doesn't exist, return null
   if (!itemStr) {
@@ -37,9 +36,4 @@ const getWithExpiry = (key) => {
     status: 'OK',
     data: item.value
   }
-}
-
-module.exports = {
-  setWithExpiry,
-  getWithExpiry
 }

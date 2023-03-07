@@ -1,7 +1,6 @@
-/* eslint-disable */ 
-// @ts-nocheck
 import { setWithExpiry, getWithExpiry } from './helpers'
-const save = (members) => {
+import {PublicContactInterface} from "@/store/publicContacts";
+const save = (members: PublicContactInterface[]) => {
   setWithExpiry('publicContacts', members, 60 * 1000)
 }
 const load = () => {
