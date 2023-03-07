@@ -1,6 +1,4 @@
-/* eslint-disable */ 
-// @ts-nocheck
-const save = (token) => {
+const save = (token:string) => {
   localStorage.setItem('x-auth', token)
 }
 const load = () => {

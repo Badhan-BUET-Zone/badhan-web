@@ -4,7 +4,7 @@
 This module handles all necessary tasks to communicate with the backend.
 Current active backends are- an express app and firebase realtime database
  */
-import axios from 'axios'
+import axios, {AxiosError, AxiosResponse} from 'axios'
 
 import { store } from '@/store/store'
 import { processError } from '@/mixins/helpers'
@@ -85,6 +85,15 @@ badhanAxios.interceptors.response.use((response) => {
   store.dispatch('notification/notifyError', errorNotification)
   return Promise.reject(error)
 })
+
+export interface BadhanAxiosResponseInterface extends AxiosResponse {
+  data: any
+  message: string
+}
+
+export interface BadhanAxiosErrorInterface extends AxiosError {
+  response: BadhanAxiosResponseInterface
+}
 
 firebaseAxios.interceptors.request.use((config) => {
   // Do something before request is sent

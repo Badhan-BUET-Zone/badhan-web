@@ -39,6 +39,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/jest": "^27.0.1",
     "@types/vuelidate": "^0.7.16",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
