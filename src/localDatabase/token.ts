@@ -1,5 +1,7 @@
-const save = (token:string) => {
-  localStorage.setItem('x-auth', token)
+const save = (token:string|null) => {
+  if(token){
+    localStorage.setItem('x-auth', token)
+  }
 }
 const load = () => {
   return localStorage.getItem('x-auth')

@@ -8,13 +8,12 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapActions, mapGetters } from 'vuex'
 import Container from '../components/Wrappers/Container'
 
 export default {
-  name: 'Redirection',
+  name: 'RedirectionPage',
   computed: {
     ...mapGetters(['getIsLoggedIn', 'getSignInLoaderFlag', 'getToken'])
   },

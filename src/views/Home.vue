@@ -366,7 +366,7 @@ export default {
       })
       const redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
       const routeData = this.$router.resolve({
-        name: 'Redirection',
+        name: 'RedirectionPage',
         query: { token: redirectionTokenResponse.data.token, payload: redirectionURL }
       })
       window.open(environmentService.getFrontendBaseURL() + '/' + routeData.href, '_blank')

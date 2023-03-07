@@ -240,7 +240,7 @@ const routes = [
     }
   },
   {
-    name: 'Redirection',
+    name: 'RedirectionPage',
     path: '/redirection',
     component: () => import('../views/Redirection.vue'),
     meta: {

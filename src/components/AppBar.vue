@@ -267,7 +267,7 @@ export default {
       const redirectionTokenResponse = await this.requestRedirectionToken()
       if (redirectionTokenResponse.status !== 201) return
       const routeData = this.$router.resolve({
-        name: 'Redirection',
+        name: 'RedirectionPage',
         query: {
           token: redirectionTokenResponse.data.token,
           payload: this.$route.fullPath
