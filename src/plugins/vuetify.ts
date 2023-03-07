@@ -1,5 +1,3 @@
-/* eslint-disable */ 
-// @ts-nocheck
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib/framework'
 import ldb from '../localDatabase'
