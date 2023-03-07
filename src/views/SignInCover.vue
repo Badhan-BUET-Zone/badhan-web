@@ -160,7 +160,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 

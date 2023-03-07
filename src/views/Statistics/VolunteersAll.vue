@@ -24,7 +24,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapActions, mapGetters } from 'vuex'
 import Container from '../../components/Wrappers/Container'
 

@@ -38,7 +38,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
@@ -49,7 +48,7 @@ import {
 } from '@/plugins/android_support'
 
 export default {
-  name: 'About',
+  name: 'AboutPage',
   computed: {
     ...mapGetters('frontendSettings', ['getSettings']),
     getBuildTime () {

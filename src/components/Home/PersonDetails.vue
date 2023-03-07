@@ -450,8 +450,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { halls, bloodGroups } from '../../mixins/constants'
+import { halls, bloodGroups } from '@/mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength, numeric, sameAs } from 'vuelidate/lib/validators'
 import CallRecordCard from '../../components/Home/CallRecordCard'
@@ -774,7 +773,7 @@ export default {
     },
     shareClicked () {
       const routeData = this.$router.resolve({
-        name: 'Details',
+        name: 'DetailsPage',
         query: {
           id: this.id
         }

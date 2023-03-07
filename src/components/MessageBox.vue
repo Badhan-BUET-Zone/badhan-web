@@ -25,23 +25,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'MessageBox',
   props: {
-    // message: {
-    //   type:String,
-    //   required: true
-    // },
-    // dialogOpened: {
-    //   type:Boolean,
-    //   required: true
-    // },
-    // confirmed: {
-    //   type:Function,
-    //   required: true
-    // },
 
   },
   data () {

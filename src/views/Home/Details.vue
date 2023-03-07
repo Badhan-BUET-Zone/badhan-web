@@ -6,12 +6,11 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PersonDetails from '../../components/Home/PersonDetails'
 import PageTitle from '../../components/PageTitle'
 
 export default {
-  name: 'Details',
+  name: 'DetailsPage',
   components: {
     PageTitle,
     PersonDetails

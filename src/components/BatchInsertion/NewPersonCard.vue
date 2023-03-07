@@ -137,11 +137,10 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { halls, bloodGroups, departments } from '../../mixins/constants'
+import { halls, bloodGroups, departments } from '@/mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
-import { handleGETDonorsDuplicate } from '../../api'
+import { handleGETDonorsDuplicate } from '@/api'
 import Container from '../Wrappers/Container'
 import { environmentService } from '@/mixins/environment'
 
@@ -292,7 +291,7 @@ export default {
   },
 
   watch: {
-    'hall' (to, from) {
+    'hall' (to, _from) {
       if (to === '(Unknown)') {
         this.availableToAll = true
       }

@@ -126,14 +126,13 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
-import { bloodGroups, halls } from '../mixins/constants'
+import { bloodGroups, halls } from '@/mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
-import { isGuestEnabled } from '../api'
+import { isGuestEnabled } from '@/api'
 import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
-import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
+import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '@/mixins/helpers'
 import Filters from '../components/Filters'
 import { environmentService } from '@/mixins/environment'
 

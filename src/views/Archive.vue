@@ -80,12 +80,11 @@
 </template>
 
 <script>
-/* eslint-disable */
 import ArchivedPersonList from '../components/Archive/ArchivedPersonList'
 import { mapActions } from 'vuex'
 import PageTitle from '../components/PageTitle'
 export default {
-  name: 'Archive',
+  name: 'ArchivePage',
   components: { ArchivedPersonList, PageTitle },
   methods: {
     ...mapActions('notification', ['notifyInfo'])

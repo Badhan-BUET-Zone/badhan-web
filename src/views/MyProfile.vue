@@ -81,7 +81,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PersonDetails from '../components/Home/PersonDetails'
 import { mapActions, mapGetters } from 'vuex'
 import PageTitle from '../components/PageTitle'
@@ -90,7 +89,7 @@ import Container from '../components/Wrappers/Container'
 import ldb from '../localDatabase'
 import Button from '../components/UI Components/Button'
 import LoginCard from '../components/MyProfile/LoginCard'
-import { handleGETLogins, handleDELETELogins, handleDELETESignOutAll } from '../api'
+import { handleGETLogins, handleDELETELogins } from '@/api'
 import { environmentService } from '@/mixins/environment'
 
 export default {
@@ -140,7 +139,7 @@ export default {
     },
     shareClicked () {
       const routeData = this.$router.resolve({
-        name: 'Details',
+        name: 'DetailsPage',
         query: {
           id: this.getID
         }

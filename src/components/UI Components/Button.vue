@@ -5,9 +5,8 @@
   </v-btn>
 </template>
 <script>
-/* eslint-disable */
 export default {
-  name: 'Button',
+  name: 'ButtonComponent',
   props: {
     color: {
       type: String,

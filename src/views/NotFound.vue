@@ -12,13 +12,11 @@
 </template>
 
 <script>
-/* eslint-disable */
-
 import PageTitle from '../components/PageTitle'
 import Container from '../components/Wrappers/Container'
 
 export default {
-  name: 'Release.vue',
+  name: 'NotFound',
   components: {
     Container,
     PageTitle

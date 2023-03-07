@@ -67,8 +67,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { halls, departments } from '../mixins/constants'
+import { halls, departments } from '@/mixins/constants'
 import { mapActions } from 'vuex'
 import VueMarkdown from 'vue-markdown'
 import { directCall } from '@/mixins/helpers'

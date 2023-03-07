@@ -152,14 +152,13 @@
 </template>
 
 <script>
-/* eslint-disable */
 import HelpTooltip from '../components/UI Components/HelpTooltip'
-import { bloodGroups, halls } from '../mixins/constants'
+import { bloodGroups, halls } from '@/mixins/constants'
 import { maxLength, minLength, numeric, required } from 'vuelidate/lib/validators'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Filters',
+  name: 'FiltersComponent',
   props: {
     searchClicked: {
       type: Function,

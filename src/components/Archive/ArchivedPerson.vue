@@ -42,8 +42,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { departments } from '../../mixins/constants'
+import { departments } from '@/mixins/constants'
 
 export default {
   name: 'ArchivedPerson',

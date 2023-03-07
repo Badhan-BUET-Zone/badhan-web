@@ -157,9 +157,8 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { departments } from '../../mixins/constants'
-import { directCall, fixBackSlash } from '../../mixins/helpers'
+import { departments } from '@/mixins/constants'
+import { directCall, fixBackSlash } from '@/mixins/helpers'
 import { mapActions, mapGetters } from 'vuex'
 import VueMarkdown from 'vue-markdown'
 

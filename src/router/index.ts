@@ -36,7 +36,7 @@ const routes = [
     ]
   },
   {
-    name: 'Members',
+    name: 'MembersPage',
     path: '/members',
     component: () => import('../views/Members.vue'),
     meta: {
@@ -69,7 +69,7 @@ const routes = [
     },
     children: [
       {
-        name: 'Details',
+        name: 'DetailsPage',
         path: 'details',
         component: Details,
         meta: {
@@ -104,7 +104,7 @@ const routes = [
     }
   },
   {
-    name: 'Statistics',
+    name: 'StatisticsPage',
     path: '/statistics',
     component: () => import('../views/Statistics.vue'),
     meta: {
@@ -126,7 +126,7 @@ const routes = [
         }
       },
       {
-        name: 'Stats',
+        name: 'StatsPage',
         path: 'stats',
         component: () => import('../views/Statistics/Stats'),
         meta: {
@@ -150,7 +150,7 @@ const routes = [
     ]
   },
   {
-    name: 'Credits',
+    name: 'CreditsPage',
     path: '/credits',
     component: () => import('../views/Credits.vue'),
     meta: {
@@ -161,7 +161,7 @@ const routes = [
     }
   },
   {
-    name: 'About',
+    name: 'AboutPage',
     path: '/about',
     component: () => import('../views/About.vue'),
     meta: {
@@ -207,7 +207,7 @@ const routes = [
     ]
   },
   {
-    name: 'Archive',
+    name: 'ArchivePage',
     path: '/archive',
     component: () => import('../views/Archive.vue'),
     meta: {

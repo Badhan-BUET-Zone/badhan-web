@@ -1,4 +1,3 @@
-/* eslint-disable */
 const save = () => {
   localStorage.setItem('passwordEmailRecoveryTimestamp', String(new Date().getTime()))
 }

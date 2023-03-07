@@ -91,7 +91,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { isGuestEnabled } from '@/api'
 import ldb from '../localDatabase'
@@ -224,8 +223,6 @@ export default {
     isGuestEnabled () {
       return isGuestEnabled()
     }
-  },
-  mounted () {
   },
   methods: {
     ...mapActions('notification', ['notifySuccess']),

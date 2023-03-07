@@ -22,11 +22,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'Snackbar.vue',
+  name: 'SnackbarPage',
   computed: {
     ...mapGetters('notification', ['getNotification', 'getNotificationFlag', 'getNotificationColor']),
     notification: {

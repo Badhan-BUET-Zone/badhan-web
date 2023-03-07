@@ -108,13 +108,12 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import Container from '../components/Wrappers/Container'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'Members',
+  name: 'MembersPage',
   components: { Container, PageTitle },
   computed: {
     ...mapGetters('members', ['getVolunteers', 'getHallAdmins', 'getSuperAdmins', 'getMemberLoaderFlag']),
