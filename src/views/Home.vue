@@ -137,7 +137,7 @@ import Filters from '../components/Filters'
 import { environmentService } from '@/mixins/environment'
 
 export default {
-  name: 'ActiveSearch',
+  name: 'HomePage',
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
     isGuestEnabled () {
@@ -335,12 +335,11 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((_e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
         }, 2000)
-      }, (e) => {
       })
     },
 

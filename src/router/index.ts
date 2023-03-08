@@ -1,15 +1,29 @@
-/* eslint-disable */
 import Vue from 'vue'
-import VueRouter from 'vue-router'// @ts-ignore
-import Home from '../views/Home'
-// @ts-ignore
-import SignInCover from '../views/SignInCover'// @ts-ignore
-import Details from '../views/Home/Details'
+import VueRouter, {RouteConfig, Route, NavigationGuardNext} from 'vue-router'
+import Home from '@/views/Home.vue'
+
+import SignInCover from '../views/SignInCover.vue'
+import Details from '../views/Home/Details.vue'
 import { store } from '@/store/store'
 
 Vue.use(VueRouter)
 
-const routes = [
+interface RouteMeta{
+  requiresAuth: boolean,
+  title: string,
+  designation: number,
+  reRouteIfAuthorized: boolean
+}
+
+type CustomRouteConfig = RouteConfig & {
+  meta: RouteMeta
+}
+
+interface CustomRoute extends Route{
+  meta: RouteMeta
+}
+
+const routes: CustomRouteConfig[] = [
   {
     name: 'ActiveDonors',
     path: '/activeDonors',
@@ -47,8 +61,8 @@ const routes = [
   },
   {
     name: 'PublicContacts',
-    path: '/contacts',// @ts-ignore
-    component: () => import('../views/PublicContacts'),
+    path: '/contacts',
+    component: () => import('../views/PublicContacts.vue'),
     meta: {
       requiresAuth: false,
       title: 'Contact Badhan BUET Zone',
@@ -126,8 +140,8 @@ const routes = [
       },
       {
         name: 'StatsPage',
-        path: 'stats',// @ts-ignore
-        component: () => import('../views/Statistics/Stats'),
+        path: 'stats',
+        component: () => import('../views/Statistics/Stats.vue'),
         meta: {
           title: 'Account Stats',
           requiresAuth: true,
@@ -137,8 +151,8 @@ const routes = [
       },
       {
         name: 'VolunteersAll',
-        path: 'membersAll',// @ts-ignore
-        component: () => import('../views/Statistics/VolunteersAll'),
+        path: 'membersAll',
+        component: () => import('../views/Statistics/VolunteersAll.vue'),
         meta: {
           title: 'All Members',
           requiresAuth: true,
@@ -194,8 +208,8 @@ const routes = [
     children: [
       {
         name: 'DuplicateDetails',
-        path: 'duplicateDetails',// @ts-ignore
-        component: () => import('../views/SingleDonorCreation/DuplicateDetails'),
+        path: 'duplicateDetails',
+        component: () => import('../views/SingleDonorCreation/DuplicateDetails.vue'),
         meta: {
           title: 'Duplicate Details',
           requiresAuth: true,
@@ -262,8 +276,8 @@ const routes = [
   },
   {
     name: 'AdminConsole',
-    path: '/adminconsole',// @ts-ignore
-    component: () => import('../views/AdminConsole'),
+    path: '/adminconsole',
+    component: () => import('../views/AdminConsole.vue'),
     meta: {
       requiresAuth: true,
       title: 'Admin Console',
@@ -288,19 +302,21 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-router.beforeEach(async (to, from, next) => {// @ts-ignore
-  if (!to.meta.requiresAuth && to.name !== 'SignIn') {
+
+router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
+  const customRouteTo = to as CustomRoute
+  if (!customRouteTo.meta.requiresAuth && customRouteTo.name !== 'SignIn') {
     next()
   }
 
   if (!store.getters.getIsLoggedIn) {
     await store.dispatch('autoLogin')
   }
-// @ts-ignore
-  if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
+
+  if (!store.getters.getIsLoggedIn && customRouteTo.meta.requiresAuth) {
     store.commit('setAutoRedirectionPath', to.fullPath)
-    next('/')// @ts-ignore
-  } else if (store.getters.getIsLoggedIn && (to.meta.reRouteIfAuthorized || to.meta.designation > store.getters.getDesignation)) {
+    next('/')
+  } else if (store.getters.getIsLoggedIn && (customRouteTo.meta.reRouteIfAuthorized || customRouteTo.meta.designation > store.getters.getDesignation)) {
     next('/home')
   } else {
     next()
