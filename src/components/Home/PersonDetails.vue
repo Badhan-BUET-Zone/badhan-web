@@ -615,7 +615,7 @@ export default {
   },
   computed: {
     ...mapGetters('details', ['getDonorLoaderFlag', 'getProfile']),
-    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getPhone', 'getHall', 'getID', 'getToken']),
+    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getHall', 'getID', 'getToken']),
     ...mapGetters('userDetails', ['getDetailsLoaderFlag']),
     ...mapGetters(['getChangeAdminLoaderFlag']),
     ...mapGetters('comment', ['getCommentLoaderFlag']),

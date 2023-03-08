@@ -1,4 +1,4 @@
-import { handlePOSTDonors, handlePOSTDonations } from '@/api'
+import {handlePOSTDonors, handlePOSTDonations, POSTDonorsPayloadInterface} from '@/api'
 import {Commit, Dispatch} from "vuex";
 
 interface HallAdminStoreStateInterface {
@@ -24,19 +24,7 @@ const mutations = {
 }
 
 const actions = {
-  async saveDonor ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}, payload:{
-    name: string,
-    phone: number,
-    bloodGroup: number,
-    hall: number,
-    studentId: number,
-    address: string,
-    roomNumber: string,
-    comment: string,
-    lastDonation: number,
-    extraDonationCount: number,
-    availableToAll: boolean
-  }) {
+  async saveDonor ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}, payload: POSTDonorsPayloadInterface) {
     commit('newDonorLoaderOn')
     const response = await handlePOSTDonors(payload)
     if (response.status !== 201) {

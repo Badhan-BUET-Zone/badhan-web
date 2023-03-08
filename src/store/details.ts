@@ -37,7 +37,7 @@ const mutations = {
 
 }
 const actions = {
-  async getDetails ({ commit }: {commit: Commit}, payload: {donorId: string}) {
+  async getDetails ({ commit }: {commit: Commit}, payload: string) {
     const params = {
       donorId: payload
     }

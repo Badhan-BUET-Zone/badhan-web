@@ -28,7 +28,6 @@ const state: MyProfileStateInterface = {
 
 export interface RootGetterInterface {
   getDesignation: number
-  getPhone: number
   getHall: number
   getName: string
   getID: string
@@ -37,9 +36,6 @@ export interface RootGetterInterface {
 const getters = {
   getDesignation: (state: MyProfileStateInterface) => {
     return state.designation
-  },
-  getPhone: (state: MyProfileStateInterface) => {
-    return state.phone
   },
   getHall: (state: MyProfileStateInterface) => {
     return state.hall
@@ -58,11 +54,6 @@ const mutations = {
   setComment (state: MyProfileStateInterface, comment: string) {
     state.comment = comment
   },
-
-  setPhone (state: MyProfileStateInterface, phone: number) {
-    state.phone = phone
-  },
-
   setMyProfile (state: MyProfileStateInterface, payload: MyProfileStateInterface) {
     state._id = payload._id
     state.name = payload.name
