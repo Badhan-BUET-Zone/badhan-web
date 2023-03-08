@@ -205,8 +205,7 @@
                               v-model="passwordRecoveryTooltip"
                               top
                             >
-                              <!-- eslint-disable -->
-                              <template v-slot:activator="{ on, attrs }">
+                              <template v-slot:activator="{ attrs }">
                                 <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
                                        color="secondary">
                                   <v-icon>
@@ -450,8 +449,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { halls, bloodGroups } from '../../mixins/constants'
+import { halls, bloodGroups } from '@/mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength, numeric, sameAs } from 'vuelidate/lib/validators'
 import CallRecordCard from '../../components/Home/CallRecordCard'
@@ -470,7 +468,7 @@ import {
 } from '../../api'
 import DonationCard from './DonationCard'
 import Button from '../UI Components/Button'
-import { fixBackSlash } from '../../mixins/helpers'
+import { directCall, fixBackSlash } from '../../mixins/helpers'
 import { environmentService } from '@/mixins/environment'
 
 export default {
@@ -591,9 +589,7 @@ export default {
     email: {
       validEmail (email) {
         if (email === '') return true
-        /* eslint-disable no-useless-escape */
-        const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
-        /* eslint-enable no-useless-escape */ //
+        const emailRegex = /^([\w-.]+@([\w-]+\.)+[\w-]{2,4})?$/
         return emailRegex.test(email)
       }
     },
@@ -609,7 +605,7 @@ export default {
     }
   },
   watch: {
-    dialog (to, from) {
+    dialog (to, _from) {
       if (to === false) {
         this.$router.push('/home')
       }
@@ -617,7 +613,7 @@ export default {
   },
   computed: {
     ...mapGetters('details', ['getDonorLoaderFlag', 'getProfile']),
-    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getPhone', 'getHall', 'getID', 'getToken']),
+    ...mapGetters(['getLoadingFlag', 'getDesignation', 'getHall', 'getID', 'getToken']),
     ...mapGetters('userDetails', ['getDetailsLoaderFlag']),
     ...mapGetters(['getChangeAdminLoaderFlag']),
     ...mapGetters('comment', ['getCommentLoaderFlag']),
@@ -774,18 +770,17 @@ export default {
     },
     shareClicked () {
       const routeData = this.$router.resolve({
-        name: 'Details',
+        name: 'DetailsPage',
         query: {
           id: this.id
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((_e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
         }, 2000)
-      }, (e) => {
       })
     },
     async changeHallAdminClicked () {
@@ -811,7 +806,7 @@ export default {
     },
     async callFromDialer () {
       await this.postCallRecord({ donorId: this.id })
-      document.location.href = 'tel:+88' + this.phone
+      directCall('88'+this.phone)
       this.$forceUpdate()
     },
     datePrint (date) {

@@ -26,11 +26,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Container from '../components/Wrappers/Container'
 import PageTitle from '../components/PageTitle'
 import Button from '../components/UI Components/Button'
-import { handlePOSTRedirection } from '../api'
+import { handlePOSTRedirection } from '@/api'
 import { environmentService } from '@/mixins/environment'
 
 export default {

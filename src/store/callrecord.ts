@@ -1,9 +1,18 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleDELETECallRecord, handlePOSTCallRecord } from '../api'
+import { handleDELETECallRecord, handlePOSTCallRecord } from '@/api'
+import {Commit, Dispatch} from "vuex";
+import {RootGetterInterface} from "@/store/myprofile";
 
-const state = {
+type CallRecordInterface = {
+  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+interface CallRecordStoreStateInterface {
+  callRecords: CallRecordInterface[]
+  callRecordsLoader: boolean
+  newCallRecordLoaderFlag: boolean
+  deleteCallRecordLoaderFlag: boolean
+}
+
+const state: CallRecordStoreStateInterface = {
   callRecords: [],
   callRecordsLoader: false,
 
@@ -13,65 +22,56 @@ const state = {
 }
 
 const getters = {
-  getCallRecords (state) {
+  getCallRecords (state: CallRecordStoreStateInterface) {
     return state.callRecords
   },
-  getCallRecordsLoader (state) {
+  getCallRecordsLoader (state: CallRecordStoreStateInterface) {
     return state.callRecordsLoader
   },
-  getNewCallRecordLoaderFlag (state) {
+  getNewCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     return state.newCallRecordLoaderFlag
   },
-  getDeleteCallRecordLoaderFlag (state) {
+  getDeleteCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     return state.deleteCallRecordLoaderFlag
   }
 
 }
 const mutations = {
-  callRecordsLoaderOn (state) {
-    state.callRecordsLoader = true
-  },
-  callRecordsLoaderOff (state) {
-    state.callRecordsLoader = false
-  },
-  setCallRecords (state, payload) {
+  setCallRecords (state: CallRecordStoreStateInterface, payload: CallRecordInterface[]) {
     state.callRecords = payload
   },
-  unsetCallRecords (state) {
-    state.callRecords = []
-  },
-  setNewCallRecordLoaderFlag (state) {
+  setNewCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     state.newCallRecordLoaderFlag = true
   },
-  unsetNewCallRecordLoaderFlag (state) {
+  unsetNewCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     state.newCallRecordLoaderFlag = false
   },
-  setDeleteCallRecordLoaderFlag (state) {
+  setDeleteCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     state.deleteCallRecordLoaderFlag = true
   },
-  unsetDeleteCallRecordLoaderFlag (state) {
+  unsetDeleteCallRecordLoaderFlag (state: CallRecordStoreStateInterface) {
     state.deleteCallRecordLoaderFlag = false
   }
 }
 const actions = {
-  async deleteCallRecord ({ commit, dispatch, getters }, payload) {
+  async deleteCallRecord ({ commit, dispatch, state }: {commit: Commit, dispatch: Dispatch, state: CallRecordStoreStateInterface}, payload: {donorId: string, callRecordId: string}) {
     commit('setDeleteCallRecordLoaderFlag')
     const response = await handleDELETECallRecord(payload)
     commit('unsetDeleteCallRecordLoaderFlag')
     if (response.status !== 200) return
-    let callRecords = getters.getCallRecords
-    callRecords = callRecords.filter((callRecord) => {
+    let callRecords = state.callRecords
+    callRecords = callRecords.filter((callRecord: CallRecordInterface) => {
       return callRecord._id !== payload.callRecordId
     })
     commit('setCallRecords', callRecords)
     dispatch('notification/notifySuccess', 'Successfully deleted call record', { root: true })
   },
-  async postCallRecord ({ commit, dispatch, getters, rootGetters }, payload) {
+  async postCallRecord ({ commit, dispatch, state, rootGetters } : {rootGetters: RootGetterInterface , commit: Commit, dispatch: Dispatch, state: CallRecordStoreStateInterface}, payload: {donorId: string}) {
     commit('setNewCallRecordLoaderFlag')
     const response = await handlePOSTCallRecord(payload)
     commit('unsetNewCallRecordLoaderFlag')
     if (response.status !== 200) return
-    const callRecords = getters.getCallRecords
+    const callRecords = state.callRecords
     const name = rootGetters.getName
     callRecords.unshift({
       ...response.data.callRecord,
@@ -80,7 +80,7 @@ const actions = {
     commit('setCallRecords', callRecords)
     dispatch('notification/notifySuccess', 'Added call record', { root: true })
   },
-  async postCallRecordFromCard ({ commit, dispatch }, payload) {
+  async postCallRecordFromCard ({ dispatch }: {dispatch: Dispatch}, payload: {donorId: string}) {
     await handlePOSTCallRecord(payload)
     dispatch('notification/notifySuccess', 'Added call record', { root: true })
   }

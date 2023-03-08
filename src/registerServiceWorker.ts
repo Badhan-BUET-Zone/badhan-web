@@ -1,34 +1,44 @@
-/* eslint-disable */
-// @ts-ignore
-
 import { register } from 'register-service-worker'
 import {environmentService} from "@/mixins/environment";
+
+interface ServiceWorkerEventTarget extends EventTarget {
+  state: string
+}
+
+const ServiceWorkerConsoleLog = (...args: string[]): void => {
+  console.log("%cSERVICE WORKER: ",'color: #0000ff',...args)
+}
+
+const printServiceWorkerBaseAndEnv = ():void => {
+  ServiceWorkerConsoleLog(`Service worker base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
+}
 
 if (environmentService.isEnvironmentProduction() || environmentService.isEnvironmentTesting()) {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready () {
-      console.log(
-        'App is being served from cache by a service worker.\n' +
-        'For more details, visit https://goo.gl/AFskqB' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`
-      )
+      ServiceWorkerConsoleLog('App is being served from cache by a service worker.\n For more details, visit https://goo.gl/AFskqB')
+      printServiceWorkerBaseAndEnv()
     },
     registered () {
-      console.log('Service worker has been registered. '+ `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
+      ServiceWorkerConsoleLog('Service worker has been registered. ')
+      printServiceWorkerBaseAndEnv()
     },
     cached () {
-      console.log('Content has been cached for offline use. '+ `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
+      ServiceWorkerConsoleLog('Content has been cached for offline use. ')
+      printServiceWorkerBaseAndEnv()
     },
     updatefound () {
-      console.log('New content is downloading.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
+      ServiceWorkerConsoleLog('New content is downloading.')
+      printServiceWorkerBaseAndEnv()
     },
     updated(registration){
-      console.log('New content is available; please refresh.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
-      const waitingServiceWorker = registration.waiting;
+      ServiceWorkerConsoleLog('New content is available; please refresh.')
+      printServiceWorkerBaseAndEnv()
+      const waitingServiceWorker: ServiceWorker | null = registration.waiting;
 
       if (waitingServiceWorker) {
-        waitingServiceWorker.addEventListener('statechange', event => {
-          // @ts-ignore
-          if (event.target.state === 'activated') {
+        waitingServiceWorker.addEventListener('statechange', (event: Event) => {
+          if ((event.target as ServiceWorkerEventTarget).state === 'activated') {
             window.location.reload();
           }
         });
@@ -36,10 +46,12 @@ if (environmentService.isEnvironmentProduction() || environmentService.isEnviron
       }
     },
     offline () {
-      console.log('No internet connection found. App is running in offline mode.' + `base: ${process.env.BASE_URL}, env: ${environmentService.getEnvironmentName()}`)
+      ServiceWorkerConsoleLog('No internet connection found. App is running in offline mode.')
+      printServiceWorkerBaseAndEnv()
     },
-    error (error: Error) {
-      console.error('Error during service worker registration:', error)
+    error (_error: Error) {
+      ServiceWorkerConsoleLog('Error during service worker registration:')
+      printServiceWorkerBaseAndEnv()
     }
   })
 }

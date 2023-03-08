@@ -1,57 +1,29 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETAdmins, handlePATCHAdmins } from '../api'
+import { handlePATCHAdmins } from '@/api'
+import {Commit, Dispatch} from "vuex";
 
 const state = {
-  hallAdmins: null,
-  hallAdminsLoaderFlag: false,
   changeAdminLoaderFlag: false
 }
 
+interface HallAdminStoreStateInterface {
+  changeAdminLoaderFlag: boolean
+}
+
 const getters = {
-  getHallAdmins: state => {
-    return state.hallAdmins
-  },
-  getHallAdminsLoaderFlag: state => {
-    return state.hallAdminsLoaderFlag
-  },
-  getChangeAdminLoaderFlag: state => {
+  getChangeAdminLoaderFlag: (state: HallAdminStoreStateInterface) => {
     return state.changeAdminLoaderFlag
   }
 }
 const mutations = {
-  setHallAdmins (state, payload) {
-    state.hallAdmins = payload
-  },
-  hallAdminsLoaderFlagOn (state) {
-    state.hallAdminsLoaderFlag = true
-  },
-  hallAdminsLoaderFlagOff (state) {
-    state.hallAdminsLoaderFlag = false
-  },
-
-  changeAdminLoaderFlagOn (state) {
+  changeAdminLoaderFlagOn (state: HallAdminStoreStateInterface) {
     state.changeAdminLoaderFlag = true
   },
-  changeAdminLoaderFlagOff (state) {
+  changeAdminLoaderFlagOff (state: HallAdminStoreStateInterface) {
     state.changeAdminLoaderFlag = false
   },
-  clearHallAdmins (state) {
-    state.hallAdmins = null
-  }
-
 }
 const actions = {
-  async fetchHallAdmins ({ commit }) {
-    commit('hallAdminsLoaderFlagOn')
-    const response = await handleGETAdmins()
-    commit('hallAdminsLoaderFlagOff')
-    if (response.status !== 200) return
-    commit('setHallAdmins', response.data.admins)
-  },
-
-  async changeHallAdmin ({ commit, getters, dispatch }, payload) {
+  async changeHallAdmin ({ commit, dispatch } : {commit: Commit, dispatch: Dispatch}, payload: {donorId: string}) {
     commit('changeAdminLoaderFlagOn')
     const response = await handlePATCHAdmins(payload)
     commit('changeAdminLoaderFlagOff')

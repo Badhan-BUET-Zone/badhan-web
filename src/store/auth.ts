@@ -1,6 +1,3 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
 import {
   enableGuestAPI,
   handleDELETESignOut,
@@ -10,11 +7,22 @@ import {
   handlePOSTRedirection,
   handlePOSTSignIn,
   resetBaseURL
-} from '../api'
+} from '@/api'
 
 import ldb from '../localDatabase'
+import {Commit, Dispatch} from "vuex";
 
-const state = {
+interface AuthStoreStateInterface {
+  token: null | string
+  signInLoaderFlag: boolean
+  error: string
+  redirectionRequestMade: boolean
+  isLoggedIn: boolean
+  isGuest: boolean
+  autoRedirectionPath: string | null
+}
+
+const state: AuthStoreStateInterface = {
   token: null,
   signInLoaderFlag: false,
   error: '',
@@ -27,78 +35,66 @@ const state = {
 }
 
 const getters = {
-
-  getToken: state => {
+  getToken: (state: AuthStoreStateInterface) => {
     return state.token
   },
-  getError: state => {
-    return state.error
-  },
-  getSignInLoaderFlag: state => {
+  getSignInLoaderFlag: (state: AuthStoreStateInterface) => {
     return state.signInLoaderFlag
   },
-  getIsLoggedIn: state => {
+  getIsLoggedIn: (state: AuthStoreStateInterface) => {
     return state.isLoggedIn
   },
-  getIsGuest: state => {
-    return state.isGuest
-  },
-
-  getAutoRedirectionPath: state => {
+  getAutoRedirectionPath: (state: AuthStoreStateInterface) => {
     return state.autoRedirectionPath
   }
 
 }
 const mutations = {
-  setAutoRedirectionPath (state, path) {
+  setAutoRedirectionPath (state: AuthStoreStateInterface, path: string) {
     state.autoRedirectionPath = path
   },
-  unsetAutoRedirectionPath (state) {
+  unsetAutoRedirectionPath (state: AuthStoreStateInterface) {
     state.autoRedirectionPath = null
   },
 
-  loadTokenFromLocalStorage (state) {
+  loadTokenFromLocalStorage (state: AuthStoreStateInterface) {
     state.token = ldb.token.load()
   },
 
-  saveTokenToLocalStorage (state) {
+  saveTokenToLocalStorage (state: AuthStoreStateInterface) {
     ldb.token.save(state.token)
   },
 
-  setToken (state, token) {
+  setToken (state: AuthStoreStateInterface, token: string) {
     state.token = token
   },
 
-  removeToken (state) {
+  removeToken (state: AuthStoreStateInterface) {
     state.token = null
     ldb.token.clear()
   },
 
-  signInLoaderFlagOn (state) {
+  signInLoaderFlagOn (state: AuthStoreStateInterface) {
     state.signInLoaderFlag = true
   },
 
-  signInLoaderFlagOff (state) {
+  signInLoaderFlagOff (state: AuthStoreStateInterface) {
     state.signInLoaderFlag = false
   },
-
-  setSignInError (state, payload) {
-    state.error = payload
-  },
-  clearSignInError (state) {
+  clearSignInError (state: AuthStoreStateInterface) {
     state.error = ''
   },
 
-  setLoginFlag (state) {
+  setLoginFlag (state: AuthStoreStateInterface) {
     state.isLoggedIn = true
   },
-  unsetLoginFlag (state) {
+  unsetLoginFlag (state: AuthStoreStateInterface) {
     state.isLoggedIn = false
   }
 
 }
 const actions = {
-  async logout ({ commit, dispatch }) {
+  async logout ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}) {
     commit('setLoadingTrue')
     const data = await handleDELETESignOut()
     if (data) {
@@ -111,27 +107,24 @@ const actions = {
     ldb.reset()
     resetBaseURL()
   },
-  async logoutAll ({ commit, dispatch }) {
-    commit('setLoadingTrue')
+  async logoutAll ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}) {
     const data = await handleDELETESignOutAll()
     if (data) {
       dispatch('notification/notifySuccess', data.message)
     }
-
-    commit('setLoadingFalse')
     commit('unsetLoginFlag')
     commit('removeToken')
     ldb.token.clear()
     ldb.reset()
     resetBaseURL()
   },
-  async requestRedirectionToken ({ commit }) {
+  async requestRedirectionToken ({ commit }: {commit: Commit}) {
     commit('setLoadingTrue')
     const postRedirectionTokenResponse = await handlePOSTRedirection()
     commit('setLoadingFalse')
     return postRedirectionTokenResponse
   },
-  async redirectionLogin ({ getters, commit, dispatch }, payload) {
+  async redirectionLogin ({ commit }: {commit: Commit}, payload: string) {
     ldb.reset()
     commit('signInLoaderFlagOn')
     const patchRedirectionResponse = await handlePATCHRedirectedAuthentication({ token: payload })
@@ -145,9 +138,9 @@ const actions = {
     commit('saveTokenToLocalStorage')
     return true
   },
-  async autoLogin ({ getters, commit, dispatch }) {
+  async autoLogin ({ commit, state }: {commit: Commit, state: AuthStoreStateInterface} ) {
     commit('loadTokenFromLocalStorage')
-    if (getters.getToken === null) return true
+    if (state.token === null) return true
 
     commit('signInLoaderFlagOn')
     const response = await handleGETDonorsMe()
@@ -170,7 +163,7 @@ const actions = {
     commit('setLoginFlag')
     return true
   },
-  async checkToken ({ getters, commit, dispatch }) {
+  async checkToken ({ commit }: {commit: Commit}) {
     commit('signInLoaderFlagOn')
     const response = await handleGETDonorsMe()
     commit('signInLoaderFlagOff')
@@ -183,16 +176,12 @@ const actions = {
     }
     return response.data.donor
   },
-  async guestLogin ({ dispatch }) {
+  async guestLogin ({ dispatch }: {dispatch: Dispatch}) {
     enableGuestAPI()
     await dispatch('login', { phone: '123465', password: 'oseihgfweoisng', rememberFlag: false })
   },
 
-  async resetBaseURLOfAPI () {
-    resetBaseURL()
-  },
-
-  async login ({ getters, commit, dispatch }, payload) {
+  async login ({ commit, dispatch }: { commit: Commit, dispatch: Dispatch}, payload:{phone: string, password: string, rememberFlag: boolean}) {
     ldb.reset()
     commit('signInLoaderFlagOn')
     const sendData = {

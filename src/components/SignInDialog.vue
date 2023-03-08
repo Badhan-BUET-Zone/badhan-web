@@ -1,7 +1,7 @@
 <template>
   <v-card
       class="d-flex justify-center"
-      style="z-index: 90;position: fixed;left: 0px;top: 0px;height: 100vh;width: 100vw;"
+      style="z-index: 90;position: fixed;left: 0;top: 0;height: 100vh;width: 100vw;"
   >
     <v-container>
       <v-row
@@ -31,12 +31,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 export default {
   props: ['dialog'],
   data () {
     return {
-      // dialog: false,
       notifications: false,
       sound: true,
       widgets: false

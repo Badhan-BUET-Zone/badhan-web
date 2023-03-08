@@ -1,16 +1,16 @@
-/* eslint-disable */ 
-// @ts-nocheck
 import { saveAs } from 'file-saver'
 import { bloodGroups, halls } from './constants'
+import {PersonInterface} from "@/store/home";
+import {BadhanAxiosErrorInterface, BadhanAxiosResponseDataInterface} from "@/api";
 
-export const processError = (error) => {
+export const processError = (error: BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>) => {
   if (error.response && error.response.data && error.response.data.message) {
     return error.response.data.message
   }
   return 'Unknown error occurred'
 }
 
-export const convertObjectToCSV = (objArray, keys, delimiter) => {
+export const convertObjectToCSV = (objArray:object[], keys: string[], delimiter:string) => {
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
   let str = keys.join(delimiter) + delimiter + '\r\n'
 
@@ -24,41 +24,36 @@ export const convertObjectToCSV = (objArray, keys, delimiter) => {
   return str
 }
 
-export const textFileDownloadInWeb = (text, fileName) => {
+export const textFileDownloadInWeb = (text: string, fileName: string) => {
   const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
   saveAs(blob, fileName)
 }
 
-export const processPersonsForReport = (persons) => {
+interface PersonForReportInterface extends PersonInterface{
+  'Blood Group':string,
+  'Donation Count': number,
+  'Last Donation': string,
+  Hall: string
+}
+
+export const processPersonsForReport = (persons: PersonInterface[]) => {
+  const personsForReport:PersonForReportInterface[] = []
   persons.forEach((person) => {
-    person['Blood Group'] = bloodGroups[person.bloodGroup]
-    person['Donation Count'] = person.donationCount
-    person.Hall = halls[person.hall]
+    const newPersonForReport: PersonForReportInterface = JSON.parse(JSON.stringify(person))
+    newPersonForReport['Blood Group'] = bloodGroups[person.bloodGroup]
+    newPersonForReport['Donation Count'] = person.donationCount
+    newPersonForReport.Hall = halls[person.hall]
     const date = new Date(person.lastDonation)
-    person['Last Donation'] = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+    newPersonForReport['Last Donation'] = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+    personsForReport.push(newPersonForReport)
   })
-  return persons
+  return personsForReport
 }
 
-export const directCall = (phoneNumber) => {
-  document.location.href = 'tel:+' + phoneNumber
+export const directCall = (phoneNumber: number) => {
+  window.open('tel:+' + phoneNumber, 'popup','width=600,height=600')
 }
 
-export const fixBackSlash = (text) => {
+export const fixBackSlash = (text: string) => {
   return text.replaceAll('&#x2F;', '/')
-}
-
-export const isAppVersionBackdated = (appVersion, remoteVersion) => {
-  if(appVersion.includes(".")){
-    return true
-  }
-  if(remoteVersion.includes(".")){
-    return false
-  }
-  return parseInt(remoteVersion) > parseInt(appVersion)
-  // const appVersionSegments = appVersion.split('.')
-  // const remoteVersionSegments = remoteVersion.split('.')
-  // const appVersionNumber = parseInt(appVersionSegments[0]) * 10000 + parseInt(appVersionSegments[1]) * 100 + parseInt(appVersionSegments[2])
-  // const remoteVersionNumber = parseInt(remoteVersionSegments[0]) * 10000 + parseInt(remoteVersionSegments[1]) * 100 + parseInt(remoteVersionSegments[2])
-  // return remoteVersionNumber > appVersionNumber
 }

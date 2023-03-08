@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <div :key="'home'">
     <v-fab-transition >
       <v-btn
@@ -75,16 +74,7 @@
               <div>
                 <v-row no-gutters>
                   <v-col>
-                    <v-btn @click="downloadInMobileClicked" small
-                           v-if="isNative || $getEnvironmentName() === 'development'"
-                           :disabled="downloadCSVLoader" :loading="downloadCSVLoader"
-                           color="secondary" rounded class="mb-4" style="width: 100%">
-                      <v-icon left>
-                        mdi-download
-                      </v-icon>
-                      Download Report
-                    </v-btn>
-                    <v-btn v-if="!isNative" @click="downloadInWeb" small
+                    <v-btn @click="downloadInWeb" small
                            color="secondary" rounded class="mb-4" style="width: 100%">
                       <v-icon left>
                         mdi-download
@@ -97,7 +87,7 @@
                         v-model="showTooltip"
                         top
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ attrs }">
                         <v-btn small color="secondary" rounded class="mb-4" style="width: 100%" v-bind="attrs"
                                @click="shareClicked">
                           <v-icon left>
@@ -135,31 +125,22 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PersonCard from '../components/Home/PersonCard'
-import { getIsCapacitorNative } from '../plugins/android_support'
-import { bloodGroups, halls } from '../mixins/constants'
+import { bloodGroups, halls } from '@/mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
-import { isGuestEnabled } from '../api'
-// import HelpTooltip from '../components/UI Components/HelpTooltip'
+import { isGuestEnabled } from '@/api'
 import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
-import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '../mixins/helpers'
+import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '@/mixins/helpers'
 import Filters from '../components/Filters'
 import { environmentService } from '@/mixins/environment'
 
 export default {
-  name: 'ActiveSearch',
+  name: 'HomePage',
   computed: {
     ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
-    showScroll () {
-      return window.screenY > 1000
-    },
     isGuestEnabled () {
       return isGuestEnabled()
-    },
-    isNative () {
-      return getIsCapacitorNative()
     },
     availableHalls () {
       if (this.getDesignation !== null) {
@@ -191,7 +172,6 @@ export default {
   components: {
     Filters,
     'person-card': PersonCard,
-    // HelpTooltip,
     SkeletonPersonCard
   },
   data: function () {
@@ -354,12 +334,11 @@ export default {
         }
       })
       // navigator.clipboard.writeText(process.env.VUE_APP_FRONTEND_BASE+routeData.href);
-      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL()+ '/' + routeData.href).then((_e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
         }, 2000)
-      }, (e) => {
       })
     },
 
@@ -384,7 +363,7 @@ export default {
       })
       const redirectionURL = searchRouteData.href.substr(1, searchRouteData.href.length - 1)
       const routeData = this.$router.resolve({
-        name: 'Redirection',
+        name: 'RedirectionPage',
         query: { token: redirectionTokenResponse.data.token, payload: redirectionURL }
       })
       window.open(environmentService.getFrontendBaseURL() + '/' + routeData.href, '_blank')

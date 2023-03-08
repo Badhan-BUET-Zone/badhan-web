@@ -14,19 +14,8 @@ module.exports = {
   rules: {
     'no-console': process.env.VUE_APP_ENVIRONMENT === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.VUE_APP_ENVIRONMENT === 'production' ? 'warn' : 'off',
-    '@typescript-eslint/no-inferrable-types': 'off',
-    "@typescript-eslint/explicit-function-return-type": "error",
-    '@typescript-eslint/no-explicit-any': "error",
-    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ['error', { vars: 'all', 'argsIgnorePattern': '^_' }],
-    "@typescript-eslint/typedef": [
-      "error",
-      {
-        "arrowParameter": true,
-        "variableDeclaration": true,
-        "variableDeclarationIgnoreFunction": true
-      }
-    ],
+    "@typescript-eslint/no-non-null-assertion": 'error'
   },
   overrides: [
     {

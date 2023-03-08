@@ -1,7 +1,5 @@
-/* eslint-disable */ 
-// @ts-nocheck
-const save = (themeStatus) => {
-  localStorage.setItem('darkTheme', String(themeStatus === true))
+const save = (themeStatus: boolean) => {
+  localStorage.setItem('darkTheme', String(themeStatus))
 }
 const load = () => {
   return localStorage.getItem('darkTheme') === 'true'

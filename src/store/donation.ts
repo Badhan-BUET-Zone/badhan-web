@@ -1,9 +1,16 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleDELETEDonations } from '../api'
+import { handleDELETEDonations } from '@/api'
+import {Commit, Dispatch } from "vuex";
 
-const state = {
+interface DonationStoreStateInterface {
+  lastDonation: number,
+  donationList: number[],
+  donationLoader: boolean,
+  donationDeleteLoader: boolean
+  donationError: string | null
+  donationSuccess: string | null
+}
+
+const state: DonationStoreStateInterface = {
   lastDonation: 0,
   donationList: [],
 
@@ -13,71 +20,40 @@ const state = {
   donationError: null,
   donationSuccess: null
 }
+export type Getters = {
+  getDonationList: (state: DonationStoreStateInterface)=>number[]
+}
 
-const getters = {
-  getLastDonation: state => {
-    return state.lastDonation
-  },
-  getDonationList: state => {
+const getters: Getters = {
+  getDonationList: (state: DonationStoreStateInterface) => {
     return state.donationList
   },
-  getDonationLoader: state => {
-    return state.donationLoader
-  },
-  getDonationDeleteLoader: state => {
-    return state.donationDeleteLoader
-  },
-  getDonationError: state => {
-    return state.donationError
-  },
-  getDonationSuccess: state => {
-    return state.donationSuccess
-  }
 }
 const mutations = {
-  setLastDonation (state, payload) {
+  setLastDonation (state: DonationStoreStateInterface, payload: number) {
     state.lastDonation = payload
   },
-  setDonationList (state, payload) {
+  setDonationList (state: DonationStoreStateInterface, payload: number[]) {
     state.donationList = payload
   },
-  clearDonationList (state) {
-    state.donationList = []
-  },
-  donationLoaderOn (state) {
-    state.donationLoader = true
-  },
-  donationLoaderOff (state) {
-    state.donationLoader = false
-  },
-  donationDeleteLoaderOn (state) {
+  donationDeleteLoaderOn (state: DonationStoreStateInterface) {
     state.donationDeleteLoader = true
   },
-  donationDeleteLoaderOff (state) {
+  donationDeleteLoaderOff (state: DonationStoreStateInterface) {
     state.donationDeleteLoader = false
   },
-  setDonationError (state, payload) {
-    state.donationError = payload
-  },
-  setDonationSuccess (state, payload) {
-    state.donationSuccess = payload
-  },
-  clearDonationMessage (state) {
-    state.donationError = null
-    state.donationSuccess = null
-  },
-  addDonation (state, payload) {
+  addDonation (state: DonationStoreStateInterface, payload: number) {
     state.donationList.unshift(payload)
   }
 }
 const actions = {
-  async deleteDonation ({ commit, getters, rootState, rootGetters, dispatch }, payload) {
+  async deleteDonation ({ commit, state, dispatch }: {commit: Commit, state: DonationStoreStateInterface, dispatch: Dispatch}, payload: {date: number}) {
     commit('donationDeleteLoaderOn')
     const dateToBeDeleted = payload.date
     const response = await handleDELETEDonations(payload)
     commit('donationDeleteLoaderOff')
     if (response.status !== 200) return
-    const history = getters.getDonationList
+    const history = state.donationList
     for (let i = 0; i < history.length; i++) {
       if (history[i] === dateToBeDeleted) {
         history.splice(i, 1)
@@ -86,7 +62,7 @@ const actions = {
     }
     let lastDonationNew = 0
     if (history.length !== 0) {
-      lastDonationNew = history.reduce(function (a, b) {
+      lastDonationNew = history.reduce(function (a: number, b: number) {
         return Math.max(a, b)
       })
     }

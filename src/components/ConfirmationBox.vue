@@ -30,7 +30,6 @@
   </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {

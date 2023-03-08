@@ -57,13 +57,12 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import { mapActions, mapGetters } from 'vuex'
 import PersonCardNew from '../components/PersonCardNew'
 import Filters from '../components/Filters'
-import { bloodGroups, halls } from '../mixins/constants'
+import { bloodGroups, halls } from '@/mixins/constants'
 import PersonCardNewSkeleton from '../components/PersonCardNewSkeleton'
 import Button from '../components/UI Components/Button'
 import NoticeCard from '../components/UI Components/NoticeCard'
@@ -172,7 +171,9 @@ export default {
       }
       this.activeDonorsLoader = false
     },
-    resetClicked () {}
+    resetClicked () {
+      // skip
+    }
   },
   computed: {
     ...mapGetters('activeDonors', ['getActiveDonors'])

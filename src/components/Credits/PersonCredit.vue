@@ -50,7 +50,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import ContainerOutlined from '../Wrappers/ContainerOutlined'
 
 export default {

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import ArchivedPerson from './ArchivedPerson'
 export default {
   name: 'ArchivedPersonList',

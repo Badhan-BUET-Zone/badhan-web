@@ -1,12 +1,42 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
 import {
   handleGETStatistics,
   handleDELETELogs,
   handleGETDonorDesignatedAll,
   handleGETCredits
-} from '../api'
+} from '@/api'
+
+import {Commit} from 'vuex'
+
+type LogInterface = {
+  _id: string  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+
+interface StatisticsInterface {
+  donorCount: number
+  donationCount: number
+  volunteerCount: number
+}
+
+type VolunteerInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+
+type CreditInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+
+interface StatisticsStoreInterface {
+  statistics: StatisticsInterface | null
+  statisticsLoaderFlag: boolean
+
+  logs: LogInterface[]
+  logsLoaderFlag: boolean
+  logDeleteFlag: boolean
+  volunteers: VolunteerInterface[]
+  volunteerLoaderFlag: boolean
+  credits: CreditInterface
+  creditsLoaderFlag: boolean
+}
 
 const state = {
   statistics: null,
@@ -25,98 +55,88 @@ const state = {
 }
 
 const getters = {
-  getStatistics: state => {
+  getStatistics: (state: StatisticsStoreInterface) => {
     return state.statistics
   },
-  getStatisticsLoaderFlag: state => {
+  getStatisticsLoaderFlag: (state: StatisticsStoreInterface) => {
     return state.statisticsLoaderFlag
   },
 
-  getLogs: state => {
+  getLogs: (state: StatisticsStoreInterface) => {
     return state.logs
   },
 
-  getLogsLoaderFlag: state => {
+  getLogsLoaderFlag: (state: StatisticsStoreInterface) => {
     return state.logsLoaderFlag
   },
 
-  getLogDeleteFLag: state => {
+  getLogDeleteFLag: (state: StatisticsStoreInterface) => {
     return state.logDeleteFlag
   },
 
-  getVolunteers: state => {
+  getVolunteers: (state: StatisticsStoreInterface) => {
     return state.volunteers
   },
-  getVolunteerLoaderFlag: state => {
+  getVolunteerLoaderFlag: (state: StatisticsStoreInterface) => {
     return state.volunteerLoaderFlag
   },
 
-  getCredits: state => {
+  getCredits: (state: StatisticsStoreInterface) => {
     return state.credits
   },
-  getCreditsLoaderFlag: state => {
+  getCreditsLoaderFlag: (state: StatisticsStoreInterface) => {
     return state.creditsLoaderFlag
   }
 }
 const mutations = {
-  setStatistics (state, payload) {
+  setStatistics (state: StatisticsStoreInterface, payload: StatisticsInterface) {
     state.statistics = payload
   },
-  unsetStatistics (state) {
+  unsetStatistics (state: StatisticsStoreInterface) {
     state.statistics = null
   },
-  setStatisticsLoaderFlag (state) {
+  setStatisticsLoaderFlag (state: StatisticsStoreInterface) {
     state.statisticsLoaderFlag = true
   },
-  unsetStatisticsLoaderFlag (state) {
+  unsetStatisticsLoaderFlag (state: StatisticsStoreInterface) {
     state.statisticsLoaderFlag = false
   },
-
-  setLogs (state, payload) {
-    state.logs = payload
-  },
-  unsetLogs (state) {
+  unsetLogs (state: StatisticsStoreInterface) {
     state.logs = []
   },
-  setLogsLoaderFlag (state) {
-    state.logsLoaderFlag = true
-  },
-  unsetLogsLoaderFlag (state) {
-    state.logsLoaderFlag = false
-  },
-  setLogDeleteFlag (state) {
+  setLogDeleteFlag (state: StatisticsStoreInterface) {
     state.logDeleteFlag = true
   },
-  unsetLogDeleteFlag (state) {
+  unsetLogDeleteFlag (state: StatisticsStoreInterface) {
     state.logDeleteFlag = false
   },
 
-  setVolunteers (state, payload) {
+  setVolunteers (state: StatisticsStoreInterface, payload: VolunteerInterface[]) {
     state.volunteers = payload
   },
-  unsetVolunteers (state) {
+  unsetVolunteers (state: StatisticsStoreInterface) {
     state.volunteers = []
   },
-  setVolunteerLoaderFlag (state) {
+  setVolunteerLoaderFlag (state: StatisticsStoreInterface) {
     state.volunteerLoaderFlag = true
   },
-  unsetVolunteerLoaderFlag (state) {
+  unsetVolunteerLoaderFlag (state: StatisticsStoreInterface) {
     state.volunteerLoaderFlag = false
   },
 
-  setCredits (state, payload) {
+  setCredits (state: StatisticsStoreInterface, payload: CreditInterface) {
     state.credits = payload
   },
-  setCreditsLoader (state) {
+  setCreditsLoader (state: StatisticsStoreInterface) {
     state.creditsLoaderFlag = true
   },
-  unsetCreditsLoader (state) {
+  unsetCreditsLoader (state: StatisticsStoreInterface) {
     state.creditsLoaderFlag = false
   }
 
 }
 const actions = {
-  async fetchStatistics ({ commit, getters }) {
+  async fetchStatistics ({ commit } : { commit: Commit}) {
     commit('unsetStatistics')
     commit('setStatisticsLoaderFlag')
     const response = await handleGETStatistics()
@@ -124,13 +144,13 @@ const actions = {
     if (response.status !== 200) return
     commit('setStatistics', response.data.statistics)
   },
-  async removeAllLogs ({ commit, dispatch }) {
+  async removeAllLogs ({ commit }: {commit: Commit}) {
     commit('setLogDeleteFlag')
     await handleDELETELogs()
     commit('unsetLogDeleteFlag')
     commit('unsetLogs')
   },
-  async fetchAllVolunteers ({ commit }) {
+  async fetchAllVolunteers ({ commit }: {commit: Commit}) {
     commit('setVolunteerLoaderFlag')
     commit('unsetVolunteers')
     const response = await handleGETDonorDesignatedAll()
@@ -139,7 +159,7 @@ const actions = {
     commit('setVolunteers', response.data.data)
   },
 
-  async fetchCredits ({ commit }) {
+  async fetchCredits ({ commit }: {commit: Commit}) {
     commit('setCreditsLoader')
     const response = await handleGETCredits()
     commit('unsetCreditsLoader')

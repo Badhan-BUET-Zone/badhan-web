@@ -1,0 +1,1 @@
+https://developer.chrome.com/docs/android/trusted-web-activity/quick-start/

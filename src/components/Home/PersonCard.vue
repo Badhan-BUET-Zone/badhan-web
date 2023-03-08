@@ -157,9 +157,8 @@
 </template>
 
 <script>
-/* eslint-disable */
-import { departments } from '../../mixins/constants'
-import { fixBackSlash } from '../../mixins/helpers'
+import { departments } from '@/mixins/constants'
+import { directCall, fixBackSlash } from '@/mixins/helpers'
 import { mapActions, mapGetters } from 'vuex'
 import VueMarkdown from 'vue-markdown'
 
@@ -223,8 +222,7 @@ export default {
     ...mapActions('donate', ['donate']),
     ...mapActions('callrecord', ['postCallRecordFromCard']),
     async callFromDialer () {
-      // document.location.href = 'tel:+' + this.phone
-      window.open('tel:+' + this.phone, '_blank')
+      directCall(this.phone)
       this.newCallRecordLoader = true
       await this.postCallRecordFromCard({ donorId: this.id })
       this.newCallRecordLoader = false

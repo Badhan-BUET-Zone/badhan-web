@@ -18,7 +18,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import ContainerOutlined from '../Wrappers/ContainerOutlined'
 import Button from '../UI Components/Button'
 export default {

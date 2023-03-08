@@ -66,16 +66,15 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapGetters, mapActions } from 'vuex'
 import Container from '../components/Wrappers/Container'
 import PersonCredit from '../components/Credits/PersonCredit'
 import SkeletonPersonCredit from '../components/Credits/SkeletonPersonCredit'
-import { handleGETContributors } from '../api'
+import { handleGETContributors } from '@/api'
 
 export default {
-  name: 'Credits',
+  name: 'CreditsPage',
   components: { SkeletonPersonCredit, PersonCredit, Container, PageTitle },
   computed: {
     ...mapGetters('statistics', ['getCredits', 'getCreditsLoaderFlag'])

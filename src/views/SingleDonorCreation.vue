@@ -44,7 +44,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapGetters } from 'vuex'
 import NewPersonCard from '../components/BatchInsertion/NewPersonCard'
 import PageTitle from '../components/PageTitle'

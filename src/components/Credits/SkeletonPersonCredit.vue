@@ -26,7 +26,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Container from '../Wrappers/Container'
 export default {
   name: 'SkeletonPersonCredit',

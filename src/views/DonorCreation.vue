@@ -30,11 +30,9 @@
 </template>
 
 <script>
-/* eslint-disable */
 import PageTitle from '../components/PageTitle'
 import { mapActions, mapGetters } from 'vuex'
-import { getIsCapacitorNative } from '../plugins/android_support'
-import { isGuestEnabled, handlePOSTRedirection } from '../api'
+import { isGuestEnabled, handlePOSTRedirection } from '@/api'
 import Container from '../components/Wrappers/Container'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import Button from '../components/UI Components/Button'
@@ -51,9 +49,6 @@ export default {
     ...mapGetters(['getHall', 'getDesignation']),
     isGuestEnabled () {
       return isGuestEnabled()
-    },
-    isNative () {
-      return getIsCapacitorNative()
     }
   },
   methods: {
@@ -66,8 +61,6 @@ export default {
       if (redirectionTokenResponse.status !== 201) return
       window.open(`${environmentService.getDataInputAPIBaseURL()}/#/home?token=${redirectionTokenResponse.data.token}`, '_blank')
     }
-  },
-  mounted () {
   },
   components: {
     Button,

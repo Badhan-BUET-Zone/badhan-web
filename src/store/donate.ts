@@ -1,27 +1,29 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handlePOSTDonations } from '../api'
+import { handlePOSTDonations } from '@/api'
+import {Commit, Dispatch} from "vuex";
 
-const state = {
+interface DonateStoreStateInterface {
+  donationLoaderFlag: boolean
+}
+
+const state:DonateStoreStateInterface = {
   donationLoaderFlag: false
 }
 
 const getters = {
-  getDonationLoaderFlag: state => {
+  getDonationLoaderFlag: (state: DonateStoreStateInterface) => {
     return state.donationLoaderFlag
   }
 }
 const mutations = {
-  donationLoaderFlagOn (state) {
+  donationLoaderFlagOn (state: DonateStoreStateInterface) {
     state.donationLoaderFlag = true
   },
-  donationLoaderFlagOff (state) {
+  donationLoaderFlagOff (state: DonateStoreStateInterface) {
     state.donationLoaderFlag = false
   }
 }
 const actions = {
-  async donate ({ commit, getters, rootState, rootGetters, dispatch }, payload) {
+  async donate ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}, payload:{donorId: string, newDonationDate: number}) {
     const sendData = {
       donorId: payload.donorId,
       date: new Date(payload.newDonationDate).getTime()

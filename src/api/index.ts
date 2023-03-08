@@ -1,20 +1,17 @@
-/* eslint-disable */ 
-// @ts-nocheck
 /*
 This module handles all necessary tasks to communicate with the backend.
 Current active backends are- an express app and firebase realtime database
  */
-import axios from 'axios'
+import axios, {AxiosError, AxiosResponse} from 'axios'
 
-import { store } from '../store/store'
-import { processError } from '../mixins/helpers'
-// import ldb from '../localDatabase'
-import { myConsole } from '../mixins/myConsole'
+import { store } from '@/store/store'
+import { processError } from '@/mixins/helpers'
+import { myConsole } from '@/mixins/myConsole'
 import { environmentService} from "@/mixins/environment";
 
 const baseURL = environmentService.getAPIBaseURL()
 
-myConsole.log('Environment: ', environmentService.getEnvironmentName())
+myConsole.log('%cENVIRONMENT: ','color: #ffff00', 'name ' ,environmentService.getEnvironmentName())
 
 const badhanAxios = axios.create({
   baseURL
@@ -31,7 +28,7 @@ const resetBaseURL = () => {
 }
 
 const isGuestEnabled = () => {
-  return badhanAxios.defaults.baseURL.includes('/guest')
+  return badhanAxios.defaults.baseURL?.includes('/guest')
 }
 
 const firebaseAxios = axios.create({
@@ -40,7 +37,7 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  myConsole.log('%cREQUEST TO ' + config.method + ' ' + config.url + ': ', 'color: #ff00ff', config.data, config.params)
+  myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.method + ' ' + config.url + ': ', config.data, config.params)
 
   store.dispatch('notification/clearNotification')
 
@@ -65,7 +62,7 @@ badhanAxios.interceptors.request.use((config) => {
 
 badhanAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  myConsole.log('%cRESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', 'color: #00ff00', response)
+  myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
@@ -87,9 +84,24 @@ badhanAxios.interceptors.response.use((response) => {
   return Promise.reject(error)
 })
 
+export interface BadhanAxiosResponseDataInterface {
+  status: string,
+  statusCode: number,
+  message: string
+}
+
+export interface BadhanAxiosResponseInterface<T extends BadhanAxiosResponseDataInterface> extends AxiosResponse {
+  data: T
+  status: number
+}
+
+export interface BadhanAxiosErrorInterface<T extends BadhanAxiosResponseDataInterface> extends AxiosError {
+  response: BadhanAxiosResponseInterface<T>
+}
+
 firebaseAxios.interceptors.request.use((config) => {
   // Do something before request is sent
-  myConsole.log('%cREQUEST TO ' + config.url + ': ', 'color: #ff00ff', config.data)
+  myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.url + ': ', config.data)
 
   store.dispatch('notification/clearNotification')
 
@@ -101,7 +113,7 @@ firebaseAxios.interceptors.request.use((config) => {
 
 firebaseAxios.interceptors.response.use((response) => {
   // Do something before request is sent
-  myConsole.log('%cRESPONSE FROM ' + response.config.url + ': ', 'color: #00ff00', response)
+  myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
@@ -119,7 +131,12 @@ CONVENTIONS TO BE FOLLOWED
 * All API calls must be done from this file
  */
 
-const handlePATCHDonorsDesignation = async (payload) => {
+export interface PATCHDonorsDesignationPayloadInterface {
+  donorId: string
+  promoteFlag: boolean
+}
+
+const handlePATCHDonorsDesignation = async (payload: PATCHDonorsDesignationPayloadInterface) => {
   try {
     const response = await badhanAxios.patch('/donors/designation', payload)
     store.dispatch('notification/notifySuccess', response.data.message, { root: true })
@@ -128,7 +145,10 @@ const handlePATCHDonorsDesignation = async (payload) => {
     return false
   }
 }
-const handlePATCHUsersPassword = async (payload) => {
+export interface PATCHUsersPasswordPayloadInterface {
+  password: string
+}
+const handlePATCHUsersPassword = async (payload: PATCHUsersPasswordPayloadInterface) => {
   try {
     const response = await badhanAxios.patch('/users/password', payload)
     store.dispatch('notification/notifySuccess', response.data.message)
@@ -137,15 +157,20 @@ const handlePATCHUsersPassword = async (payload) => {
     return null
   }
 }
-const handleDELETEDonors = async (payload) => {
+export interface DELETEDonorsPayloadInterface {
+  donorId: string
+}
+const handleDELETEDonors = async (payload: DELETEDonorsPayloadInterface) => {
   try {
     return await badhanAxios.delete('/donors', { params: payload })
   } catch (error) {
-    return error.response
+    return (error as AxiosError<Error>).response
   }
 }
-
-const handlePOSTDonorsPasswordRequest = async (payload) => {
+export interface POSTDonorsPasswordPayloadInterface {
+  donorId: string
+}
+const handlePOSTDonorsPasswordRequest = async (payload: POSTDonorsPasswordPayloadInterface) => {
   try {
     const response = await badhanAxios.post('/donors/password', payload)
     store.dispatch('notification/notifySuccess', response.data.message)
@@ -154,8 +179,10 @@ const handlePOSTDonorsPasswordRequest = async (payload) => {
     return null
   }
 }
-
-const handleGETDonorsDuplicate = async (payload) => {
+export interface GETDonorsDuplicatePayloadInterface {
+  phone: string
+}
+const handleGETDonorsDuplicate = async (payload: GETDonorsDuplicatePayloadInterface) => {
   try {
     const response = await badhanAxios.get('/donors/checkDuplicate', { params: payload })
     return response.data
@@ -163,7 +190,10 @@ const handleGETDonorsDuplicate = async (payload) => {
     return null
   }
 }
-const handleGETLogsByDate = async (payload) => {
+export interface GETLogsByDatePayloadInterface {
+  timeStamp: number
+}
+const handleGETLogsByDate = async (payload: GETLogsByDatePayloadInterface) => {
   try {
     const response = await badhanAxios.get(`/log/date/${payload.timeStamp}`)
     return response.data.logs
@@ -199,14 +229,17 @@ const handlePOSTRedirection = async () => {
   try {
     return await badhanAxios.post('/users/redirection')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePATCHRedirectedAuthentication = async (payload) => {
+export interface PATCHRedirectionAuthenticationPayloadInterface {
+  token: string
+}
+const handlePATCHRedirectedAuthentication = async (payload: PATCHRedirectionAuthenticationPayloadInterface) => {
   try {
     return await badhanAxios.patch('/users/redirection', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorsMe = async () => {
@@ -216,13 +249,18 @@ const handleGETDonorsMe = async () => {
     if (axios.isCancel(e)) {
       return {
         status: 503,
-        message: e.message
+        message: e.message,
+        data: null
       }
     }
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePOSTSignIn = async (payload) => {
+export interface POSTSignInPayloadInterface {
+  phone: number,
+  password: string
+}
+const handlePOSTSignIn = async (payload: POSTSignInPayloadInterface) => {
   try {
     const response = await badhanAxios.post('/users/signin', payload)
     return response.data
@@ -230,40 +268,62 @@ const handlePOSTSignIn = async (payload) => {
     return null
   }
 }
-const handleGETVolunteers = async () => {
-  try {
-    const response = await badhanAxios.get('/volunteers')
-    return response.data.volunteerList
-  } catch (e) {
-    return null
-  }
+export interface POSTDonorsPayloadInterface {
+  name: string,
+  phone: number,
+  bloodGroup: number,
+  hall: number,
+  studentId: number,
+  address: string,
+  roomNumber: string,
+  comment: string,
+  lastDonation: number,
+  extraDonationCount: number,
+  availableToAll: boolean
 }
-const handlePOSTDonors = async (payload) => {
+const handlePOSTDonors = async (payload: POSTDonorsPayloadInterface) => {
   try {
     return await badhanAxios.post('/donors', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePOSTDonations = async (payload) => {
+export interface POSTDonationsPayloadInterface {
+  donorId: string
+  date: number
+}
+const handlePOSTDonations = async (payload: POSTDonationsPayloadInterface) => {
   try {
     return await badhanAxios.post('/donations', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleGETDonors = async (payload) => {
+export interface GETDonorsPayloadInterface {
+  donorId: string
+}
+const handleGETDonors = async (payload: GETDonorsPayloadInterface) => {
   try {
     return await badhanAxios.get('/donors', { params: payload })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleGETSearchV3 = async (payload) => {
+export interface GETSearchPayloadInterface {
+  name: string
+  bloodGroup: number
+  batch: string
+  hall: number
+  isAvailable: boolean
+  isNotAvailable: boolean
+  address: string
+  availableToAll: boolean
+}
+const handleGETSearchV3 = async (payload: GETSearchPayloadInterface) => {
   try {
     return await badhanAxios.get('/search/v3', { params: payload })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -271,94 +331,120 @@ const handleGETStatistics = async () => {
   try {
     return await badhanAxios.get('/log/statistics')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleDELETELogs = async () => {
   try {
     return await badhanAxios.delete('/log')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorDesignatedAll = async () => {
   try {
     return await badhanAxios.get('/donors/designation/all')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-
-const handleGETLogsByDateAndDonor = async (payload) => {
+export interface GETLogsByDateAndDonorPayloadInterface {
+  timeStamp: number
+  donorId: string
+}
+const handleGETLogsByDateAndDonor = async (payload: GETLogsByDateAndDonorPayloadInterface) => {
   try {
     return await badhanAxios.get(`/log/date/${payload.timeStamp}/donorId/${payload.donorId}`)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-
-const handlePATCHDonorsComment = async (payload) => {
+export interface PATCHDonorsCommentPayloadInterface {
+  donorId: string
+  comment: string
+}
+const handlePATCHDonorsComment = async (payload: PATCHDonorsCommentPayloadInterface) => {
   try {
     return await badhanAxios.patch('/donors/comment', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePATCHDonors = async (payload) => {
+export interface PATCHDonorsPayloadInterface {
+  donorId: string,
+  name: string,
+  phone: number,
+  studentId: string,
+  email: string,
+  bloodGroup: number,
+  hall: number,
+  roomNumber: string,
+  address: string,
+  availableToAll: boolean
+}
+const handlePATCHDonors = async (payload: PATCHDonorsPayloadInterface) => {
   try {
     return await badhanAxios.patch('/donors/v2', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePATCHAdmins = async (payload) => {
+export interface PATCHAdminsPayloadInterface {
+  donorId: string
+}
+const handlePATCHAdmins = async (payload: PATCHAdminsPayloadInterface) => {
   try {
     return await badhanAxios.patch('/admins', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleGETAdmins = async () => {
-  try {
-    return await badhanAxios.get('/admins')
-  } catch (e) {
-    return e.response
-  }
+export interface DELETEDonationsPayloadInterface {
+  date: number
 }
-const handleDELETEDonations = async (payload) => {
+const handleDELETEDonations = async (payload: DELETEDonationsPayloadInterface) => {
   try {
     return await badhanAxios.delete('/donations', { params: payload })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePOSTCallRecord = async (payload) => {
+export interface POSTCallRecordPayloadInterface {
+  donorId: string
+}
+const handlePOSTCallRecord = async (payload: POSTCallRecordPayloadInterface) => {
   try {
     return await badhanAxios.post('/callrecords', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleDELETECallRecord = async (payload) => {
+export interface DELETECalLRecordPayloadInterface {
+  donorId: string
+  callRecordId: string
+}
+const handleDELETECallRecord = async (payload: DELETECalLRecordPayloadInterface) => {
   try {
     return await badhanAxios.delete('/callrecords', { params: payload })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-
-const handlePOSTPasswordForgot = async (payload) => {
+export interface POSTPasswordForgetPayloadInterface {
+  phone: number
+}
+const handlePOSTPasswordForgot = async (payload: POSTPasswordForgetPayloadInterface) => {
   try {
     return await badhanAxios.post('/users/password/forgot', { phone: payload.phone })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorsDesignation = async () => {
   try {
     return await badhanAxios.get('/donors/designation')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -366,21 +452,28 @@ const handleGETPublicContacts = async () => {
   try {
     return await badhanAxios.get('/publicContacts')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePOSTPublicContacts = async (payload) => {
+export interface POSTPublicContactsPayloadInterface {
+  donorId: string
+  bloodGroup: number
+}
+const handlePOSTPublicContacts = async (payload: POSTPublicContactsPayloadInterface) => {
   try {
     return await badhanAxios.post('/publicContacts', payload)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleDELETEPublicContacts = async (payload) => {
+export interface DELETEPublicContactsPayloadInterface {
+  donorId: string
+}
+const handleDELETEPublicContacts = async (payload: DELETEPublicContactsPayloadInterface) => {
   try {
     return await badhanAxios.delete('/publicContacts', { params: payload })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -388,65 +481,79 @@ const handleGETLogins = async () => {
   try {
     return await badhanAxios.get('/users/logins')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-
-const handleDELETELogins = async (payload) => {
+export interface DELETELoginsPayloadInterface {
+  tokenId: string
+}
+const handleDELETELogins = async (payload: DELETELoginsPayloadInterface) => {
   try {
     return await badhanAxios.delete(`/users/logins/${payload.tokenId}`)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handlePOSTActiveDonors = async (payload) => {
+export interface POSTActiveDonorsPayloadInterface {
+  donorId: string
+}
+const handlePOSTActiveDonors = async (payload: POSTActiveDonorsPayloadInterface) => {
   try {
     return await badhanAxios.post('/activeDonors', { donorId: payload.donorId })
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleDELETEActiveDonors = async (payload) => {
+export interface DELETEActiveDonorsPayloadInterface {
+  donorId: string
+}
+const handleDELETEActiveDonors = async (payload: DELETEActiveDonorsPayloadInterface) => {
   try {
     return await badhanAxios.delete(`/activeDonors/${payload.donorId}`)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleGETActiveDonors = async (payload) => {
+export interface GETActiveDonorsPayloadInterface {
+  name: string,
+  bloodGroup: number,
+  batch: string,
+  hall: number,
+  isAvailable: boolean,
+  isNotAvailable: boolean,
+  address: string,
+  availableToAll: boolean,
+  markedByMe: boolean,
+  availableToAllOrHall: boolean
+}
+const handleGETActiveDonors = async (payload: GETActiveDonorsPayloadInterface) => {
   try {
     return await badhanAxios.get(`/activeDonors?bloodGroup=${payload.bloodGroup}&hall=${payload.hall}&batch=${payload.batch}&name=${payload.name}&address=${payload.address}&isAvailable=${payload.isAvailable}&isNotAvailable=${payload.isNotAvailable}&availableToAll=${payload.availableToAll}&markedByMe=${payload.markedByMe}&availableToAllOrHall=${payload.availableToAllOrHall}`)
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-const handleGETAppVersions = async () => {
-  try {
-    return await badhanAxios.get('/log/version/v5')
-  } catch (e) {
-    return e.response
-  }
-}
+
 /// ///////////////////////FIREBASE API CALLS ////////////////////////
 const handleGETCredits = async () => {
   try {
     return await firebaseAxios.get('/contributors.json')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETContributors = async () => {
   try {
     return await firebaseAxios.get('/data.json')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETFrontendSettings = async () => {
   try {
     return await firebaseAxios.get('/frontendSettings.json')
   } catch (e) {
-    return e.response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -471,7 +578,6 @@ export {
   handlePATCHRedirectedAuthentication,
   handleGETDonorsMe,
   handlePOSTSignIn,
-  handleGETVolunteers,
   handlePOSTDonors,
   handlePOSTDonations,
   handleGETDonors,
@@ -484,7 +590,6 @@ export {
   handlePATCHDonorsComment,
   handlePATCHDonors,
   handlePATCHAdmins,
-  handleGETAdmins,
   handleDELETEDonations,
   handlePOSTCallRecord,
   handleDELETECallRecord,
@@ -498,7 +603,6 @@ export {
   handlePOSTActiveDonors,
   handleDELETEActiveDonors,
   handleGETActiveDonors,
-  handleGETAppVersions,
 
   // firebase methods
   handleGETFrontendSettings,

@@ -1,10 +1,28 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handleGETDonorsDesignation } from '../api'
+import { handleGETDonorsDesignation } from '@/api'
 import ldb from '../localDatabase'
+import {Commit} from "vuex";
 
-const state = {
+type HallAdminInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+type VolunteerInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+
+type SuperAdminInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+}
+
+interface MemberStoreStateInterface {
+  hallAdmins: HallAdminInterface[]
+  volunteers: VolunteerInterface[]
+  superAdmins: SuperAdminInterface[]
+  memberLoaderFlag: boolean
+}
+
+export interface MemberAPIResponseInterface {adminList: HallAdminInterface[], superAdminList: SuperAdminInterface[], volunteerList: VolunteerInterface[]}
+
+const state: MemberStoreStateInterface = {
   hallAdmins: [],
   volunteers: [],
   superAdmins: [],
@@ -12,34 +30,34 @@ const state = {
 }
 
 const getters = {
-  getHallAdmins (state) {
+  getHallAdmins (state: MemberStoreStateInterface) {
     return state.hallAdmins
   },
-  getVolunteers (state) {
+  getVolunteers (state: MemberStoreStateInterface) {
     return state.volunteers
   },
-  getSuperAdmins (state) {
+  getSuperAdmins (state: MemberStoreStateInterface) {
     return state.superAdmins
   },
-  getMemberLoaderFlag (state) {
+  getMemberLoaderFlag (state: MemberStoreStateInterface) {
     return state.memberLoaderFlag
   }
 }
 const mutations = {
-  assignMembers (state, payload) {
+  assignMembers (state: MemberStoreStateInterface, payload: MemberAPIResponseInterface) {
     state.hallAdmins = payload.adminList
     state.superAdmins = payload.superAdminList
     state.volunteers = payload.volunteerList
   },
-  memberLoaderFlagOn (state) {
+  memberLoaderFlagOn (state: MemberStoreStateInterface) {
     state.memberLoaderFlag = true
   },
-  memberLoaderFlagOff (state) {
+  memberLoaderFlagOff (state: MemberStoreStateInterface) {
     state.memberLoaderFlag = false
   }
 }
 const actions = {
-  async fetchMembers ({ commit, dispatch, getters }) {
+  async fetchMembers ({ commit }: {commit: Commit}) {
     const cachedMemberResult = ldb.members.load()
     if (cachedMemberResult.status === 'OK') {
       commit('assignMembers', cachedMemberResult.data)

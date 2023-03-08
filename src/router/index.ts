@@ -1,16 +1,29 @@
-/* eslint-disable */
-// @ts-nocheck
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home'
+import VueRouter, {RouteConfig, Route, NavigationGuardNext} from 'vue-router'
+import Home from '@/views/Home.vue'
 
-import SignInCover from '../views/SignInCover'
-import Details from '../views/Home/Details'
-import { store } from '../store/store'
+import SignInCover from '../views/SignInCover.vue'
+import Details from '../views/Home/Details.vue'
+import { store } from '@/store/store'
 
 Vue.use(VueRouter)
 
-const routes = [
+interface RouteMeta{
+  requiresAuth: boolean,
+  title: string,
+  designation: number,
+  reRouteIfAuthorized: boolean
+}
+
+type CustomRouteConfig = RouteConfig & {
+  meta: RouteMeta
+}
+
+interface CustomRoute extends Route{
+  meta: RouteMeta
+}
+
+const routes: CustomRouteConfig[] = [
   {
     name: 'ActiveDonors',
     path: '/activeDonors',
@@ -36,7 +49,7 @@ const routes = [
     ]
   },
   {
-    name: 'Members',
+    name: 'MembersPage',
     path: '/members',
     component: () => import('../views/Members.vue'),
     meta: {
@@ -49,7 +62,7 @@ const routes = [
   {
     name: 'PublicContacts',
     path: '/contacts',
-    component: () => import('../views/PublicContacts'),
+    component: () => import('../views/PublicContacts.vue'),
     meta: {
       requiresAuth: false,
       title: 'Contact Badhan BUET Zone',
@@ -69,7 +82,7 @@ const routes = [
     },
     children: [
       {
-        name: 'Details',
+        name: 'DetailsPage',
         path: 'details',
         component: Details,
         meta: {
@@ -104,7 +117,7 @@ const routes = [
     }
   },
   {
-    name: 'Statistics',
+    name: 'StatisticsPage',
     path: '/statistics',
     component: () => import('../views/Statistics.vue'),
     meta: {
@@ -126,9 +139,9 @@ const routes = [
         }
       },
       {
-        name: 'Stats',
+        name: 'StatsPage',
         path: 'stats',
-        component: () => import('../views/Statistics/Stats'),
+        component: () => import('../views/Statistics/Stats.vue'),
         meta: {
           title: 'Account Stats',
           requiresAuth: true,
@@ -139,7 +152,7 @@ const routes = [
       {
         name: 'VolunteersAll',
         path: 'membersAll',
-        component: () => import('../views/Statistics/VolunteersAll'),
+        component: () => import('../views/Statistics/VolunteersAll.vue'),
         meta: {
           title: 'All Members',
           requiresAuth: true,
@@ -150,7 +163,7 @@ const routes = [
     ]
   },
   {
-    name: 'Credits',
+    name: 'CreditsPage',
     path: '/credits',
     component: () => import('../views/Credits.vue'),
     meta: {
@@ -161,7 +174,7 @@ const routes = [
     }
   },
   {
-    name: 'About',
+    name: 'AboutPage',
     path: '/about',
     component: () => import('../views/About.vue'),
     meta: {
@@ -196,7 +209,7 @@ const routes = [
       {
         name: 'DuplicateDetails',
         path: 'duplicateDetails',
-        component: () => import('../views/SingleDonorCreation/DuplicateDetails'),
+        component: () => import('../views/SingleDonorCreation/DuplicateDetails.vue'),
         meta: {
           title: 'Duplicate Details',
           requiresAuth: true,
@@ -207,7 +220,7 @@ const routes = [
     ]
   },
   {
-    name: 'Archive',
+    name: 'ArchivePage',
     path: '/archive',
     component: () => import('../views/Archive.vue'),
     meta: {
@@ -240,7 +253,7 @@ const routes = [
     }
   },
   {
-    name: 'Redirection',
+    name: 'RedirectionPage',
     path: '/redirection',
     component: () => import('../views/Redirection.vue'),
     meta: {
@@ -264,7 +277,7 @@ const routes = [
   {
     name: 'AdminConsole',
     path: '/adminconsole',
-    component: () => import('../views/AdminConsole'),
+    component: () => import('../views/AdminConsole.vue'),
     meta: {
       requiresAuth: true,
       title: 'Admin Console',
@@ -289,8 +302,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-router.beforeEach(async (to, from, next) => {
-  if (!to.meta.requiresAuth && to.name !== 'SignIn') {
+
+router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
+  const customRouteTo = to as CustomRoute
+  if (!customRouteTo.meta.requiresAuth && customRouteTo.name !== 'SignIn') {
     next()
   }
 
@@ -298,10 +313,10 @@ router.beforeEach(async (to, from, next) => {
     await store.dispatch('autoLogin')
   }
 
-  if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
+  if (!store.getters.getIsLoggedIn && customRouteTo.meta.requiresAuth) {
     store.commit('setAutoRedirectionPath', to.fullPath)
     next('/')
-  } else if (store.getters.getIsLoggedIn && (to.meta.reRouteIfAuthorized || to.meta.designation > store.getters.getDesignation)) {
+  } else if (store.getters.getIsLoggedIn && (customRouteTo.meta.reRouteIfAuthorized || customRouteTo.meta.designation > store.getters.getDesignation)) {
     next('/home')
   } else {
     next()

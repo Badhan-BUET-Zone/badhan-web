@@ -1,9 +1,12 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-import { handlePATCHDonorsComment } from '../api'
-
-const state = {
+import { handlePATCHDonorsComment } from '@/api'
+import {Commit, Dispatch} from "vuex";
+interface CommentStoreStateInterface {
+  comment: string | null
+  commentLoaderFlag: boolean
+  commentSuccess: string | null
+  commentError: string | null
+}
+const state: CommentStoreStateInterface = {
   comment: null,
   commentLoaderFlag: false,
   commentSuccess: null,
@@ -11,27 +14,24 @@ const state = {
 }
 
 const getters = {
-  getComment (state) {
-    return state.comment
-  },
-  getCommentLoaderFlag (state) {
+  getCommentLoaderFlag (state: CommentStoreStateInterface) {
     return state.commentLoaderFlag
   }
 }
 const mutations = {
-  commentLoaderFlagOn (state) {
+  commentLoaderFlagOn (state: CommentStoreStateInterface) {
     state.commentLoaderFlag = true
   },
-  commentLoaderFlagOff (state) {
+  commentLoaderFlagOff (state: CommentStoreStateInterface) {
     state.commentLoaderFlag = false
   },
-  setComment (state, payload) {
+  setComment (state: CommentStoreStateInterface, payload: string) {
     state.comment = payload
   }
 
 }
 const actions = {
-  async saveComment ({ commit, getters, rootState, rootGetters, dispatch }, payload) {
+  async saveComment ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}, payload: {donorId: string, comment: string}) {
     commit('commentLoaderFlagOn')
     const response = await handlePATCHDonorsComment(payload)
     commit('commentLoaderFlagOff')

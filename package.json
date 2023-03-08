@@ -19,17 +19,12 @@
     "stream": false
   },
   "dependencies": {
-    "@capacitor/android": "^4.6.1",
-    "@capacitor/app": "^4.1.1",
-    "@capacitor/cli": "^4.6.1",
-    "@capacitor/core": "^4.6.1",
     "@mdi/font": "5.9.55",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "file-saver": "^2.0.5",
-    "gradle-to-js": "^2.0.1",
     "lodash": "^4.17.21",
     "register-service-worker": "^1.7.2",
     "roboto-fontface": "*",
@@ -44,7 +39,9 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/jest": "^27.0.1",
+    "@types/vuelidate": "^0.7.16",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",

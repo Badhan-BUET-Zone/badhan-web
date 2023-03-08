@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <Container>
     <v-card-title>List of all members</v-card-title>
     <transition name="slide-fade-down-snapout" mode="out-in">
@@ -15,7 +14,7 @@
                     sort-by="logCount"
                     sort-desc
       >
-        <template v-slot:item.hall="{ item }">
+        <template v-slot:[`item.hall`]="{ item }">
           {{item.hall | getHallName}}
         </template>
       </v-data-table>
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapActions, mapGetters } from 'vuex'
 import Container from '../../components/Wrappers/Container'
 

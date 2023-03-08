@@ -1,64 +1,69 @@
-/* eslint-disable */ 
-// @ts-nocheck
-/* eslint-disable */
-const state = {
+import {Commit} from "vuex";
+
+interface NotificationStateInterface {
+  notificationFlag: boolean
+  notification: string | null
+  notificationColor: string
+}
+
+const state: NotificationStateInterface = {
   notificationFlag: false,
   notification: null,
   notificationColor: 'success'
 }
 
 const getters = {
-  getNotification (state) {
+  getNotification (state: NotificationStateInterface) {
     return state.notification
   },
-  getNotificationFlag (state) {
+  getNotificationFlag (state: NotificationStateInterface) {
     return state.notificationFlag
   },
-  getNotificationColor (state) {
+  getNotificationColor (state: NotificationStateInterface) {
     return state.notificationColor
   }
 }
 const mutations = {
-  setNotification (state, payload) {
+  setNotification (state: NotificationStateInterface, payload: string) {
     state.notification = payload
   },
-  setNotificationFlag (state, payload) {
+  setNotificationFlag (state: NotificationStateInterface, payload: boolean) {
     state.notificationFlag = payload
   },
-  setNotifiationColor (state, payload) {
+  setNotifiationColor (state: NotificationStateInterface, payload: string) {
     state.notificationColor = payload
   },
-  dismissNotification (state) {
+  dismissNotification (state: NotificationStateInterface) {
     setTimeout(() => {
       state.notificationFlag = false
     }, 3000)
   },
-  clearNotification (state) {
+  clearNotification (state: NotificationStateInterface) {
     state.notificationFlag = false
   }
 }
 const actions = {
-  notifySuccess ({ commit, getters, rootState, rootGetters }, payload) {
+  notifySuccess ({ commit }: { commit: Commit}, payload: string) {
     commit('setNotificationFlag', true)
     commit('setNotification', payload)
     commit('setNotifiationColor', 'success')
     commit('dismissNotification')
   },
-  notifyInfo ({ commit, getters }, payload) {
+  notifyInfo ({ commit }: { commit: Commit}, payload: string) {
     commit('setNotificationFlag', true)
     commit('setNotification', payload)
     commit('setNotifiationColor', 'primary')
     commit('dismissNotification')
   },
-  notifyError ({ commit, getters, rootState, rootGetters }, payload) {
+  notifyError ({ commit }: { commit: Commit}, payload: string) {
     commit('setNotificationFlag', true)
     commit('setNotification', payload)
     commit('setNotifiationColor', 'error')
   },
-  setNotificationFlag ({ commit, getters, rootState, rootGetters }, payload) {
+  setNotificationFlag ({ commit }: {commit: Commit}, payload: boolean) {
     commit('setNotificationFlag', payload)
   },
-  clearNotification ({ commit }) {
+  clearNotification ({ commit }: {commit: Commit}) {
     commit('clearNotification')
   }
 }

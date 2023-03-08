@@ -47,11 +47,10 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Container from '../components/Wrappers/Container'
 import PageTitle from '../components/PageTitle'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
-import { handlePOSTPasswordForgot } from '../api'
+import { handlePOSTPasswordForgot } from '@/api'
 import { mapActions } from 'vuex'
 import Button from '../components/UI Components/Button'
 import ldb from '../localDatabase'

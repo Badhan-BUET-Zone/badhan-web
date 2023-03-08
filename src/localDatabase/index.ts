@@ -1,4 +1,3 @@
-/* eslint-disable */
 import emailRecovery from './emailRecovery'
 import token from './token'
 import theme from './theme'

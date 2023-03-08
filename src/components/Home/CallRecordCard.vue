@@ -26,9 +26,8 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapActions, mapMutations } from 'vuex'
-import { designations } from '../../mixins/constants'
+import { designations } from '@/mixins/constants'
 
 export default {
   name: 'CallRecordCard',
@@ -56,13 +55,8 @@ export default {
         confirmationMessage: 'Delete this call record?',
         confirmationAction: this.deletionConfirmed
       })
-      // this.deletePromptFlag = true
     },
-    // async deletionCanceled () {
-    //   this.deletePromptFlag = false
-    // },
     async deletionConfirmed () {
-      // this.deletePromptFlag = false
       this.deleteLoaderFlag = true
       await this.deleteCallRecord({ donorId: this.callRecord.calleeId, callRecordId: this.callRecord._id })
       this.deleteLoaderFlag = false
