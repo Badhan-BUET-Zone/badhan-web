@@ -1,12 +1,11 @@
 /* eslint-disable */
-// @ts-nocheck
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router'// @ts-ignore
 import Home from '../views/Home'
-
-import SignInCover from '../views/SignInCover'
+// @ts-ignore
+import SignInCover from '../views/SignInCover'// @ts-ignore
 import Details from '../views/Home/Details'
-import { store } from '../store/store'
+import { store } from '@/store/store'
 
 Vue.use(VueRouter)
 
@@ -48,7 +47,7 @@ const routes = [
   },
   {
     name: 'PublicContacts',
-    path: '/contacts',
+    path: '/contacts',// @ts-ignore
     component: () => import('../views/PublicContacts'),
     meta: {
       requiresAuth: false,
@@ -127,7 +126,7 @@ const routes = [
       },
       {
         name: 'StatsPage',
-        path: 'stats',
+        path: 'stats',// @ts-ignore
         component: () => import('../views/Statistics/Stats'),
         meta: {
           title: 'Account Stats',
@@ -138,7 +137,7 @@ const routes = [
       },
       {
         name: 'VolunteersAll',
-        path: 'membersAll',
+        path: 'membersAll',// @ts-ignore
         component: () => import('../views/Statistics/VolunteersAll'),
         meta: {
           title: 'All Members',
@@ -195,7 +194,7 @@ const routes = [
     children: [
       {
         name: 'DuplicateDetails',
-        path: 'duplicateDetails',
+        path: 'duplicateDetails',// @ts-ignore
         component: () => import('../views/SingleDonorCreation/DuplicateDetails'),
         meta: {
           title: 'Duplicate Details',
@@ -263,7 +262,7 @@ const routes = [
   },
   {
     name: 'AdminConsole',
-    path: '/adminconsole',
+    path: '/adminconsole',// @ts-ignore
     component: () => import('../views/AdminConsole'),
     meta: {
       requiresAuth: true,
@@ -289,7 +288,7 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {// @ts-ignore
   if (!to.meta.requiresAuth && to.name !== 'SignIn') {
     next()
   }
@@ -297,10 +296,10 @@ router.beforeEach(async (to, from, next) => {
   if (!store.getters.getIsLoggedIn) {
     await store.dispatch('autoLogin')
   }
-
+// @ts-ignore
   if (!store.getters.getIsLoggedIn && to.meta.requiresAuth) {
     store.commit('setAutoRedirectionPath', to.fullPath)
-    next('/')
+    next('/')// @ts-ignore
   } else if (store.getters.getIsLoggedIn && (to.meta.reRouteIfAuthorized || to.meta.designation > store.getters.getDesignation)) {
     next('/home')
   } else {

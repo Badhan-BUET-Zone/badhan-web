@@ -1,10 +1,9 @@
 import { saveAs } from 'file-saver'
 import { bloodGroups, halls } from './constants'
 import {PersonInterface} from "@/store/home";
-import {BadhanAxiosErrorInterface} from "@/api";
+import {BadhanAxiosErrorInterface, BadhanAxiosResponseDataInterface} from "@/api";
 
-
-export const processError = (error: BadhanAxiosErrorInterface) => {
+export const processError = (error: BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>) => {
   if (error.response && error.response.data && error.response.data.message) {
     return error.response.data.message
   }

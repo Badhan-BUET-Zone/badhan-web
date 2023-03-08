@@ -84,12 +84,19 @@ badhanAxios.interceptors.response.use((response) => {
   return Promise.reject(error)
 })
 
-export interface BadhanAxiosResponseInterface extends AxiosResponse {
-  data: any
+export interface BadhanAxiosResponseDataInterface {
+  status: string,
+  statusCode: number,
+  message: string
 }
 
-export interface BadhanAxiosErrorInterface extends AxiosError {
-  response: BadhanAxiosResponseInterface
+export interface BadhanAxiosResponseInterface<T extends BadhanAxiosResponseDataInterface> extends AxiosResponse {
+  data: T
+  status: number
+}
+
+export interface BadhanAxiosErrorInterface<T extends BadhanAxiosResponseDataInterface> extends AxiosError {
+  response: BadhanAxiosResponseInterface<T>
 }
 
 firebaseAxios.interceptors.request.use((config) => {
@@ -222,7 +229,7 @@ const handlePOSTRedirection = async () => {
   try {
     return await badhanAxios.post('/users/redirection')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface PATCHRedirectionAuthenticationPayloadInterface {
@@ -232,7 +239,7 @@ const handlePATCHRedirectedAuthentication = async (payload: PATCHRedirectionAuth
   try {
     return await badhanAxios.patch('/users/redirection', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorsMe = async () => {
@@ -246,7 +253,7 @@ const handleGETDonorsMe = async () => {
         data: null
       }
     }
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTSignInPayloadInterface {
@@ -278,7 +285,7 @@ const handlePOSTDonors = async (payload: POSTDonorsPayloadInterface) => {
   try {
     return await badhanAxios.post('/donors', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTDonationsPayloadInterface {
@@ -289,7 +296,7 @@ const handlePOSTDonations = async (payload: POSTDonationsPayloadInterface) => {
   try {
     return await badhanAxios.post('/donations', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETDonorsPayloadInterface {
@@ -299,7 +306,7 @@ const handleGETDonors = async (payload: GETDonorsPayloadInterface) => {
   try {
     return await badhanAxios.get('/donors', { params: payload })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETSearchPayloadInterface {
@@ -316,7 +323,7 @@ const handleGETSearchV3 = async (payload: GETSearchPayloadInterface) => {
   try {
     return await badhanAxios.get('/search/v3', { params: payload })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -324,21 +331,21 @@ const handleGETStatistics = async () => {
   try {
     return await badhanAxios.get('/log/statistics')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleDELETELogs = async () => {
   try {
     return await badhanAxios.delete('/log')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorDesignatedAll = async () => {
   try {
     return await badhanAxios.get('/donors/designation/all')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETLogsByDateAndDonorPayloadInterface {
@@ -349,7 +356,7 @@ const handleGETLogsByDateAndDonor = async (payload: GETLogsByDateAndDonorPayload
   try {
     return await badhanAxios.get(`/log/date/${payload.timeStamp}/donorId/${payload.donorId}`)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface PATCHDonorsCommentPayloadInterface {
@@ -360,7 +367,7 @@ const handlePATCHDonorsComment = async (payload: PATCHDonorsCommentPayloadInterf
   try {
     return await badhanAxios.patch('/donors/comment', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface PATCHDonorsPayloadInterface {
@@ -379,7 +386,7 @@ const handlePATCHDonors = async (payload: PATCHDonorsPayloadInterface) => {
   try {
     return await badhanAxios.patch('/donors/v2', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface PATCHAdminsPayloadInterface {
@@ -389,7 +396,7 @@ const handlePATCHAdmins = async (payload: PATCHAdminsPayloadInterface) => {
   try {
     return await badhanAxios.patch('/admins', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETEDonationsPayloadInterface {
@@ -399,7 +406,7 @@ const handleDELETEDonations = async (payload: DELETEDonationsPayloadInterface) =
   try {
     return await badhanAxios.delete('/donations', { params: payload })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTCallRecordPayloadInterface {
@@ -409,7 +416,7 @@ const handlePOSTCallRecord = async (payload: POSTCallRecordPayloadInterface) => 
   try {
     return await badhanAxios.post('/callrecords', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETECalLRecordPayloadInterface {
@@ -420,7 +427,7 @@ const handleDELETECallRecord = async (payload: DELETECalLRecordPayloadInterface)
   try {
     return await badhanAxios.delete('/callrecords', { params: payload })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTPasswordForgetPayloadInterface {
@@ -430,14 +437,14 @@ const handlePOSTPasswordForgot = async (payload: POSTPasswordForgetPayloadInterf
   try {
     return await badhanAxios.post('/users/password/forgot', { phone: payload.phone })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETDonorsDesignation = async () => {
   try {
     return await badhanAxios.get('/donors/designation')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -445,7 +452,7 @@ const handleGETPublicContacts = async () => {
   try {
     return await badhanAxios.get('/publicContacts')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTPublicContactsPayloadInterface {
@@ -456,7 +463,7 @@ const handlePOSTPublicContacts = async (payload: POSTPublicContactsPayloadInterf
   try {
     return await badhanAxios.post('/publicContacts', payload)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETEPublicContactsPayloadInterface {
@@ -466,7 +473,7 @@ const handleDELETEPublicContacts = async (payload: DELETEPublicContactsPayloadIn
   try {
     return await badhanAxios.delete('/publicContacts', { params: payload })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -474,7 +481,7 @@ const handleGETLogins = async () => {
   try {
     return await badhanAxios.get('/users/logins')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETELoginsPayloadInterface {
@@ -484,7 +491,7 @@ const handleDELETELogins = async (payload: DELETELoginsPayloadInterface) => {
   try {
     return await badhanAxios.delete(`/users/logins/${payload.tokenId}`)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTActiveDonorsPayloadInterface {
@@ -494,7 +501,7 @@ const handlePOSTActiveDonors = async (payload: POSTActiveDonorsPayloadInterface)
   try {
     return await badhanAxios.post('/activeDonors', { donorId: payload.donorId })
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETEActiveDonorsPayloadInterface {
@@ -504,7 +511,7 @@ const handleDELETEActiveDonors = async (payload: DELETEActiveDonorsPayloadInterf
   try {
     return await badhanAxios.delete(`/activeDonors/${payload.donorId}`)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETActiveDonorsPayloadInterface {
@@ -523,7 +530,7 @@ const handleGETActiveDonors = async (payload: GETActiveDonorsPayloadInterface) =
   try {
     return await badhanAxios.get(`/activeDonors?bloodGroup=${payload.bloodGroup}&hall=${payload.hall}&batch=${payload.batch}&name=${payload.name}&address=${payload.address}&isAvailable=${payload.isAvailable}&isNotAvailable=${payload.isNotAvailable}&availableToAll=${payload.availableToAll}&markedByMe=${payload.markedByMe}&availableToAllOrHall=${payload.availableToAllOrHall}`)
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
@@ -532,21 +539,21 @@ const handleGETCredits = async () => {
   try {
     return await firebaseAxios.get('/contributors.json')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETContributors = async () => {
   try {
     return await firebaseAxios.get('/data.json')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETFrontendSettings = async () => {
   try {
     return await firebaseAxios.get('/frontendSettings.json')
   } catch (e) {
-    return (e as BadhanAxiosErrorInterface).response
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 
