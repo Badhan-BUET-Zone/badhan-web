@@ -205,8 +205,7 @@
                               v-model="passwordRecoveryTooltip"
                               top
                             >
-                              <!-- eslint-disable -->
-                              <template v-slot:activator="{ on, attrs }">
+                              <template v-slot:activator="{ attrs }">
                                 <v-btn class="ml-1" @click="passwordRecoveryLinkCopyClicked" v-bind="attrs" rounded
                                        color="secondary">
                                   <v-icon>
@@ -590,8 +589,7 @@ export default {
     email: {
       validEmail (email) {
         if (email === '') return true
-        // eslint-disable-next-line
-        const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+        const emailRegex = /^([\w-.]+@([\w-]+\.)+[\w-]{2,4})?$/
         return emailRegex.test(email)
       }
     },

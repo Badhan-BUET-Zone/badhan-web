@@ -2,7 +2,7 @@ import { handleDELETECallRecord, handlePOSTCallRecord } from '@/api'
 import {Commit, Dispatch} from "vuex";
 import {RootGetterInterface} from "@/store/myprofile";
 
-interface CallRecordInterface {
+type CallRecordInterface = {
   _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 interface CallRecordStoreStateInterface {

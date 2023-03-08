@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-export const setWithExpiry = (key: string, value: any, ttl: number) => {
+export const setWithExpiry = (key: string, value: unknown, ttl: number) => {
   const now = new Date()
 
   // `item` is an object which contains the original value

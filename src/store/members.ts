@@ -2,15 +2,15 @@ import { handleGETDonorsDesignation } from '@/api'
 import ldb from '../localDatabase'
 import {Commit} from "vuex";
 
-interface HallAdminInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type HallAdminInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
-interface VolunteerInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type VolunteerInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 
-interface SuperAdminInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type SuperAdminInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 
 interface MemberStoreStateInterface {

@@ -144,12 +144,11 @@ export default {
           id: this.getID
         }
       })
-      this.$copyText(environmentService.getFrontendBaseURL() + '/' + routeData.href).then((e) => {
+      this.$copyText(environmentService.getFrontendBaseURL() + '/' + routeData.href).then((_e) => {
         this.showTooltip = true
         setTimeout(() => {
           this.showTooltip = false
         }, 2000)
-      }, (e) => {
       })
     },
     async logoutFromAllDevices(){

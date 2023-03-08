@@ -1,5 +1,5 @@
-interface LogInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type LogInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 interface LogStoreStateInterface {
   consoleLogs: LogInterface[]

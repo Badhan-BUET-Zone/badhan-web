@@ -10,7 +10,7 @@ const compareObject = (a: PersonGroupsInterface, b: PersonGroupsInterface) => {
   }
 }
 
-export interface PersonInterface {
+export type PersonInterface = {
   _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
   studentId: string
   hall: number

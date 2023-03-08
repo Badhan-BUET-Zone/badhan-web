@@ -171,7 +171,9 @@ export default {
       }
       this.activeDonorsLoader = false
     },
-    resetClicked () {}
+    resetClicked () {
+      // skip
+    }
   },
   computed: {
     ...mapGetters('activeDonors', ['getActiveDonors'])

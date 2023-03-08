@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <div :key="'home'">
     <v-fab-transition >
       <v-btn
@@ -88,7 +87,7 @@
                         v-model="showTooltip"
                         top
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ attrs }">
                         <v-btn small color="secondary" rounded class="mb-4" style="width: 100%" v-bind="attrs"
                                @click="shareClicked">
                           <v-icon left>

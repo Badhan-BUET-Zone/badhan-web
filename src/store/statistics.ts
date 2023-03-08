@@ -7,7 +7,7 @@ import {
 
 import {Commit} from 'vuex'
 
-interface LogInterface {
+type LogInterface = {
   _id: string  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 
@@ -17,12 +17,12 @@ interface StatisticsInterface {
   volunteerCount: number
 }
 
-interface VolunteerInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type VolunteerInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 
-interface CreditInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type CreditInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 
 interface StatisticsStoreInterface {

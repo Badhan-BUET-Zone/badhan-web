@@ -1,8 +1,8 @@
 import { handleGETDonors } from '@/api'
 import {Commit} from "vuex";
 
-interface ProfileInterface {
-  _id: string // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
+type ProfileInterface = {
+  // INCOMPLETE INTERFACE. Please complete this interface and enable stronger type checking
 }
 interface DetailsStoreStateInterface {
   profile: null|ProfileInterface
