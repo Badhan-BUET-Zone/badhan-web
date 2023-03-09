@@ -2,7 +2,6 @@ import { saveAs } from 'file-saver'
 import { bloodGroups, halls } from './constants'
 import {PersonInterface} from "@/store/home";
 import {BadhanAxiosErrorInterface, BadhanAxiosResponseDataInterface} from "@/api";
-import {environmentService} from "@/mixins/environment";
 
 export const processError = (error: BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>) => {
   if (error.response && error.response.data && error.response.data.message) {
