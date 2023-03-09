@@ -39,12 +39,11 @@
 
               </template>
               <v-list>
-                <v-list-item
-                    v-for="(item, index) in departments.filter((department)=>department!=='NULL')"
-                    :key="index"
-                >
-                  <v-list-item-title>{{ item }}</v-list-item-title>
-                </v-list-item>
+                <span v-for="(item, index) in departments" :key="index">
+                  <v-list-item v-if="item !== nullDepartment">
+                    <v-list-item-title>{{ item }} ({{index}})</v-list-item-title>
+                  </v-list-item>
+                </span>
               </v-list>
             </v-menu>
           </div>
@@ -137,12 +136,13 @@
 </template>
 
 <script>
-import { halls, bloodGroups, departments } from '@/mixins/constants'
+import { halls, bloodGroups, departments, nullDepartment } from '@/mixins/constants'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { mapActions, mapGetters } from 'vuex'
 import { handleGETDonorsDuplicate } from '@/api'
 import Container from '../Wrappers/Container'
 import { environmentService } from '@/mixins/environment'
+import { createNewPopUpWindow } from '@/mixins/helpers'
 
 export default {
   name: 'NewPersonCard',
@@ -303,6 +303,7 @@ export default {
       halls,
       bloodGroups,
       departments,
+      nullDepartment,
 
       name: null,
       phone: null,
@@ -403,7 +404,7 @@ export default {
       this.donorCreationLoader = false
     },
     goToDuplicateProfile () {
-      window.open(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId, 'popup','width=600,height=600')
+      createNewPopUpWindow(environmentService.getFrontendBaseURL()+ '#/home/details?id=' + this.duplicateDonorId)
     },
     async discardClicked () {
       if (this.discardDonor !== null) {

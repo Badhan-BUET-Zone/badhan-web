@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver'
 import { bloodGroups, halls } from './constants'
 import {PersonInterface} from "@/store/home";
 import {BadhanAxiosErrorInterface, BadhanAxiosResponseDataInterface} from "@/api";
+import {environmentService} from "@/mixins/environment";
 
 export const processError = (error: BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>) => {
   if (error.response && error.response.data && error.response.data.message) {
@@ -51,7 +52,10 @@ export const processPersonsForReport = (persons: PersonInterface[]) => {
 }
 
 export const directCall = (phoneNumber: number) => {
-  window.open('tel:+' + phoneNumber, 'popup','width=600,height=600')
+  createNewPopUpWindow('tel:+' + phoneNumber)
+}
+export const createNewPopUpWindow = (url: string) => {
+  window.open(url, 'popup','width=600,height=600')
 }
 
 export const fixBackSlash = (text: string) => {
