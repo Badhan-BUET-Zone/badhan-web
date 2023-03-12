@@ -754,12 +754,16 @@ export default {
 
     async createPasswordRecoveryLink () {
       this.passwordRecoveryFlag = true
-      const token = await handlePOSTDonorsPasswordRequest({ donorId: this.id })
+      const response = await handlePOSTDonorsPasswordRequest({ donorId: this.id })
       this.passwordRecoveryFlag = false
-      if (!token) {
+
+      console.log(response.status)
+      if (response.status !== 200) {
         return
       }
-      this.passwordRecoveryLink = environmentService.getFrontendBaseURL() + '/#/passwordReset?token=' + token
+      await this.notifySuccess(response.data.message)
+
+      this.passwordRecoveryLink = environmentService.getFrontendBaseURL() + '/#/passwordReset?token=' + response.data.token
     },
     async passwordRecoveryLinkCopyClicked () {
       await this.$copyText(this.passwordRecoveryLink)
@@ -875,22 +879,28 @@ export default {
 
     async promoteClicked () {
       this.promoteFlag = true
-      if (await handlePATCHDonorsDesignation({
+      const response = await handlePATCHDonorsDesignation({
         donorId: this.id,
         promoteFlag: true
-      })) {
-        this.designation = 1
+      })
+      if(response.status !== 200){
+        return
       }
+      await this.notifySuccess(response.data.message)
+      this.designation = 1
       this.promoteFlag = false
     },
     async demoteClicked () {
       this.promoteFlag = true
-      if (await handlePATCHDonorsDesignation({
+      const response = await handlePATCHDonorsDesignation({
         donorId: this.id,
         promoteFlag: false
-      })) {
-        this.designation = 0
+      })
+      if (response.status !== 200) {
+        return
       }
+      await this.notifySuccess(response.data.message)
+      this.designation = 0
       this.promoteFlag = false
     },
     async savePasswordClicked () {

@@ -138,11 +138,9 @@ export interface PATCHDonorsDesignationPayloadInterface {
 
 const handlePATCHDonorsDesignation = async (payload: PATCHDonorsDesignationPayloadInterface) => {
   try {
-    const response = await badhanAxios.patch('/donors/designation', payload)
-    store.dispatch('notification/notifySuccess', response.data.message, { root: true })
-    return true
-  } catch (error) {
-    return false
+    return await badhanAxios.patch('/donors/designation', payload)
+  } catch (e) {
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface PATCHUsersPasswordPayloadInterface {
@@ -150,9 +148,7 @@ export interface PATCHUsersPasswordPayloadInterface {
 }
 const handlePATCHUsersPassword = async (payload: PATCHUsersPasswordPayloadInterface) => {
   try {
-    const response = await badhanAxios.patch('/users/password', payload)
-    store.dispatch('notification/notifySuccess', response.data.message)
-    return response.data
+    return await badhanAxios.patch('/users/password', payload)
   } catch (error) {
     return null
   }
@@ -172,11 +168,9 @@ export interface POSTDonorsPasswordPayloadInterface {
 }
 const handlePOSTDonorsPasswordRequest = async (payload: POSTDonorsPasswordPayloadInterface) => {
   try {
-    const response = await badhanAxios.post('/donors/password', payload)
-    store.dispatch('notification/notifySuccess', response.data.message)
-    return response.data.token
-  } catch (error) {
-    return null
+    return await badhanAxios.post('/donors/password', payload)
+  } catch (e) {
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETDonorsDuplicatePayloadInterface {
