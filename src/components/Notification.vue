@@ -1,5 +1,5 @@
 <template>
-    <div id="notificationSnackbarId">
+    <div id="notificationSnackbarDivId">
         <v-snackbar
             v-model="notification"
             :color="getNotificationColor"
@@ -7,7 +7,7 @@
             bottom
             :timeout="-1"
         >
-            {{ getNotification }}
+            <span id="notificationTextId">{{ getNotification }}</span>
             <template v-slot:action="{ attrs }">
                 <v-btn
                     text
