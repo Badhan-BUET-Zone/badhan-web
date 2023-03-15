@@ -200,16 +200,19 @@ const handleGETLogs = async () => {
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
+
+type DELETESignOutResponseData = BadhanAxiosResponseDataInterface
 const handleDELETESignOut = async () => {
   try {
-    return await badhanAxios.delete('/users/signout', {})
+    return await badhanAxios.delete('/users/signout', {}) as BadhanAxiosResponseInterface<DELETESignOutResponseData>
   } catch (e) {
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
+type DELETESignOutAllResponseData = BadhanAxiosResponseDataInterface
 const handleDELETESignOutAll = async () => {
   try {
-    return await badhanAxios.delete('/users/signout/all')
+    return await badhanAxios.delete('/users/signout/all') as BadhanAxiosResponseInterface<DELETESignOutAllResponseData>
   } catch (e) {
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
