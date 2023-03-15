@@ -160,7 +160,7 @@ const handleDELETEDonors = async (payload: DELETEDonorsPayloadInterface) => {
   try {
     return await badhanAxios.delete('/donors', { params: payload })
   } catch (error) {
-    return (error as AxiosError<Error>).response
+    return (error as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTDonorsPasswordPayloadInterface {
@@ -178,10 +178,9 @@ export interface GETDonorsDuplicatePayloadInterface {
 }
 const handleGETDonorsDuplicate = async (payload: GETDonorsDuplicatePayloadInterface) => {
   try {
-    const response = await badhanAxios.get('/donors/checkDuplicate', { params: payload })
-    return response.data
+    return await badhanAxios.get('/donors/checkDuplicate', { params: payload })
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface GETLogsByDatePayloadInterface {
@@ -189,34 +188,30 @@ export interface GETLogsByDatePayloadInterface {
 }
 const handleGETLogsByDate = async (payload: GETLogsByDatePayloadInterface) => {
   try {
-    const response = await badhanAxios.get(`/log/date/${payload.timeStamp}`)
-    return response.data.logs
+    return await badhanAxios.get(`/log/date/${payload.timeStamp}`)
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleGETLogs = async () => {
   try {
-    const response = await badhanAxios.get('/log')
-    return response.data.logs
+    return await badhanAxios.get('/log')
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleDELETESignOut = async () => {
   try {
-    const response = await badhanAxios.delete('/users/signout', {})
-    return response.data
+    return await badhanAxios.delete('/users/signout', {})
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handleDELETESignOutAll = async () => {
   try {
-    const response = await badhanAxios.delete('/users/signout/all')
-    return response.data
+    return await badhanAxios.delete('/users/signout/all')
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 const handlePOSTRedirection = async () => {
@@ -256,10 +251,9 @@ export interface POSTSignInPayloadInterface {
 }
 const handlePOSTSignIn = async (payload: POSTSignInPayloadInterface) => {
   try {
-    const response = await badhanAxios.post('/users/signin', payload)
-    return response.data
+    return await badhanAxios.post('/users/signin', payload)
   } catch (e) {
-    return null
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface POSTDonorsPayloadInterface {

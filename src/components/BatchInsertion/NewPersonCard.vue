@@ -163,14 +163,14 @@ export default {
           this.duplicateDonorId = null
           this.duplicateDonorMessage = 'Checking phone...'
           this.phoneDuplicateCheckLoader = true
-          const data = await handleGETDonorsDuplicate({ phone: '88' + phone })
+          const response = await handleGETDonorsDuplicate({ phone: '88' + phone })
           this.phoneDuplicateCheckLoader = false
 
-          if (!data) return false
+          if (response.status !== 200) return false
 
-          this.duplicateDonorId = data.donor ? data.donor._id : null
-          this.duplicateDonorMessage = data.message
-          return !data.found
+          this.duplicateDonorId = response.data.donor ? response.data.donor._id : null
+          this.duplicateDonorMessage = response.data.message
+          return !response.data.found
         }
       },
       name: {

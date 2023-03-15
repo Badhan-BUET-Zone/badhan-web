@@ -63,11 +63,11 @@ export default {
     }
 
     this.logCountLoader = true
-    const logs = await handleGETLogs()
+    const response = await handleGETLogs()
     this.logCountLoader = false
-    if (!logs) return
-    this.logCountPerDay = logs
-    const reverseLogs = logs.slice(0, 14).reverse()
+    if (response.status !== 200) return
+    this.logCountPerDay = response.data.logs
+    const reverseLogs = response.data.logs.slice(0, 14).reverse()
     this.labelsForSparkLine = reverseLogs.map(a => a.dateString.split('-')[2])
     this.valuesForSparkLine = reverseLogs.map(a => a.totalLogCount)
   },
