@@ -150,7 +150,7 @@ const handlePATCHUsersPassword = async (payload: PATCHUsersPasswordPayloadInterf
   try {
     return await badhanAxios.patch('/users/password', payload)
   } catch (error) {
-    return null
+    return (error as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
 export interface DELETEDonorsPayloadInterface {

@@ -98,13 +98,13 @@ export default {
 
       this.$store.commit('setToken', this.$route.query.token)
       this.passwordChangeFlag = true
-      const result = await handlePATCHUsersPassword({ password: this.newPassword })
+      const response = await handlePATCHUsersPassword({ password: this.newPassword })
       this.passwordChangeFlag = false
-      if (!result) {
+      if (response.status !== 200) {
         this.$store.commit('removeToken')
         return
       }
-      this.$store.commit('setToken', result.token)
+      this.$store.commit('setToken', response.data.token)
       this.$store.commit('saveTokenToLocalStorage')
       if (await this.$store.dispatch('autoLogin')) {
         await this.$router.push({ name: 'Home' })

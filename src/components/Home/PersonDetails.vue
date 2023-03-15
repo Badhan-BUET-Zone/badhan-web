@@ -910,15 +910,19 @@ export default {
         return
       }
       this.passwordChangeFlag = true
-      const data = await handlePATCHUsersPassword({
+      const response = await handlePATCHUsersPassword({
         donorId: this.id,
         password: this.newPassword
       })
-      if (data && !isGuestEnabled()) {
-        this.setToken(data.token)
+      if(response.status === 200){
+        return
+      }
+      if(!isGuestEnabled()) {
+        this.setToken(response.data.token)
         this.saveTokenToLocalStorage()
       }
       this.passwordChangeFlag = false
+      this.notifySuccess(response.data.message)
     },
     async saveDetailsClicked () {
       await this.$v.name.$touch()
