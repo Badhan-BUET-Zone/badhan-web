@@ -966,7 +966,7 @@ export default {
       })
       this.newDonationLoader = false
       if (donationResponse.status !== 201) return
-      this.notifySuccess('Added donation')
+      this.notifySuccess(donationResponse.data.message)
       const newAvailableIn =
         120 -
         Math.round(
