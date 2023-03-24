@@ -51,7 +51,10 @@ export const processPersonsForReport = (persons: PersonInterface[]) => {
 }
 
 export const directCall = (phoneNumber: number) => {
-  window.open('tel:+' + phoneNumber, 'popup','width=600,height=600')
+  createNewPopUpWindow('tel:+' + phoneNumber)
+}
+export const createNewPopUpWindow = (url: string) => {
+  window.open(url, 'popup','width=600,height=600')
 }
 
 export const fixBackSlash = (text: string) => {

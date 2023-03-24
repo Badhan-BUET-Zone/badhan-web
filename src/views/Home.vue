@@ -248,7 +248,7 @@ export default {
     ...mapMutations(['hideSearchResults', 'resetSearchResults']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('messageBox', ['setMessage']),
-    searchClickedFromFilterComponent (filterValues) {
+    async searchClickedFromFilterComponent (filterValues) {
       this.name = filterValues.name
       this.batch = filterValues.batch
       this.address = filterValues.address
@@ -257,7 +257,7 @@ export default {
       this.radios = filterValues.availableToAll
       this.availability = filterValues.availability
       this.notAvailability = filterValues.notAvailability
-      this.searchClicked()
+      await this.searchClicked()
     },
     downloadInWeb () {
       const processedPersons = processPersonsForReport(this.getPersons)

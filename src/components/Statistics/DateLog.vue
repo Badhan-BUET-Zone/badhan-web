@@ -41,10 +41,10 @@ export default {
       const splitDate = this.logCount.dateString.split('-')
       const timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime()
       this.dateLogsLoading = true
-      const logs = await handleGETLogsByDate({ timeStamp })
+      const response = await handleGETLogsByDate({ timeStamp })
       this.dateLogsLoading = false
-      if (!logs) return
-      this.dateLogs = logs
+      if (response.status !== 200) return
+      this.dateLogs = response.data.logs
     }
   }
 }

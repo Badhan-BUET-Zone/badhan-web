@@ -32,7 +32,7 @@ const actions = {
     const response = await handlePOSTDonations(sendData)
     commit('donationLoaderFlagOff')
     if (response.status !== 201) return null
-    dispatch('notification/notifySuccess', 'Successfully added donation', { root: true })
+    dispatch('notification/notifySuccess', response.data.message, { root: true })
     return response.data.newDonation
   }
 }

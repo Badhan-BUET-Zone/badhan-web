@@ -309,14 +309,11 @@ router.beforeEach(async (to: Route, from: Route, next: NavigationGuardNext<Vue>)
     next()
   }
 
-  if (!store.getters.getIsLoggedIn) {
-    await store.dispatch('autoLogin')
-  }
-
-  if (!store.getters.getIsLoggedIn && customRouteTo.meta.requiresAuth) {
+  if (!store.getters.getToken && customRouteTo.meta.requiresAuth) {
     store.commit('setAutoRedirectionPath', to.fullPath)
     next('/')
-  } else if (store.getters.getIsLoggedIn && (customRouteTo.meta.reRouteIfAuthorized || customRouteTo.meta.designation > store.getters.getDesignation)) {
+  } else if (store.getters.getToken &&
+      (customRouteTo.meta.reRouteIfAuthorized || customRouteTo.meta.designation > store.getters.getDesignation)) {
     next('/home')
   } else {
     next()

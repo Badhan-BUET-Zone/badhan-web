@@ -1,11 +1,10 @@
+export const nullDepartment = 'NULL'
 export const departments: string[] = [
-  'NULL', 'Arch (01)', 'Ch.E (02)', 'NULL',
-  'CE (04)', 'CSE (05)', 'EEE (06)', 'NULL',
-  'IPE (08)', 'NULL', 'ME (10)', 'MME (11)',
-  'NAME (12)', 'NULL', 'NULL', 'URP (15)',
-  'WRE (16)', 'NULL', 'BME (18)']
-// covid support
-// export const halls=['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir','Attached'];
+  nullDepartment, 'Arch', 'Ch.E', nullDepartment,
+  'CE', 'CSE', 'EEE', nullDepartment,
+  'IPE', nullDepartment, 'ME', 'MME',
+  'NAME', nullDepartment, nullDepartment, 'URP',
+  'WRE', nullDepartment, 'BME']
 
 export const halls: string[] = ['Ahsanullah', 'Sabekun Nahar Sony', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir', 'Attached', '(Unknown)']
 export const designations: string[] = ['Donor', 'Volunteer', 'Hall Admin', 'Super Admin']

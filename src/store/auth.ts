@@ -96,9 +96,9 @@ const mutations = {
 const actions = {
   async logout ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}) {
     commit('setLoadingTrue')
-    const data = await handleDELETESignOut()
-    if (data) {
-      dispatch('notification/notifySuccess', data.message)
+    const response = await handleDELETESignOut()
+    if (response.status === 200) {
+      dispatch('notification/notifySuccess', response.data.message)
     }
     commit('setLoadingFalse')
     commit('unsetLoginFlag')
@@ -108,9 +108,9 @@ const actions = {
     resetBaseURL()
   },
   async logoutAll ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}) {
-    const data = await handleDELETESignOutAll()
-    if (data) {
-      dispatch('notification/notifySuccess', data.message)
+    const response = await handleDELETESignOutAll()
+    if (response.status === 200) {
+      dispatch('notification/notifySuccess', response.data.message)
     }
     commit('unsetLoginFlag')
     commit('removeToken')
@@ -139,16 +139,9 @@ const actions = {
     return true
   },
   async autoLogin ({ commit, state }: {commit: Commit, state: AuthStoreStateInterface} ) {
-    commit('loadTokenFromLocalStorage')
     if (state.token === null) return true
 
-    commit('signInLoaderFlagOn')
     const response = await handleGETDonorsMe()
-    commit('signInLoaderFlagOff')
-
-    if (!response) {
-      return false
-    }
 
     if (response.status !== 200) {
       if (response.status !== 401) return false
@@ -160,6 +153,8 @@ const actions = {
 
     const donor = response.data.donor
     commit('setMyProfile', donor)
+    commit('saveMyProfileToLocalStorage', donor)
+    ldb.myProfile.save(donor)
     commit('setLoginFlag')
     return true
   },
@@ -189,13 +184,13 @@ const actions = {
       password: payload.password
     }
 
-    const data = await handlePOSTSignIn(sendData)
+    const signInResponse = await handlePOSTSignIn(sendData)
 
-    if (!data) {
+    if (signInResponse.status !== 201) {
       commit('signInLoaderFlagOff')
       return false
     }
-    commit('setToken', data.token)
+    commit('setToken', signInResponse.data.token)
 
     const response = await handleGETDonorsMe()
     commit('signInLoaderFlagOff')
@@ -206,6 +201,7 @@ const actions = {
 
     const donor = response.data.donor
     commit('setMyProfile', donor)
+    commit('saveMyProfileToLocalStorage', donor)
 
     if (payload.rememberFlag) {
       commit('saveTokenToLocalStorage')
@@ -213,7 +209,7 @@ const actions = {
       ldb.token.clear()
     }
     commit('setLoginFlag')
-    dispatch('notification/notifySuccess', data.message)
+    dispatch('notification/notifySuccess',signInResponse.data.message)
     return true
   }
 }

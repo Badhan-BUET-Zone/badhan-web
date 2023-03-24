@@ -1,6 +1,6 @@
 <template>
   <v-app id="app" app>
-    <app-bar v-if="getIsLoggedIn"></app-bar>
+    <app-bar v-if="getToken"></app-bar>
     <v-main>
       <transition name="slide-fade" mode="out-in">
         <router-view app class="container"></router-view>
@@ -19,7 +19,7 @@
 import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import SignInDialog from './components/SignInDialog'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
@@ -38,10 +38,12 @@ export default {
     SignInDialog
   },
   computed: {
-    ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn']),
+    ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn', 'getToken']),
   },
   methods: {
     ...mapActions('frontendSettings', ['fetchSettings']),
+    ...mapMutations(['loadTokenFromLocalStorage','loadMyProfileFromLocalStorage']),
+    ...mapActions(['autoLogin']),
     async versionCheck () {
       await this.fetchSettings()
     }
@@ -49,6 +51,13 @@ export default {
 
   async mounted () {
     await this.versionCheck()
+    if(this.getToken){
+      if(!await this.autoLogin()){
+        await this.$router.push('/')
+      }
+    } else if (this.$route.name !== 'SignIn') {
+      await this.$router.push('/')
+    }
   }
 }
 </script>

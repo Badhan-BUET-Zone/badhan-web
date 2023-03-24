@@ -157,7 +157,6 @@
 </template>
 
 <script>
-import { departments } from '@/mixins/constants'
 import { directCall, fixBackSlash } from '@/mixins/helpers'
 import { mapActions, mapGetters } from 'vuex'
 import VueMarkdown from 'vue-markdown'
@@ -168,11 +167,6 @@ export default {
     'person'
   ],
   components: { VueMarkdown },
-  filters: {
-    idToDept (studentId) {
-      return departments[Number(studentId.toString().substr(2, 2))]
-    }
-  },
   data: function () {
     return {
       newDonationDate: '',

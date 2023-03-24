@@ -4,7 +4,7 @@ import theme from './theme'
 import members from './members'
 import publicContacts from './publicContacts'
 import frontendSettings from './frontendSettings'
-
+import myProfile from "./myProfile";
 const reset = () => {
   localStorage.clear()
 }
@@ -16,5 +16,6 @@ export default {
   members,
   publicContacts,
   frontendSettings,
+  myProfile,
   reset
 }

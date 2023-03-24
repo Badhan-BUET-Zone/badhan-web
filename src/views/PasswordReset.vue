@@ -90,6 +90,7 @@ export default {
   methods: {
     ...mapMutations(['setToken']),
     ...mapActions(['checkToken']),
+    ...mapActions('notification', ['notifySuccess']),
     async changePasswordClicked () {
       await this.$v.$touch()
       if (this.$v.$anyError) {
@@ -98,13 +99,14 @@ export default {
 
       this.$store.commit('setToken', this.$route.query.token)
       this.passwordChangeFlag = true
-      const result = await handlePATCHUsersPassword({ password: this.newPassword })
+      const response = await handlePATCHUsersPassword({ password: this.newPassword })
       this.passwordChangeFlag = false
-      if (!result) {
+      if (response.status !== 201) {
         this.$store.commit('removeToken')
         return
       }
-      this.$store.commit('setToken', result.token)
+      this.notifySuccess(response.data.message)
+      this.$store.commit('setToken', response.data.token)
       this.$store.commit('saveTokenToLocalStorage')
       if (await this.$store.dispatch('autoLogin')) {
         await this.$router.push({ name: 'Home' })

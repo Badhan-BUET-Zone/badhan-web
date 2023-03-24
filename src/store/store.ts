@@ -66,3 +66,6 @@ export const store = new Vuex.Store({
     donate
   }
 })
+
+store.commit('loadTokenFromLocalStorage')
+store.commit('loadMyProfileFromLocalStorage')

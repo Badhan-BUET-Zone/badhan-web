@@ -102,7 +102,8 @@
               label="Select Hall"
               outlined
               dense
-              @blur="$v.hall.$touch()" :error-messages="hallErrors"
+              @blur="$v.hall.$touch()"
+              :error-messages="hallErrors"
           ></v-select>
           <v-row>
             <v-col>
@@ -111,6 +112,7 @@
                   dense
                   v-model="availability"
                   :label="'Available'"
+                  :error-messages="availabilityErrors"
               ></v-checkbox>
             </v-col>
             <v-col>
@@ -119,6 +121,7 @@
                   dense
                   v-model="notAvailability"
                   :label="'Not Available'"
+                  :error="!!availabilityErrors"
               ></v-checkbox>
             </v-col>
           </v-row>
@@ -189,7 +192,8 @@ export default {
       if (this.$v.$anyError) {
         return
       }
-      this.searchClicked({
+      this.isSearchLoading = true
+      await this.searchClicked({
         name: this.name,
         bloodGroup: this.bloodGroup,
         batch: this.batch,
@@ -199,6 +203,7 @@ export default {
         address: this.address,
         availableToAll: this.radios
       })
+      this.isSearchLoading = false
     }
   },
   validations: () => {
@@ -207,6 +212,11 @@ export default {
         minLength: minLength(2),
         maxLength: maxLength(2),
         numeric
+      },
+      availability: {
+        putAtLeastOneCheck(){
+          return this.availability | this.notAvailability
+        }
       },
       hall: {
         required,
@@ -236,6 +246,11 @@ export default {
       !this.$v.batch.maxLength && errors.push('Batch number must be of 2 digits')
       !this.$v.batch.numeric && errors.push('Batch number must be numeric')
       return errors
+    },
+    availabilityErrors () {
+      if (!this.$v.availability.$dirty) return null
+      if (!this.$v.availability.putAtLeastOneCheck) return 'Please put tick on at least one checkbox'
+      return null
     },
     hallErrors () {
       const errors = []

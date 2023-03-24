@@ -754,12 +754,16 @@ export default {
 
     async createPasswordRecoveryLink () {
       this.passwordRecoveryFlag = true
-      const token = await handlePOSTDonorsPasswordRequest({ donorId: this.id })
+      const response = await handlePOSTDonorsPasswordRequest({ donorId: this.id })
       this.passwordRecoveryFlag = false
-      if (!token) {
+
+      console.log(response.status)
+      if (response.status !== 200) {
         return
       }
-      this.passwordRecoveryLink = environmentService.getFrontendBaseURL() + '/#/passwordReset?token=' + token
+      await this.notifySuccess(response.data.message)
+
+      this.passwordRecoveryLink = environmentService.getFrontendBaseURL() + '/#/passwordReset?token=' + response.data.token
     },
     async passwordRecoveryLinkCopyClicked () {
       await this.$copyText(this.passwordRecoveryLink)
@@ -875,22 +879,28 @@ export default {
 
     async promoteClicked () {
       this.promoteFlag = true
-      if (await handlePATCHDonorsDesignation({
+      const response = await handlePATCHDonorsDesignation({
         donorId: this.id,
         promoteFlag: true
-      })) {
-        this.designation = 1
+      })
+      if(response.status !== 200){
+        return
       }
+      await this.notifySuccess(response.data.message)
+      this.designation = 1
       this.promoteFlag = false
     },
     async demoteClicked () {
       this.promoteFlag = true
-      if (await handlePATCHDonorsDesignation({
+      const response = await handlePATCHDonorsDesignation({
         donorId: this.id,
         promoteFlag: false
-      })) {
-        this.designation = 0
+      })
+      if (response.status !== 200) {
+        return
       }
+      await this.notifySuccess(response.data.message)
+      this.designation = 0
       this.promoteFlag = false
     },
     async savePasswordClicked () {
@@ -900,15 +910,19 @@ export default {
         return
       }
       this.passwordChangeFlag = true
-      const data = await handlePATCHUsersPassword({
+      const response = await handlePATCHUsersPassword({
         donorId: this.id,
         password: this.newPassword
       })
-      if (data && !isGuestEnabled()) {
-        this.setToken(data.token)
+      if(response.status === 200){
+        return
+      }
+      if(!isGuestEnabled()) {
+        this.setToken(response.data.token)
         this.saveTokenToLocalStorage()
       }
       this.passwordChangeFlag = false
+      this.notifySuccess(response.data.message)
     },
     async saveDetailsClicked () {
       await this.$v.name.$touch()
@@ -952,7 +966,7 @@ export default {
       })
       this.newDonationLoader = false
       if (donationResponse.status !== 201) return
-      this.notifySuccess('Added donation')
+      this.notifySuccess(donationResponse.data.message)
       const newAvailableIn =
         120 -
         Math.round(
