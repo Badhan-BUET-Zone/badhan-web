@@ -10,6 +10,27 @@ export const setWithExpiry = (key: string, value: unknown, ttl: number) => {
   localStorage.setItem(key, JSON.stringify(item))
 }
 
+export const set = (key: string, value: unknown) =>{
+  localStorage.setItem(key, JSON.stringify({value}))
+}
+
+export const get = (key: string) =>{
+  const itemStr = localStorage.getItem(key)
+  // if the item doesn't exist, return null
+  if (!itemStr) {
+    return {
+      status: 'ERROR',
+      data: null
+    }
+  }
+  const item = JSON.parse(itemStr)
+
+  return {
+    status: 'OK',
+    data: item.value
+  }
+}
+
 export const getWithExpiry = (key: string) => {
   const itemStr = localStorage.getItem(key)
   // if the item doesn't exist, return null

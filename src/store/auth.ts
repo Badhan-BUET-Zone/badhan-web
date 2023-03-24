@@ -139,12 +139,9 @@ const actions = {
     return true
   },
   async autoLogin ({ commit, state }: {commit: Commit, state: AuthStoreStateInterface} ) {
-    commit('loadTokenFromLocalStorage')
     if (state.token === null) return true
 
-    commit('signInLoaderFlagOn')
     const response = await handleGETDonorsMe()
-    commit('signInLoaderFlagOff')
 
     if (response.status !== 200) {
       if (response.status !== 401) return false
@@ -156,6 +153,8 @@ const actions = {
 
     const donor = response.data.donor
     commit('setMyProfile', donor)
+    commit('saveMyProfileToLocalStorage', donor)
+    ldb.myProfile.save(donor)
     commit('setLoginFlag')
     return true
   },
@@ -202,6 +201,7 @@ const actions = {
 
     const donor = response.data.donor
     commit('setMyProfile', donor)
+    commit('saveMyProfileToLocalStorage', donor)
 
     if (payload.rememberFlag) {
       commit('saveTokenToLocalStorage')

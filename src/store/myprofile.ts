@@ -1,4 +1,5 @@
-interface MyProfileStateInterface {
+import ldb from '../localDatabase'
+export interface MyProfileStateInterface {
   _id: string | null
   name: string | null
   studentId: string | null
@@ -53,6 +54,26 @@ const mutations = {
   },
   setComment (state: MyProfileStateInterface, comment: string) {
     state.comment = comment
+  },
+  saveMyProfileToLocalStorage(state: MyProfileStateInterface){
+    ldb.myProfile.save(state)
+  },
+  loadMyProfileFromLocalStorage(state: MyProfileStateInterface){
+    state.designation = 1
+    const myProfileFromLDB = ldb.myProfile.load().data
+    if(!myProfileFromLDB)return
+
+    state._id = myProfileFromLDB._id
+    state.name = myProfileFromLDB.name
+    state.studentId = myProfileFromLDB.studentId
+    state.lastDonation = myProfileFromLDB.lastDonation
+    state.bloodGroup = myProfileFromLDB.bloodGroup
+    state.hall = myProfileFromLDB.hall
+    state.phone = myProfileFromLDB.phone
+    state.address = myProfileFromLDB.address
+    state.comment = myProfileFromLDB.comment
+    state.designation = myProfileFromLDB.designation
+    state.roomNumber = myProfileFromLDB.roomNumber
   },
   setMyProfile (state: MyProfileStateInterface, payload: MyProfileStateInterface) {
     state._id = payload._id
