@@ -31,7 +31,7 @@ const state: AuthStoreStateInterface = {
   isLoggedIn: false,
   isGuest: false,
 
-  autoRedirectionPath: null
+  autoRedirectionPath: null,
 }
 
 const getters = {
@@ -46,8 +46,7 @@ const getters = {
   },
   getAutoRedirectionPath: (state: AuthStoreStateInterface) => {
     return state.autoRedirectionPath
-  }
-
+  },
 }
 const mutations = {
   setAutoRedirectionPath (state: AuthStoreStateInterface, path: string) {
@@ -90,8 +89,7 @@ const mutations = {
   },
   unsetLoginFlag (state: AuthStoreStateInterface) {
     state.isLoggedIn = false
-  }
-
+  },
 }
 const actions = {
   async logout ({ commit, dispatch }: {commit: Commit, dispatch: Dispatch}) {
@@ -140,8 +138,9 @@ const actions = {
   },
   async autoLogin ({ commit, state }: {commit: Commit, state: AuthStoreStateInterface} ) {
     if (state.token === null) return true
-
+    commit('setAppBarLoadingFlag')
     const response = await handleGETDonorsMe()
+    commit('unsetAppBarLoadingFlag')
 
     if (response.status !== 200) {
       if (response.status !== 401) return false

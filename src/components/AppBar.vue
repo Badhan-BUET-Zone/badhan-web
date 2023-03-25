@@ -1,6 +1,8 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app clipped-left collapse-on-scroll class="rounded-b-xl">
+      <v-progress-linear :active="getAppBarLoadingFlag" :indeterminate="true" absolute top color="white"
+      ></v-progress-linear>
       <v-app-bar-nav-icon id="hamburgerButtonId" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 40px; width: 40px" class="mr-4">
       <v-toolbar-title>Badhan BUET Zone</v-toolbar-title>
@@ -208,7 +210,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
+    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken', 'getAppBarLoadingFlag']),
     darkTheme: {
       // getter
       get () {

@@ -27,12 +27,16 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 
   state: {
-    loadingFlag: false
+    loadingFlag: false,
+    appBarLoadingFlag: false,
   },
 
   getters: {
     getLoadingFlag: state => {
       return state.loadingFlag
+    },
+    getAppBarLoadingFlag: state => {
+      return state.appBarLoadingFlag
     }
   },
   mutations: {
@@ -41,6 +45,12 @@ export const store = new Vuex.Store({
     },
     setLoadingFalse (state) {
       state.loadingFlag = false
+    },
+    setAppBarLoadingFlag (state) {
+      state.appBarLoadingFlag = true
+    },
+    unsetAppBarLoadingFlag (state) {
+      state.appBarLoadingFlag = false
     }
   },
   modules: {
