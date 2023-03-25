@@ -29,6 +29,7 @@ export const store = new Vuex.Store({
   state: {
     loadingFlag: false,
     appBarLoadingFlag: false,
+    apiPendingCount: 0
   },
 
   getters: {
@@ -47,10 +48,14 @@ export const store = new Vuex.Store({
       state.loadingFlag = false
     },
     setAppBarLoadingFlag (state) {
+      state.apiPendingCount++;
       state.appBarLoadingFlag = true
     },
     unsetAppBarLoadingFlag (state) {
-      state.appBarLoadingFlag = false
+      if (state.apiPendingCount > 0) {
+        state.apiPendingCount--;
+        state.appBarLoadingFlag = (state.apiPendingCount > 0);
+      }
     }
   },
   modules: {

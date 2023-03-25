@@ -138,9 +138,7 @@ const actions = {
   },
   async autoLogin ({ commit, state }: {commit: Commit, state: AuthStoreStateInterface} ) {
     if (state.token === null) return true
-    commit('setAppBarLoadingFlag')
     const response = await handleGETDonorsMe()
-    commit('unsetAppBarLoadingFlag')
 
     if (response.status !== 200) {
       if (response.status !== 401) return false
