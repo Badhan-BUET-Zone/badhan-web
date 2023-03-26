@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded class="d-flex justify-center">
+  <v-card rounded class="d-flex justify-center rounded-xl">
     <!--    Main Filters-->
     <v-card-text>
       <div style="text-align: center" class="ma-auto h5">

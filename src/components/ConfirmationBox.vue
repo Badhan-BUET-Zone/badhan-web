@@ -3,8 +3,9 @@
       v-model="confirmationOpened"
       width="500"
       persistent
+      content-class="rounded-xl"
     >
-      <v-card rounded>
+      <v-card>
         <v-card-title>
           Confirm
         </v-card-title>
@@ -62,5 +63,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

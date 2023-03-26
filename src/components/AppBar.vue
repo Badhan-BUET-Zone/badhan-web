@@ -12,7 +12,7 @@
           </v-btn>
         </template>
 
-        <v-list rounded>
+        <v-list>
           <v-list-item @click="signOutModalPrompted" id="signOutButtonId">
             <v-list-item-icon>
               <v-icon>

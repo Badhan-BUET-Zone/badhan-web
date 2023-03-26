@@ -1,5 +1,6 @@
 <template>
   <v-app id="app" app>
+    <TopProgressBar/>
     <app-bar v-if="getToken"></app-bar>
     <v-main>
       <transition name="slide-fade" mode="out-in">
@@ -9,7 +10,6 @@
     <Notification/>
     <MessageBox/>
     <ConfirmationBox/>
-    <BottomProgressBar/>
   </v-app>
 </template>
 
@@ -20,7 +20,7 @@ import Notification from './components/Notification'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
-import BottomProgressBar from '@/components/BottomProgressBar.vue'
+import TopProgressBar from '@/components/TopProgressBar.vue'
 
 export default {
   name: 'app',
@@ -29,7 +29,7 @@ export default {
     }
   },
   components: {
-    BottomProgressBar,
+    TopProgressBar,
     ConfirmationBox,
     MessageBox,
     'app-bar': AppBar,

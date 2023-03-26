@@ -1,18 +1,20 @@
 <template>
-<v-card flat>
-  <v-card-text class="d-flex align-content-center">
+<ContainerFlat>
+  <v-card-text class="d-flex align-center">
     <v-avatar class="ma-auto" :class="{'invert-color': invertColor}" size="100">
       <v-img src="../assets/loading.gif"/>
     </v-avatar>
   </v-card-text>
-</v-card>
+</ContainerFlat>
 </template>
 
 <script>
 import ldb from '@/localDatabase'
+import ContainerFlat from '@/components/Wrappers/ContainerFlat.vue'
 
 export default {
   name: 'LoadingMessage',
+  components: { ContainerFlat },
   computed:{
     invertColor(){
       return ldb.theme.load()
