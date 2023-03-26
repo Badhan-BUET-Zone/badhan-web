@@ -27,12 +27,17 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 
   state: {
-    loadingFlag: false
+    loadingFlag: false,
+    appBarLoadingFlag: false,
+    apiPendingCount: 0
   },
 
   getters: {
     getLoadingFlag: state => {
       return state.loadingFlag
+    },
+    getAppBarLoadingFlag: state => {
+      return state.appBarLoadingFlag
     }
   },
   mutations: {
@@ -41,6 +46,16 @@ export const store = new Vuex.Store({
     },
     setLoadingFalse (state) {
       state.loadingFlag = false
+    },
+    setAppBarLoadingFlag (state) {
+      state.apiPendingCount++;
+      state.appBarLoadingFlag = true
+    },
+    unsetAppBarLoadingFlag (state) {
+      if (state.apiPendingCount > 0) {
+        state.apiPendingCount--;
+        state.appBarLoadingFlag = (state.apiPendingCount > 0);
+      }
     }
   },
   modules: {

@@ -14,7 +14,6 @@
             :click="recoveryClicked"
             :color="'primary'"
             :disabled="recoveryCalledLoader|| emailTimeCoolDownTime<4*60 || $v.$anyError"
-            :loading="recoveryCalledLoader"
             text="Get Recovery Email" icon="mdi-backup-restore">
         </Button>
         <transition name="slide-fade-down" mode="out-in">

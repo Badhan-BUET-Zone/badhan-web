@@ -7,7 +7,6 @@
     <Button
         :id="'loginDeleteButtonId'+_id"
         :click="deleteClicked"
-        :loading="deleteLoaderFlag"
         :disabled="deleteLoaderFlag"
         :text="'Logout'"
         :icon="'mdi-delete'"

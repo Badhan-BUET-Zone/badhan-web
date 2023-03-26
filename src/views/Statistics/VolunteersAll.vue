@@ -2,7 +2,7 @@
   <Container>
     <v-card-title>List of all members</v-card-title>
     <transition name="slide-fade-down-snapout" mode="out-in">
-      <v-data-table :key="'volunteerLoading'" v-if="getVolunteerLoaderFlag" :loading="true">
+      <v-data-table :key="'volunteerLoading'" v-if="getVolunteerLoaderFlag">
       </v-data-table>
       <v-data-table id="statisticsAllVolunteersTableId" :key="'volunteerLoaded'"
                     v-if="volunteersShown"

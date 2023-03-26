@@ -18,7 +18,6 @@
       </v-card-text>
       <v-card-actions>
         <Button
-          :loading="excelUploadRedirectionFlag"
           :disabled="excelUploadRedirectionFlag"
           :color="'primary'"
           :icon="'mdi-upload'"

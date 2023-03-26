@@ -1,5 +1,5 @@
 <template>
-  <v-btn small rounded class="ma-1" :color="color" @click="click" :disabled="disabled" :loading="loading">
+  <v-btn small rounded class="ma-1" :color="color" @click="click" :disabled="disabled">
     <v-icon left>{{ icon }}</v-icon>
     {{ text }}
   </v-btn>
@@ -13,10 +13,6 @@ export default {
       required: true
     },
     disabled: {
-      type: Boolean,
-      default: false
-    },
-    loading: {
       type: Boolean,
       default: false
     },

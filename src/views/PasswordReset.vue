@@ -13,7 +13,7 @@
                       :type="confirmPasswordFlag ? 'text' : 'password'" v-model="confirmPassword" dense outlined rounded label="Confirm Password"></v-text-field>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="changePasswordClicked" :disabled="passwordChangeFlag || $v.$anyError" :loading="passwordChangeFlag" rounded color="primary">
+        <v-btn @click="changePasswordClicked" :disabled="passwordChangeFlag || $v.$anyError" rounded color="primary">
           <v-icon left>
             mdi-content-save
           </v-icon>

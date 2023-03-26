@@ -15,7 +15,7 @@
           </p>
         </v-col>
         <v-col cols="3">
-          <v-btn :id="`callRecordDeleteButtonId_${callRecord._id}`" @click="deletePrompt" :loading="deleteLoaderFlag" :disabled="deleteLoaderFlag" color="warning" x-small
+          <v-btn :id="`callRecordDeleteButtonId_${callRecord._id}`" @click="deletePrompt" :disabled="deleteLoaderFlag" color="warning" x-small
                  fab depressed>
             <v-icon>mdi-delete</v-icon>
           </v-btn>

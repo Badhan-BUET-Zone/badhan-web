@@ -7,12 +7,12 @@
       <v-spacer></v-spacer>
       <v-menu right rounded>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" :loading="getLoadingFlag" id="topBarVerticalDotsId">
+          <v-btn icon v-bind="attrs" v-on="on" id="topBarVerticalDotsId">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
 
-        <v-list rounded>
+        <v-list>
           <v-list-item @click="signOutModalPrompted" id="signOutButtonId">
             <v-list-item-icon>
               <v-icon>

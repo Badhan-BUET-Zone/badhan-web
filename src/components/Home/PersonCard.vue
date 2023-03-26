@@ -84,14 +84,13 @@
                 v-b-modal="'detailsModal'"
                 @click="loadPersonDetails()"
                 :disabled="seeDetailsLoaderFlag"
-                :loading="seeDetailsLoaderFlag"
             >
               <v-icon left>
                 mdi-account-details
               </v-icon>
               See profile
             </v-btn>
-            <v-btn :id="'personCardCallButtonId_'+id" :disabled="newCallRecordLoader" :loading="newCallRecordLoader" small rounded color="secondary"
+            <v-btn :id="'personCardCallButtonId_'+id" :disabled="newCallRecordLoader" small rounded color="secondary"
                    class="ml-2" @click="callFromDialer"
             >
               <v-icon left>
@@ -146,7 +145,6 @@
               small
               style="width: 100%"
               @click="donateClicked()"
-              :loading="getDonationLoaderFlag"
               :disabled="getDonationLoaderFlag || newDonationDate.length === 0"
           >Done
           </v-btn>

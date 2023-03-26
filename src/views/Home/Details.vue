@@ -8,12 +8,16 @@
 <script>
 import PersonDetails from '../../components/Home/PersonDetails'
 import PageTitle from '../../components/PageTitle'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'DetailsPage',
   components: {
     PageTitle,
     PersonDetails
+  },
+  computed:{
+    ...mapGetters(['getAppBarLoadingFlag'])
   },
   data: () => {
     return {

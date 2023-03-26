@@ -11,7 +11,7 @@
       <v-btn :id="`dateLogDetailsButtonId_${logCount.dateString}`" rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
         Details
       </v-btn>
-      <v-skeleton-loader type="text@3" v-if="dateLogsLoading"></v-skeleton-loader>
+      <LoadingMessage v-if="dateLogsLoading"/>
       <div v-for="(dateLog,index) in dateLogs" :key="index">
         <PersonLog :date-log="dateLog" :date-string="logCount.dateString"></PersonLog>
       </div>
@@ -22,6 +22,7 @@
 <script>
 import { handleGETLogsByDate } from '@/api'
 import PersonLog from './PersonLog'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   props: ['logCount'],
@@ -34,6 +35,7 @@ export default {
     }
   },
   components: {
+    LoadingMessage,
     PersonLog
   },
   methods: {

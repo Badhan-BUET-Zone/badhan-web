@@ -3,13 +3,7 @@
     <Container>
       <v-card-title>Activity Logs of <br>Badhan BUET Zone</v-card-title>
       <transition name="slide-fade-down-snapout" type="out-in">
-        <v-card-text v-if="logCountLoader" :key="'logLoader'">
-          <v-row>
-            <v-col cols="12" sm="4" v-for="i in 3" :key="i">
-              <SkeletonDateLog></SkeletonDateLog>
-            </v-col>
-          </v-row>
-        </v-card-text>
+        <LoadingMessage v-if="logCountLoader" :key="'logLoader'"/>
         <v-card-text v-else :key="'logLoaded'">
           <v-sparkline
             :labels="labelsForSparkLine"
@@ -36,12 +30,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import { handleGETLogs } from '@/api'
 import DateLog from '../../components/Statistics/DateLog'
-import SkeletonDateLog from '../../components/Statistics/SkeletonDateLog'
 import Container from '../../components/Wrappers/Container'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'LogsByDate',
-  components: { Container, DateLog, SkeletonDateLog },
+  components: { LoadingMessage, Container, DateLog },
   computed: {
     ...mapGetters('statistics', ['getStatisticsLoaderFlag', 'getStatistics', 'getLogs', 'getLogsLoaderFlag', 'getLogDeleteFLag', 'getVolunteers', 'getVolunteerLoaderFlag']),
     ...mapGetters(['getDesignation'])

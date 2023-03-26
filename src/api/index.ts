@@ -37,6 +37,8 @@ const firebaseAxios = axios.create({
 
 badhanAxios.interceptors.request.use((config) => {
   // Do something before request is sent
+  store.commit('setAppBarLoadingFlag')
+
   myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.method + ' ' + config.url + ': ', config.data, config.params)
 
   store.dispatch('notification/clearNotification')
@@ -57,15 +59,20 @@ badhanAxios.interceptors.request.use((config) => {
   }
 }, function (error) {
   // Do something with request error
+  store.commit('unsetAppBarLoadingFlag')
   return Promise.reject(error)
 })
 
 badhanAxios.interceptors.response.use((response) => {
   // Do something before request is sent
+  store.commit('unsetAppBarLoadingFlag')
+
   myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.method + ' ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
+  store.commit('unsetAppBarLoadingFlag')
+
   let errorNotification
   if (error.response && error.response.data) {
     store.commit('consoleStore/addConsoleLog', {
@@ -101,6 +108,8 @@ export interface BadhanAxiosErrorInterface<T extends BadhanAxiosResponseDataInte
 
 firebaseAxios.interceptors.request.use((config) => {
   // Do something before request is sent
+  store.commit('setAppBarLoadingFlag')
+
   myConsole.log('%cAPI:', 'color: #ff00ff',' REQUEST TO ' + config.url + ': ', config.data)
 
   store.dispatch('notification/clearNotification')
@@ -108,15 +117,18 @@ firebaseAxios.interceptors.request.use((config) => {
   return config
 }, function (error) {
   // Do something with request error
+  store.commit('unsetAppBarLoadingFlag')
   return Promise.reject(error)
 })
 
 firebaseAxios.interceptors.response.use((response) => {
   // Do something before request is sent
+  store.commit('unsetAppBarLoadingFlag')
   myConsole.log('%cAPI:', 'color: #00ff00',' RESPONSE FROM ' + response.config.url + ': ', response)
   return response
 }, (error) => {
   // Do something with request error
+  store.commit('unsetAppBarLoadingFlag')
   store.dispatch('notification/notifyError', processError(error))
   return Promise.reject(error)
 })

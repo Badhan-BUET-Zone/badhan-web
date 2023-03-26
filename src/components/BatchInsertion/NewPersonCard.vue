@@ -122,8 +122,7 @@
         Discard
       </v-btn>
       <v-btn id="newDonorCreateButtonId" small color="primary" rounded @click="createDonorClicked"
-             :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader"
-             :loading="donorCreationLoader">
+             :disabled="donorCreationLoader|| $v.$anyError || warnings.length!==0 || getNewDonorLoader">
         <v-icon left>
           mdi-account-plus
         </v-icon>
