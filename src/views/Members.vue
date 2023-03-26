@@ -4,13 +4,7 @@
     </PageTitle>
     <Container>
       <transition name="slide-fade-down" mode="out-in">
-        <div v-if="getMemberLoaderFlag" :key="'membersLoading'">
-          <v-card-title>
-            Loading Members
-          </v-card-title>
-          <v-skeleton-loader type="article">
-          </v-skeleton-loader>
-        </div>
+        <LoadingMessage v-if="getMemberLoaderFlag" :key="'membersLoading'"/>
         <div v-else :key="'membersLoaded'">
           <v-card-title :key="'volunteerTitle'">
             Volunteers of {{ getHall | getHallName }} hall
@@ -111,10 +105,11 @@
 import PageTitle from '../components/PageTitle'
 import Container from '../components/Wrappers/Container'
 import { mapActions, mapGetters } from 'vuex'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'MembersPage',
-  components: { Container, PageTitle },
+  components: { LoadingMessage, Container, PageTitle },
   computed: {
     ...mapGetters('members', ['getVolunteers', 'getHallAdmins', 'getSuperAdmins', 'getMemberLoaderFlag']),
     ...mapGetters(['getHall'])

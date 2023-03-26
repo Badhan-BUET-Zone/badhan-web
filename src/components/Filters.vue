@@ -140,7 +140,6 @@
               rounded
               color="primary"
               :disabled="isSearchLoading || $v.$anyError"
-              :loading="isSearchLoading"
               @click="searchClickInsideComponent"
               class="ma-2"
           >

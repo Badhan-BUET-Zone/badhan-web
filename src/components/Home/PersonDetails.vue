@@ -1,11 +1,7 @@
 <template>
   <div>
     <transition name="slide-fade-down-snapout" mode="out-in">
-      <Container v-if="getDonorLoaderFlag" :key="'donorLoading'">
-        <v-card-title><span class="grey--text">Loading...</span></v-card-title>
-        <v-skeleton-loader type="article"></v-skeleton-loader>
-      </Container>
-
+      <LoadingMessage v-if="getDonorLoaderFlag" :key="'donorLoading'"/>
       <Container v-else-if="donorErrorHappened" :key="'donorError'">
         <PageTitle></PageTitle>
         <v-card class="mx-auto mt-2" max-width="700">
@@ -43,7 +39,6 @@
                 <v-switch
                   id="personDetailsActiveDonorSwitchId"
                   :disabled="activeDonorLoader"
-                  :loading="activeDonorLoader"
                   v-model="markedAsActiveDonor"
                   @change="markAsActiveDonorHandler"
                   label="Active donor"
@@ -138,7 +133,7 @@
                       <div v-if="getDesignation > designation || $isMe(id)">
                         <v-btn id="donorDetailsSaveButtonId" color="primary" rounded class="white--text ml-2" small
                                :disabled="getDetailsLoaderFlag || !isDetailsEditable || $v.name.$error || $v.phone.$error || $v.studentId.$error || $v.email.$error"
-                               :loading="getDetailsLoaderFlag" @click="saveDetailsClicked()">
+                               @click="saveDetailsClicked()">
                           <v-icon left>
                             mdi-content-save
                           </v-icon>
@@ -154,7 +149,7 @@
 
                     <v-btn id="donorDetailsCommentSaveButtonId" color="primary" rounded small
                            :disabled="getCommentLoaderFlag"
-                           :loading="getCommentLoaderFlag" @click="saveCommentClicked()">
+                           @click="saveCommentClicked()">
                       <v-icon left>
                         mdi-content-save
                       </v-icon>
@@ -179,14 +174,13 @@
                              small
                              class="ma-1"
                              color="primary"
-                             :loading="promoteFlag"
                              :disabled="promoteFlag"
                              @click="promoteClicked"
                              rounded v-if="isAllowedToPromoteToVolunteer">
                         <v-icon left>mdi-arrow-up</v-icon>
                         Promote To Volunteer
                       </v-btn>
-                      <v-btn key="passwordRecoveryLink" small :loading="passwordRecoveryFlag"
+                      <v-btn key="passwordRecoveryLink" small
                              :disabled="passwordRecoveryFlag"
                              @click="createPasswordRecoveryLink" class="ma-1" color="primary" rounded
                              v-if="isPasswordLinkResetable">
@@ -219,7 +213,7 @@
                         </v-row>
                       </div>
 
-                      <v-btn id="demoteToDonorButtonId" key="demoteToDonor" small class="ma-1" color="warning" rounded :loading="promoteFlag"
+                      <v-btn id="demoteToDonorButtonId" key="demoteToDonor" small class="ma-1" color="warning" rounded
                              :disabled="promoteFlag"
                              v-if="isAllowedToDemoteToDonor" @click="demoteClicked">
                         <v-icon left>mdi-arrow-down</v-icon>
@@ -248,7 +242,6 @@
                         </v-btn>
                         <v-btn id="passwordChangeConfirmedId" class="ma-1" color="primary" rounded small
                                :disabled="$v.newPassword.$error || $v.confirmPassword.$error || passwordChangeFlag"
-                               :loading="passwordChangeFlag"
                                @click="savePasswordClicked"
                         >
                           <v-icon left>mdi-content-save</v-icon>
@@ -258,14 +251,14 @@
                       <v-btn id="personDetailsDeleteButtonId" key="deletePerson" small class="ma-1" v-if="isDeletable" @click="deleteDonorPrompt"
                              rounded
                              color="warning"
-                             :loading="deleteDonorFlag" :disabled="deleteDonorFlag">
+                             :disabled="deleteDonorFlag">
                         <v-icon left dark>mdi-delete</v-icon>
                         Delete this person
                       </v-btn>
                       <v-btn id="promoteToHallAdminButtonId" key="promoteToHallAdmin" small class="ma-1" rounded color="primary"
                              v-if="getDesignation===3 && designation===1"
                              :disabled="getChangeAdminLoaderFlag || !isDetailsEditable"
-                             :loading="getChangeAdminLoaderFlag" @click="changeHallAdminClicked()">
+                             @click="changeHallAdminClicked()">
                         <v-icon left dark>mdi-arrow-up</v-icon>
                         Promote to Hall admin
                       </v-btn>
@@ -321,7 +314,6 @@
                     small
                     style="width: 100%"
                     @click="donateClicked"
-                    :loading="newDonationLoader"
                     :disabled="newDonationLoader || newDonationDate.length === 0"
                   >
                     <v-icon left>
@@ -434,7 +426,6 @@
                   <Button
                     id="profileDetailsPublicContactButtonId"
                     :click="publishToPublicContactClicked"
-                    :loading="newPublicContactLoader"
                     :disabled="newPublicContactLoader || selectedNewPublicContact===null"
                     :color="'primary'" :text="'Publish'" :icon="'mdi-content-save'">
                   </Button>
@@ -470,11 +461,13 @@ import DonationCard from './DonationCard'
 import Button from '../UI Components/Button'
 import { directCall, fixBackSlash } from '../../mixins/helpers'
 import { environmentService } from '@/mixins/environment'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'PersonDetails',
   props: ['donorId'],
   components: {
+    LoadingMessage,
     Button,
     DonationCard,
     ContainerOutlined,

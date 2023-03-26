@@ -57,7 +57,6 @@
                 :disabled="logoutAllLoader"
                 :icon="'mdi-delete'"
                 :text="'Signout from all devices'"
-                :loading="logoutAllLoader"
                 :click="logoutFromAllDevices"
             ></Button>
           </v-card-text>
@@ -69,7 +68,6 @@
               :disabled="getLoginsLoader"
               :icon="'mdi-refresh'"
               :text="'Get recent logins'"
-              :loading="getLoginsLoader"
               :click="getLogins">
           </Button>
         </v-card-actions>

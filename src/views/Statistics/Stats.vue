@@ -4,17 +4,7 @@
         Activity Summary
       </v-card-title>
       <transition name="slide-fade-down-snapout" mode="out-in">
-        <v-card-text :key="'loadingStats'" v-if="getStatisticsLoaderFlag">
-          <p><b>Number of donors: </b><br>
-            <v-skeleton-loader type="text"></v-skeleton-loader>
-          </p>
-          <p><b>Number of donations: </b><br>
-            <v-skeleton-loader type="text"></v-skeleton-loader>
-          </p>
-          <p><b>Number of volunteers: </b><br>
-            <v-skeleton-loader type="text"></v-skeleton-loader>
-          </p>
-        </v-card-text>
+        <LoadingMessage :key="'loadingStats'" v-if="getStatisticsLoaderFlag"/>
         <v-card-text :key="'loadedStats'" v-if="getStatistics!==null">
           <p id="statsNumberOfDonors"><b>Number of donors: </b><br>{{ getStatistics.donorCount }}</p>
           <p><b>Number of donations: </b><br>{{ getStatistics.donationCount }}</p>
@@ -27,10 +17,12 @@
 <script>
 import Container from '../../components/Wrappers/Container'
 import { mapActions, mapGetters } from 'vuex'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'StatsPage',
   components: {
+    LoadingMessage,
     Container
   },
   data: () => {

@@ -13,7 +13,6 @@
         <v-card-actions>
           <Button
             text="Go to Admin Console"
-            :loading="redirectionLoaderFlag"
             color="primary"
             :click="redirectToAdminConsole"
             :icon="'mdi-upload'"

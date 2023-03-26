@@ -1,15 +1,13 @@
 <template>
   <fragment>
     <v-app-bar color="primary" dark app clipped-left collapse-on-scroll class="rounded-b-xl">
-      <v-progress-linear :active="getAppBarLoadingFlag" :indeterminate="true" absolute top color="white"
-      ></v-progress-linear>
       <v-app-bar-nav-icon id="hamburgerButtonId" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <img src="../assets/images/badhanlogo.png" alt="Badhan" style="height: 40px; width: 40px" class="mr-4">
       <v-toolbar-title>Badhan BUET Zone</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu right rounded>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on" :loading="getLoadingFlag" id="topBarVerticalDotsId">
+          <v-btn icon v-bind="attrs" v-on="on" id="topBarVerticalDotsId">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
@@ -210,7 +208,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken', 'getAppBarLoadingFlag']),
+    ...mapGetters(['getLoadingFlag', 'getName', 'getDesignation', 'getID', 'getToken']),
     darkTheme: {
       // getter
       get () {

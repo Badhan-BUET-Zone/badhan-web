@@ -52,7 +52,7 @@
     <v-card v-if="donorDetailsExpansion" class="mt-2 rounded-xl" >
       <v-card-text style="font-size: small">
         <div style="float: right;">
-          <v-btn @click="callFromDialer" :disabled="newCallRecordLoader" :loading="newCallRecordLoader" depressed class="ma-1" x-small fab color="green" dark><v-icon>mdi-phone</v-icon></v-btn>
+          <v-btn @click="callFromDialer" :disabled="newCallRecordLoader" depressed class="ma-1" x-small fab color="green" dark><v-icon>mdi-phone</v-icon></v-btn>
           <v-btn style="text-decoration: none" :to="'/activeDonors/details?id='+id" depressed class="ma-1" x-small fab color="blue" dark><v-icon>mdi-account-details</v-icon></v-btn>
         </div>
         <span><b>Department: </b>{{department}}</span><br>

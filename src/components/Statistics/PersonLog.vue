@@ -7,7 +7,7 @@
     <v-btn :id="`personLogExpandButtonId_${dateString}`" @click="getPersonActivities" v-if="personLogs.length===0 && !personLogLoading" x-small rounded
            color="primary">Expand
     </v-btn>
-    <v-skeleton-loader type="text@3" v-if="personLogLoading"></v-skeleton-loader>
+    <LogObject v-if="personLogLoading"/>
 
     <div v-for="(personLog,i) in personLogs" :key="i">
       {{ i + 1 }}) Time:

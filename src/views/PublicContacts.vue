@@ -29,7 +29,6 @@
                 :text="'Direct Call'"
                 :disabled="false"
                 :color="'secondary'"
-                :loading="false"
                 :click="()=>{directCallClicked(contact.phone)}"
             ></Button>
           </ContainerFlat>
@@ -37,7 +36,7 @@
       </v-card-text>
       <v-card-text class="title" v-else :key="'publicLoading'">
         একটু অপেক্ষা করুন
-        <v-skeleton-loader type="article"></v-skeleton-loader>
+        <LoadingMessage/>
       </v-card-text>
       </transition>
     </Container>
@@ -54,7 +53,6 @@
             :text="'Share'"
             :click="shareClicked"
             :color="'info'"
-            :loading="false"
             :disabled="false">
         </Button>
       </v-card-actions>
@@ -70,10 +68,11 @@ import ContainerOutlined from '../components/Wrappers/ContainerOutlined'
 import ContainerFlat from '../components/Wrappers/ContainerFlat'
 import Button from '../components/UI Components/Button'
 import { directCall } from '@/mixins/helpers'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'PublicContacts',
-  components: { Button, ContainerFlat, ContainerOutlined, Container, PageTitle },
+  components: { LoadingMessage, Button, ContainerFlat, ContainerOutlined, Container, PageTitle },
   computed: {
     ...mapGetters('publicContacts', ['getPublicContacts', 'getPublicContactsLoaderFlag'])
   },

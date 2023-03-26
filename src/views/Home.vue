@@ -22,45 +22,7 @@
         </v-col>
         <v-col cols="12" lg="8" id="results">
           <div v-if="isSearchLoading" :key="'searchLoading'">
-            <div>
-              <v-alert dense class="rounded-xl" color="grey">
-                <div>
-                  <v-skeleton-loader type="text"></v-skeleton-loader>
-                </div>
-              </v-alert>
-            </div>
-            <v-row no-gutters>
-              <v-col>
-                <v-btn small
-                       color="secondary" disabled rounded class="mb-4" style="width: 100%">
-                  <v-icon left>
-                    mdi-download
-                  </v-icon>
-                  Download Report
-                </v-btn>
-              </v-col>
-              <v-col>
-                <v-btn small
-                       color="secondary" disabled rounded class="mb-4" style="width: 100%">
-                  <v-icon left>
-                    mdi-download
-                  </v-icon>
-                  Share Search Results
-                </v-btn>
-              </v-col>
-            </v-row>
-
-            <div>
-            <v-alert dense class="rounded-xl" color="grey">
-              <div>
-                <v-skeleton-loader type="text"></v-skeleton-loader>
-              </div>
-            </v-alert>
-            </div>
-            <SkeletonPersonCard
-                v-for="i in 4"
-                :key="i"
-            ></SkeletonPersonCard>
+            <LoadingMessage/>
           </div>
           <div style="height: fit-content" v-if="isSearchResultShown">
             <div >
@@ -130,10 +92,10 @@ import { bloodGroups, halls } from '@/mixins/constants'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { minLength, maxLength, numeric, required } from 'vuelidate/lib/validators'
 import { isGuestEnabled } from '@/api'
-import SkeletonPersonCard from '../components/Home/SkeletonPersonCard'
 import { convertObjectToCSV, textFileDownloadInWeb, processPersonsForReport } from '@/mixins/helpers'
 import Filters from '../components/Filters'
 import { environmentService } from '@/mixins/environment'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'HomePage',
@@ -170,9 +132,9 @@ export default {
 
   },
   components: {
+    LoadingMessage,
     Filters,
     'person-card': PersonCard,
-    SkeletonPersonCard
   },
   data: function () {
     return {

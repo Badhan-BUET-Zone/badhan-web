@@ -15,19 +15,8 @@
       </Container>
 
       <transition name="slide-fade-down-snapout" mode="out-in">
-      <Container v-if="contributorsLoader" :key="'creditedLoading'">
-        <v-card-title class="grey--text">
-          Active Developers
-        </v-card-title>
-        <v-card-text>
-          <v-row no-gutters>
-            <v-col cols="12" sm="6">
-              <SkeletonPersonCredit></SkeletonPersonCredit>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </Container>
-      <Container v-else-if="activeDevelopers.length!==0" :key="'creditedLoaded'">
+        <LoadingMessage v-if="contributorsLoader" :key="'creditedLoading'"/>
+        <Container v-else-if="activeDevelopers.length!==0" :key="'creditedLoaded'">
         <v-card-title>
           Active Developers
         </v-card-title>
@@ -70,12 +59,12 @@ import PageTitle from '../components/PageTitle'
 import { mapGetters, mapActions } from 'vuex'
 import Container from '../components/Wrappers/Container'
 import PersonCredit from '../components/Credits/PersonCredit'
-import SkeletonPersonCredit from '../components/Credits/SkeletonPersonCredit'
 import { handleGETContributors } from '@/api'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
   name: 'CreditsPage',
-  components: { SkeletonPersonCredit, PersonCredit, Container, PageTitle },
+  components: { LoadingMessage, PersonCredit, Container, PageTitle },
   computed: {
     ...mapGetters('statistics', ['getCredits', 'getCreditsLoaderFlag'])
   },

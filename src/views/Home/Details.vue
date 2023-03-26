@@ -1,6 +1,5 @@
 <template>
   <v-card width="100vw" height="100vh" style="z-index: 90;position: fixed;left: 0px;top: 0px;overflow-y: scroll;">
-    <v-progress-linear :active="getAppBarLoadingFlag" :indeterminate="true" absolute top color="primary"></v-progress-linear>
     <PageTitle></PageTitle>
     <PersonDetails :donorId="$route.query.id"></PersonDetails>
   </v-card>

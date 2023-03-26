@@ -40,9 +40,7 @@
     </div>
 
     <div style="max-width: 700px" class="mx-auto" v-if="activeDonorsLoader">
-      <PersonCardNewSkeleton></PersonCardNewSkeleton>
-      <PersonCardNewSkeleton></PersonCardNewSkeleton>
-      <PersonCardNewSkeleton></PersonCardNewSkeleton>
+      <LoadingMessage/>
     </div>
 
     <div style="max-width: 700px" class="mx-auto" v-else>
@@ -63,13 +61,13 @@ import { mapActions, mapGetters } from 'vuex'
 import PersonCardNew from '../components/PersonCardNew'
 import Filters from '../components/Filters'
 import { bloodGroups, halls } from '@/mixins/constants'
-import PersonCardNewSkeleton from '../components/PersonCardNewSkeleton'
 import Button from '../components/UI Components/Button'
 import NoticeCard from '../components/UI Components/NoticeCard'
 import Vue from 'vue'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 export default {
   name: 'ActiveDonors',
-  components: { PersonCardNewSkeleton, Filters, PersonCardNew, PageTitle, ContainerFlat, Button },
+  components: { LoadingMessage, Filters, PersonCardNew, PageTitle, ContainerFlat, Button },
   methods: {
     ...mapActions('activeDonors', ['fetchActiveDonors']),
     ...mapActions('activeDonors', ['fetchActiveDonors']),

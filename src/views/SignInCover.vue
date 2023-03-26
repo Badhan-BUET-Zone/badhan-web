@@ -75,7 +75,6 @@
                         class="ma-1"
                         @click="signInClicked()"
                         :disabled="getSignInLoaderFlag || $v.$anyError"
-                        :loading="getSignInLoaderFlag"
                         id="signInButton"
                     >
                       <v-icon left>
@@ -99,7 +98,6 @@
                           class="ma-1"
                           @click="guestSignInClicked"
                           :disabled="getSignInLoaderFlag"
-                          :loading="getSignInLoaderFlag"
                       >
                         Or, login as guest
                       </v-btn>

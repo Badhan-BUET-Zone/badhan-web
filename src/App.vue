@@ -6,12 +6,10 @@
         <router-view app class="container"></router-view>
       </transition>
     </v-main>
-    <transition name="slide-fade">
-      <SignInDialog v-if="getSignInLoaderFlag"></SignInDialog>
-    </transition>
-    <Notification></Notification>
-    <MessageBox></MessageBox>
-    <ConfirmationBox></ConfirmationBox>
+    <Notification/>
+    <MessageBox/>
+    <ConfirmationBox/>
+    <BottomProgressBar/>
   </v-app>
 </template>
 
@@ -20,9 +18,9 @@ import AppBar from './components/AppBar'
 
 import Notification from './components/Notification'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import SignInDialog from './components/SignInDialog'
 import MessageBox from './components/MessageBox'
 import ConfirmationBox from './components/ConfirmationBox'
+import BottomProgressBar from '@/components/BottomProgressBar.vue'
 
 export default {
   name: 'app',
@@ -31,11 +29,11 @@ export default {
     }
   },
   components: {
+    BottomProgressBar,
     ConfirmationBox,
     MessageBox,
     'app-bar': AppBar,
     Notification,
-    SignInDialog
   },
   computed: {
     ...mapGetters(['getSignInLoaderFlag', 'getIsLoggedIn', 'getToken']),
