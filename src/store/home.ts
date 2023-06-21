@@ -30,6 +30,8 @@ interface HomeStoreStateInterface {
   numOfDonor: number
   persons: PersonInterface[]
   personGroups: PersonGroupsInterface[]
+  morePersonGroups: PersonGroupsInterface[]
+  isMorePersonGroupsAvailable: boolean
 }
 
 const state: HomeStoreStateInterface = {
@@ -37,6 +39,8 @@ const state: HomeStoreStateInterface = {
   searchLoaderFlag: false,
   searchResultShown: false,
   personGroups: [],
+  morePersonGroups: [],
+  isMorePersonGroupsAvailable: false,
   searchedHall: 0,
 
   persons: [],
@@ -62,6 +66,9 @@ const getters = {
   },
   getSearchedHall: (state: HomeStoreStateInterface) => {
     return state.searchedHall
+  },
+  getIsMorePersonGroupsAvailable: (state: HomeStoreStateInterface) => {
+    return state.isMorePersonGroupsAvailable
   }
 }
 const mutations = {
@@ -108,7 +115,10 @@ const mutations = {
       })
     })
     sortedBatches.sort(compareObject)
-    state.personGroups = sortedBatches
+    state.personGroups = sortedBatches.slice(0,4)
+    state.morePersonGroups = sortedBatches.slice(4)
+    state.isMorePersonGroupsAvailable = state.morePersonGroups.length !== 0
+
     state.searchResultShown = true
   },
 
@@ -127,6 +137,13 @@ const mutations = {
           }
         }
       }
+    }
+  },
+
+  concatenateMorePersonGroups (state: HomeStoreStateInterface) {
+    if(state.isMorePersonGroupsAvailable){
+      state.isMorePersonGroupsAvailable = false
+      state.personGroups.push(...state.morePersonGroups)
     }
   }
 }

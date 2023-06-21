@@ -75,6 +75,12 @@
                     :person="person"
                 ></person-card>
               </div>
+              <v-btn v-if="getIsMorePersonGroupsAvailable" small color="secondary" rounded class="ma-2" @click="concatenateMorePersonGroups">
+                <v-icon left>
+                  mdi-more
+                </v-icon>
+                Show results from older batches
+              </v-btn>
             </div>
           </div>
         </v-col>
@@ -100,7 +106,7 @@ import LoadingMessage from '@/components/LoadingMessage.vue'
 export default {
   name: 'HomePage',
   computed: {
-    ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading']),
+    ...mapGetters(['getPersonGroups', 'isSearchResultShown', 'getNumberOfDonors', 'getPersons', 'getSearchedHall', 'getDesignation', 'getHall', 'isSearchLoading', 'getIsMorePersonGroupsAvailable']),
     isGuestEnabled () {
       return isGuestEnabled()
     },
@@ -207,7 +213,7 @@ export default {
   methods: {
     ...mapActions(['search']),
     ...mapActions('notification', ['notifyError']),
-    ...mapMutations(['hideSearchResults', 'resetSearchResults']),
+    ...mapMutations(['hideSearchResults', 'resetSearchResults', 'concatenateMorePersonGroups']),
     ...mapActions(['logout', 'logoutAll', 'requestRedirectionToken']),
     ...mapMutations('messageBox', ['setMessage']),
     async searchClickedFromFilterComponent (filterValues) {
