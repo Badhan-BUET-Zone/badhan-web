@@ -75,7 +75,7 @@
                     :person="person"
                 ></person-card>
               </div>
-              <v-btn v-if="getIsMorePersonGroupsAvailable" small color="secondary" rounded class="ma-2" @click="concatenateMorePersonGroups">
+              <v-btn id="olderBatchResultsButton" v-if="getIsMorePersonGroupsAvailable" small color="secondary" rounded class="ma-2" @click="concatenateMorePersonGroups">
                 <v-icon left>
                   mdi-more
                 </v-icon>
