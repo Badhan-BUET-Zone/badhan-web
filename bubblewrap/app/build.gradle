@@ -54,9 +54,9 @@ android {
     defaultConfig {
         applicationId "com.mmmbadhan"
         minSdkVersion 19
-        targetSdkVersion 31
-        versionCode 87
-        versionName "87"
+        targetSdkVersion 33
+        versionCode 88
+        versionName "88"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name
