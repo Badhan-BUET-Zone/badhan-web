@@ -15,7 +15,7 @@
         <ContainerOutlined v-for="(group,index) in getPublicContacts" :key="index">
           <v-card-title>
             <span v-if="group.bloodGroup!==-1"> {{ group.bloodGroup | getBloodGroupString }} রক্তের জন্য </span>
-            <span v-else>যেকোনো নেগেটিভ রক্তের জন্য</span>
+            <span v-else>যেকোনো নেগেটিভ (-) রক্তের জন্য</span>
           </v-card-title>
           <ContainerFlat v-for="contact in group.contacts" :key="contact._id">
             <v-card-title>
