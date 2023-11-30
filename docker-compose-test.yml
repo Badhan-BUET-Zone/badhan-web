@@ -1,0 +1,15 @@
+version: '3'
+services:
+  badhan-web-docker-service:
+    container_name: badhan-web-docker-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - WATCHPACK_POLLING=true
+    volumes:
+      - '.:/badhan-web'
+      - './node_modules:/badhan-web/node_modules'
+    ports:
+      - "8080:8080"
+    command: npm run serve
