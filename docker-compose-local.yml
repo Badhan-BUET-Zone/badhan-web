@@ -12,3 +12,4 @@ services:
       - './node_modules:/badhan-web/node_modules'
     ports:
       - "8080:8080"
+    command: npm run serve:local
