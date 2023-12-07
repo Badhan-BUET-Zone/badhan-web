@@ -1,53 +1,56 @@
 <template>
   <v-card flat>
     <v-card-title>
-      {{ logCount.dateString }}
+      {{ groupedLog.dateString }}
     </v-card-title>
     <v-card-subtitle>
-      Activity count: {{ logCount.totalLogCount }}<br>
-      Active user count: {{logCount.activeUserCount}}
+      Activity count: {{ groupedLog.group.length }}<br>
+      Active user count: {{ logsGroupedPerPerson.length }}
     </v-card-subtitle>
     <v-card-text>
-      <v-btn :id="`dateLogDetailsButtonId_${logCount.dateString}`" rounded color="primary" x-small @click="detailsClick" v-if="dateLogs.length===0 && !dateLogsLoading">
+      <v-btn v-if="!dateLogsLoaded" :id="`dateLogDetailsButtonId_${groupedLog.dateString}`" rounded color="primary" x-small @click="detailsClick">
         Details
       </v-btn>
-      <LoadingMessage v-if="dateLogsLoading"/>
-      <div v-for="(dateLog,index) in dateLogs" :key="index">
-        <PersonLog :date-log="dateLog" :date-string="logCount.dateString"></PersonLog>
+      <div v-else>
+        <div v-for="(log,index) in logsGroupedPerPerson" :key="index">
+          <PersonLog :date-log="log"></PersonLog>
+        </div>
       </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import { handleGETLogsByDate } from '@/api'
 import PersonLog from './PersonLog'
-import LoadingMessage from '@/components/LoadingMessage.vue'
 
 export default {
-  props: ['logCount'],
+  props: ['groupedLog'],
   name: 'DateLog',
 
   data: function () {
     return {
-      dateLogs: [],
-      dateLogsLoading: false
+      logsGroupedPerPerson: [],
+      dateLogsLoaded: false
     }
   },
   components: {
-    LoadingMessage,
     PersonLog
   },
   methods: {
     async detailsClick () {
-      const splitDate = this.logCount.dateString.split('-')
-      const timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime()
-      this.dateLogsLoading = true
-      const response = await handleGETLogsByDate({ timeStamp })
-      this.dateLogsLoading = false
-      if (response.status !== 200) return
-      this.dateLogs = response.data.logs
+      this.dateLogsLoaded = true
     }
+  },
+  mounted(){
+    this.logsGroupedPerPerson = this.groupedLog.group.reduce((acc, val) => {
+      let o = acc.find((obj) => obj.name === val.name);
+      if (o) {
+        o.group.push({operation: val.operation, date: val.date});
+      } else {
+        acc.push({name: val.name, hall: val.hall, group: [{operation: val.operation, date: val.date}]});
+      }
+      return acc;
+    }, []);
   }
 }
 </script>

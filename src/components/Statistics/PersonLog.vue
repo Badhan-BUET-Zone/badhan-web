@@ -2,55 +2,37 @@
   <div>
     Name: {{ dateLog.name }} <br>
     Hall: {{ dateLog.hall | getHallName }} <br>
-    Count: {{ dateLog.count }}
+    Count: {{ dateLog.group.length }}
     <br>
-    <v-btn :id="`personLogExpandButtonId_${dateString}`" @click="getPersonActivities" v-if="personLogs.length===0 && !personLogLoading" x-small rounded
-           color="primary">Expand
+    <v-btn :id="`personLogExpandButtonId_${dateLog.name}`" @click="getPersonActivities" v-if="!personLogLoaded" x-small
+      rounded color="primary">Expand
     </v-btn>
-    <LogObject v-if="personLogLoading"/>
-
-    <div v-for="(personLog,i) in personLogs" :key="i">
-      {{ i + 1 }}) Time:
-      {{ new Date(personLog.date).toDateString() + ' ' + new Date(personLog.date).toLocaleTimeString() }} <br>
-      Operation: {{ personLog.operation }} <br>
-      Details:
-      <LogObject :date="personLog.date" :object="personLog.details"></LogObject>
+    <div v-else>
+      <div v-for="(log, i) in dateLog.group" :key="i">
+        {{ i + 1 }}) Time:
+        {{ new Date(log.date).toDateString({ timeZone: 'Asia/Dhaka'}) + ' ' + new Date(log.date).toLocaleTimeString({ timeZone: 'Asia/Dhaka'}) }} <br>
+        Operation: {{ log.operation }} <br>
+      </div>
     </div>
     <hr>
   </div>
 </template>
 
 <script>
-import { handleGETLogsByDateAndDonor } from '@/api'
-import LogObject from './LogObject'
-
 export default {
   name: 'PersonLog',
-  props: ['dateLog', 'dateString'],
-  components: {
-    LogObject
-  },
+  props: ['dateLog'],
   data: function () {
     return {
-      personLogs: [],
-      personLogLoading: false
+      personLogLoaded: false
     }
   },
   methods: {
-    async getPersonActivities () {
-      const splitDate = this.dateString.split('-')
-
-      const timeStamp = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])).getTime()
-      this.personLogLoading = true
-      const response = await handleGETLogsByDateAndDonor({ timeStamp, donorId: this.dateLog.donorId })
-      this.personLogLoading = false
-      if (response.status !== 200) return
-      this.personLogs = response.data.logs
+    async getPersonActivities() {
+      this.personLogLoaded = true
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

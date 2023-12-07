@@ -195,16 +195,7 @@ const handleGETDonorsDuplicate = async (payload: GETDonorsDuplicatePayloadInterf
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
 }
-export interface GETLogsByDatePayloadInterface {
-  timeStamp: number
-}
-const handleGETLogsByDate = async (payload: GETLogsByDatePayloadInterface) => {
-  try {
-    return await badhanAxios.get(`/log/date/${payload.timeStamp}`)
-  } catch (e) {
-    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
-  }
-}
+
 const handleGETLogs = async () => {
   try {
     return await badhanAxios.get('/log')
@@ -347,17 +338,6 @@ const handleDELETELogs = async () => {
 const handleGETDonorDesignatedAll = async () => {
   try {
     return await badhanAxios.get('/donors/designation/all')
-  } catch (e) {
-    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
-  }
-}
-export interface GETLogsByDateAndDonorPayloadInterface {
-  timeStamp: number
-  donorId: string
-}
-const handleGETLogsByDateAndDonor = async (payload: GETLogsByDateAndDonorPayloadInterface) => {
-  try {
-    return await badhanAxios.get(`/log/date/${payload.timeStamp}/donorId/${payload.donorId}`)
   } catch (e) {
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }
@@ -573,7 +553,6 @@ export {
   handleDELETEDonors,
   handlePOSTDonorsPasswordRequest,
   handleGETDonorsDuplicate,
-  handleGETLogsByDate,
   handleGETLogs,
   handleDELETESignOut,
   handleDELETESignOutAll,
@@ -589,7 +568,6 @@ export {
   handleDELETELogs,
   handleGETDonorDesignatedAll,
   handleGETCredits,
-  handleGETLogsByDateAndDonor,
   handlePATCHDonorsComment,
   handlePATCHDonors,
   handlePATCHAdmins,

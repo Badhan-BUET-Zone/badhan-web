@@ -16,8 +16,8 @@
           >
           </v-sparkline>
           <v-row>
-            <v-col cols="12" sm="4" v-for="(logCount,i) in logCountPerDay" :key="i">
-              <DateLog :log-count="logCount" :key="i"></DateLog>
+            <v-col cols="12" sm="4" v-for="(log,i) in logs" :key="i">
+              <DateLog :groupedLog="log" :key="i"/>
             </v-col>
           </v-row>
         </v-card-text>
@@ -60,10 +60,24 @@ export default {
     const response = await handleGETLogs()
     this.logCountLoader = false
     if (response.status !== 200) return
-    this.logCountPerDay = response.data.logs
-    const reverseLogs = response.data.logs.slice(0, 14).reverse()
-    this.labelsForSparkLine = reverseLogs.map(a => a.dateString.split('-')[2])
-    this.valuesForSparkLine = reverseLogs.map(a => a.totalLogCount)
+    let options = { timeZone: 'Asia/Dhaka', year: 'numeric', month: '2-digit', day: '2-digit' };
+    let logs = response.data.logs.map(log=>{
+      return {
+        ...log,
+        dateString: new Date(log.date).toLocaleString('en-US', options)
+      }})
+    this.logs = logs.reduce((acc, val) => {
+      let o = acc.find((obj) => obj.dateString === val.dateString);
+      if (o) {
+        o.group.push(val);
+      } else {
+        acc.push({dateString: val.dateString, group: [val]});
+      }
+      return acc;
+    }, []);
+    const reverseLogs = this.logs.slice(0, 14)
+    this.labelsForSparkLine = reverseLogs.map(a => a.dateString.split('/')[1])
+    this.valuesForSparkLine = reverseLogs.map(a => a.group.length)
   },
   data () {
     return {
@@ -88,7 +102,7 @@ export default {
       volunteersShown: false,
 
       logCountLoader: false,
-      logCountPerDay: [],
+      logs: [],
       valuesForSparkLine: [],
       labelsForSparkLine: []
     }
