@@ -42,13 +42,16 @@ import PageTitle from '../components/PageTitle'
 import VueMarkdown from 'vue-markdown'
 import overview from '../../overview.md'
 import Container from '../components/Wrappers/Container'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import {
   getIsTWA
 } from '@/plugins/android_support'
 
 export default {
   name: 'AboutPage',
+  methods: {
+    ...mapActions('frontendSettings', ['fetchSettings']),
+  },
   computed: {
     ...mapGetters('frontendSettings', ['getSettings']),
     getBuildTime () {
@@ -69,6 +72,7 @@ export default {
     }
   },
   async mounted () {
+    this.fetchSettings()
     if (getIsTWA()) {
       this.nativeAppVersion = 'TWA'
     }

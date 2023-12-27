@@ -48,12 +48,7 @@ export default {
   },
 
   async mounted () {
-    await this.versionCheck()
-    if(this.getToken){
-      if(!await this.autoLogin()){
-        await this.$router.push('/')
-      }
-    } else if (this.$route.name !== 'SignIn') {
+    if(this.getToken && !await this.autoLogin()){
       await this.$router.push('/')
     }
   }
