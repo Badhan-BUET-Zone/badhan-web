@@ -72,6 +72,15 @@
           </Button>
         </v-card-actions>
         </transition>
+        <v-card-actions :key="'deleteAccountButtom'">
+          <Button
+            id="deleteAccountButtonId"
+              :color="'warning'"
+              :icon="'mdi-delete'"
+              :text="'Delete Account'"
+              :click="deleteAccount">
+          </Button>
+        </v-card-actions>
       </Container>
     </transition>
 
@@ -118,8 +127,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('notification', ['notifySuccess']),
+    ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['logoutAll']),
+    async deleteAccount(){
+      await this.notifyError('Account deletion is still under under construction');
+    },
     async getLogins () {
       this.getLoginsLoader = true
       const response = await handleGETLogins()
