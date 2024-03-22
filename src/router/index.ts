@@ -159,6 +159,17 @@ const routes: CustomRouteConfig[] = [
           designation: 3,
           reRouteIfAuthorized: false
         }
+      },
+      {
+        name: 'DonationsReport',
+        path: 'report',
+        component: () => import('../views/Statistics/DonationReport.vue'),
+        meta: {
+          title: 'Donation Report',
+          requiresAuth: true,
+          designation: 3,
+          reRouteIfAuthorized: false
+        }
       }
     ]
   },
