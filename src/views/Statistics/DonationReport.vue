@@ -67,7 +67,7 @@
                     <template v-slot:default>
                         <thead>
                             <tr>
-                                <td v-for="header in headers" :key="header.text">{{ header.text }}</td>
+                                <td v-for="header in headers" :key="header">{{ header }}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +77,9 @@
                         </tbody>
                     </template>
                 </v-simple-table>
+                <v-card-text>
+                    New Donors Added: {{newDonorCount}}
+                </v-card-text>
             </v-card-text>
             <v-card-text v-else :key="'nothingToShowId'">Nothing to show</v-card-text>
         </transition>
@@ -106,18 +109,8 @@ export default {
         startDate: '',
         endDateMenu: false,
         endDate: '',
-        headers: [
-          { text: 'Name of Month', value: 'nameOfMonth' },
-          { text: 'A+', value: 'A+' },
-          { text: 'A-', value: 'A-' },
-          { text: 'B+', value: 'B+' },
-          { text: 'B-', value: 'B-' },
-          { text: 'O+', value: 'O+' },
-          { text: 'O-', value: 'O-' },
-          { text: 'AB+', value: 'AB+' },
-          { text: 'AB-', value: 'AB-' },
-          { text: 'Total', value: 'total'}
-        ],
+        headers: ['Name of Month', ...bloodGroups, 'Total'],
+        newDonorCount: 0
       }
     },
     computed: {
@@ -135,6 +128,7 @@ export default {
             this.reportLoader = false
             if (response.status !== 200) return
 
+            this.newDonorCount = response.data.newDonorCreated
             let groupByYear = response.data.report.reduce((acc, item) => {
             item.counts.forEach(count => {
                 let yearObj = acc.find(y => y.year === count.year);
