@@ -16,6 +16,9 @@
       <v-tab id="statisticsStatsTabId" to="/statistics/stats" style="text-decoration: none">
         Stats
       </v-tab>
+      <v-tab id="statisticsDonationReportTabId" to="/statistics/report" style="text-decoration: none">
+        Donation Report
+      </v-tab>
     </v-tabs>
     <transition name="slide-fade" mode="out-in">
     <router-view></router-view>
