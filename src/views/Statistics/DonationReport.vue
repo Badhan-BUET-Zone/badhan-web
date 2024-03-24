@@ -191,6 +191,23 @@ export default {
 
             this.report = tableEntries
             this.firstDonationOfDonorCount = response.data.firstDonationCount
+        },
+        setDates(){
+            const today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+
+            this.endDate = yyyy + '-' + mm + '-' + dd;
+
+            // Get the date three months ago
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            dd = String(threeMonthsAgo.getDate()).padStart(2, '0');
+            mm = String(threeMonthsAgo.getMonth() + 1).padStart(2, '0'); //January is 0!
+            yyyy = threeMonthsAgo.getFullYear();
+
+            this.startDate = yyyy + '-' + mm + '-' + dd;
         }
     },
     async mounted () {
@@ -198,6 +215,8 @@ export default {
             this.$router.push({ name: 'NotFound' })
             return
         }
+        this.setDates()
+        await this.generateReport()
     }
 }
 </script>
