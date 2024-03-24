@@ -78,7 +78,8 @@
                     </template>
                 </v-simple-table>
                 <v-card-text>
-                    New Donors Added: {{newDonorCount}}
+                    <p>New Donors Added: {{newDonorCount}}</p>
+                    <p>Count of Donors who Donated for the First Time: {{ firstDonationOfDonorCount }}</p>
                 </v-card-text>
             </v-card-text>
             <v-card-text v-else :key="'nothingToShowId'">Nothing to show</v-card-text>
@@ -110,7 +111,8 @@ export default {
         endDateMenu: false,
         endDate: '',
         headers: ['Name of Month', ...bloodGroups, 'Total'],
-        newDonorCount: 0
+        newDonorCount: 0,
+        firstDonationOfDonorCount: 0
       }
     },
     computed: {
@@ -188,6 +190,7 @@ export default {
             tableEntries.push(lastTotalEntry)
 
             this.report = tableEntries
+            this.firstDonationOfDonorCount = response.data.firstDonationCount
         }
     },
     async mounted () {
