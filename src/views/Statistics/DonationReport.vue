@@ -123,57 +123,53 @@ export default {
     },
     methods: {
         async generateReport(){
-            const startTimeStamp = new Date(this.startDate).getTime()
-            const endTimeStamp = new Date(this.endDate).getTime()
+            const startDate = new Date(this.startDate)
+            const endDate = new Date(this.endDate)
+            const startTimeStamp = startDate.getTime()
+            const endTimeStamp = endDate.getTime()
+
             this.reportLoader = true
             const response = await handleGETDonationsReport({startDate: startTimeStamp, endDate: endTimeStamp})
             this.reportLoader = false
             if (response.status !== 200) return
 
             this.newDonorCount = response.data.newDonorCreated
-            let groupByYear = response.data.report.reduce((acc, item) => {
-            item.counts.forEach(count => {
-                let yearObj = acc.find(y => y.year === count.year);
-                if (!yearObj) {
-                yearObj = { year: count.year, months: [] };
-                acc.push(yearObj);
-                }
-                let monthObj = yearObj.months.find(m => m.month === count.month);
-                if (!monthObj) {
-                monthObj = { month: count.month, bloodGroups: [] };
-                yearObj.months.push(monthObj);
-                }
-                monthObj.bloodGroups.push({ bloodGroup: item.bloodGroup, count: count.count });
-            });
-            return acc;
-            }, []);
 
-            groupByYear.sort((a, b) => a.year - b.year);
-            groupByYear.forEach(yearObj => {
-                yearObj.months.sort((a, b) => a.month - b.month);
-                yearObj.months.forEach(monthObj => {
-                    monthObj.bloodGroups.sort((a, b) => a.bloodGroup - b.bloodGroup);
-                });
-            });
+            const reportObject = {}
 
-            const tableEntries = []
-
-            groupByYear.forEach(yearData=>{
-                yearData['months'].forEach(monthData=>{
-                    let singleRow = {}
-                    singleRow['nameOfMonth'] = `${new Date(0, monthData.month - 1).toLocaleString('default', { month: 'long' })} ${yearData.year}`
-                    bloodGroups.forEach(bloodGroup=>{
-                        singleRow[bloodGroup] = 0
-                    })
-                    let totalCountInMonth = 0
-                    monthData['bloodGroups'].forEach(bloodGroupData=>{
-                        singleRow[bloodGroups[bloodGroupData.bloodGroup]] = bloodGroupData.count
-                        totalCountInMonth += bloodGroupData.count
-                    })
-                    singleRow['total'] = totalCountInMonth
-                    tableEntries.push(singleRow)
+            response.data.report.forEach(bloodGroupData=>{
+                const bloodGroup = bloodGroupData.bloodGroup
+                bloodGroupData.counts.forEach(countData=>{
+                    const count = countData.count
+                    const month = countData.month
+                    const year = countData.year
+                    if(!Object.hasOwn(reportObject,year)){
+                        reportObject[year] = {}
+                    }
+                    if(!Object.hasOwn(reportObject[year],month)){
+                        reportObject[year][month] = {}
+                    }
+                    reportObject[year][month][bloodGroups[bloodGroup]] = count
                 })
             })
+
+            const tableEntries = []
+            
+            while (startDate <= endDate) {
+                const month = startDate.getMonth() + 1
+                const year = startDate.getFullYear()
+                const singleRow = {}
+
+                singleRow['nameOfMonth'] = `${new Date(0, month - 1).toLocaleString('default', { month: 'long' })} ${year}`
+                let totalForMonth = 0
+                bloodGroups.forEach(bloodGroup=>{
+                    singleRow[bloodGroup] = reportObject[year]?.[month]?.[bloodGroup] ?? 0;
+                    totalForMonth += singleRow[bloodGroup]
+                })
+                singleRow['total'] = totalForMonth
+                tableEntries.push(singleRow)
+                startDate.setMonth(startDate.getMonth() + 1);
+            }
 
             const lastTotalEntry = {'nameOfMonth': 'Total'}
             let sumTotalDonations = 0
