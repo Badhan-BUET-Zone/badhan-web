@@ -118,7 +118,7 @@ export default {
     computed: {
         ...mapGetters(['getDesignation']),
         disableGenerateReportButton(){
-            return this.startDate === '' && this.endDate === ''
+            return this.reportLoader || (this.startDate === '' && this.endDate === '')
         }
     },
     methods: {
