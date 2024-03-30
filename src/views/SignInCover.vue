@@ -36,6 +36,13 @@
                   >
                     {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
                   </v-chip>
+                  <LineChart
+                    v-if="chartData.datasets.length!==0"
+                    id="my-chart-id"
+                    :options="chartOptions"
+                    :data="chartData"
+                  />
+                  <p>Donation count of Badhan BUET Zone</p>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"
@@ -160,15 +167,60 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { Line as LineChart } from 'vue-chartjs'
+import { handleGETLogsDonations } from '@/api'
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler} from 'chart.js'
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale, Filler)
 
 export default {
   name: 'SignInCover',
+  components: { LineChart },
   data () {
     return {
       detailsFlag: false,
       phone: '',
       password: '',
       passwordFlag: false,
+
+      chartData: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: []
+        // datasets: [ 
+        //   { 
+        //     label: 'Dataset 1',
+        //     data: [40, 20, 12],
+        //     fill: 'start',
+        //     borderColor: this.getRandomColor(),
+        //     backgroundColor: this.getRandomColor(0.5)
+        //   },
+        //   { 
+        //     label: 'Dataset 2',
+        //     data: [30, 50, 20],
+        //     borderColor: this.getRandomColor(),
+        //   },
+        //   { 
+        //     label: 'Dataset 3',
+        //     data: [50, 30, 40],
+        //     borderColor: this.getRandomColor(),
+        //   } 
+        // ]
+      },
+      chartOptions: {
+        responsive: true,
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1,
+              callback: function(value) {
+                if (Math.floor(value) === value) {
+                  return value;
+                }
+              },
+            }
+          }
+        }
+      }
     }
   },
   validations: {
@@ -205,10 +257,53 @@ export default {
     }
 
   },
+  mounted(){
+    this.getDonationStats()
+  },
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['login', 'guestLogin']),
     ...mapMutations(['clearSignInError', 'setAutoRedirectionPath', 'unsetAutoRedirectionPath']),
+    async getDonationStats(){
+      const response = await handleGETLogsDonations()
+      if(response.status!==200)return
+      const countByYearMonthOutput = []
+      const countByYearMonth = response.data.countByYearMonth
+
+      const chartData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      }
+
+      const years = Object.keys(countByYearMonth).map(Number); // Convert keys to numbers
+      const minYear = Math.min(...years);
+      const maxYear = Math.max(...years);
+
+      for(let year=maxYear;year>=minYear;year--){
+        const yearObject = {
+            label: `${year}`,
+            data: [],
+            borderColor: this.getRandomColor()
+          }
+        for(let month = 1; month<=12; month++){
+          yearObject.data.push(countByYearMonth[`${year}`]?.[`${month}`]?? 0)
+        }
+        countByYearMonthOutput.push(yearObject)
+      }
+      chartData.datasets = countByYearMonthOutput
+      const randomColorForCurrentYear = this.getRandomColor(0.5)
+      chartData.datasets[0].fill = 'start'
+      chartData.datasets[0].borderColor = randomColorForCurrentYear
+      chartData.datasets[0].backgroundColor = randomColorForCurrentYear
+      this.chartData = chartData
+    },
+    getRandomColor(transparency=1) {
+      let color = 'rgba(';
+      for (let i = 0; i < 3; i++) {
+        color += Math.floor(Math.random() * 256) + ',';
+      }
+      color += `${transparency})`; // Add transparency
+      return color;
+    },
     async signInClicked () {
       await this.$v.$touch()
       if (this.$v.$anyError) {
