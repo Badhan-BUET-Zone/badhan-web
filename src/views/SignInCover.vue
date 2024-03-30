@@ -20,29 +20,34 @@
                     sm="8"
                     tag="h1"
                 >
-                  <img
-                      src="../assets/images/badhanlogo.png"
-                      style="width: 100px; height: 100px"
-                  />
-                  <br>
-                  <span
-                      class="font-weight-bold"
-                  >
-                    Badhan
-                  </span>
-                  <p class="subtitle-2">BUET Zone</p>
-                  <v-chip
-                      color="secondary"
-                  >
-                    {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
-                  </v-chip>
-                  <LineChart
-                    v-if="chartData.datasets.length!==0"
-                    id="my-chart-id"
-                    :options="chartOptions"
-                    :data="chartData"
-                  />
-                  <p>Donation count of Badhan BUET Zone</p>
+                  <transition-group name="slide-fade-down-snapout" type="out-in">
+                    <div key="titlekey">
+                      <img
+                          src="../assets/images/badhanlogo.png"
+                          style="width: 100px; height: 100px"
+                      />
+                      <br>
+                      <span
+                          class="font-weight-bold"
+                      >
+                        Badhan
+                      </span>
+                      <p class="subtitle-2">BUET Zone</p>
+                      <v-chip
+                          color="secondary"
+                      >
+                        {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
+                      </v-chip>
+                    </div>
+                    <LineChart
+                      v-if="chartData.datasets.length!==0"
+                      :key="'linechartKey'"
+                      id="my-chart-id"
+                      :options="chartOptions"
+                      :data="chartData"
+                    />
+                    <!-- <LoadingMessage v-else :key="'linechartLoadingKey'"/> -->
+                  </transition-group>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"
@@ -170,12 +175,14 @@ import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { Line as LineChart } from 'vue-chartjs'
 import { handleGETLogsDonations } from '@/api'
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler} from 'chart.js'
-
+// import LoadingMessage from '@/components/LoadingMessage.vue'
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale, Filler)
 
 export default {
   name: 'SignInCover',
-  components: { LineChart },
+  components: { LineChart, 
+    // LoadingMessage 
+  },
   data () {
     return {
       detailsFlag: false,
@@ -210,6 +217,10 @@ export default {
         responsive: true,
         scales: {
           y: {
+            title: {
+              display: true,
+              text: 'Donation Count',
+            },
             ticks: {
               stepSize: 1,
               callback: function(value) {
