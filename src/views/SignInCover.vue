@@ -39,14 +39,20 @@
                         {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
                       </v-chip>
                     </div>
-                    <LineChart
-                      v-if="chartData.datasets.length!==0"
-                      :key="'linechartKey'"
-                      id="my-chart-id"
-                      :options="chartOptions"
-                      :data="chartData"
-                    />
-                    <!-- <LoadingMessage v-else :key="'linechartLoadingKey'"/> -->
+                    <div v-if="chartData" :key="'barchartKey'">
+                      <v-btn icon color="primary" @click="populateBefore">
+                        <v-icon>mdi-arrow-left</v-icon>
+                      </v-btn>
+                      <v-btn icon color="primary" @click="populateNext">
+                        <v-icon>mdi-arrow-right</v-icon>
+                      </v-btn>
+                      <BarChart
+                        id="my-chart-id"
+                        :options="chartOptions"
+                        :data="chartData"
+                      />
+                    </div>
+
                   </transition-group>
                 </v-col>
                 <v-col class="text-center"
@@ -172,17 +178,13 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
-import { Line as LineChart } from 'vue-chartjs'
 import { handleGETLogsDonations } from '@/api'
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement, Filler} from 'chart.js'
-// import LoadingMessage from '@/components/LoadingMessage.vue'
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale, Filler)
-
+import { Bar as BarChart } from 'vue-chartjs'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler } from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler)
 export default {
   name: 'SignInCover',
-  components: { LineChart, 
-    // LoadingMessage 
-  },
+  components: { BarChart },
   data () {
     return {
       detailsFlag: false,
@@ -190,29 +192,7 @@ export default {
       password: '',
       passwordFlag: false,
 
-      chartData: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: []
-        // datasets: [ 
-        //   { 
-        //     label: 'Dataset 1',
-        //     data: [40, 20, 12],
-        //     fill: 'start',
-        //     borderColor: this.getRandomColor(),
-        //     backgroundColor: this.getRandomColor(0.5)
-        //   },
-        //   { 
-        //     label: 'Dataset 2',
-        //     data: [30, 50, 20],
-        //     borderColor: this.getRandomColor(),
-        //   },
-        //   { 
-        //     label: 'Dataset 3',
-        //     data: [50, 30, 40],
-        //     borderColor: this.getRandomColor(),
-        //   } 
-        // ]
-      },
+      chartData: null,
       chartOptions: {
         responsive: true,
         scales: {
@@ -231,7 +211,10 @@ export default {
             }
           }
         }
-      }
+      },
+      rawCountByYearMonth: {},
+      currentYear: 0,
+      currentMonth: 0
     }
   },
   validations: {
@@ -262,7 +245,7 @@ export default {
     passwordErrors () {
       const errors = []
       if (!this.$v.password.$dirty) return errors
-      !this.$v.password.required && errors.push('Password is required.')// minLength
+      !this.$v.password.required && errors.push('Password is required.')
       !this.$v.password.minLength && errors.push('Password is must be more than 3 characters')
       return errors
     }
@@ -275,44 +258,61 @@ export default {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['login', 'guestLogin']),
     ...mapMutations(['clearSignInError', 'setAutoRedirectionPath', 'unsetAutoRedirectionPath']),
+    async populateNext(){
+      const date = new Date(this.currentYear, this.currentMonth - 1)
+      date.setMonth(date.getMonth() + 6)
+      this.currentYear = date.getFullYear()
+      this.currentMonth = date.getMonth() + 1
+      this.populateSixMonths()
+    },
+    async populateBefore(){
+      let date = new Date(this.currentYear, this.currentMonth - 1)
+      date.setMonth(date.getMonth() - 6)
+      this.currentYear = date.getFullYear()
+      this.currentMonth = date.getMonth() + 1
+      this.populateSixMonths()
+    },
+    async populateSixMonths(){
+      const chartData = {
+        labels: [],
+        datasets: []
+      }
+      const yearObject = {
+        label: `Last 6 Months`,
+        data: [],
+        borderColor: this.getRandomColor(),
+        backgroundColor: this.getRandomColor(0.5),
+        fill: 'start'
+      }
+
+      for(let i = 5; i >= 0; i--){
+        const month = (this.currentMonth - i - 1 + 12) % 12 + 1;
+        const year = this.currentYear - (month > this.currentMonth ? 1 : 0)
+        yearObject.data.push(this.rawCountByYearMonth[`${year}`]?.[`${month}`]?? 0)
+        chartData.labels.push(new Date(year, month - 1).toLocaleString('en-US', { year: '2-digit', month: 'short'}))
+      }
+
+      yearObject.label = `${chartData.labels[0]} - ${chartData.labels[chartData.labels.length - 1]}`
+
+      chartData.datasets.push(yearObject)
+      this.chartData = chartData
+    },
     async getDonationStats(){
       const response = await handleGETLogsDonations()
       if(response.status!==200)return
-      const countByYearMonthOutput = []
-      const countByYearMonth = response.data.countByYearMonth
+      this.rawCountByYearMonth = response.data.countByYearMonth
 
-      const chartData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      }
-
-      const years = Object.keys(countByYearMonth).map(Number); // Convert keys to numbers
-      const minYear = Math.min(...years);
-      const maxYear = Math.max(...years);
-
-      for(let year=maxYear;year>=minYear;year--){
-        const yearObject = {
-            label: `${year}`,
-            data: [],
-            borderColor: this.getRandomColor()
-          }
-        for(let month = 1; month<=12; month++){
-          yearObject.data.push(countByYearMonth[`${year}`]?.[`${month}`]?? 0)
-        }
-        countByYearMonthOutput.push(yearObject)
-      }
-      chartData.datasets = countByYearMonthOutput
-      const randomColorForCurrentYear = this.getRandomColor(0.5)
-      chartData.datasets[0].fill = 'start'
-      chartData.datasets[0].borderColor = randomColorForCurrentYear
-      chartData.datasets[0].backgroundColor = randomColorForCurrentYear
-      this.chartData = chartData
+      const currentDate = new Date()
+      this.currentYear = currentDate.getFullYear()
+      this.currentMonth = currentDate.getMonth() + 1
+      this.populateSixMonths(this.currentYear, this.currentMonth)
     },
     getRandomColor(transparency=1) {
       let color = 'rgba(';
       for (let i = 0; i < 3; i++) {
         color += Math.floor(Math.random() * 256) + ',';
       }
-      color += `${transparency})`; // Add transparency
+      color += `${transparency})`
       return color;
     },
     async signInClicked () {
