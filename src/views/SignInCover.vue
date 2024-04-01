@@ -52,6 +52,9 @@
                         :data="chartData"
                       />
                     </div>
+                    <div v-else key="loadingKey">
+                      <LoadingMessage/>
+                    </div>
 
                   </transition-group>
                 </v-col>
@@ -180,11 +183,12 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { handleGETLogsDonations } from '@/api'
 import { Bar as BarChart } from 'vue-chartjs'
+import LoadingMessage from '@/components/LoadingMessage.vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler } from 'chart.js'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler)
 export default {
   name: 'SignInCover',
-  components: { BarChart },
+  components: { BarChart, LoadingMessage },
   data () {
     return {
       detailsFlag: false,
