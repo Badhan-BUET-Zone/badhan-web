@@ -39,11 +39,11 @@
                         {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
                       </v-chip>
                     </div>
-                    <div v-if="chartData" :key="'barchartKey'">
+                    <div v-if="!donationCountYearMonthLoader" :key="'barchartKey'">
                       <v-btn icon color="primary" @click="populateBefore">
                         <v-icon>mdi-arrow-left</v-icon>
                       </v-btn>
-                      <v-btn icon color="primary" @click="populateNext">
+                      <v-btn v-if="isRightButtonEnabled" icon color="primary" @click="populateNext">
                         <v-icon>mdi-arrow-right</v-icon>
                       </v-btn>
                       <BarChart
@@ -185,6 +185,8 @@ import { handleGETLogsDonations } from '@/api'
 import { Bar as BarChart } from 'vue-chartjs'
 import LoadingMessage from '@/components/LoadingMessage.vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler } from 'chart.js'
+import localDatabase from '@/localDatabase'
+
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler)
 export default {
   name: 'SignInCover',
@@ -196,7 +198,13 @@ export default {
       password: '',
       passwordFlag: false,
 
-      chartData: null,
+      todayMonth: new Date().getMonth() + 1,
+      todayYear: new Date().getFullYear(),
+
+      chartData: {
+        labels: [],
+        datasets: []
+      },
       chartOptions: {
         responsive: true,
         scales: {
@@ -218,7 +226,9 @@ export default {
       },
       rawCountByYearMonth: {},
       currentYear: 0,
-      currentMonth: 0
+      currentMonth: 0,
+
+      donationCountYearMonthLoader: false
     }
   },
   validations: {
@@ -237,6 +247,9 @@ export default {
     ...mapGetters(['getSignInLoaderFlag', 'getAutoRedirectionPath']),
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
+    },
+    isRightButtonEnabled(){
+      return !(this.currentMonth === this.todayMonth && this.currentYear === this.todayYear)
     },
     phoneErrors () {
       const errors = []
@@ -302,14 +315,28 @@ export default {
       this.chartData = chartData
     },
     async getDonationStats(){
-      const response = await handleGETLogsDonations()
-      if(response.status!==200)return
-      this.rawCountByYearMonth = response.data.countByYearMonth
-
       const currentDate = new Date()
       this.currentYear = currentDate.getFullYear()
       this.currentMonth = currentDate.getMonth() + 1
-      this.populateSixMonths(this.currentYear, this.currentMonth)
+
+      const resultOfLDB = localDatabase.donationCountYearMonth.load()
+      if(resultOfLDB.status == 'ERROR'){
+        this.donationCountYearMonthLoader = true
+      } else {
+        this.rawCountByYearMonth = resultOfLDB.data
+        this.populateSixMonths(this.currentYear, this.currentMonth)
+      }
+
+      handleGETLogsDonations().then((response)=>{
+        if(response.status!==200){
+          return
+        }
+        this.rawCountByYearMonth = response.data.countByYearMonth
+        localDatabase.donationCountYearMonth.save(this.rawCountByYearMonth)
+        this.populateSixMonths(this.currentYear, this.currentMonth)
+      }).finally(()=>{
+        this.donationCountYearMonthLoader = false
+      })
     },
     getRandomColor(transparency=1) {
       let color = 'rgba(';
