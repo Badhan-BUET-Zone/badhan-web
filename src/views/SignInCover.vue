@@ -20,22 +20,43 @@
                     sm="8"
                     tag="h1"
                 >
-                  <img
-                      src="../assets/images/badhanlogo.png"
-                      style="width: 100px; height: 100px"
-                  />
-                  <br>
-                  <span
-                      class="font-weight-bold"
-                  >
-                    Badhan
-                  </span>
-                  <p class="subtitle-2">BUET Zone</p>
-                  <v-chip
-                      color="secondary"
-                  >
-                    {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
-                  </v-chip>
+                  <transition-group name="slide-fade-down-snapout" type="out-in">
+                    <div key="titlekey">
+                      <img
+                          src="../assets/images/badhanlogo.png"
+                          style="width: 100px; height: 100px"
+                      />
+                      <br>
+                      <span
+                          class="font-weight-bold"
+                      >
+                        Badhan
+                      </span>
+                      <p class="subtitle-2">BUET Zone</p>
+                      <v-chip
+                          color="secondary"
+                      >
+                        {{$getEnvironmentName()==="production"?"production":$getEnvironmentName()}}
+                      </v-chip>
+                    </div>
+                    <div v-if="!donationCountYearMonthLoader" :key="'barchartKey'">
+                      <v-btn icon color="primary" @click="populateBefore">
+                        <v-icon>mdi-arrow-left</v-icon>
+                      </v-btn>
+                      <v-btn v-if="isRightButtonEnabled" icon color="primary" @click="populateNext">
+                        <v-icon>mdi-arrow-right</v-icon>
+                      </v-btn>
+                      <BarChart
+                        id="my-chart-id"
+                        :options="chartOptions"
+                        :data="chartData"
+                      />
+                    </div>
+                    <div v-else key="loadingKey">
+                      <LoadingMessage/>
+                    </div>
+
+                  </transition-group>
                 </v-col>
                 <v-col class="text-center"
                        cols="12"
@@ -160,15 +181,54 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { handleGETLogsDonations } from '@/api'
+import { Bar as BarChart } from 'vue-chartjs'
+import LoadingMessage from '@/components/LoadingMessage.vue'
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler } from 'chart.js'
+import localDatabase from '@/localDatabase'
 
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Filler)
 export default {
   name: 'SignInCover',
+  components: { BarChart, LoadingMessage },
   data () {
     return {
       detailsFlag: false,
       phone: '',
       password: '',
       passwordFlag: false,
+
+      todayMonth: new Date().getMonth() + 1,
+      todayYear: new Date().getFullYear(),
+
+      chartData: {
+        labels: [],
+        datasets: []
+      },
+      chartOptions: {
+        responsive: true,
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'Donation Count',
+            },
+            ticks: {
+              stepSize: 1,
+              callback: function(value) {
+                if (Math.floor(value) === value) {
+                  return value;
+                }
+              },
+            }
+          }
+        }
+      },
+      rawCountByYearMonth: {},
+      currentYear: 0,
+      currentMonth: 0,
+
+      donationCountYearMonthLoader: false
     }
   },
   validations: {
@@ -188,6 +248,9 @@ export default {
     getBuildTime () {
       return new Date(document.documentElement.dataset.buildTimestampUtc).toLocaleString()
     },
+    isRightButtonEnabled(){
+      return !(this.currentMonth === this.todayMonth && this.currentYear === this.todayYear)
+    },
     phoneErrors () {
       const errors = []
       if (!this.$v.phone.$dirty) return errors
@@ -199,16 +262,90 @@ export default {
     passwordErrors () {
       const errors = []
       if (!this.$v.password.$dirty) return errors
-      !this.$v.password.required && errors.push('Password is required.')// minLength
+      !this.$v.password.required && errors.push('Password is required.')
       !this.$v.password.minLength && errors.push('Password is must be more than 3 characters')
       return errors
     }
 
   },
+  mounted(){
+    this.getDonationStats()
+  },
   methods: {
     ...mapActions('notification', ['notifySuccess', 'notifyError']),
     ...mapActions(['login', 'guestLogin']),
     ...mapMutations(['clearSignInError', 'setAutoRedirectionPath', 'unsetAutoRedirectionPath']),
+    async populateNext(){
+      const date = new Date(this.currentYear, this.currentMonth - 1)
+      date.setMonth(date.getMonth() + 6)
+      this.currentYear = date.getFullYear()
+      this.currentMonth = date.getMonth() + 1
+      this.populateSixMonths()
+    },
+    async populateBefore(){
+      let date = new Date(this.currentYear, this.currentMonth - 1)
+      date.setMonth(date.getMonth() - 6)
+      this.currentYear = date.getFullYear()
+      this.currentMonth = date.getMonth() + 1
+      this.populateSixMonths()
+    },
+    async populateSixMonths(){
+      const chartData = {
+        labels: [],
+        datasets: []
+      }
+      const yearObject = {
+        label: `Last 6 Months`,
+        data: [],
+        borderColor: this.getRandomColor(),
+        backgroundColor: this.getRandomColor(0.5),
+        fill: 'start'
+      }
+
+      for(let i = 5; i >= 0; i--){
+        const month = (this.currentMonth - i - 1 + 12) % 12 + 1;
+        const year = this.currentYear - (month > this.currentMonth ? 1 : 0)
+        yearObject.data.push(this.rawCountByYearMonth[`${year}`]?.[`${month}`]?? 0)
+        chartData.labels.push(new Date(year, month - 1).toLocaleString('en-US', { year: '2-digit', month: 'short'}))
+      }
+
+      yearObject.label = `${chartData.labels[0]} - ${chartData.labels[chartData.labels.length - 1]}`
+
+      chartData.datasets.push(yearObject)
+      this.chartData = chartData
+    },
+    async getDonationStats(){
+      const currentDate = new Date()
+      this.currentYear = currentDate.getFullYear()
+      this.currentMonth = currentDate.getMonth() + 1
+
+      const resultOfLDB = localDatabase.donationCountYearMonth.load()
+      if(resultOfLDB.status == 'ERROR'){
+        this.donationCountYearMonthLoader = true
+      } else {
+        this.rawCountByYearMonth = resultOfLDB.data
+        this.populateSixMonths(this.currentYear, this.currentMonth)
+      }
+
+      handleGETLogsDonations().then((response)=>{
+        if(response.status!==200){
+          return
+        }
+        this.rawCountByYearMonth = response.data.countByYearMonth
+        localDatabase.donationCountYearMonth.save(this.rawCountByYearMonth)
+        this.populateSixMonths(this.currentYear, this.currentMonth)
+      }).finally(()=>{
+        this.donationCountYearMonthLoader = false
+      })
+    },
+    getRandomColor(transparency=1) {
+      let color = 'rgba(';
+      for (let i = 0; i < 3; i++) {
+        color += Math.floor(Math.random() * 256) + ',';
+      }
+      color += `${transparency})`
+      return color;
+    },
     async signInClicked () {
       await this.$v.$touch()
       if (this.$v.$anyError) {
