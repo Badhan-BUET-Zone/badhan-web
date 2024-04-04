@@ -10,10 +10,6 @@ export const setWithExpiry = (key: string, value: unknown, ttl: number) => {
   localStorage.setItem(key, JSON.stringify(item))
 }
 
-export const remove = (key: string) => {
-  localStorage.removeItem(key)
-}
-
 export const set = (key: string, value: unknown) =>{
   localStorage.setItem(key, JSON.stringify({value}))
 }

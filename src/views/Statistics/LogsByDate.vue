@@ -55,6 +55,7 @@ export default {
       this.$router.push({ name: 'NotFound' })
       return
     }
+
     this.logCountLoader = true
     const response = await handleGETLogs()
     this.logCountLoader = false
