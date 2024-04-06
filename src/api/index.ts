@@ -204,6 +204,14 @@ const handleGETLogs = async () => {
   }
 }
 
+const handleGETLogsDonations = async () => {
+  try {
+    return await badhanAxios.get('/log/donations')
+  } catch (e) {
+    return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
+  }
+}
+
 type DELETESignOutResponseData = BadhanAxiosResponseDataInterface
 const handleDELETESignOut = async () => {
   try {
@@ -566,6 +574,7 @@ export {
   handlePOSTDonorsPasswordRequest,
   handleGETDonorsDuplicate,
   handleGETLogs,
+  handleGETLogsDonations,
   handleDELETESignOut,
   handleDELETESignOutAll,
   handlePOSTRedirection,
