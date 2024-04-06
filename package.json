@@ -7,6 +7,7 @@
     "serve:local": "vue-cli-service serve --mode local",
     "serve:testing": "npm run build:testing && http-server dist",
     "serve:production": "npm run build && http-server dist",
+    "serve:localproduction": "vue-cli-service serve --mode localproduction",
     "build": "vue-cli-service build",
     "build:testing": "vue-cli-service build --mode testing",
     "build:development": "vue-cli-service build --mode development",

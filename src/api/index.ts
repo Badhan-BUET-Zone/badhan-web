@@ -206,7 +206,7 @@ const handleGETLogs = async () => {
 
 const handleGETLogsDonations = async () => {
   try {
-    return await badhanAxios.get('/log/donations')
+    return await badhanAxios.get(`/log/donations`)
   } catch (e) {
     return (e as BadhanAxiosErrorInterface<BadhanAxiosResponseDataInterface>).response
   }

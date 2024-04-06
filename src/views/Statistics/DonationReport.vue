@@ -78,7 +78,6 @@
                     </template>
                 </v-simple-table>
                 <v-card-text>
-                    <p>New Donors Added: {{newDonorCount}}</p>
                     <p>Count of Donors who Donated for the First Time: {{ firstDonationOfDonorCount }}</p>
                 </v-card-text>
             </v-card-text>
@@ -111,7 +110,6 @@ export default {
         endDateMenu: false,
         endDate: '',
         headers: ['Name of Month', ...bloodGroups, 'Total'],
-        newDonorCount: 0,
         firstDonationOfDonorCount: 0
       }
     },
@@ -132,8 +130,6 @@ export default {
             const response = await handleGETDonationsReport({startDate: startTimeStamp, endDate: endTimeStamp})
             this.reportLoader = false
             if (response.status !== 200) return
-
-            this.newDonorCount = response.data.newDonorCreated
 
             const reportObject = {}
 
