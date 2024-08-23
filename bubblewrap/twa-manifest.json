@@ -5,6 +5,7 @@
   "launcherName": "Badhan",
   "display": "standalone",
   "themeColor": "#B71C1C",
+  "themeColorDark": "#000000",
   "navigationColor": "#000000",
   "navigationColorDark": "#000000",
   "navigationDividerColor": "#000000",
@@ -16,11 +17,11 @@
   "maskableIconUrl": "https://badhan-buet.web.app/img/icons/android-chrome-maskable-512x512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "E:\\Documents\\Git\\badhan-web\\bubblewrap\\signature.jks",
+    "path": "C:\\Users\\mahat\\Documents\\Badhan\\badhan-web\\bubblewrap\\signature.jks",
     "alias": "key0"
   },
-  "appVersionName": "87",
-  "appVersionCode": 87,
+  "appVersionName": "89",
+  "appVersionCode": 89,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://badhan-buet.web.app/manifest.json",
@@ -42,5 +43,5 @@
   "fingerprints": [],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
-  "appVersion": "87"
+  "appVersion": "89"
 }
