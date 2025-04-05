@@ -4,8 +4,8 @@ export const departments: string[] = [
   'CE', 'CSE', 'EEE', nullDepartment,
   'IPE', nullDepartment, 'ME', 'MME',
   'NAME', nullDepartment, nullDepartment, 'URP',
-  'WRE', nullDepartment, 'BME']
+  'WRE', 'NCE', 'BME']
 
-export const halls: string[] = ['Ahsanullah', 'Sabekun Nahar Sony', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir', 'Attached', '(Unknown)']
+export const halls: string[] = ['Ahsanullah', 'Chatri', 'Nazrul', 'Rashid', 'Sher-e-Bangla', 'Suhrawardy', 'Titumir', 'Attached', '(Unknown)']
 export const designations: string[] = ['Donor', 'Volunteer', 'Hall Admin', 'Super Admin']
 export const bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']

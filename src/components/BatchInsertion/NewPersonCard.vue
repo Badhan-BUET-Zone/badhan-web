@@ -23,7 +23,7 @@
       >
         <template v-slot:message>
           <span>{{ studentIdErrors[0] }}</span>
-          <span>. If the department is unknown, give 00 as dept. code</span>
+          <span>If the department is unknown, give 00 as dept. code</span>
           <div v-if="$v.studentId.$invalid">
             <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
@@ -185,7 +185,7 @@ export default {
         required,
         departmentCheck (studentId) {
           const indexOfDepartment = parseInt(String(studentId).substr(2, 2))
-          return indexOfDepartment <= 18;
+          return indexOfDepartment <= departments.length;
 
         }
       },
@@ -251,11 +251,11 @@ export default {
     studentIdErrors () {
       const errors = []
       if (!this.$v.studentId.$dirty) return errors
-      !this.$v.studentId.minLength && errors.push('Student ID must be 7 digits long')
+      !this.$v.studentId.minLength && errors.push('Student ID must be 7 digits long. ')
       !this.$v.studentId.maxLength && errors.push('Student ID must be 7 digits long')
-      !this.$v.studentId.required && errors.push('Student ID is required')
-      !this.$v.studentId.numeric && errors.push('Student ID must be numeric')
-      !this.$v.studentId.departmentCheck && errors.push('Invalid department ID')
+      !this.$v.studentId.required && errors.push('Student ID is required. ')
+      !this.$v.studentId.numeric && errors.push('Student ID must be numeric. ')
+      !this.$v.studentId.departmentCheck && errors.push('Invalid department ID. ')
       return errors
     },
     bloodGroupErrors () {
