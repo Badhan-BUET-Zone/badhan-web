@@ -6,7 +6,7 @@ and [website](https://badhan-buet.web.app) of Badhan, BUET Zone. This repository
 * [Mir Mahathir Mohammad](https://github.com/mirmahathir1)
 # Technology Stack
 * Vue.js
-* Capacitor.js
+* Bubblewrap
 # Description
 badhan-web is a Single Page Application (SPA) built using [Vue 2](https://vuejs.org/). Simply visit the site [https://badhan-buet-test.netlify.app/](https://badhan-buet-test.netlify.app/) to check our frontend.
 
